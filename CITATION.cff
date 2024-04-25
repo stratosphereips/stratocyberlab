@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "YOUR_NAME_HERE"
+  given-names: "YOUR_NAME_HERE"
+  email: youremailhere
+  affiliation: >-
+      Stratosphere Laboratory, AIC, FEL, Czech
+      Technical University in Prague
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+- family-names: "Lisa"
+  given-names: "Mona"
+  email: youremailhere
+  affiliation: >-
+      Stratosphere Laboratory, AIC, FEL, Czech
+      Technical University in Prague
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "repository-template"
+version: 1.0.0
+doi: 10.5281/zenodo.1234
+date-released: 2022-07-13
+url: "https://github.com/stratosphereips/repository-template"
