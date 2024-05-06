@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  hackerlab:
+    build: ./hackerlab
+    container_name: hackerlab
+    hostname: hackerlab
+    restart: always
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.2
+
+  hello-world:
+    build: ./challenges/hello-world
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.3
+
+networks:
+  playground-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/24
+          gateway: 172.20.0.1

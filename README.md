@@ -1,15 +1,37 @@
-# Awesome Code Template
+# BSY-playground
 
-This repository is a template with basic elements that every repository at Stratosphere should follow.
+TODO about
 
-## Features
+## Challenges
 
-Write about what makes your [tool|code|data|repo] special.
+
+| Challenge name                            | Difficulty  | IP address   | Tags  |
+|-------------------------------------------|-------------|--------------|-------|
+| [Hello world](./challenges/hello-world/)  | Very easy   | `172.20.0.3` |       |
+
+
+## Requirements
+
+* bash
+* docker (some version>?)
+
 
 ## Usage
 
-Write about how others can use your [tool|code|data|repo].
+TODO
 
-# About
+Flag format `bsy{...}`
 
-This [tool|code|data|repo] was developed at the Stratosphere Laboratory at the Czech Technical University in Prague.
+root credentials root:ByteThem123
+
+network 172.20.0.0/24
+
+## Development
+<details>
+  <summary>Click to expand</summary>
+
+### How to add a challenge
+
+TODO mention template + tests + table in this readme + docker-compose file 
+
+</details>
