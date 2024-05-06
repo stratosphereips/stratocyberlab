@@ -5,9 +5,9 @@
 Simple initial challenge to verify that the environment is working correctly.
 
 ### Task
-Task: Find an HTTP server at IP address `172.20.0.3` and retrieve a flag.
+Find an HTTP server at IP address `172.20.0.3` and retrieve a flag.
 
-Recommended tools:
+**Recommended tools:**
 * nmap
 * curl
 
