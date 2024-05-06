@@ -1,6 +1,6 @@
 # BSY-playground
 
-TODO about
+TODO: write about section
 
 ## Challenges
 
@@ -12,26 +12,24 @@ TODO about
 
 ## Requirements
 
-* bash
-* docker (some version>?)
-
+* Bash
+* Docker
 
 ## Usage
 
 TODO
 
-Flag format `bsy{...}`
-
-root credentials root:ByteThem123
-
-network 172.20.0.0/24
+* Flag format `bsy{...}`
+* SSH root credentials to hackerlab `root:ByteThem123`
+* network is `172.20.0.0/24`
+* run via `docker-compose up`
 
 ## Development
-<details>
-  <summary>Click to expand</summary>
 
-### How to add a challenge
+### Adding a challenge
 
-TODO mention template + tests + table in this readme + docker-compose file 
+Please refer to a How to add a challenge doc [./docs/adding_challenge.md](./docs/adding_challenge.md)
 
-</details>
+### Testing
+
+To test all challenges, use script `run_tests.sh`. The script fires up all challenges and runs all existing auto-solve.sh scripts.
