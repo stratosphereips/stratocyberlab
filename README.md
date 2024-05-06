@@ -5,9 +5,10 @@ TODO: write about section
 ## Challenges
 
 
-| Challenge name                            | Difficulty  | IP address   | Tags  |
-|-------------------------------------------|-------------|--------------|-------|
-| [Hello world](./challenges/hello-world/)  | Very easy   | `172.20.0.3` |       |
+| Challenge name                            | ID            |  Difficulty  | IP address   | Tags  |
+|-------------------------------------------|---------------|--------------|--------------|-------|
+| [Hello world](./challenges/hello-world/)  | hello-world   | Very easy    | `172.20.0.3` |       |
+| [Famous Quotes LFI](./challengesfamous-quotes-lfi/)  | famous-quotes-lfi   | Easy    | `172.20.0.10` |       |
 
 
 ## Requirements

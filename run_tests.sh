@@ -23,13 +23,13 @@ LABHOST='172.20.0.2'
 CHALLENGES_DIR="challenges"
 
 failed=false
-for chal_dir in "$CHALLENGES_DIR"/*/; dox
+for chal_dir in "$CHALLENGES_DIR"/*/; do
     if [[ "$chal_dir" == "challenges/template/" ]]; then
         # skip template
         continue
     fi
 
-    echo "Processing challenge directory: $chal_dir"
+    echo "Testing $chal_dir:"
 
     solve_script="$chal_dir/auto-solve.sh"
     if [ -f "$solve_script" ]; then

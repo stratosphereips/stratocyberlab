@@ -2,11 +2,15 @@
 
 ## About
 
-Description of the challenge:
+Add information such as:
 * Challenge story
 * Initial hints
 * How many flags to look for
 * Recommended tools to solve the challenge
+
+### Task
+
+CTFd like description
 
 ## How to solve
 <details>

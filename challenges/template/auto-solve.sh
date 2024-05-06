@@ -4,7 +4,7 @@
 # This script will be run from within a hackerlab container.
 # Return non-zero exit code upon failure
 
-echo "OK - test passed"
+echo "OK - tests passed"
 exit 0
 
 

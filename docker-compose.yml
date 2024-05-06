@@ -16,6 +16,12 @@ services:
       playground-net:
         ipv4_address: 172.20.0.3
 
+  famous-quotes-lfi:
+    build: ./challenges/famous-quotes-lfi
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.10
+
 networks:
   playground-net:
     driver: bridge

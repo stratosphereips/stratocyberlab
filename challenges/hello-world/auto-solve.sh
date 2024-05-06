@@ -8,6 +8,6 @@ then
     exit 1
 fi
 
-echo "OK - the test passed"
+echo "OK - tests passed"
 
 
