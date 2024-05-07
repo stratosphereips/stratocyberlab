@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FLAG=`curl -s "172.20.0.3:8000/index.html" | \
+FLAG=`curl -s "172.20.0.5:8000/index.html" | \
        grep -o 'bsy{simple-hello-world-flag}'`
 if [[ "$FLAG" == "" ]]
 then

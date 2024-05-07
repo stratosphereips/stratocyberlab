@@ -7,14 +7,14 @@ TODO: write about section
 
 | Challenge name                            | ID            |  Difficulty  | IP address   | Tags  |
 |-------------------------------------------|---------------|--------------|--------------|-------|
-| [Hello world](./challenges/hello-world/)  | hello-world   | Very easy    | `172.20.0.3` |       |
+| [Hello world](./challenges/hello-world/)  | hello-world   | Very easy    | `172.20.0.5` |       |
 | [Famous Quotes LFI](./challengesfamous-quotes-lfi/)  | famous-quotes-lfi   | Easy    | `172.20.0.10` |       |
 
 
 ## Requirements
 
-* Bash
 * Docker
+* Bash _(just for testing)_
 
 ## Usage
 

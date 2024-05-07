@@ -10,11 +10,20 @@ services:
       playground-net:
         ipv4_address: 172.20.0.2
 
+  submission-server:
+    build: ./hackerlab
+    container_name: hackerlab
+    hostname: hackerlab
+    restart: always
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.2
+
   hello-world:
     build: ./challenges/hello-world
     networks:
       playground-net:
-        ipv4_address: 172.20.0.3
+        ipv4_address: 172.20.0.5
 
   famous-quotes-lfi:
     build: ./challenges/famous-quotes-lfi
