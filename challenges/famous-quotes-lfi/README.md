@@ -1,14 +1,10 @@
 # Challenge template
 
-## About
+Simple challenge for Local File Inclusion
 
 ### Task
-Find an HTTP server at IP address `172.20.0.10` and try to exploit naivity of the programmer to find a flag 
 
-**Recommended tools:**
-* nmap
-* curl
-
+Find an HTTP server at IP address `172.20.0.10` and try to exploit naivity of the programmer to find a flag
 
 ## How to solve
 <details>
@@ -62,10 +58,5 @@ bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}
 </details>
 
 ## Testing
-<details>
-  <summary>Click for details</summary>
-
 
 The script [auto-solve.sh](./auto-solve.sh) automatically verifies that the challenge can be solved.
-
-</details>

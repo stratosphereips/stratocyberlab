@@ -1,15 +1,9 @@
 # Hello-world
 
-## About
-
 Simple initial challenge to verify that the environment is working correctly.
 
 ### Task
 Find an HTTP server at IP address `172.20.0.5` and retrieve a flag.
-
-**Recommended tools:**
-* nmap
-* curl
 
 ## How to solve
 <details>
@@ -48,10 +42,5 @@ root@hackerlab:~# curl 172.20.0.5:8000
 </details>
 
 ## Testing
-<details>
-  <summary>Click for details</summary>
-
 
 The script [auto-solve.sh](./auto-solve.sh) automatically verifies that the challenge can be solved.
-
-</details>

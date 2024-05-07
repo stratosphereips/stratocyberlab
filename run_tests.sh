@@ -13,7 +13,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Fire up all the containers
-docker compose up -d --build
+docker compose up -d --build --force-recreate
 
 
 LABUSER='root'
@@ -29,6 +29,7 @@ for chal_dir in "$CHALLENGES_DIR"/*/; do
         continue
     fi
 
+    echo ""
     echo "Testing $chal_dir:"
 
     solve_script="$chal_dir/auto-solve.sh"

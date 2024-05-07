@@ -1,0 +1,12 @@
+{
+    "name": "Famous quotes",
+    "id": "famous-quotes", 
+    "tasks": [
+      {
+        "id": "task1",
+        "name": "Task",
+        "description": "Find an HTTP server at IP address `172.20.0.10` and try to exploit naivity of the programmer to find a flag",
+        "flag": "bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}"
+      }
+    ]
+  }  

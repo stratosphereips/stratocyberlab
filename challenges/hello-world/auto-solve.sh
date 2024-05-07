@@ -8,6 +8,14 @@ then
     exit 1
 fi
 
+# submit a flag in the submission server
+RES=`curl -s 'http://172.20.0.3/submit' \
+    -X POST \
+    -H 'Content-Type: application/json' \
+    --data-binary '{"challenge_id": "hello-world", "task_id": "task2", "flag" : "bsy{simple-hello-world-flag}"}'`
+if [[ $RES != *"Congratulations"* ]]; then
+  echo "Failed to submit the flag - $RES"
+  exit 5
+fi
+
 echo "OK - tests passed"
-
-

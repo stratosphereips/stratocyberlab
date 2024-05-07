@@ -32,4 +32,15 @@ then
     exit 4
 fi
 
+# submit a flag in the submission server
+RES=`curl -s 'http://172.20.0.3/submit' \
+    -X POST \
+    -H 'Content-Type: application/json' \
+    --data-binary '{"challenge_id": "famous-quotes", "task_id": "task1", "flag" : "bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}"}'`
+
+if [[ $RES != *"Congratulations"* ]]; then
+  echo "Failed to submit the flag - $RES"
+  exit 5
+fi
+
 echo "OK - tests passed"

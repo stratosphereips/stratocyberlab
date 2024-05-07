@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Playground Submissions</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+        .tablinks.active, .tablinks:hover {
+            background-color: #ccc;
+        }
+
+        .tablinks {
+            background-color: #f1f1f1;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: background-color 0.3s;
+        }
+
+        form > * {
+            margin: 5px;
+        }
+
+        .flag-input {
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tabs">
+    {% for challenge in challenges %}
+        <button class="tablinks" onclick="openChallenge(event, '{{ challenge.id }}')">{{ challenge.name }}</button>
+    {% endfor %}
+</div>
+
+{% for challenge in challenges %}
+<div id="{{ challenge.id }}" class="tabcontent">
+    <h3>{{ challenge.name }}</h3>
+    <div>
+        {% for task in challenge.tasks %}
+            <div>
+                <h4>{{ task.name }}</h4>
+                <p>{{ task.description }}</p>
+                <form onsubmit="submitFlag(this, event)">
+                    <input type="hidden" name="challenge_id" value="{{ challenge.id }}">
+                    <input type="hidden" name="task_id" value="{{ task.id }}">
+                    <input class="flag-input" type="text" name="flag" placeholder="Enter flag">
+                    <button type="submit">Submit Flag</button>
+                </form>
+                
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
+<script>
+
+function submitFlag(form, event) {
+    event.preventDefault(); // Prevent the form from submitting the traditional way
+    const formData = new FormData(form);
+    fetch('/submit', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.text())
+    .then(data => alert(data))
+    .catch(error => console.error('Error:', error));
+}
+
+function openChallenge(evt, challengeName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(challengeName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+
+</body>
+</html>

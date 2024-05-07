@@ -1,16 +1,10 @@
 # Challenge template
 
-## About
-
-Add information such as:
-* Challenge story
-* Initial hints
-* How many flags to look for
-* Recommended tools to solve the challenge
+write about section
 
 ### Task
 
-CTFd like description
+write task description (can be the same as in `meta.json` file)
 
 ## How to solve
 <details>
@@ -21,13 +15,11 @@ Write all necessary steps to solve the challenge
 </details>
 
 ## Testing
-<details>
-  <summary>Click for details</summary>
 
 Please look at [auto-solve.sh](./auto-solve.sh) script and implement the functionality. 
 
-The file [auto-solve.sh](./auto-solve.sh) will be automatically imported to all tests. 
+The file [auto-solve.sh](./auto-solve.sh) will be automatically executed in all tests. 
 
-Write test details here.
+Optionally write test details here.
 
 </details>
