@@ -8,7 +8,7 @@ TODO: write about section
 | Challenge name                                      | Difficulty  | IP address    | Tags  |
 |-----------------------------------------------------|-------------|---------------|-------|
 | [Hello world](./challenges/hello-world/)            |  Very easy  | `172.20.0.5`  |       |
-| [Famous Quotes LFI](./challengesfamous-quotes-lfi/) |  Easy       | `172.20.0.10` |       |
+| [Famous Quotes LFI](./challenges/famous-quotes-lfi/) |  Easy       | `172.20.0.10` |       |
 
 
 ## Requirements
