@@ -26,6 +26,12 @@ services:
     networks:
       playground-net:
         ipv4_address: 172.20.0.5
+    healthcheck:
+      test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost:8000/\"); assert response.status_code == 200'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   famous-quotes-lfi:
     build: ./challenges/famous-quotes-lfi
