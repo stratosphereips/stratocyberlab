@@ -18,12 +18,12 @@ The goal of the BSY Playground is to allow students to download and locally use 
 
 ## How to play
 
-TODO 
+
+The BSY Playground Network is `172.20.0.0/24`, and all the services and challanges are in the same network.
 
 * Start the playground using `docker-compose up` 
-* Network (`172.20.0.0/24`) of services is created with challenges and also 2 special containers:
-    * Submission server with simple website and challenges' descriptions - navigate to your browser to [http://172.20.0.3/](http://172.20.0.3/)
-    * Your hackerlab to which you can connect via SSH to solve the challenges - `ssh root@172.20.0.2`, password `ByteThem123`
+* Connect to your hackerlab via SSH to solve the challenges: `ssh root@172.20.0.2`, password `ByteThem123`
+* Access the submission server to find challenges' descriptions by navigate to your browser to [http://172.20.0.3/](http://172.20.0.3/)
 * Search for flags in format `bsy{...}` if not specified otherwise in challenge description
 * Have fun!
 
