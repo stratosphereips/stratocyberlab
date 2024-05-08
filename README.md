@@ -1,6 +1,6 @@
 # BSY-playground
 
-TODO: write about section
+The goal of the BSY Playground is to allow students to download and locally use security environments to test their skills and tools in the form of challenges.
 
 ## Challenges
 
