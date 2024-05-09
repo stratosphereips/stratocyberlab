@@ -36,7 +36,7 @@
 
 <div class="row">
       <div class="col-3 mb-2">
-          <h2>Challenges </h2>
+          <h3>Challenges</h3>
           {#if challenges === undefined}
           <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>

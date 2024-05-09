@@ -1,5 +1,4 @@
 <script>
-  import { slide } from 'svelte/transition';
   import Challenges from "./Challenges.svelte";
   import AssistantLLM from "./AssistantLLM.svelte";
   import SSH from "./Ssh.svelte";
@@ -25,7 +24,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
       <div class="container-fluid">
-        <span class="navbar-brand" >
+        <span class="navbar-brand ms-2">
           <img src="/media/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
           StratoCyberRange
         </span>
@@ -34,12 +33,12 @@
 
 
 
-  <div class="row flex-grow-1 m-1">
+  <div class="row flex-grow-1 {showSSH ? 'vh-100' : ''}  m-1">
 
       <div class="col-8">
         <Challenges/>
       </div>
-      <div class="col-4 border border-3 rounded border-dark">
+      <div class="col-4 border border-3 rounded border-dark {showSSH ? '' : 'h-75'}">
         <AssistantLLM/>
       </div>
 
@@ -49,9 +48,9 @@
   {#if !showSSH}
   <button class="rounded-pill btn btn-primary me-auto ms-auto" on:click="{toggleShowSSH}">
     {#if !sshInitialised}
-    Connect to lab via SSH ↑
+    Open terminal in the lab ↑
     {:else}
-    Reopen SSH ↑
+    Reopen terminal ↑
     {/if}
   </button>
   {/if}
@@ -61,8 +60,8 @@
   <!-- we use this if statement to lazy-initialise the component  -->
   <!-- we use it just once in the beginning to keep the existing SSH connection  -->
 
-    <div class="row flex-grow-1 mx-0 {showSSH ? '' : 'visually-hidden'}">
-    <div class="col px-0 bg-black text-white">
+    <div class="row flex-grow-1 mx-0 bg-black {showSSH ? 'vh-100' : 'visually-hidden'}">
+    <div class="col px-0">
       <SSH on:hide={toggleShowSSH} />
     </div>
   </div>

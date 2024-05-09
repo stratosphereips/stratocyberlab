@@ -1,1 +1,4 @@
 flask
+flask-socketio
+eventlet
+paramiko

@@ -2,12 +2,12 @@
     "name": "Famous quotes",
     "id": "famous-quotes", 
     "difficulty": "easy",
-    "description": "TODO add some challenge description",
+    "description": "",
     "tasks": [
       {
         "id": "task1",
-        "name": "Task",
-        "description": "Find an HTTP server at IP address `172.20.0.10` and try to exploit naivity of the programmer to find a flag",
+        "name": "Traverse the world",
+        "description": "Find a service with famous quotes running at IP address 172.20.0.10 and try to exploit a naivety of a programmer that designed the service.",
         "flag": "bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}"
       }
     ]

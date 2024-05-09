@@ -46,13 +46,15 @@
 </style>
 
 {#if challenge === undefined}
-    ⬅ Choose a challenge
-
+    <div class="pt-5">
+    ⬅ Choose a challenge and happy hacking! 
+    </div>
 
 {:else}
-    <h4>{challenge.name}</h4>
-    <p>{challenge.description}</p>
-
+    <div class="ms-2">
+        <h4>{challenge.name}</h4>
+        <p class="text-muted" >{challenge.description}</p>
+    </div>
 
     {#each challenge["tasks"] as task}
 
@@ -73,6 +75,5 @@
         </div>
 
     {/each}
-
 
 {/if}
