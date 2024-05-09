@@ -10,10 +10,10 @@ services:
       playground-net:
         ipv4_address: 172.20.0.2
 
-  submission-server:
-    build: ./submission-server
-    container_name: submission-server
-    hostname: submission-server
+  dashboard:
+    build: ./dashboard
+    container_name: dashboard
+    hostname: dashboard
     restart: always
     networks:
       playground-net:

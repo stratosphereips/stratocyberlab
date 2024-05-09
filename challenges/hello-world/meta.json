@@ -1,11 +1,13 @@
 {
   "name": "Hello World",
   "id": "hello-world", 
+  "difficulty": "easy",
+  "description": "TODO add some challenge description",
   "tasks": [
     { 
       "id": "task1",
       "name": "Task 1",
-      "description": "Just submit a \"bsy{hello-world}\" to test the submission server",
+      "description": "Just submit a \"bsy{hello-world}\" as a flag to test the dashboard",
       "flag": "bsy{hello-world}" 
     },
     {

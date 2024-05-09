@@ -9,7 +9,7 @@ then
 fi
 
 # submit a flag in the submission server
-RES=`curl -s 'http://172.20.0.3/submit' \
+RES=`curl -s 'http://172.20.0.3/api/submit' \
     -X POST \
     -H 'Content-Type: application/json' \
     --data-binary '{"challenge_id": "hello-world", "task_id": "task2", "flag" : "bsy{simple-hello-world-flag}"}'`

@@ -33,7 +33,7 @@ then
 fi
 
 # submit a flag in the submission server
-RES=`curl -s 'http://172.20.0.3/submit' \
+RES=`curl -s 'http://172.20.0.3/api/submit' \
     -X POST \
     -H 'Content-Type: application/json' \
     --data-binary '{"challenge_id": "famous-quotes", "task_id": "task1", "flag" : "bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}"}'`

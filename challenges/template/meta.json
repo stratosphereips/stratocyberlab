@@ -1,6 +1,8 @@
 {
     "name": "Just a template",
-    "id": "challenge_template_id", 
+    "id": "challenge_template_id",
+    "difficulty": "easy",
+    "description": "",
     "tasks": [
       { 
         "id": "task1",

@@ -23,7 +23,7 @@ The BSY Playground Network is `172.20.0.0/24`, and all the services and challang
 
 * Start the playground using `docker-compose up` 
 * Connect to your hackerlab via SSH to solve the challenges: `ssh root@172.20.0.2`, password `ByteThem123`
-* Access the submission server to find challenges' descriptions by navigate to your browser to [http://172.20.0.3/](http://172.20.0.3/)
+* Access the dashboard to find challenges' descriptions by navigating to your browser to [http://172.20.0.3/](http://172.20.0.3/)
 * Search for flags in format `bsy{...}` if not specified otherwise in challenge description
 * Have fun!
 

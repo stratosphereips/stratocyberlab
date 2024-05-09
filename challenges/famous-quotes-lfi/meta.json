@@ -1,6 +1,8 @@
 {
     "name": "Famous quotes",
     "id": "famous-quotes", 
+    "difficulty": "easy",
+    "description": "TODO add some challenge description",
     "tasks": [
       {
         "id": "task1",
