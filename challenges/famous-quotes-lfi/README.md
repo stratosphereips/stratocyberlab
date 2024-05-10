@@ -1,4 +1,4 @@
-# Challenge template
+# Famous Quotes
 
 Simple challenge for Local File Inclusion
 
