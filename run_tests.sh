@@ -15,6 +15,8 @@ fi
 # Fire up all the containers
 docker compose up -d --build --force-recreate
 
+# Wait for the dashboard to initialize
+sleep 2
 
 LABUSER='root'
 LABPASS='ByteThem123'
