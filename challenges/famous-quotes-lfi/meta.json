@@ -1,7 +1,7 @@
 {
     "name": "Famous quotes",
     "id": "famous-quotes", 
-    "difficulty": "easy",
+    "difficulty": "medium",
     "description": "",
     "tasks": [
       {
