@@ -9,6 +9,7 @@
 		fetchChallenges()
 	});
 
+    const difficultyOrder = { 'easy': 1, 'medium': 2, 'hard': 3 };
 
     async function fetchChallenges() {
         try {
@@ -19,6 +20,10 @@
                 throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
             }
 
+            // sort based on challenges difficulties - first we show easy, then medium and lastly hard
+            data.sort((a, b) => {
+                return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
+            });
             challenges = data
 
         } catch(err) {

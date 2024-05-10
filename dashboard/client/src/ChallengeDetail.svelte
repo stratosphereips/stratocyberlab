@@ -47,7 +47,7 @@
 
 {#if challenge === undefined}
     <div class="pt-5">
-    ⬅ Choose a challenge and happy hacking! 
+    ⬅ Choose a challenge and happy hacking!
     </div>
 
 {:else}
