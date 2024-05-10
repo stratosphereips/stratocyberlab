@@ -5,10 +5,11 @@ The goal of the BSY Playground is to allow students to download and locally use 
 ## Challenges
 
 
-| Challenge name                                      | Difficulty | IP address    | Tags  |
-|-----------------------------------------------------|------------|---------------|-------|
-| [Hello world](./challenges/hello-world/)            | Easy       | `172.20.0.5`  |       |
+| Challenge name                                       | Difficulty | IP address    | Tags  |
+|------------------------------------------------------|------------|---------------|-------|
+| [Hello world](./challenges/hello-world/)             | Easy       | `172.20.0.5`  |       |
 | [Famous Quotes LFI](./challenges/famous-quotes-lfi/) | Medium     | `172.20.0.10` |       |
+| [What's the date?](./challenges/what-is-the-date/)   | Hard       | `172.20.0.30` |       |
 
 
 ## Requirements

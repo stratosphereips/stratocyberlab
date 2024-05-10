@@ -51,6 +51,18 @@ services:
       retries: 3
       start_period: 10s
 
+  what-is-the-date:
+    build: ./challenges/what-is-the-date
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.30
+    healthcheck:
+      test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost/\"); assert response.status_code == 200'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
 networks:
   playground-net:
     driver: bridge
