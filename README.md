@@ -1,5 +1,11 @@
 # BSY-playground
 
+<p align="center">
+  <img src="https://github.com/stratosphereips/BSY-playground/assets/26445918/1898de8c-840f-46a5-ad73-fca0b9b84c14" alt="Logo" width="200"/>
+</p>
+
+
+
 The goal of the BSY Playground is to allow students to download and locally use security environments to test their skills and tools in the form of challenges.
 
 ## Challenges
