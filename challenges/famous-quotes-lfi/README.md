@@ -4,7 +4,7 @@ Simple challenge for Local File Inclusion
 
 ### Task
 
-Find an HTTP server at IP address `172.20.0.10` and try to exploit naivity of the programmer to find a flag
+Find an HTTP server at IP address `172.20.0.10` and try to exploit the naivity of the programmer to find a flag
 
 ## How to solve
 <details>
@@ -21,7 +21,7 @@ MAC Address: 02:42:AC:14:00:0A (Unknown)
 ...
 ```
 
-2. Discover opened port 8080 and try to manipulate with the server functionality. Eventually you might discover LFI vuilnerability and discover a user named bob in the `/etc/passwd` file. And finally, bob has a flag in his home directory:
+2. Discover the open port 8080 and try to manipulate the server functionality. Eventually you might discover LFI vulnerability and discover a user named bob in the `/etc/passwd` file. And finally, bob has a flag in his home directory:
 ```bash
 root@hackerlab:~# curl 172.20.0.10:8080
 Please specify a quote file to read in the URL path. Options are: ['asimov.txt', 'einstein.txt', 'jobs.txt']
