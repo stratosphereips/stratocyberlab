@@ -62,6 +62,19 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+  
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ./ollama:/root/.ollama
+    restart: always
+    healthcheck:
+      test: ollama --version || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
 networks:
   playground-net:
