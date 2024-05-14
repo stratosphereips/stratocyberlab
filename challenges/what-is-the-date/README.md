@@ -4,7 +4,7 @@ Challenge testing bash command injection
 
 ### Task
 
-There is an awesome free service returning you current date running at 172.20.0.30. Fortunately, an author did its best to secure the app. Was it enough?
+There is an awesome free service returning you the current date running at 172.20.0.30. Fortunately, the developer did their best to secure the app. Was it enough?
 
 ## How to solve
 <details>
@@ -24,7 +24,7 @@ MAC Address: 02:42:AC:14:00:1E (Unknown)
 Nmap done: 1 IP address (1 host up) scanned in 0.20 seconds
 ```
 
-2. Discover opened port 80 and try to manipulate with the server functionality:
+2. Discover opened port 80 and try to manipulate the server functionality:
 ```bash
 root@hackerlab:~# curl http://172.20.0.30/   
 <html>

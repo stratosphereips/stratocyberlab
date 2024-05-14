@@ -6,8 +6,8 @@
     "tasks": [
       { 
         "id": "task1",
-        "name": "It's important to know current date",
-        "description": "There is an awesome free service returning you current date running at 172.20.0.30. Fortunately, an author did its best to secure the app. Was it enough?",
+        "name": "It's important to know the current date",
+        "description": "There is an awesome free service returning you the current date running at 172.20.0.30. Fortunately, the developer did their best to secure the app. Was it enough?",
         "flag": "bsy{WYwjgqdrtyTiH9MFnyxMqvsFyYob0qGHYATtzf0HWoXiKnTofAUkVqAR4bed}"
       }
     ]
