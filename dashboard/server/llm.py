@@ -5,7 +5,7 @@ from ollama import Client
 # from ollama import AsyncClient
 
 
-BASE_URL = "http://localhost:11434/"
+BASE_URL = "http://172.20.0.100:11434/"
 PROMPT = """
 You are an experienced teacher of network security and penetration testing.
 Your goal is to help the students with their questions.
@@ -32,6 +32,9 @@ def is_model_available(model: str) -> bool:
     models_dict = client.list()
     models = models_dict["models"]
 
+    if models is None:
+        return False
+
     found = False
     for m in models:
         if model in m["name"]:
@@ -43,7 +46,6 @@ def chat_with_llm(messages: list, model: str) -> list:
     Send a chat reuest to the model defined by the model string.
     The last message in the list should contain a "user" role and the question.
     """
-
     # If the model is not present pull it
     if not is_model_available(model):
         response = client.pull(model, stream=False)
@@ -59,6 +61,12 @@ def chat_with_llm(messages: list, model: str) -> list:
 
     return messages
 
+
+def delete_local_model(model: str):
+    """Delete the local model"""
+    if is_model_available(model):
+        client.delete(model)
+
 if __name__ == '__main__':
     messages = init_message_history()
 
@@ -68,3 +76,6 @@ if __name__ == '__main__':
 
     messages = chat_with_llm(messages, model="phi3")
     # print(messages)
+
+    # Delete the model
+    # delete_local_model("phi3")
