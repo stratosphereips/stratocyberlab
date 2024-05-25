@@ -1,8 +1,5 @@
-from ollama import Client
-
-# If we need it to be async
-# import asyncio
-# from ollama import AsyncClient
+import asyncio
+from ollama import AsyncClient
 
 
 BASE_URL = "http://172.20.0.100:11434/"
@@ -10,26 +7,19 @@ PROMPT = """
 You are an experienced teacher of network security and penetration testing.
 Your goal is to help the students with their questions.
 """
+DEFAULT_MODEL="phi3"
+INIT_MESSAGES = [
+    {"role": "system", "content": PROMPT},
+    {"role": "assistant", "content": "Answer the following question:"}
+]
 
-client = Client(host=BASE_URL)
+client = AsyncClient(host=BASE_URL)
 
-def init_message_history() -> list:
-    """
-    Initailize the messages list with the basic prompt.
-    Each chat request will add a user and an assistant message in the list.
-    """
-    messages = [
-        {"role": "system", "content": PROMPT},
-        {"role": "assistant", "content": "Answer the following question:"}
-    ]
-    
-    return messages
-
-def is_model_available(model: str) -> bool:
+async def is_model_available(model: str = DEFAULT_MODEL) -> bool:
     """
     Check if the model is downloaded
     """
-    models_dict = client.list()
+    models_dict = await client.list()
     models = models_dict["models"]
 
     if models is None:
@@ -40,42 +30,46 @@ def is_model_available(model: str) -> bool:
         if model in m["name"]:
             found = True
     return found
+
+async def pull_model(model: str = DEFAULT_MODEL):
+    if not await is_model_available(model):
+        response = await client.pull(model, stream=False)
+
+        if response["status"] != "success":
+            raise Exception(f"Error pulling model: {response}")
+
     
-def chat_with_llm(messages: list, model: str) -> list:
+async def chat_with_llm(messages: list, model: str = DEFAULT_MODEL) -> list:
     """
     Send a chat reuest to the model defined by the model string.
     The last message in the list should contain a "user" role and the question.
     """
     # If the model is not present pull it
-    if not is_model_available(model):
-        response = client.pull(model, stream=False)
-        print(response)
+    if not await is_model_available(model):
+        await pull_model(model)
 
-        # TODO handle errors in the model
-        if response["status"] != "success":
-            return messages
+    input_messages = INIT_MESSAGES + messages
+    response = await client.chat(model=model, messages=input_messages)
 
-    response = client.chat(model=model, messages=messages)
     messages.append({"role": "assistant", "content": response['message']['content']})
-    print(response['message']['content'])
-
     return messages
 
 
-def delete_local_model(model: str):
+async def delete_local_model(model: str = DEFAULT_MODEL):
     """Delete the local model"""
-    if is_model_available(model):
-        client.delete(model)
+    if await is_model_available(model):
+        await client.delete(model)
 
-if __name__ == '__main__':
-    messages = init_message_history()
-
-    messages.append({
+async def main():
+    chat_messages = [{
         "role": "user", "content": "What does the tcpdump command do?"
-    })
+    }]
 
-    messages = chat_with_llm(messages, model="phi3")
-    # print(messages)
+    messages = await chat_with_llm(chat_messages, model="phi3")
+    print(messages)
 
     # Delete the model
-    # delete_local_model("phi3")
+    # await delete_local_model("phi3")
+
+if __name__ == '__main__':
+    asyncio.run(main())

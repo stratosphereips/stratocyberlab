@@ -1,3 +1,4 @@
+quart
 flask
 flask-socketio
 eventlet
