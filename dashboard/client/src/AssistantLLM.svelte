@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { writable, get } from "svelte/store";
 
-  let modelAvailable = writable(false);
+  let modelAvailable;
   let chatHistory = writable([]);
   let newMessage = "";
 
@@ -11,7 +11,7 @@
   onMount(async () => {
       const response = await fetch("/llm/is_model_available");
       const data = await response.json();
-      modelAvailable.set(data.available);
+      modelAvailable = data.available;
   });
 
   async function pullModel() {
@@ -19,7 +19,7 @@
           method: "POST"
       });
       if (response.ok) {
-          modelAvailable.set(true);
+          modelAvailable = true;
       }
   }
 
@@ -64,7 +64,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.1);
   }
   .chat {
     width: 100%;
@@ -120,9 +119,26 @@
       opacity: 1;
     }
   }
+  .title {
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    background: white;
+    padding: 0 10px;
+    font-size: 1.25em;
+    font-weight: bold;
+  }
 </style>
 
-{#if $modelAvailable}
+<div class="mt-1 position-relative h-100 w-100 border border-3 rounded border-dark ">
+  <div class="title">LLM Assistant</div>
+  {#if modelAvailable === undefined}
+   Loading! TODO
+  {:else if !modelAvailable}
+  <div class="container">
+      <button class="btn btn-secondary" on:click={pullModel}>Pull Model</button>
+  </div>
+  {:else}
   <div class="chat container-fluid">
     <div class="messages">
       {#each $chatHistory as { role, content }}
@@ -144,8 +160,5 @@
       <button class="btn btn-secondary ms-2" on:click={clearChat}>Clear</button>
     </div>
   </div>
-{:else}
-  <div class="container">
-    <button class="btn btn-secondary" on:click={pullModel}>Pull Model</button>
-  </div>
-{/if}
+  {/if}
+</div>

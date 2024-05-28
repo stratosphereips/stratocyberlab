@@ -38,7 +38,7 @@
       <div class="col-8">
         <Challenges/>
       </div>
-      <div class="col-4 border border-3 rounded border-dark {showSSH ? '' : 'h-75'}">
+      <div class="col-4 {showSSH ? '' : 'h-75'}">
         <AssistantLLM/>
       </div>
 
