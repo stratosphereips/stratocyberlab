@@ -7,7 +7,8 @@ PROMPT = """
 You are an experienced teacher of network security and penetration testing.
 Your goal is to help the students with their questions.
 """
-DEFAULT_MODEL="phi3"
+# DEFAULT_MODEL="phi3"
+DEFAULT_MODEL="llama3"
 INIT_MESSAGES = [
     {"role": "system", "content": PROMPT},
     {"role": "assistant", "content": "Answer the following question:"}
