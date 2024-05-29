@@ -179,7 +179,7 @@
   }
 </style>
 
-<div class="mt-1 position-relative h-100 w-100 border border-3 rounded border-dark ">
+<div class="mt-1 pt-2 position-relative h-100 w-100 border border-3 rounded border-dark ">
   <div class="title">AI Assistant</div>
   <div class="reset-button">
     <button class="btn btn-sm btn-dark" on:click={clearChat}>reset</button>
@@ -201,7 +201,7 @@
         </div>
       {/each}
       {#if waitingForReply}
-      <div class="typing-indicator">
+      <div class="ms-3 typing-indicator">
         <span>.</span>
         <span>.</span>
         <span>.</span>
