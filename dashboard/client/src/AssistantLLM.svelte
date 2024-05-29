@@ -116,8 +116,8 @@
     border-radius: 5px;
   }
   .message.user {
-  background: grey;
-  color: white;
+  background:  #FFE6E6;
+  color: black;
   align-self: flex-end;
   text-align: right;
   max-width: fit-content;
@@ -127,8 +127,8 @@
 }
 
 .message.bot {
-  background: #4141ff;
-  color: white;
+  background: #f8f8f8;
+  color: black;
   align-self: flex-start;
   text-align: left;
   max-width: fit-content;
