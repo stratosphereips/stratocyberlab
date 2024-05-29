@@ -8,6 +8,7 @@ import uuid
 import sys
 import db
 import llm
+import asyncio
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -133,7 +134,10 @@ async def get_challenges():
 
 @app.route('/llm/is_model_available', methods=['GET'])
 async def llm_is_model_available():
-    return jsonify({"available": await llm.is_model_available()})
+    return jsonify({
+        "available": await llm.is_model_available(),
+        "pulling": pull_in_progress
+    })
 
 pull_in_progress = False
 @app.route('/llm/pull_model', methods=['POST'])
@@ -142,15 +146,20 @@ async def llm_pull_model():
 
     # poor people synchronization with race conditions
     if pull_in_progress:
-        return (409, "Model pull is already in progress")
+        return "Model pull is already in progress", 409
     pull_in_progress = True
 
-    try:
+
+    async def job():
+        global pull_in_progress
         await llm.pull_model()
-    except Exception as e:
-        return (500, f"error pulling a model: {e}")
-    finally:
         pull_in_progress = False
+
+    # Do not wait for the result
+    loop = asyncio.get_event_loop()
+    loop.create_task(job())
+
+    return "Model pull started in the background", 200
 
 @app.route('/llm/chat', methods=['POST'])
 async def llm_chat():

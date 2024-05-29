@@ -6,20 +6,45 @@
   let chatHistory = writable([]);
   let newMessage = "";
 
-  let waiting = false;
+  let pullingModel = false;
+  let waitingForReply = false;
+
+  const INTERVAL_CHECKING = 5000 // 5 seconds
 
   onMount(async () => {
-      const response = await fetch("/llm/is_model_available");
-      const data = await response.json();
-      modelAvailable = data.available;
+      await checkModelAvailability()
   });
 
   async function pullModel() {
-      const response = await fetch("/llm/pull_model", {
-          method: "POST"
-      });
-      if (response.ok) {
-          modelAvailable = true;
+      pullingModel = true
+      try {
+          const response = await fetch("/llm/pull_model", {
+              method: "POST"
+          });
+          // 409 happens if pulling was already in progress
+          if (!response.ok && response.status !== 409) {
+              throw new Error(`Failed to start pulling the model: ${response.status}`)
+          }
+
+          // check model availability after 5 seconds
+          setTimeout(checkModelAvailability, INTERVAL_CHECKING);
+
+      } catch(err) {
+          alert(err)
+          pullingModel = false
+      }
+  }
+
+  async function checkModelAvailability() {
+      const response = await fetch("/llm/is_model_available");
+      const data = await response.json();
+
+      modelAvailable = data.available;
+      pullingModel = data.pulling
+
+      if (!modelAvailable && pullingModel) {
+          // recheck after 5 seconds if pulling is in progress
+          setTimeout(checkModelAvailability, INTERVAL_CHECKING);
       }
   }
 
@@ -29,7 +54,7 @@
       });
       newMessage = "";
 
-      waiting = true
+      waitingForReply = true
       try {
           const body = get(chatHistory);
           const response = await fetch("/llm/chat", {
@@ -42,7 +67,7 @@
       } catch(err) {
           alert(err)
       }
-      waiting = false
+      waitingForReply = false
   }
 
   function clearChat() {
@@ -136,7 +161,9 @@
    Loading! TODO
   {:else if !modelAvailable}
   <div class="container">
-      <button class="btn btn-secondary" on:click={pullModel}>Pull Model</button>
+      <button class="btn btn-secondary {pullingModel ? 'disabled' : ''}" on:click={pullModel}>
+        {pullingModel ? 'Pulling Model...' : 'Pull Model'}
+      </button>
   </div>
   {:else}
   <div class="chat container-fluid">
@@ -146,7 +173,7 @@
           {content}
         </div>
       {/each}
-      {#if waiting}
+      {#if waitingForReply}
       <div class="typing-indicator">
         <span>.</span>
         <span>.</span>
@@ -156,7 +183,7 @@
     </div>
     <div class="input-area input-group">
       <textarea class="form-control" bind:value={newMessage} placeholder="Type a message..." on:keypress={handleKeyPress}></textarea>
-      <button class="btn btn-primary {waiting ? 'disabled' : ''}" on:click={sendMessage}>Send</button>
+      <button class="btn btn-primary {waitingForReply ? 'disabled' : ''}" on:click={sendMessage}>Send</button>
       <button class="btn btn-secondary ms-2" on:click={clearChat}>Clear</button>
     </div>
   </div>
