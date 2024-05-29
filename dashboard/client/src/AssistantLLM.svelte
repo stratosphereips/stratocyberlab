@@ -77,7 +77,10 @@
   function handleKeyPress(event) {
       if (event.key === "Enter" && !event.shiftKey) {
           event.preventDefault();
-          sendMessage();
+
+          if (!waitingForReply){
+              sendMessage();
+          }
       }
   }
 </script>
@@ -113,15 +116,27 @@
     border-radius: 5px;
   }
   .message.user {
-    background: grey;
-    color: white;
-    align-self: flex-end;
-  }
-  .message.bot {
-    background: #4141ff;
-    color: white;
-    align-self: flex-start;
-  }
+  background: grey;
+  color: white;
+  align-self: flex-end;
+  text-align: right;
+  max-width: fit-content;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: auto;
+}
+
+.message.bot {
+  background: #4141ff;
+  color: white;
+  align-self: flex-start;
+  text-align: left;
+  max-width: fit-content;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: auto;
+}
+
   .typing-indicator {
     display: inline-block;
     font-size: 1.5em;
@@ -153,12 +168,24 @@
     font-size: 1.25em;
     font-weight: bold;
   }
+  .reset-button {
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    background: white;
+    padding: 0 10px;
+    font-size: 1.25em;
+    font-weight: bold;
+  }
 </style>
 
 <div class="mt-1 position-relative h-100 w-100 border border-3 rounded border-dark ">
-  <div class="title">LLM Assistant</div>
+  <div class="title">AI Assistant</div>
+  <div class="reset-button">
+    <button class="btn btn-sm btn-dark" on:click={clearChat}>reset</button>
+  </div>
   {#if modelAvailable === undefined}
-   Loading! TODO
+     <div class="container"> Loading... </div>
   {:else if !modelAvailable}
   <div class="container">
       <button class="btn btn-secondary {pullingModel ? 'disabled' : ''}" on:click={pullModel}>
@@ -167,7 +194,7 @@
   </div>
   {:else}
   <div class="chat container-fluid">
-    <div class="messages">
+    <div class="mt-2 messages">
       {#each $chatHistory as { role, content }}
         <div class="message {role === 'user' ? 'user' : 'bot'}">
           {content}
@@ -182,9 +209,7 @@
       {/if}
     </div>
     <div class="input-area input-group">
-      <textarea class="form-control" bind:value={newMessage} placeholder="Type a message..." on:keypress={handleKeyPress}></textarea>
-      <button class="btn btn-primary {waitingForReply ? 'disabled' : ''}" on:click={sendMessage}>Send</button>
-      <button class="btn btn-secondary ms-2" on:click={clearChat}>Clear</button>
+      <textarea class="bg-light form-control" bind:value={newMessage} placeholder="Type a message and hit enter" on:keypress={handleKeyPress}></textarea>
     </div>
   </div>
   {/if}
