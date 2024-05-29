@@ -119,11 +119,12 @@
   background:  #FFE6E6;
   color: black;
   align-self: flex-end;
-  text-align: right;
-  max-width: fit-content;
+  text-align: left;
+  max-width: 92%;
   padding: 10px;
   border-radius: 5px;
   margin-left: auto;
+  width: max-content;
 }
 
 .message.bot {
