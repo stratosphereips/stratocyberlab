@@ -6,7 +6,7 @@
 
 
 
-The goal of the BSY Playground is to allow students to download and locally use security environments to test their skills and tools in the form of challenges.
+The goal of StratoCyberLab is to allow students to download and locally use realistic security environments to test their skills and tools in the form of challenges.
 
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
 
