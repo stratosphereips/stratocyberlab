@@ -1,4 +1,4 @@
-<h1 align="center">BSY-playground </h1>
+<h1 align="center">StratoCyberLab </h1>
 
 <p align="center">
   <img src="https://github.com/stratosphereips/BSY-playground/assets/26445918/1898de8c-840f-46a5-ad73-fca0b9b84c14" alt="Logo" width="200"/>
