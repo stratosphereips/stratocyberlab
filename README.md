@@ -10,6 +10,10 @@ The goal of StratoCyberLab is to allow students to download and locally use real
 
 Just single command and installed docker is all it takes! Happy hacking!
 
+<p align="left">
+  <img src="https://github.com/stratosphereips/stratocyberlab/assets/26445918/a67712be-aa7d-48fa-ac98-85fa8221fcd7" alt="Logo" width="500"/>
+</p>
+
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
 
 ## Challenges
