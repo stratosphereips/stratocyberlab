@@ -6,9 +6,9 @@
 
 
 
-The goal of StratoCyberLab is to allow students to download and locally use realistic security environments to test their skills and tools in the form of challenges.
+The goal of StratoCyberLab is to allow students to download and locally use realistic security environments to test their attacking & defending skills in the form of challenges.
 
-Just single command and installed docker is all it takes!  
+Just single command and installed docker is all it takes! Happy hacking!
 
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
 
