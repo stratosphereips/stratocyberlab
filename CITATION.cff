@@ -1,22 +1,23 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+title: "StratoCyberLab"
+message: 'If you use this software, please cite it as specified below.'
+url: "https://github.com/stratosphereips/stratocyberlab"
+type: software
 authors:
-- family-names: "YOUR_NAME_HERE"
-  given-names: "YOUR_NAME_HERE"
-  email: youremailhere
-  affiliation: >-
+  - given-names: Veronica
+    family-names: Valeros
+    email: valerver@fel.cvut.cz
+    affiliation: >-
       Stratosphere Laboratory, AIC, FEL, Czech
       Technical University in Prague
-  orcid: "https://orcid.org/0000-0000-0000-0000"
-- family-names: "Lisa"
-  given-names: "Mona"
-  email: youremailhere
-  affiliation: >-
+    orcid: 'https://orcid.org/0000-0003-2554-3231'
+  - given-names: Maria
+    family-names: Rigaki
+    email: maria.rigaki@aic.fel.cvut.cz
+    affiliation: >-
       Stratosphere Laboratory, AIC, FEL, Czech
       Technical University in Prague
-  orcid: "https://orcid.org/0000-0000-0000-0000"
-title: "repository-template"
-version: 1.0.0
-doi: 10.5281/zenodo.1234
-date-released: 2022-07-13
-url: "https://github.com/stratosphereips/repository-template"
+    orcid: 'https://orcid.org/0000-0002-0688-7752'
+  - given-names: Martin
+    family-names: Řepa
+    affiliation: "Freelance ethical hacker" 
