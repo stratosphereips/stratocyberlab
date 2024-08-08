@@ -24,7 +24,7 @@ then
 fi
 
 # submit a flag in the submission server
-RES=`curl -s 'http://172.20.0.3/api/submit' \
+RES=`curl -s 'http://172.20.0.3/api/challenges/submit' \
     -X POST \
     -H 'Content-Type: application/json' \
     --data-binary '{"challenge_id": "what_is_the_date", "task_id": "task1", "flag" : "bsy{WYwjgqdrtyTiH9MFnyxMqvsFyYob0qGHYATtzf0HWoXiKnTofAUkVqAR4bed}"}'`

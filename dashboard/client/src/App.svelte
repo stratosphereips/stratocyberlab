@@ -1,6 +1,7 @@
 <script>
   import Challenges from "./Challenges.svelte";
   import AssistantLLM from "./AssistantLLM.svelte";
+  import LoadingOverlay from './LoadingOverlay.svelte';
   import SSH from "./Ssh.svelte";
 
   let showSSH = false
@@ -18,7 +19,7 @@
 <style>
 </style>
 
-
+  <LoadingOverlay />
   <div class="container-fluid p-0 d-flex flex-column vh-100">
 
     <!-- Navbar -->

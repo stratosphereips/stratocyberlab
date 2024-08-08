@@ -20,6 +20,7 @@ services:
         ipv4_address: 172.20.0.3
     volumes:
       - ./challenges:/challenges
+      - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost:80/\"); assert response.status_code == 200'"]
       interval: 30s
@@ -27,42 +28,6 @@ services:
       retries: 3
       start_period: 10s
 
-  hello-world:
-    build: ./challenges/hello-world
-    networks:
-      playground-net:
-        ipv4_address: 172.20.0.5
-    healthcheck:
-      test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost:8000/\"); assert response.status_code == 200'"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-  famous-quotes-lfi:
-    build: ./challenges/famous-quotes-lfi
-    networks:
-      playground-net:
-        ipv4_address: 172.20.0.10
-    healthcheck:
-      test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost:8080/\"); assert response.status_code == 200'"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-  what-is-the-date:
-    build: ./challenges/what-is-the-date
-    networks:
-      playground-net:
-        ipv4_address: 172.20.0.30
-    healthcheck:
-      test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost/\"); assert response.status_code == 200'"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-  
   ollama:
     image: ollama/ollama
     container_name: ollama
@@ -81,6 +46,7 @@ services:
 
 networks:
   playground-net:
+    name: "playground-net"
     driver: bridge
     ipam:
       driver: default

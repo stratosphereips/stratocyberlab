@@ -1,7 +1,7 @@
 <script>
+    import { isLoading } from './stores';
 
     export let challenge;
-
 
     async function flagSubmit(task){
         console.log(task)
@@ -13,7 +13,7 @@
         }
 
         try {
-            const res = await fetch(`/api/submit`, {
+            const res = await fetch(`/api/challenges/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,6 +37,32 @@
         }
     }
 
+    async function flipActivity(){
+        isLoading.set(true);
+        try {
+            let payload = {
+                "challenge_id": challenge.id
+            }
+            const action = challenge.running === true ? "stop" : "start"
+            const res = await fetch(`/api/challenges/${action}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload),
+            });
+            if (res.status !== 200) {
+                throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+            }
+
+            challenge.running = action === "start"
+
+        } catch(err) {
+            alert(err)
+        }
+        isLoading.set(false);
+    }
+
 </script>
 
 
@@ -51,10 +77,20 @@
     </div>
 
 {:else}
-    <div class="ms-2">
-        <h4>{challenge.name}</h4>
-        <p class="text-muted" >{challenge.description}</p>
+    <div class="ms-2 d-flex justify-content-between align-items-center">
+        <div>
+            <h4 class="d-inline">{challenge.name}</h4>
+        </div>
+        <div>
+            <span class="badge bg-{challenge.running ? 'success' : 'secondary'} ms-2">
+                {challenge.running ? 'Active' : 'Inactive'}
+            </span>
+            <button class="btn btn-info btn-sm ms-2" on:click={flipActivity}>
+                {challenge.running ? 'Stop' : 'Start'}
+            </button>
+        </div>
     </div>
+    <p class="text-muted">{challenge.description}</p>
 
     {#each challenge["tasks"] as task}
 

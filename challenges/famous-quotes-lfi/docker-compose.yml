@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  challenge-famous-quotes-lfi:
+    container_name: challenge-famous-quotes-lfi
+    build: ./
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.10
+    healthcheck:
+      test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost:8080/\"); assert response.status_code == 200'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  playground-net:
+    external: true

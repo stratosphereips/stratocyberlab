@@ -9,6 +9,9 @@ import sys
 import db
 import llm
 import asyncio
+import os, os.path
+import docker
+
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -23,22 +26,27 @@ def init(dir='/challenges'):
 
     db.init_db_tables()
 
-    for filename in glob.glob(f"{dir}/*/meta.json"):
-        if filename == "/challenges/template/meta.json":
-            continue # skip for template
+    for name in os.listdir(dir):
+        if name == "template":
+            continue
 
-        with open(filename, 'r') as f:
+        ch_dir = f"{dir}/{name}"
+        if not os.path.isfile(f"{ch_dir}/docker-compose.yml"):
+            eprint(f"challenge {name} is missing docker-compose.yml file")
+            return
+
+        with open(f"{ch_dir}/meta.json", 'r') as f:
             ch = json.load(f)
 
         ch_id, ch_name, ch_diff, ch_desc = ch["id"], ch["name"], ch["difficulty"], ch["description"]
-        db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff)
+        db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff, ch_dir)
 
         for task in ch["tasks"]:
             t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
             db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag)
 
     file.touch()
-    eprint("DB successfuly initialised.")
+    eprint("DB successfully initialised.")
 
 
 app = Quart(__name__, static_folder='public', static_url_path='')
@@ -74,10 +82,12 @@ async def root():
 async def static_files(filename):
     return await send_from_directory(app.static_folder, filename)
 
-# Endpoint to submit flags
-@app.route('/api/submit', methods=['POST'])
+# ======================================
+# ||             Challenges           ||
+# ======================================
+@app.route('/api/challenges/submit', methods=['POST'])
 @manage_session
-async def submit():
+async def challenges_submit():
     if request.is_json:
         data = await request.get_json()
     else:
@@ -101,7 +111,7 @@ async def submit():
 
 @app.route('/api/challenges', methods=['GET'])
 @manage_session
-async def get_challenges():
+async def challenges_get():
     tasks = db.get_tasks(get_session_id())
 
     challenges = []
@@ -132,7 +142,83 @@ async def get_challenges():
 
     return jsonify(challenges)
 
-@app.route('/llm/is_model_available', methods=['GET'])
+@app.route('/api/challenges/start', methods=['POST'])
+@manage_session
+async def challenge_start():
+    if request.is_json:
+        data = await request.get_json()
+    else:
+        data = await request.form
+
+    challenge_id = data.get('challenge_id')
+
+    ch_dir = db.get_challenge_dir(challenge_id)
+    if not ch_dir:
+        return 'This challenge does not exist -_-'
+
+    try:
+        eprint(f"Let's start a challenge with id: '{challenge_id}'")
+        docker.stop_challenge(ch_dir)  # first try to turn-off previous containers
+        docker.start_challenge(ch_dir)
+    except Exception as e:
+        eprint(f"error starting a challenge: {e}")
+        return f"error starting a challenge: {e}", 500
+
+    return 'Challenge started! 🎉'
+
+@app.route('/api/challenges/stop', methods=['POST'])
+@manage_session
+async def challenge_stop():
+    if request.is_json:
+        data = await request.get_json()
+    else:
+        data = await request.form
+
+    challenge_id = data.get('challenge_id')
+
+    ch_dir = db.get_challenge_dir(challenge_id)
+    if not ch_dir:
+        return 'This challenge does not exist -_-'
+
+    try:
+        eprint(f"Let's stop a challenge with id: '{challenge_id}'")
+        docker.stop_challenge(ch_dir)
+    except Exception as e:
+        eprint(f"error stopping a challenge: {e}")
+        return f"error stopping a challenge: {e}", 500
+
+    return 'Challenge stopped'
+
+@app.route('/api/challenges/up', methods=['GET'])
+@manage_session
+async def all_challenges_up():
+    challenges = db.get_challenges()
+    all_up = []
+
+    for ch in challenges:
+        up = docker.is_up(ch["challenge_dir"])
+        if up:
+            all_up.append(ch["challenge_id"])
+
+    return jsonify(all_up)
+
+@app.route('/api/challenges/up/<ch_id>', methods=['GET'])
+@manage_session
+async def challenge_up(ch_id):
+    ch_dir = db.get_challenge_dir(ch_id)
+
+    resp = {
+        "running": docker.is_up(ch_dir)
+    }
+
+    return jsonify(resp)
+
+
+
+# ======================================
+# ||             LLM                  ||
+# ======================================
+@app.route('/api/llm/is_model_available', methods=['GET'])
 async def llm_is_model_available():
     return jsonify({
         "available": await llm.is_model_available(),
@@ -140,7 +226,7 @@ async def llm_is_model_available():
     })
 
 pull_in_progress = False
-@app.route('/llm/pull_model', methods=['POST'])
+@app.route('/api/llm/pull_model', methods=['POST'])
 async def llm_pull_model():
     global pull_in_progress
 
@@ -161,7 +247,7 @@ async def llm_pull_model():
 
     return "Model pull started in the background", 200
 
-@app.route('/llm/chat', methods=['POST'])
+@app.route('/api/llm/chat', methods=['POST'])
 async def llm_chat():
     return await llm.chat_with_llm(await request.json)
 

@@ -16,7 +16,8 @@ def init_db_tables():
             challenge_id TEXT NOT NULL PRIMARY KEY,
             challenge_name TEXT NOT NULL,
             challenge_description TEXT NOT NULL,
-            difficulty TEXT NOT NULL
+            difficulty TEXT NOT NULL,
+            challenge_dir TEXT NOT NULL
         );""")
 
     cursor.execute("""CREATE TABLE IF NOT EXISTS tasks (
@@ -38,11 +39,11 @@ def init_db_tables():
     conn.commit()
     conn.close()
 
-def insert_challenge_data(id: str, name: str, desc: str, diff: str):
+def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str):
     conn = get_db()
     cursor = conn.cursor()    
-    q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty) VALUES (?, ?, ?, ?)'
-    cursor.execute(q, (id, name, desc, diff))
+    q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir) VALUES (?, ?, ?, ?, ?)'
+    cursor.execute(q, (id, name, desc, diff, ch_dir))
     conn.commit()
 
 
@@ -53,7 +54,6 @@ def insert_task_data(chal_id: str, id: str, name: str, desc: str, flag: str):
     cursor.execute(q, (chal_id, id, name, desc, flag))
     conn.commit()
 
-# Returns challenges mapped to a set of solved tasks 
 def get_tasks(sess: str) -> List[Dict]:
     conn = get_db()
     cursor = conn.cursor()
@@ -61,7 +61,7 @@ def get_tasks(sess: str) -> List[Dict]:
     SELECT challenges.challenge_id,
            challenges.challenge_name,
            challenges.challenge_description,
-           challenges.difficulty,
+           challenges.difficulty,   
            tasks.task_id, 
            tasks.task_name, 
            tasks.task_description, 
@@ -103,6 +103,38 @@ def get_task_flag(chal_id: str, task_id: str) -> str:
     else:
         return ""
 
+def get_challenge_dir(chal_id: str) -> str:
+    conn = get_db()
+    cursor = conn.cursor()
+    q = """
+    SELECT challenge_dir FROM challenges WHERE challenge_id = ?
+    """
+    cursor.execute(q, (chal_id, ))
+    rows = cursor.fetchall()
+    conn.close()
+
+    if rows:
+        return rows[0][0]
+    else:
+        return ""
+
+def get_challenges() -> List[Dict]:
+    conn = get_db()
+    cursor = conn.cursor()
+    q = """
+        SELECT challenge_id, challenge_name, challenge_description, challenge_dir
+        FROM challenges
+    """
+    cursor.execute(q)
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Extract column names from the cursor
+    columns = [column[0] for column in cursor.description]
+
+    res = [dict(zip(columns, row)) for row in rows]
+
+    return res
 
 def write_new_solve(sess: str, challenge_id: str, task_id: str):
     conn = get_db()

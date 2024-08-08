@@ -7,6 +7,7 @@
 
     onMount(async () => {
 		fetchChallenges()
+        // setInterval(refreshRunningChallenges, 10000);
 	});
 
     const difficultyOrder = { 'easy': 1, 'medium': 2, 'hard': 3 };
@@ -26,10 +27,48 @@
             });
             challenges = data
 
+
+            const res2 = await fetch(`/api/challenges/up`);
+            const upChallenges = await res2.json();
+            if (res2.status !== 200) {
+                throw new String(`Error: request failed with HTTP status ${res2.status}: ${res2.body}`);
+            }
+            upChallenges.forEach(ch_id => {
+                const ch = challenges.find(ch => ch.id === ch_id);
+                if (ch) {
+                    ch["running"] = true;
+                }
+            });
+
         } catch(err) {
             alert(err)
         }
     }
+
+    // async function refreshRunningChallenges(){
+    //     try {
+    //         for (let ch of challenges) {
+    //             if (ch.running !== true) {
+    //                 continue
+    //             }
+    //
+    //             const res = await fetch(`/api/challenges/up/${ch.id}`);
+    //             const data = await res.json();
+    //
+    //             console.log(`refreshed ${ch.id}: ${data}`)
+    //             if (res.status !== 200) {
+    //                 throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+    //             }
+    //
+    //             if (data.running !== true) {
+    //                 ch.running = false // do it like this to trigger reactivity only on change
+    //             }
+    //         }
+    //
+    //     } catch(err) {
+    //         console.log(`error refreshing running challenges: ${err}`)
+    //     }
+    // }
 
     function difficulty_background(d){
         return d === "easy" ? "bg-success" : d === "medium" ? "bg-warning" : "bg-danger";
@@ -58,6 +97,6 @@
           {/if}
       </div>
       <div class="col-9">
-          <ChallengeDetail challenge="{chosenChallenge}"/>
+          <ChallengeDetail bind:challenge="{chosenChallenge}"/>
       </div>
 </div>

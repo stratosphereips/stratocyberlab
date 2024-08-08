@@ -16,6 +16,9 @@ RUN pip install -r requirements.txt --user
 # Final stage
 FROM python:3-slim
 
+# Install Docker client
+RUN apt-get update && apt-get install -y docker.io docker-compose
+
 ARG APP=/var/opt/app/
 WORKDIR $APP
 
@@ -25,6 +28,6 @@ COPY --from=download-python /root/.local/lib/python3.12/site-packages /root/.loc
 # Copy built Svelte files
 COPY --from=build-svelte /app/public $APP/public
 
-COPY server/db.py server/app.py server/ws_ssh.py server/llm.py $APP/
+COPY server/docker.py server/db.py server/app.py server/ws_ssh.py server/llm.py $APP/
 
 CMD ["bash", "-c", "python app.py & python ws_ssh.py"]

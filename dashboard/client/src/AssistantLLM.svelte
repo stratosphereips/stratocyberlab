@@ -18,7 +18,7 @@
   async function pullModel() {
       pullingModel = true
       try {
-          const response = await fetch("/llm/pull_model", {
+          const response = await fetch("/api/llm/pull_model", {
               method: "POST"
           });
           // 409 happens if pulling was already in progress
@@ -36,7 +36,7 @@
   }
 
   async function checkModelAvailability() {
-      const response = await fetch("/llm/is_model_available");
+      const response = await fetch("/api/llm/is_model_available");
       const data = await response.json();
 
       modelAvailable = data.available;
@@ -57,7 +57,7 @@
       waitingForReply = true
       try {
           const body = get(chatHistory);
-          const response = await fetch("/llm/chat", {
+          const response = await fetch("/api/llm/chat", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(body)
