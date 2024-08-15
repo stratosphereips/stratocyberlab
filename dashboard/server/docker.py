@@ -1,7 +1,7 @@
 import subprocess
 import sys
 
-def start_challenge(dir: str):
+def start_compose(dir: str):
     file = f"{dir}/docker-compose.yml"
 
     result = subprocess.run(
@@ -12,7 +12,7 @@ def start_challenge(dir: str):
     if result.returncode != 0:
         raise Exception("Error doing docker-compose up")
 
-def stop_challenge(dir: str):
+def stop_compose(dir: str):
     file = f"{dir}/docker-compose.yml"
 
     result = subprocess.run(

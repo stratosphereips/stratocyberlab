@@ -17,7 +17,7 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 # load challenges from files and bootstrap DB
-def init(dir='/challenges'):
+def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
     # this file works as a check to know if DB was already bootstrapped or not
     # because otherwise this code could run multiple times if the container was restarted
     file = Path(".was_db_inited")
@@ -26,11 +26,11 @@ def init(dir='/challenges'):
 
     db.init_db_tables()
 
-    for name in os.listdir(dir):
+    for name in os.listdir(parent_ch_dir):
         if name == "template":
             continue
 
-        ch_dir = f"{dir}/{name}"
+        ch_dir = f"{parent_ch_dir}/{name}"
         if not os.path.isfile(f"{ch_dir}/docker-compose.yml"):
             eprint(f"challenge {name} is missing docker-compose.yml file")
             return
@@ -44,6 +44,20 @@ def init(dir='/challenges'):
         for task in ch["tasks"]:
             t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
             db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag)
+
+    for name in os.listdir(parent_cl_dir):
+        cl_dir = f"{parent_cl_dir}/{name}"
+
+        with open(f"{cl_dir}/meta.json", 'r') as f:
+            class_data = json.load(f)
+
+        dir = ""
+        if os.path.isfile(f"{cl_dir}/docker-compose.yml"):
+            # set dir only if there is a docker-compose file
+            dir = cl_dir
+
+        id, name, desc = class_data["id"], class_data["name"], class_data["description"]
+        db.insert_class_data(id, name, desc, dir)
 
     file.touch()
     eprint("DB successfully initialised.")
@@ -81,6 +95,84 @@ async def root():
 @manage_session
 async def static_files(filename):
     return await send_from_directory(app.static_folder, filename)
+
+
+# ======================================
+# ||             Classes              ||
+# ======================================
+@app.route('/api/classes', methods=['GET'])
+@manage_session
+async def classes_get():
+    return jsonify(db.get_classes())
+
+@app.route('/api/classes/up', methods=['GET'])
+@manage_session
+async def all_classes_up():
+    classes = db.get_classes()
+    all_up = []
+
+    for c in classes:
+        if not c["dir"]:
+            # some classes may not have docker-compose
+            continue
+        up = docker.is_up(c["dir"])
+        if up:
+            all_up.append(c["id"])
+
+    return jsonify(all_up)
+
+
+@app.route('/api/classes/start', methods=['POST'])
+@manage_session
+async def class_start():
+    if request.is_json:
+        data = await request.get_json()
+    else:
+        data = await request.form
+
+    c_id = data.get('id')
+    if not c_id:
+        return 'Wrong request, missing id', 400
+
+    class_dir = db.get_class_dir(c_id)
+    if not class_dir:
+        return 'This class does not exist or does not have a docker-compose file', 400
+
+    try:
+        eprint(f"Let's start a class with id: '{c_id}'")
+        docker.stop_compose(class_dir)  # first try to turn-off previous containers
+        docker.start_compose(class_dir)
+    except Exception as e:
+        eprint(f"error starting a class: {e}")
+        return f"error starting a class: {e}", 500
+
+    return 'Class started! 🎉'
+
+@app.route('/api/classes/stop', methods=['POST'])
+@manage_session
+async def class_stop():
+    if request.is_json:
+        data = await request.get_json()
+    else:
+        data = await request.form
+
+    c_id = data.get('id')
+    if not c_id:
+        return 'Wrong request, missing id', 400
+
+    class_dir = db.get_class_dir(c_id)
+    if not class_dir:
+        return 'This class does not exist or does not have a docker-compose file', 400
+
+    try:
+        eprint(f"Let's stop a class with id: '{c_id}'")
+        docker.stop_compose(class_dir)
+    except Exception as e:
+        eprint(f"error stopping a class: {e}")
+        return f"error stopping a class: {e}", 500
+
+    return 'Class stopped'
+
 
 # ======================================
 # ||             Challenges           ||
@@ -154,12 +246,12 @@ async def challenge_start():
 
     ch_dir = db.get_challenge_dir(challenge_id)
     if not ch_dir:
-        return 'This challenge does not exist -_-'
+        return 'This challenge does not exist -_-', 404
 
     try:
         eprint(f"Let's start a challenge with id: '{challenge_id}'")
-        docker.stop_challenge(ch_dir)  # first try to turn-off previous containers
-        docker.start_challenge(ch_dir)
+        docker.stop_compose(ch_dir)  # first try to turn-off previous containers
+        docker.start_compose(ch_dir)
     except Exception as e:
         eprint(f"error starting a challenge: {e}")
         return f"error starting a challenge: {e}", 500
@@ -178,11 +270,11 @@ async def challenge_stop():
 
     ch_dir = db.get_challenge_dir(challenge_id)
     if not ch_dir:
-        return 'This challenge does not exist -_-'
+        return 'This challenge does not exist -_-', 404
 
     try:
         eprint(f"Let's stop a challenge with id: '{challenge_id}'")
-        docker.stop_challenge(ch_dir)
+        docker.stop_compose(ch_dir)
     except Exception as e:
         eprint(f"error stopping a challenge: {e}")
         return f"error stopping a challenge: {e}", 500
@@ -201,18 +293,6 @@ async def all_challenges_up():
             all_up.append(ch["challenge_id"])
 
     return jsonify(all_up)
-
-@app.route('/api/challenges/up/<ch_id>', methods=['GET'])
-@manage_session
-async def challenge_up(ch_id):
-    ch_dir = db.get_challenge_dir(ch_id)
-
-    resp = {
-        "running": docker.is_up(ch_dir)
-    }
-
-    return jsonify(resp)
-
 
 
 # ======================================

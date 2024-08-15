@@ -12,6 +12,13 @@ def init_db_tables():
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("""
+            CREATE TABLE IF NOT EXISTS classes (
+                id TEXT NOT NULL PRIMARY KEY,
+                name TEXT NOT NULL,
+                description TEXT NOT NULL,
+                dir TEXT NOT NULL
+            );""")
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS challenges (
             challenge_id TEXT NOT NULL PRIMARY KEY,
             challenge_name TEXT NOT NULL,
@@ -38,6 +45,33 @@ def init_db_tables():
         """)
     conn.commit()
     conn.close()
+
+def insert_class_data(id: str, name: str, desc: str, cl_dir: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    q = 'INSERT INTO classes (id, name, description, dir) VALUES (?, ?, ?, ?)'
+    cursor.execute(q, (id, name, desc, cl_dir))
+    conn.commit()
+
+
+def get_classes() -> List[Dict]:
+    conn = get_db()
+    cursor = conn.cursor()
+    q = """
+    SELECT id, name, description, dir
+    FROM classes
+    """
+    cursor.execute(q)
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Extract column names from the cursor
+    columns = [column[0] for column in cursor.description]
+
+    res = [dict(zip(columns, row)) for row in rows]
+
+    return res
+
 
 def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str):
     conn = get_db()
@@ -117,6 +151,23 @@ def get_challenge_dir(chal_id: str) -> str:
         return rows[0][0]
     else:
         return ""
+
+
+def get_class_dir(c_id: str) -> str:
+    conn = get_db()
+    cursor = conn.cursor()
+    q = """
+    SELECT dir FROM classes WHERE id = ?
+    """
+    cursor.execute(q, (c_id, ))
+    rows = cursor.fetchall()
+    conn.close()
+
+    if rows:
+        return rows[0][0]
+    else:
+        return ""
+
 
 def get_challenges() -> List[Dict]:
     conn = get_db()

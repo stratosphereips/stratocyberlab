@@ -1,13 +1,16 @@
 <script>
     import ChallengeDetail from "./ChallengeDetail.svelte";
 	import { onMount } from 'svelte';
+    import ClassDetail from "./ClassDetail.svelte";
 
     let challenges;
+    let classes;
     let chosenChallenge;
+    let chosenClass;
 
     onMount(async () => {
-		fetchChallenges()
-        // setInterval(refreshRunningChallenges, 10000);
+		await fetchChallenges()
+        await fetchClasses()
 	});
 
     const difficultyOrder = { 'easy': 1, 'medium': 2, 'hard': 3 };
@@ -45,30 +48,34 @@
         }
     }
 
-    // async function refreshRunningChallenges(){
-    //     try {
-    //         for (let ch of challenges) {
-    //             if (ch.running !== true) {
-    //                 continue
-    //             }
-    //
-    //             const res = await fetch(`/api/challenges/up/${ch.id}`);
-    //             const data = await res.json();
-    //
-    //             console.log(`refreshed ${ch.id}: ${data}`)
-    //             if (res.status !== 200) {
-    //                 throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
-    //             }
-    //
-    //             if (data.running !== true) {
-    //                 ch.running = false // do it like this to trigger reactivity only on change
-    //             }
-    //         }
-    //
-    //     } catch(err) {
-    //         console.log(`error refreshing running challenges: ${err}`)
-    //     }
-    // }
+        async function fetchClasses() {
+        try {
+            const res = await fetch(`/api/classes`);
+            const data = await res.json();
+
+            if (res.status !== 200) {
+                throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+            }
+
+            classes = data
+
+            const res2 = await fetch(`/api/classes/up`);
+            const upClasses = await res2.json();
+            if (res2.status !== 200) {
+                throw new String(`Error: request failed with HTTP status ${res2.status}: ${res2.body}`);
+            }
+            upClasses.forEach(c_id => {
+                const c = classes.find(c => c.id === c_id);
+                if (c) {
+                    c["running"] = true;
+                }
+            });
+
+        } catch(err) {
+            alert(err)
+        }
+    }
+
 
     function difficulty_background(d){
         return d === "easy" ? "bg-success" : d === "medium" ? "bg-warning" : "bg-danger";
@@ -80,15 +87,25 @@
 
 <div class="row">
       <div class="col-3 mb-2">
-          <h3>Challenges</h3>
-          {#if challenges === undefined}
+          {#if challenges === undefined || classes === undefined}
           <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
           </div>
           {:else}
+              <h3>Classes</h3>
+              <div class="list-group">
+                {#each classes as c}
+                  <button on:click={() => {chosenClass = c; chosenChallenge = undefined}}
+                          type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
+                      {c.name}
+                  </button>
+                {/each}
+              </div>
+
+              <h3>Challenges</h3>
               <div class="list-group">
                 {#each challenges as ch}
-                  <button on:click={() => {chosenChallenge = ch}}
+                  <button on:click={() => {chosenChallenge = ch; chosenClass = undefined}}
                           type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
                       {ch.name} <span class="badge {difficulty_background(ch.difficulty)} rounded-pill">{ch.difficulty}</span>
                   </button>
@@ -96,7 +113,16 @@
               </div>
           {/if}
       </div>
+
       <div class="col-9">
-          <ChallengeDetail bind:challenge="{chosenChallenge}"/>
+          {#if chosenChallenge !== undefined}
+              <ChallengeDetail bind:challenge="{chosenChallenge}"/>
+          {:else if chosenClass !== undefined}
+              <ClassDetail bind:curClass="{chosenClass}"/>
+          {:else}
+            <div class="pt-5">
+                ⬅ Choose a challenge or class and happy hacking!
+            </div>
+          {/if}
       </div>
 </div>

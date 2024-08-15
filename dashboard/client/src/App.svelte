@@ -1,5 +1,5 @@
 <script>
-  import Challenges from "./Challenges.svelte";
+  import Dashboard from "./Dashboard.svelte";
   import AssistantLLM from "./AssistantLLM.svelte";
   import LoadingOverlay from './LoadingOverlay.svelte';
   import SSH from "./Ssh.svelte";
@@ -37,7 +37,7 @@
   <div class="row flex-grow-1 {showSSH ? 'vh-100' : ''}  m-1">
 
       <div class="col-8">
-        <Challenges/>
+        <Dashboard/>
       </div>
       <div class="col-4 {showSSH ? '' : 'h-75'}">
         <AssistantLLM/>

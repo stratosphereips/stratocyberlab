@@ -19,6 +19,7 @@ services:
       playground-net:
         ipv4_address: 172.20.0.3
     volumes:
+      - ./classes:/classes
       - ./challenges:/challenges
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:

@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  example-class:
+    image: debian
+    container_name: example-class
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.88
+    command:
+      - "sleep"
+      - "99999"
+
+networks:
+  playground-net:
+    external: true

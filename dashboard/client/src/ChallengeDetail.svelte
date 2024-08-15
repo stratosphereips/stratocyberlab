@@ -71,45 +71,37 @@
 <style>
 </style>
 
-{#if challenge === undefined}
-    <div class="pt-5">
-    ⬅ Choose a challenge and happy hacking!
+<div class="ms-2 d-flex justify-content-between align-items-center">
+    <div>
+        <h4 class="d-inline">{challenge.name}</h4>
+    </div>
+    <div>
+        <span class="badge bg-{challenge.running ? 'success' : 'secondary'} ms-2">
+            {challenge.running ? 'Active' : 'Inactive'}
+        </span>
+        <button class="btn btn-info btn-sm ms-2" on:click={flipActivity}>
+            {challenge.running ? 'Stop' : 'Start'}
+        </button>
+    </div>
+</div>
+<p class="text-muted">{challenge.description}</p>
+
+{#each challenge["tasks"] as task}
+
+    <div class="card {task.solved ? 'border-success' : ''} mb-3 me-2">
+      <div class="card-header {task.solved ? 'bg-success-subtle' : ''}">
+          {task.name}
+      </div>
+      <div class="card-body">
+        <p class="card-text">{task.description}</p>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Flag: </span>
+            <input type="text" bind:value={task.flag} class="form-control">
+            <button class="btn btn-outline-secondary" on:click={()=>flagSubmit(task)} type="button">Submit</button>
+         </div>
+
+      </div>
     </div>
 
-{:else}
-    <div class="ms-2 d-flex justify-content-between align-items-center">
-        <div>
-            <h4 class="d-inline">{challenge.name}</h4>
-        </div>
-        <div>
-            <span class="badge bg-{challenge.running ? 'success' : 'secondary'} ms-2">
-                {challenge.running ? 'Active' : 'Inactive'}
-            </span>
-            <button class="btn btn-info btn-sm ms-2" on:click={flipActivity}>
-                {challenge.running ? 'Stop' : 'Start'}
-            </button>
-        </div>
-    </div>
-    <p class="text-muted">{challenge.description}</p>
-
-    {#each challenge["tasks"] as task}
-
-        <div class="card {task.solved ? 'border-success' : ''} mb-3 me-2">
-          <div class="card-header {task.solved ? 'bg-success-subtle' : ''}">
-              {task.name}
-          </div>
-          <div class="card-body">
-            <p class="card-text">{task.description}</p>
-
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Flag: </span>
-                <input type="text" bind:value={task.flag} class="form-control">
-                <button class="btn btn-outline-secondary" on:click={()=>flagSubmit(task)} type="button">Submit</button>
-             </div>
-
-          </div>
-        </div>
-
-    {/each}
-
-{/if}
+{/each}
