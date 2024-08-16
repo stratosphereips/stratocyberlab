@@ -12,11 +12,11 @@
     showSSH = !showSSH
   }
 
-
-
 </script>
-
 <style>
+  .custom-rounded-button {
+    border-radius: 20px 20px 0 0;
+  }
 </style>
 
   <LoadingOverlay />
@@ -47,8 +47,7 @@
 
 
   {#if !showSSH}
-  <button class="rounded-pill btn btn-primary me-auto ms-auto" on:click="{toggleShowSSH}">
-    {#if !sshInitialised}
+  <button class="btn btn-secondary me-auto ms-auto custom-rounded-button" on:click="{toggleShowSSH}">    {#if !sshInitialised}
     Open terminal in the lab ↑
     {:else}
     Reopen terminal ↑

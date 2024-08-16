@@ -2,6 +2,7 @@
     import ChallengeDetail from "./ChallengeDetail.svelte";
 	import { onMount } from 'svelte';
     import ClassDetail from "./ClassDetail.svelte";
+    import Introduction from "./Introduction.svelte";
 
     let challenges;
     let classes;
@@ -86,33 +87,57 @@
 </style>
 
 <div class="row">
-      <div class="col-3 mb-2">
-          {#if challenges === undefined || classes === undefined}
-          <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-          </div>
-          {:else}
-              <h3>Classes</h3>
-              <div class="list-group">
-                {#each classes as c}
-                  <button on:click={() => {chosenClass = c; chosenChallenge = undefined}}
-                          type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
-                      {c.name}
-                  </button>
-                {/each}
-              </div>
+  <div class="col-3 mb-2">
+    <div class="p-3" style="background-color: #f8f9fa; border-radius: 8px;">
+      {#if challenges === undefined || classes === undefined}
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      {:else}
+        <div class="list-group">
+          <button class="list-group-item list-group-item-action d-flex justify-content-between"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#classesList"
+                  aria-expanded="false"
+                  aria-controls="classesList">
+            <b>Classes</b>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M7 10l5 5 5-5z"/>
+            </svg>
+          </button>
 
-              <h3>Challenges</h3>
-              <div class="list-group">
-                {#each challenges as ch}
-                  <button on:click={() => {chosenChallenge = ch; chosenClass = undefined}}
-                          type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
-                      {ch.name} <span class="badge {difficulty_background(ch.difficulty)} rounded-pill">{ch.difficulty}</span>
-                  </button>
-                {/each}
-              </div>
-          {/if}
-      </div>
+          <div id="classesList" class="collapse">
+            {#each classes as c}
+              <button
+                on:click={() => {chosenClass = c; chosenChallenge = undefined}}
+                type="button"
+                class="list-group-item list-group-item-action d-flex justify-content-between">
+                {c.name}
+              </button>
+            {/each}
+          </div>
+        </div>
+
+<!--        <h3>Challenges</h3>-->
+        <!-- Challenges List -->
+        <div class="pt-2 list-group">
+            <div class="list-group-item list-group-item-action d-flex justify-content-between">
+              <b>Challenges</b>
+            </div>
+          {#each challenges as ch}
+            <button
+              on:click={() => {chosenChallenge = ch; chosenClass = undefined}}
+              type="button"
+              class="list-group-item list-group-item-action d-flex justify-content-between">
+              {ch.name}
+              <span class="badge {difficulty_background(ch.difficulty)} rounded-pill">{ch.difficulty}</span>
+            </button>
+          {/each}
+        </div>
+      {/if}
+    </div>
+  </div>
 
       <div class="col-9">
           {#if chosenChallenge !== undefined}
@@ -120,9 +145,7 @@
           {:else if chosenClass !== undefined}
               <ClassDetail bind:curClass="{chosenClass}"/>
           {:else}
-            <div class="pt-5">
-                ⬅ Choose a challenge or class and happy hacking!
-            </div>
+              <Introduction/>
           {/if}
       </div>
 </div>

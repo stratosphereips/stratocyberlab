@@ -69,22 +69,34 @@
 
 
 <style>
+    .slow-spinner {
+        animation-duration: 1.5s;
+    }
 </style>
 
-<div class="ms-2 d-flex justify-content-between align-items-center">
+<div class="pt-4 ms-2 d-flex justify-content-between align-items-center">
     <div>
         <h4 class="d-inline">{challenge.name}</h4>
     </div>
-    <div>
-        <span class="badge bg-{challenge.running ? 'success' : 'secondary'} ms-2">
-            {challenge.running ? 'Active' : 'Inactive'}
-        </span>
-        <button class="btn btn-info btn-sm ms-2" on:click={flipActivity}>
-            {challenge.running ? 'Stop' : 'Start'}
-        </button>
-    </div>
 </div>
-<p class="text-muted">{challenge.description}</p>
+<p class="pt-3 text-muted">{challenge.description}</p>
+
+<div class="alert me-2 d-flex justify-content-between align-items-center {challenge.running ? 'alert-success' : 'alert-light'}" role="alert">
+    <div class="d-flex align-items-center">
+        {#if challenge.running}
+        <div class="spinner-grow text-success me-2 slow-spinner" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <span>The challenge is up and running!</span>
+        {:else}
+        <span>The challenge is not running</span>
+        {/if}
+    </div>
+
+    <button class="btn btn-secondary ms-auto" on:click={flipActivity}>
+        {challenge.running ? 'Stop' : 'Start'}
+    </button>
+</div>
 
 {#each challenge["tasks"] as task}
 

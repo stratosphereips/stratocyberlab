@@ -75,9 +75,10 @@
     .close-button {
         position: absolute;
         right: 10px;
-        top: 10px;
+        top: 0;
         opacity: 0.5;
         transition: opacity 0.3s ease;
+        border-radius: 0 0 5px 5px;
     }
 
     .close-button:hover {
@@ -88,7 +89,9 @@
 
 <div style="position: relative;" class="h-100">
     <div bind:this={terminalContainer} class="h-100"></div>
-    <button class="btn btn-danger close-button" on:click={hide}>
-        X
+    <button class="btn btn-secondary close-button" on:click={hide}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="6" y1="12" x2="18" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
     </button>
 </div>
