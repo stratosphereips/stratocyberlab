@@ -13,7 +13,10 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Fire up all the containers
+echo ""
+echo "Starting the project"
 docker compose up -d --build --force-recreate
+echo "Project started"
 
 # Wait for the dashboard to initialize
 sleep 2
@@ -23,6 +26,15 @@ LABPASS='ByteThem123'
 LABHOST='172.20.0.2'
 
 CHALLENGES_DIR="challenges"
+
+echo ""
+echo "Starting all challenges"
+response=$(curl -s -X POST http://172.20.0.3/api/challenges/start/all)
+if [ "$response" != "All started! 🎉" ]; then
+    echo "Error starting all the challenges, got response: $response"
+    exit 3
+fi
+echo "All challenges started"
 
 failed=false
 for chal_dir in "$CHALLENGES_DIR"/*/; do
@@ -61,6 +73,20 @@ for chal_dir in "$CHALLENGES_DIR"/*/; do
         echo "WARNING - missing $solve_script script"
     fi
 done
+
+echo ""
+echo "Stopping all challenges"
+response=$(curl -s -X POST http://172.20.0.3/api/challenges/stop/all)
+if [ "$response" != "All stopped! 🎉" ]; then
+    echo "Error stopping all the challenges, got response: $response"
+    exit 3
+fi
+echo "All challenges stopped"
+
+echo ""
+echo "Stopping the project"
+docker compose down
+echo "Project stopped"
 
 echo ""
 if [ "$failed" = true ]; then

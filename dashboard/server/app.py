@@ -234,6 +234,46 @@ async def challenges_get():
 
     return jsonify(challenges)
 
+@app.route('/api/challenges/start/all', methods=['POST'])
+@manage_session
+async def challenges_start_all():
+    challenges = db.get_challenges()
+
+    eprint("Starting all challenges")
+    for ch in challenges:
+        ch_dir = ch["challenge_dir"]
+        ch_id = ch["challenge_id"]
+
+        try:
+            eprint(f"Let's start a challenge with id: '{ch_id}'")
+            docker.stop_compose(ch_dir)  # first try to turn-off previous containers
+            docker.start_compose(ch_dir)
+        except Exception as e:
+            eprint(f"error starting a challenge: {e}")
+            return f"error starting a challenge: {e}", 500
+
+    return 'All started! 🎉'
+
+
+@app.route('/api/challenges/stop/all', methods=['POST'])
+@manage_session
+async def challenges_stop_all():
+    challenges = db.get_challenges()
+
+    eprint("Stopping all challenges")
+    for ch in challenges:
+        ch_dir = ch["challenge_dir"]
+        ch_id = ch["challenge_id"]
+
+        try:
+            eprint(f"Let's stop a challenge with id: '{ch_id}'")
+            docker.stop_compose(ch_dir)
+        except Exception as e:
+            eprint(f"error stopping a challenge: {e}")
+            return f"error stopping a challenge: {e}", 500
+
+    return 'All stopped! 🎉'
+
 @app.route('/api/challenges/start', methods=['POST'])
 @manage_session
 async def challenge_start():

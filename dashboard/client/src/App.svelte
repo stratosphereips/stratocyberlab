@@ -27,7 +27,7 @@
       <div class="container-fluid">
         <span class="navbar-brand ms-2">
           <img src="/media/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
-          StratoCyberRange
+          StratoCyberLab
         </span>
       </div>
     </nav>
