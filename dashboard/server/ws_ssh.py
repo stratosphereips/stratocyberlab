@@ -7,6 +7,7 @@ from flask_socketio import SocketIO, emit, disconnect
 import paramiko
 import threading
 import sys
+import socket
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -57,7 +58,13 @@ def handle_ssh_input(data):
     """Send command to SSH server."""
     sid = request.sid
     if sid in clients:
-        clients[sid]['channel'].send(data)
+        try:
+            clients[sid]['channel'].send(data)
+        except socket.error as e:
+            if str(e) == "Socket is closed":
+                eprint(f"Socket closed for session {sid}: {e}")
+            else:
+                raise  # re-raise the exception if it's not the "Socket is closed" error
 
 @socketio.on('ssh_resize')
 def handle_ssh_resize(data):
