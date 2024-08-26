@@ -60,8 +60,7 @@ def handle_ssh_input(data):
         clients[sid]['channel'].send(data)
 
 @socketio.on('ssh_resize')
-def handle_ssh_input(data):
-    """Send command to SSH server."""
+def handle_ssh_resize(data):
     sid = request.sid
     if sid in clients:
         try:
