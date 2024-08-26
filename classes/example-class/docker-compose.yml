@@ -3,6 +3,7 @@ version: '3.3'
 services:
   example-class:
     image: debian
+    stop_grace_period: 0s
     container_name: example-class
     networks:
       playground-net:

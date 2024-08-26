@@ -4,6 +4,7 @@ services:
   challenge-what-is-the-date:
     container_name: challenge-what-is-the-date
     build: .
+    stop_grace_period: 0s
     networks:
       playground-net:
         ipv4_address: 172.20.0.30
