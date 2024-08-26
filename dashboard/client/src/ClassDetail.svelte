@@ -57,7 +57,7 @@
         {/if}
     </div>
 
-    <button class="btn btn-secondary ms-auto" on:click={flipActivity}>
+    <button class="btn {!curClass.running ? 'btn-primary' : 'btn-secondary'} ms-auto" on:click={flipActivity}>
         {curClass.running ? 'Stop' : 'Start'}
     </button>
 </div>

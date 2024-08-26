@@ -93,7 +93,7 @@
         {/if}
     </div>
 
-    <button class="btn btn-secondary ms-auto" on:click={flipActivity}>
+    <button class="btn {!challenge.running ? 'btn-primary' : 'btn-secondary'} ms-auto" on:click={flipActivity}>
         {challenge.running ? 'Stop' : 'Start'}
     </button>
 </div>
