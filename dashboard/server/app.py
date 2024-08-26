@@ -66,6 +66,22 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
 app = Quart(__name__, static_folder='public', static_url_path='')
 app.secret_key = 'does not matter since this is all local'
 
+@app.before_serving
+async def startup():
+    banner = """
+ ____  _             _         ____      _               _          _     
+/ ___|| |_ _ __ __ _| |_ ___  / ___|   _| |__   ___ _ __| |    __ _| |__  
+\___ \| __| '__/ _` | __/ _ \| |  | | | | '_ \ / _ \ '__| |   / _` | '_ \ 
+ ___) | |_| | | (_| | || (_) | |__| |_| | |_) |  __/ |  | |__| (_| | |_) |
+|____/ \__|_|  \__,_|\__\___/ \____\__, |_.__/ \___|_|  |_____\__,_|_.__/ 
+                                   |___/                                  
+        |  RUNNING, NAVIGATE TO http://172.20.0.3/ IN YOUR BROWSER |
+        +----------------------------------------------------------+    
+"""
+    eprint(banner)
+
+
+
 # wrapper that just creates session_id if it did not exist before
 def manage_session(func):
     @wraps(func)
@@ -374,4 +390,4 @@ async def llm_chat():
 
 if __name__ == '__main__':
     init()
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=True, host='172.20.0.3', port=80)
