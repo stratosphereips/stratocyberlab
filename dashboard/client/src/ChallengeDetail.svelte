@@ -109,8 +109,8 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Flag: </span>
-            <input type="text" bind:value={task.flag} class="form-control">
-            <button class="btn btn-outline-secondary" on:click={()=>flagSubmit(task)} type="button">Submit</button>
+            <input disabled={!challenge.running} type="text" bind:value={task.flag} class="form-control">
+            <button disabled={!challenge.running} class="btn btn-outline-secondary" on:click={()=>flagSubmit(task)} type="button">Submit</button>
          </div>
 
       </div>
