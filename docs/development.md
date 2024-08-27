@@ -38,12 +38,12 @@
 
 #### IP allocations
 
-| Network        | IP address    | Used By                                                         | 
-|----------------|---------------|-----------------------------------------------------------------|
-| playground-net | `172.20.0.5`  | Challenge [Hello world](./challenges/hello-world/)              |
-| playground-net | `172.20.0.10` | Challenge [Famous Quotes LFI](./challenges/famous-quotes-lfi/)  |
-| playground-net | `172.20.0.30` | Challenge [What's the date?](./challenges/what-is-the-date/)    |
-
+| Network        | IP address    | Used By                                                     | 
+|----------------|---------------|-------------------------------------------------------------|
+| playground-net | `172.20.0.5`  | Challenge [Hello world](./../challenges/hello-world/)       |
+| playground-net | `172.20.0.10` | Challenge [Famous Quotes LFI](./../challenges/famous-quotes-lfi/) |
+| playground-net | `172.20.0.30` | Challenge [What's the date?](./../challenges/what-is-the-date/) |
+ | playground-net | `172.20.0.88` | [Class01](./../classes/class01)                             |                                                
 
 ## Testing
 
