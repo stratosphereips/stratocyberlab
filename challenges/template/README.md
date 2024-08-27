@@ -1,16 +1,16 @@
 # Challenge template
 
-write about section
+TODO: write challenge description
 
-### Task
+### Tasks
 
-write task description (can be the same as in `meta.json` file)
+TODO: write tasks description
 
 ## How to solve
 <details>
   <summary>Click to reveal how to solve steps</summary>
 
-Write all necessary steps to solve the challenge
+TODO: write all necessary steps to solve the challenge
 
 </details>
 

@@ -5,53 +5,54 @@
 </p>
 
 
+StratoCyberLab is a project of [Stratosphere Research Group](https://www.stratosphereips.org/) with 2 primary goals:
 
-The goal of StratoCyberLab is to allow students to download and locally use realistic security environments to test their attacking & defending skills in the form of challenges.
-
-Just single command and installed docker is all it takes! Happy hacking!
+* Setup local security environments for remote students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) to follow weekly classes   
+* Allow anyone to run locally realistic cyber range to practice attacking & defending skills in the form of challenges (_think HackTheBox but local in your computer!_)
 
 <p align="left">
-  <img src="https://github.com/stratosphereips/stratocyberlab/assets/26445918/a67712be-aa7d-48fa-ac98-85fa8221fcd7" alt="Logo" width="500"/>
+  <img src="https://github.com/user-attachments/assets/458dc8eb-c164-4615-8ad6-27745f732342" alt="Logo" width="500"/>
 </p>
 
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
 
-## Challenges
+## How to start
+
+The only requirement to run StratoCyberLab is installed `docker (v>20.10)`. 
+
+To start the lab, use already prepared [docker-compose.yml](./docker-compose.yml) file by running command:
+```
+docker compose up
+```
+
+After the lab bootstraps, navigate in your browser to [http://172.20.0.3/](http://172.20.0.3/) to access a lab's dashboard. The dashboard contains:
+* Predefined environments for each weekly class of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) for remote students
+* List of standalone hacking challenges 
+    * Challenges are divided by difficulty into 3 categories `EASY`, `MEDIUM`, `HARD`
+    * Each challenge has multiple tasks. 
+    * Tasks are solved by finding a flag (usually in a format `bsy{...}`) and submitting the flag in the dashboard.
+    * Each challenge must be individually started from the dashboard before playing
+* Chat with a local AI assistant using `llama3` model
+    * Usage and downloading of the model is optional and can be initiated from the dashboard. By default no model is downloaded.
+* Built-in SSH web shell to interact with deployed services in the lab
+    * The SSH connection is made to a `hackerlab` container. 
+    * If preferred, you can connect directly using SSH from your terminal to the `hackerlab` container with command
+`ssh root@172.20.0.2` and password `ByteThem123`
 
 
-| Challenge name                                       | Difficulty | IP address    | Tags  |
-|------------------------------------------------------|------------|---------------|-------|
-| [Hello world](./challenges/hello-world/)             | Easy       | `172.20.0.5`  |       |
-| [Famous Quotes LFI](./challenges/famous-quotes-lfi/) | Medium     | `172.20.0.10` |       |
-| [What's the date?](./challenges/what-is-the-date/)   | Hard       | `172.20.0.30` |       |
+### Troubleshooting
+
+**Q: I pulled new updates but the lab is running the old version.**
+
+**A:** Depending on the changes, sometimes it's required to force docker to re-build the containers. Please run the lab using a command `docker compose up --build` 
 
 
-## Requirements
+**Q: I see _REMOTE HOST IDENTIFICATION_ warning when trying to SSH into the hackerlab container**
 
-* Docker (v>20.10)
-* Bash _(just for testing)_
-
-## How to play
-
-* Start the playground using `docker compose up` command 
-* Access the dashboard to find challenges' descriptions by navigating to your browser to [http://172.20.0.3/](http://172.20.0.3/)
-* Use dashboard SSH terminal or connect directly to the hackerlab using SSH with `ssh root@172.20.0.2` and password `ByteThem123`
-* Search for flags in format `bsy{...}` if not specified otherwise in challenge description
-* Have fun!
-
-The BSY Playground Network is `172.20.0.0/24`, and all the services and challenges are in the same network.
-
-#### Troubleshooting
-
-##### I get _REMOTE HOST IDENTIFICATION_ warning when trying to SSH into the hackerlab container
-* add `-o UserKnownHostsFile=/dev/null` flag to your SSH command
+**A:** The ID of hackerlab container is re-generated when the container is recreated. Add `-o UserKnownHostsFile=/dev/null` option to your SSH command to fix the issue.
 
 ## Development
 
-### Adding a challenge
+We appreciate all **PRs** with **new challenges** or bug fixes.
 
-Please refer to a How to add a challenge doc [./docs/adding_challenge.md](./docs/adding_challenge.md)
-
-### Testing
-
-To test all challenges, use script `run_tests.sh`. The script fires up all challenges and runs all existing auto-solve.sh scripts.
+Please refer to a separate Development documentation at [./docs/development.md](./docs/development.md).
