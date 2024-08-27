@@ -25,6 +25,9 @@
     * `meta.json` specifies metadata such as name, id and a description shown to the user in the web dashboard
     * optional `docker-compose.yml` file
         * if present, the dashboard offers to start the defined services
+        * Use external network `playground-net` to connect a container to the base lab network
+        * Assign a static IP address to every service. Look below to a table of IP allocations, choose free IP and add a record to the table. 
+        * Ideally set `stop_grace_period: 0s` for all services to speed-up stopping of containers
     * optional other source code, data or docker files needed for the class
 
 ## Networking
@@ -42,7 +45,7 @@
 | playground-net | `172.20.0.30` | Challenge [What's the date?](./challenges/what-is-the-date/)    |
 
 
-### Testing
+## Testing
 
 To run all tests, use script `run_tests.sh`. The script starts the lab, fires up all challenges and runs all existing `auto-solve.sh` scripts from within the hackerlab container.
 
