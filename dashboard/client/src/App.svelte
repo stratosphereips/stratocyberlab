@@ -7,9 +7,17 @@
   let showSSH = false
   let sshInitialised = false
 
+  let chosenChallenge;
+  let chosenClass;
+
   function toggleShowSSH() {
     sshInitialised = true
     showSSH = !showSSH
+  }
+
+  function handleBrandClick() {
+    chosenChallenge = undefined
+    chosenClass = undefined
   }
 
 </script>
@@ -25,10 +33,10 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
       <div class="container-fluid">
-        <span class="navbar-brand ms-2">
+        <a href="#" class="navbar-brand ms-2" on:click|preventDefault="{handleBrandClick}">
           <img src="/media/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
           StratoCyberLab
-        </span>
+        </a>
       </div>
     </nav>
 
@@ -37,7 +45,7 @@
   <div class="row flex-grow-1 {showSSH ? 'vh-100' : ''}  m-1">
 
       <div class="col-8">
-        <Dashboard/>
+        <Dashboard bind:chosenChallenge={chosenChallenge} bind:chosenClass={chosenClass} />
       </div>
       <div class="col-4 {showSSH ? '' : 'h-75'}">
         <AssistantLLM/>

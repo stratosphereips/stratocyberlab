@@ -6,8 +6,8 @@
 
     let challenges;
     let classes;
-    let chosenChallenge;
-    let chosenClass;
+    export let chosenChallenge;
+    export let chosenClass;
 
     onMount(async () => {
 		await fetchChallenges()
