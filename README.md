@@ -11,7 +11,7 @@ StratoCyberLab is a project of [Stratosphere Research Group](https://www.stratos
 * Allow anyone to run locally realistic cyber range to practice attacking & defending skills in the form of challenges (_think HackTheBox but local in your computer!_)
 
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/458dc8eb-c164-4615-8ad6-27745f732342" alt="Logo" width="500"/>
+  <img src="https://github.com/user-attachments/assets/458dc8eb-c164-4615-8ad6-27745f732342" alt="Logo" width="800"/>
 </p>
 
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
