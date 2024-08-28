@@ -7,11 +7,11 @@
         </p>
 
         <p class="text-start mb-3">
-            The interface offers:
+            The dashboard offers:
         </p>
 
         <ul class="text-start mb-4" style="list-style-type: decimal; padding-left: 20px;">
-            <li>Built-in terminal via SSH in a hackerlab container
+            <li>Built-in terminal via SSH to your hackerlab machine
                 <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
                     <li>Click the button at the bottom of the page to open the terminal</li>
                 </ul>
