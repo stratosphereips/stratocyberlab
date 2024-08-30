@@ -5,7 +5,7 @@
 </p>
 
 
-StratoCyberLab is a project of [Stratosphere Research Group](https://www.stratosphereips.org/) with 2 primary goals:
+StratoCyberLab is a project of [Stratosphere Laboratory](https://www.stratosphereips.org/) with two primary goals:
 
 * Setup local security environments for remote students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) to follow weekly classes   
 * Allow anyone to run locally realistic cyber range to practice attacking & defending skills in the form of challenges (_think HackTheBox but local in your computer!_)
