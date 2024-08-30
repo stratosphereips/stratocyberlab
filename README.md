@@ -25,7 +25,7 @@ To start the lab, use already prepared [docker-compose.yml](./docker-compose.yml
 docker compose up
 ```
 
-After the lab bootstraps, navigate in your browser to [http://172.20.0.3/](http://172.20.0.3/) to access a lab's dashboard. The dashboard contains:
+After the lab bootstraps, navigate in your browser to [http://127.0.0.1/](http://127.0.0.1/) to access a lab's dashboard. The dashboard contains:
 * Predefined environments for each weekly class of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) for remote students
 * List of standalone hacking challenges 
     * Challenges are divided by difficulty into 3 categories `EASY`, `MEDIUM`, `HARD`
@@ -37,7 +37,7 @@ After the lab bootstraps, navigate in your browser to [http://172.20.0.3/](http:
 * Built-in SSH web shell to interact with deployed services in the lab
     * The SSH connection is made to a `hackerlab` container. 
     * If preferred, you can connect directly using SSH from your terminal to the `hackerlab` container with command
-`ssh root@172.20.0.2` and password `ByteThem123`
+`ssh root@127.0.0.1 -p 2222` and password `ByteThem123`
 
 
 ### Troubleshooting

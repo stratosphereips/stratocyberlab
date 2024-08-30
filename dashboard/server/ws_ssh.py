@@ -14,7 +14,7 @@ def eprint(*args, **kwargs):
 
 
 app = Flask(__name__)
-socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins='http://172.20.0.3')
+socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins='http://127.0.0.1')
 
 clients = {}  # Store SSH clients and channels by session ID
 
@@ -87,4 +87,4 @@ def handle_disconnect():
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='172.20.0.3', port=8080)
+    socketio.run(app, debug=True, host='0.0.0.0', port=8080)

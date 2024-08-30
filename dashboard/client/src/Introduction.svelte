@@ -14,7 +14,7 @@
             <li>Built-in terminal to your <b>hackerlab</b> machine
                 <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
                     <li>Click the button at the bottom of the page to open the terminal</li>
-                    <li>Or connect to the hackerlab directly using command <code>ssh root@172.20.0.2</code> and a password <code>ByteThem123</code></li>
+                    <li>Or connect to the hackerlab directly using command <code>ssh root@127.0.0.1 -p 2222</code> and a password <code>ByteThem123</code></li>
                 </ul>
             </li>
 

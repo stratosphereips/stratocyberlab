@@ -76,7 +76,7 @@ async def startup():
  ___) | |_| | | (_| | || (_) | |__| |_| | |_) |  __/ |  | |__| (_| | |_) |
 |____/ \\__|_|  \\__,_|\\__\\___/ \\____\\__, |_.__/ \\___|_|  |_____\\__,_|_.__/ 
                                    |___/                                  
-        |  RUNNING, NAVIGATE TO http://172.20.0.3/ IN YOUR BROWSER |
+        |  RUNNING, NAVIGATE TO http://127.0.0.1/ IN YOUR BROWSER |
         +----------------------------------------------------------+    
 """
     eprint(banner)
@@ -391,4 +391,4 @@ async def llm_chat():
 
 if __name__ == '__main__':
     init()
-    app.run(debug=True, host='172.20.0.3', port=80)
+    app.run(debug=True, host='0.0.0.0', port=80)
