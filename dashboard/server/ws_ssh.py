@@ -22,7 +22,7 @@ def manage_ssh_output(ssh_channel, sid):
     """Thread function to handle incoming data from the SSH server."""
     try:
         while True:
-            data = ssh_channel.recv(1024).decode('utf-8')
+            data = ssh_channel.recv(1024)
             if not data:
                 break
             socketio.emit('ssh_output', data, to=sid)

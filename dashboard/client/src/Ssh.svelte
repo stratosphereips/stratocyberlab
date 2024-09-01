@@ -47,7 +47,9 @@
         });
 
         socket.on('ssh_output', (data) => {
-            terminal.write(data);
+            const decoder = new TextDecoder('utf-8');
+            const text = decoder.decode(data);
+            terminal.write(text);
         });
 
         terminal.onData(data => {
