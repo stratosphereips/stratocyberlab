@@ -14,7 +14,7 @@ def eprint(*args, **kwargs):
 
 
 app = Flask(__name__)
-socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins='http://127.0.0.1')
+socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins='*')
 
 clients = {}  # Store SSH clients and channels by session ID
 
