@@ -17,6 +17,7 @@
     * `README.md` with simple description of the challenge and a section with steps how to solve the challenge
     * `auto_solve.sh` bash script that tests challenge functionality. This script is automatically imported by the root [run_tests.sh](./../run_tests.sh) script and is executed from the hackerlab container. The script should ideally perform all required steps to solve all tasks and submit the flags in the dashboard via an API.
     * optional other source code, data or docker files for the challenge
+* To test the new challenge, run the lab using command `docker compose up --force-recreate` so the dashboard loads the new challenge information 
 
 ## How to add a new class environment
 
