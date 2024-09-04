@@ -101,7 +101,7 @@
 <div class="row flex-grow-1 mx-0 bg-black {!showSSH ? 'visually-hidden' : ''}" style="height: {sshHeight}vh">
   <div class="bg-secondary" on:mousedown={startSshResizing} style="height: 5px; cursor: row-resize;"></div>
 
-  <div class="col px-0" style="height: calc(100% - 5px)">
+  <div class="mx-1 col px-0" style="height: calc(100% - 5px)">
     <SSH bind:resize={resizeTerminalContentFunc} on:hide={toggleShowSSH} />
   </div>
 </div>
