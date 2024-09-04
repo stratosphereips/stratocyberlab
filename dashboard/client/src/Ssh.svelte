@@ -13,6 +13,7 @@
     let terminal;
     let ws;
 
+    export let resize;
 
     onMount(() => {
         terminal = new Terminal({
@@ -30,11 +31,15 @@
             });
         }
 
+        resize = function() {
+            fitAddon.fit()
+            emitTerminalSize()
+        }
+
         // Whenever resize happens, we dynamically resize size of terminal
         // and send the information to the server as-well
         window.addEventListener('resize', () => {
-            fitAddon.fit()
-            emitTerminalSize()
+            resize()
         });
 
         const socket = io(`ws://${window.location.host}:8080/`, {
