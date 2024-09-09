@@ -54,13 +54,15 @@ def insert_class_data(id: str, name: str, desc: str, cl_dir: str):
     conn.commit()
 
 
-def get_classes() -> List[Dict]:
+def get_classes(only_with_compose: bool = False) -> List[Dict]:
     conn = get_db()
     cursor = conn.cursor()
     q = """
     SELECT id, name, description, dir
     FROM classes
     """
+    if only_with_compose:
+        q += "\nWHERE dir != ''"
     cursor.execute(q)
     rows = cursor.fetchall()
     conn.close()

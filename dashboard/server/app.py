@@ -125,7 +125,7 @@ async def classes_get():
 @app.route('/api/classes/up', methods=['GET'])
 @manage_session
 async def all_classes_up():
-    classes = db.get_classes()
+    classes = db.get_classes(only_with_compose=True)
     all_up = []
 
     for c in classes:
