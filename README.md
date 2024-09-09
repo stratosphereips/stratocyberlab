@@ -16,6 +16,13 @@ StratoCyberLab is a project of [Stratosphere Laboratory](https://www.stratospher
 
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
 
+### Hardware requirements
+
+Resource consumption depends a lot on the user actions. We do not recommend starting all challenges at once
+as this may require a lot compute by generating a lot of network traffic and starting many services.
+
+However, we estimate the minium requirements to be **3GB of disk** space and **2GB of spare RAM**. (Note that downloading the LLM model will require extra 5GB of disk space)   
+
 ## How to start
 
 The only requirement to run StratoCyberLab is installed `docker (v>20.10)`. 
