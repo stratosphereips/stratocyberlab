@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  class-03-ssh:
+    build: ssh/
+    stop_grace_period: 0s
+    container_name: class-03-ssh
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.90
+
+networks:
+  playground-net:
+    external: true

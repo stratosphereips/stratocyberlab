@@ -63,6 +63,7 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
     """
     if only_with_compose:
         q += "\nWHERE dir != ''"
+    q += "\nORDER BY id"
     cursor.execute(q)
     rows = cursor.fetchall()
     conn.close()
