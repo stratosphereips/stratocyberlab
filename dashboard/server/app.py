@@ -102,6 +102,13 @@ def get_session_id():
 async def live():
     return "OK"
 
+# graceful shutdown
+@app.after_serving
+async def shutdown():
+    eprint("Initiating graceful shutdown - stopping all challenges and classes...")
+    await classes_stop_all()
+    await challenges_stop_all()
+
 # root
 @app.route('/', methods=['GET'])
 async def root():
@@ -191,6 +198,24 @@ async def class_stop():
     return 'Class stopped'
 
 
+async def classes_stop_all():
+    classes = db.get_classes(only_with_compose=True)
+
+    eprint("Stopping all classes")
+    for c in classes:
+        c_dir = c["dir"]
+        c_id = c["id"]
+
+        try:
+            eprint(f"Let's stop a class with id: '{c_id}'")
+            docker.stop_compose(c_dir)
+        except Exception as e:
+            eprint(f"error stopping a class: {e}")
+            return f"error stopping a class: {e}", 500
+
+    return 'All stopped! 🎉'
+
+
 # ======================================
 # ||             Challenges           ||
 # ======================================
@@ -274,6 +299,9 @@ async def challenges_start_all():
 
 @app.route('/api/challenges/stop/all', methods=['POST'])
 @manage_session
+async def route_challenges_stop_all():
+    return await challenges_stop_all()
+
 async def challenges_stop_all():
     challenges = db.get_challenges()
 
