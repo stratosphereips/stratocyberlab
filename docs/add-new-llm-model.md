@@ -10,4 +10,4 @@ You can choose any model in this list of [ollama](https://ollama.com/library)
 
 4. Start the stratocyberlab
 
-    `docker compose up --force-recreate`
+    `docker compose up --build`
