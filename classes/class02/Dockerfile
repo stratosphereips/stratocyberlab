@@ -15,4 +15,4 @@ RUN echo "listen=NO" >> /etc/vsftpd.conf && \
     echo "Hello from FTP server!" > /var/ftp/welcome.txt
 
 COPY start.sh /start.sh
-CMD /start.sh
+CMD ["/bin/sh", "/start.sh"]
