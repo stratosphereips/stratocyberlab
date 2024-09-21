@@ -88,4 +88,4 @@ Please refer to a separate Development documentation at [./docs/development.md](
 
 ## Documentation on adaptations
 
-If you want to use a new LLM model follow the instructions [here](https://raw.githubusercontent.com/stratosphereips/stratocyberlab/refs/heads/main/docs/add-new-llm-model.md)
+If you want to use a new LLM model follow the instructions [here](https://github.com/stratosphereips/stratocyberlab/blob/main/docs/add-new-llm-model.md)
