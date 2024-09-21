@@ -85,3 +85,7 @@ The dashboard contains:
 We appreciate all **PRs** with **new challenges** or bug fixes.
 
 Please refer to a separate Development documentation at [./docs/development.md](./docs/development.md).
+
+## Documentation on adaptations
+
+If you want to use a new LLM model follow the instructions [here](https://raw.githubusercontent.com/stratosphereips/stratocyberlab/refs/heads/main/docs/add-new-llm-model.md)
