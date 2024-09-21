@@ -1,38 +1,60 @@
-<h1 align="center">StratoCyberLab </h1>
+<h1 align="center">StratoCyberLab</h1>
 
 <p align="center">
   <img src="https://github.com/stratosphereips/BSY-playground/assets/26445918/1898de8c-840f-46a5-ad73-fca0b9b84c14" alt="Logo" width="200"/>
 </p>
 
 
-StratoCyberLab is a project of [Stratosphere Laboratory](https://www.stratosphereips.org/) with two primary goals:
+StratoCyberLab is an offline security cyber range to test your knowledge and capabilities on cybersecurity. It was developed by the [Stratosphere Laboratory](https://www.stratosphereips.org/) with two primary goals:
 
-* Setup local security environments for remote students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) to follow weekly classes   
-* Allow anyone to run locally realistic cyber range to practice attacking & defending skills in the form of challenges (_think HackTheBox but local in your computer!_)
+* To setup local-only security environments for remote students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) to follow weekly classes.
+* To allow anyone to run local-only realistic cyber range to practice attacking & defending skills in the form of challenges (_think HackTheBox but local in your computer!_)
 
-<p align="left">
+<br>
+
+<p align="center">
   <img src="https://github.com/user-attachments/assets/458dc8eb-c164-4615-8ad6-27745f732342" alt="Logo" width="800"/>
 </p>
 
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
 
-### Hardware requirements
+## Features
+* Local-only. No internet is required after download. No cloud. No tracking. No login. No data collection.
+* Many challenges separated in 'classes.'
+* A docker is created for the user to start from. Where you can install any tool you want without modifying your own host computer.
+* A web interface to manage the challenges and play.
+* All the challenges can be played from the web interface using the WebSSH client library.
+* Docker computers are crated in a shared network, so many challenges involve network operations and groups of dockers.
+* AI-assisted. The web interface has a local LLM (using ollama) to assist in your hacking. You can change the model used.
 
+## Requirements
+
+### Hardware
 Resource consumption depends a lot on the user actions. We do not recommend starting all challenges at once
 as this may require a lot compute by generating a lot of network traffic and starting many services.
 
 However, we estimate the minium requirements to be **3GB of disk** space and **2GB of spare RAM**. (Note that downloading the LLM model will require extra 5GB of disk space)   
 
+### Software
+The only requirement to run StratoCyberLab is to have `docker (v>20.10)` installed.
+
 ## How to start
 
-The only requirement to run StratoCyberLab is installed `docker (v>20.10)`. 
 
-To start the lab, use already prepared [docker-compose.yml](./docker-compose.yml) file by running command:
+
+To start the lab do:
 ```
+git clone https://github.com/stratosphereips/stratocyberlab.git
+cd stratocyberlab
 docker compose up
 ```
 
-After the lab bootstraps, navigate in your browser to [http://127.0.0.1/](http://127.0.0.1/) to access a lab's dashboard. The dashboard contains:
+This uses the already prepared [docker-compose.yml](./docker-compose.yml) file.
+
+
+After the lab bootstraps, navigate in your browser to [http://127.0.0.1/](http://127.0.0.1/) to access a lab's dashboard. 
+
+The dashboard contains:
 * Predefined environments for each weekly class of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) for remote students
 * List of standalone hacking challenges 
     * Challenges are divided by difficulty into 3 categories `EASY`, `MEDIUM`, `HARD`
