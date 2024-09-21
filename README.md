@@ -20,12 +20,13 @@ StratoCyberLab is an offline security cyber range to test your knowledge and cap
 
 ## Features
 * Local-only. No internet is required after download. No cloud. No tracking. No login. No data collection.
-* Many challenges separated in 'classes.'
-* A docker is created for the user to start from. Where you can install any tool you want without modifying your own host computer.
+* Many cybersecurity exercises in a form of 'challenges'.
+* Predefined environments of networks and services for remote students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/)
+* The lab runs using docker containers on a shared virtual network(s)
+* A container is created for the user to start from. You can install any tool you want without modifying your own host computer.
 * A web interface to manage the challenges and play.
-* All the challenges can be played from the web interface using the WebSSH client library.
-* Docker computers are crated in a shared network, so many challenges involve network operations and groups of dockers.
-* AI-assisted. The web interface has a local LLM (using ollama) to assist in your hacking. You can change the model used.
+* All the challenges can be played from the web interface using the built-in WebSSH terminal.
+* AI-assisted. The web interface has a local LLM (using _ollama_) to assist in your hacking. You can change the model used.
 
 ## Requirements
 
@@ -43,7 +44,7 @@ The only requirement to run StratoCyberLab is to have `docker (v>20.10)` install
 
 
 To start the lab do:
-```
+```bash
 git clone https://github.com/stratosphereips/stratocyberlab.git
 cd stratocyberlab
 docker compose up
