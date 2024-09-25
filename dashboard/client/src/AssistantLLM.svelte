@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { writable, get } from "svelte/store";
+  import { marked } from "marked";
 
   let modelAvailable;
   let chatHistory = writable([]);
@@ -198,7 +199,12 @@
     <div class="mt-2 messages">
       {#each $chatHistory as { role, content }}
         <div class="message {role === 'user' ? 'user' : 'bot'}">
-          {content}
+          {#if (role === 'user')}
+            {content}
+          {:else}
+            <!-- render the ollama response -->
+            {@html marked.parse(content)}
+          {/if}
         </div>
       {/each}
       {#if waitingForReply}
