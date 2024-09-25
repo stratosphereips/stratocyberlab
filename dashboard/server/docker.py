@@ -5,7 +5,7 @@ def start_compose(dir: str):
     file = f"{dir}/docker-compose.yml"
 
     result = subprocess.run(
-        ['docker-compose', '-f', file, 'up', '-d'],
+        ['docker-compose', '-f', file, 'up', '-d', '--build'],
         stdout=sys.stdout,
         stderr=sys.stderr
     )
