@@ -33,7 +33,7 @@ root@hackerlab:~# curl 172.20.0.5:8000
     Congratulations, you found a flag for the hello-world challenge. 
     Your setup seems to be working, happy hacking!
     
-    bsy{simple-hello-world-flag}
+    BSY{simple-hello-world-flag}
 </body>
 </html>
 ```

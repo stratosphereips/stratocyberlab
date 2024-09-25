@@ -8,13 +8,13 @@
         "id": "task1",
         "name": "Some Task Name 1",
         "description": "Something",
-        "flag": "bsy{...}" 
+        "flag": "BSY{...}" 
       },
       {
         "id": "task2",
         "name": "Some Task Name 2",
         "description": "Something",
-        "flag": "bsy{...}"
+        "flag": "BSY{...}"
       }
     ]
   }  

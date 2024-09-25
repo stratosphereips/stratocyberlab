@@ -7,20 +7,20 @@
     { 
       "id": "task1",
       "name": "Submission test",
-      "description": "Just submit a \"bsy{hello-world}\" as a flag to test the dashboard.",
-      "flag": "bsy{hello-world}" 
+        "description": "Just submit a \"BSY{hello-world}\" as a flag to test the dashboard.",
+      "flag": "BSY{hello-world}" 
     },
     {
       "id": "task2",
       "name": "Hackerlab test",
       "description": "Find a flag in your hackerlab home.",
-      "flag": "bsy{6JmUwlxDMqAi7LGKyDifntSZuFCku7KaTbnYxkSvziYBLg4AwCjubDeBQHxE}"
+      "flag": "BSY{6JmUwlxDMqAi7LGKyDifntSZuFCku7KaTbnYxkSvziYBLg4AwCjubDeBQHxE}"
     },
     {
       "id": "task3",
       "name": "Network test",
       "description": "Find an HTTP server running at IP address 172.20.0.5 and retrieve a flag.",
-      "flag": "bsy{simple-hello-world-flag}"
+      "flag": "BSY{simple-hello-world-flag}"
     }
   ]
 }  

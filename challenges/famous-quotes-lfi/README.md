@@ -51,7 +51,7 @@ nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
 bob:x:1000:1000::/home/bob:/bin/bash
 
 root@hackerlab:~# curl 172.20.0.10:8080/home/bob/flag.txt
-bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}
+BSY{YouMaySayIamADreamerButIamNotTheOnlyOne}
 ```
 
 

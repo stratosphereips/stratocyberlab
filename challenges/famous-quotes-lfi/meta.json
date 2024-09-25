@@ -8,7 +8,7 @@
         "id": "task1",
         "name": "Traverse the world",
         "description": "Find a service with famous quotes running at IP address 172.20.0.10 and try to exploit the naivety of the programmer that designed the service.",
-        "flag": "bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}"
+        "flag": "BSY{YouMaySayIamADreamerButIamNotTheOnlyOne}"
       }
     ]
   }  

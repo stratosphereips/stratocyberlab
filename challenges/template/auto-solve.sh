@@ -10,7 +10,7 @@
 # RES=`curl -s 'http://172.20.0.3/submit' \
 #     -X POST \
 #     -H 'Content-Type: application/json' \
-#     --data-binary '{"challenge_id": "fill_id", "task_id": "fill_id", "flag" : "bsy{...}"}'`
+#     --data-binary '{"challenge_id": "fill_id", "task_id": "fill_id", "flag" : "BSY{...}"}'`
 # 
 # if [[ $RES != *"Congratulations"* ]]; then
 #   echo "Failed to submit the flag - $RES"

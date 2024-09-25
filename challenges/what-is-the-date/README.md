@@ -60,7 +60,7 @@ import subprocess
 from flask import Flask, send_file
 
 # Oh no, my quote was not enough? :O
-# bsy{WYwjgqdrtyTiH9MFnyxMqvsFyYob0qGHYATtzf0HWoXiKnTofAUkVqAR4bed}
+# BSY{WYwjgqdrtyTiH9MFnyxMqvsFyYob0qGHYATtzf0HWoXiKnTofAUkVqAR4bed}
 
 app = Flask(__name__)
 

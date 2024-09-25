@@ -60,7 +60,7 @@ The dashboard contains:
 * List of standalone hacking challenges 
     * Challenges are divided by difficulty into 3 categories `EASY`, `MEDIUM`, `HARD`
     * Each challenge has multiple tasks. 
-    * Tasks are solved by finding a flag (usually in a format `bsy{...}`) and submitting the flag in the dashboard.
+    * Tasks are solved by finding a flag (usually in a format `BSY{...}`) and submitting the flag in the dashboard.
     * Each challenge must be individually started from the dashboard before playing
 * Chat with a local AI assistant using `llama3` model
     * Usage and downloading of the model is optional and can be initiated from the dashboard. By default no model is downloaded.

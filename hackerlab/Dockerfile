@@ -15,7 +15,7 @@ COPY config/sshd_config /etc/ssh/sshd_config
 COPY config/banner /etc/banner
 
 # easy flag for a hello world challenge
-RUN echo "bsy{6JmUwlxDMqAi7LGKyDifntSZuFCku7KaTbnYxkSvziYBLg4AwCjubDeBQHxE}" > ~/.flag.txt
+RUN echo "BSY{6JmUwlxDMqAi7LGKyDifntSZuFCku7KaTbnYxkSvziYBLg4AwCjubDeBQHxE}" > ~/.flag.txt
 
 RUN echo "root:ByteThem123" | chpasswd
 

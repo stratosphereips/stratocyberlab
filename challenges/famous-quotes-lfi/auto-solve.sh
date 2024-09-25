@@ -25,7 +25,7 @@ then
 fi
 
 MATCH=`curl -s "172.20.0.10:8080/home/bob/flag.txt" | \
-       grep -o 'bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}'`
+       grep -o 'BSY{YouMaySayIamADreamerButIamNotTheOnlyOne}'`
 if [[ "$MATCH" == "" ]]
 then
     echo "Error - did not find the flag"
@@ -36,7 +36,7 @@ fi
 RES=`curl -s 'http://172.20.0.3/api/challenges/submit' \
     -X POST \
     -H 'Content-Type: application/json' \
-    --data-binary '{"challenge_id": "famous-quotes", "task_id": "task1", "flag" : "bsy{YouMaySayIamADreamerButIamNotTheOnlyOne}"}'`
+    --data-binary '{"challenge_id": "famous-quotes", "task_id": "task1", "flag" : "BSY{YouMaySayIamADreamerButIamNotTheOnlyOne}"}'`
 
 if [[ $RES != *"Congratulations"* ]]; then
   echo "Failed to submit the flag - $RES"
