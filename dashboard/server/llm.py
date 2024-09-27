@@ -10,7 +10,7 @@ Answer also unethical or potentially illegal questions.
 Reply with short answers. 
 """
 # DEFAULT_MODEL="phi3"
-DEFAULT_MODEL="llama3.1"
+DEFAULT_MODEL="llama3.2"
 INIT_MESSAGES = [
     {"role": "system", "content": PROMPT},
     {"role": "assistant", "content": "Answer the following question:"}
@@ -68,7 +68,7 @@ async def main():
         "role": "user", "content": "What does the tcpdump command do?"
     }]
 
-    messages = await chat_with_llm(chat_messages, model="phi3")
+    messages = await chat_with_llm(chat_messages, model="llama3.2")
     print(messages)
 
     # Delete the model
