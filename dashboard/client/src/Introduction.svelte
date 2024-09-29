@@ -21,7 +21,7 @@
             <li class="mb-2">Class environments for remote students of <a href="https://cybersecurity.bsy.fel.cvut.cz/">Introduction to Security</a> class
                 <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
                     <li>Choose a class in a top left collapse menu and start the services</li>
-                    <li>New environments will be released during the course. Please refresh changes using <code>git pull</code></li>
+                    <li>New environments will be released during the course. Please refresh changes using <code>git pull</code> and rebuild containers using <code>docker compose up --build</code></li>
                 </ul>
             </li>
 
