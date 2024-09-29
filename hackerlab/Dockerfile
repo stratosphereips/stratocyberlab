@@ -13,6 +13,7 @@ RUN mkdir -p /root/.ssh
 
 COPY config/sshd_config /etc/ssh/sshd_config
 COPY config/banner /etc/banner
+COPY tools/tcpdump-colorize.pl /usr/bin/tcpdump-colorize.pl
 
 # easy flag for a hello world challenge
 RUN echo "BSY{6JmUwlxDMqAi7LGKyDifntSZuFCku7KaTbnYxkSvziYBLg4AwCjubDeBQHxE}" > ~/.flag.txt
