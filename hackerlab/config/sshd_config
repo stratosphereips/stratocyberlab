@@ -5,3 +5,4 @@ X11Forwarding yes
 PrintMotd no
 AcceptEnv LANG LC_*
 Banner /etc/banner
+Subsystem sftp /usr/lib/openssh/sftp-server
