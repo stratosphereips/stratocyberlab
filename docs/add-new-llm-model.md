@@ -11,3 +11,13 @@ You can choose any model in this list of [ollama](https://ollama.com/library)
 4. Start the stratocyberlab
 
     `docker compose up --build`
+
+## How to remove the old model
+While the cyberlab is running, open another terminal and do the following:
+1. Fetch the list of downloaded models
+   
+    `docker exec ollama ollama list`
+   
+2. Delete the models that are not needed anymore (replace model name with the name of the model you want to delete)
+
+    `docker exec ollama ollama rm <model name>`
