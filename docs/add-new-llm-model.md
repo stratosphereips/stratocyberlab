@@ -2,7 +2,7 @@
 
 To change the LLM model, you need to do
 
-1. Edit which model you want to used in the file [dashboard/server/llm.py](/dashboard/server/llm.py)
+1. Edit which model you want to use in the file [dashboard/server/llm.py](/dashboard/server/llm.py). Replace value of a global variable:
 
     `DEFAULT_MODEL="phi3.5"`
 
