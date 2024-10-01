@@ -12,8 +12,9 @@ StratoCyberLab is an offline security cyber range to test your knowledge and cap
 
 <br>
 
+
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/458dc8eb-c164-4615-8ad6-27745f732342" alt="Logo" width="800"/>
+  <img src="https://github.com/user-attachments/assets/842b6364-c682-4227-a012-d656694d91af" alt="Logo" width="800"/>
 </p>
 
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
