@@ -88,6 +88,11 @@ We appreciate all **PRs** with **new challenges** or bug fixes.
 
 Please refer to a separate Development documentation at [./docs/development.md](./docs/development.md).
 
+
 ## Documentation on adaptations
 
 If you want to use a new LLM model follow the instructions [here](https://github.com/stratosphereips/stratocyberlab/blob/main/docs/add-new-llm-model.md)
+
+## Connection Architecture
+
+The diagram of connectivity and IP address of all dockers is [./docs/connection_architecture.md](./docs/development.md).
