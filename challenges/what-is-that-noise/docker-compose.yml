@@ -1,13 +1,13 @@
 version: '3.3'
 
 services:
-  challenge-template:
+  what-is-that-noise:
     container_name: what-is-that-noise
     stop_grace_period: 0s
     build: .
     networks:
       playground-net:
-        ipv4_address: 172.20.0.30
+        ipv4_address: 172.20.0.35
     healthcheck:
       test: ["CMD", "python", "-c", "'assert True'"]
       interval: 30s
