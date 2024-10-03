@@ -95,4 +95,4 @@ If you want to use a new LLM model follow the instructions [here](https://github
 
 ## Connection Architecture
 
-The diagram of connectivity and IP address of all dockers is [./docs/connection_architecture.md](./docs/development.md).
+The diagram of connectivity and IP address of all containers is [./docs/connection_architecture.md](./docs/connection_architecture.md).
