@@ -39,14 +39,15 @@
 
 #### IP allocations
 
-| Network        | IP address    | Used By                                                           | 
-|----------------|---------------|-------------------------------------------------------------------|
-| playground-net | `172.20.0.5`  | Challenge [Hello world](./../challenges/hello-world/)             |
-| playground-net | `172.20.0.10` | Challenge [Famous Quotes LFI](./../challenges/famous-quotes-lfi/) |
-| playground-net | `172.20.0.30` | Challenge [What's the date?](./../challenges/what-is-the-date/)   |
- | playground-net | `172.20.0.88` | [Class02](./../classes/class02)                                   |                                                
- | playground-net | `172.20.0.90` | [Class03](./../classes/class03)                                   |                                                
- | playground-net | `172.20.0.95` | [Class03](./../classes/class03)                                   |                                                
+| Network        | IP address    | Used By                                                             | 
+|----------------|---------------|---------------------------------------------------------------------|
+| playground-net | `172.20.0.5`  | Challenge [Hello world](./../challenges/hello-world/)               |
+| playground-net | `172.20.0.10` | Challenge [Famous Quotes LFI](./../challenges/famous-quotes-lfi/)   |
+| playground-net | `172.20.0.30` | Challenge [What's the date?](./../challenges/what-is-the-date/)     |
+| playground-net | `172.20.0.35` | Challenge [What's that noise?](./../challenges/what-is-that-noise/) |
+ | playground-net | `172.20.0.88` | [Class02](./../classes/class02)                                     |                                                
+ | playground-net | `172.20.0.90` | [Class03](./../classes/class03)                                     |                                                
+ | playground-net | `172.20.0.95` | [Class03](./../classes/class03)                                     |                                                
 
 
 ## Testing

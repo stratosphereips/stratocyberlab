@@ -1,0 +1,14 @@
+{
+    "name": "What is that noise",
+    "id": "what-is-that-noise-id",
+    "difficulty": "medium",
+    "description": "Somebody is trying to tell you something",
+    "tasks": [
+      { 
+        "id": "task1",
+        "name": "The code",
+        "description": "Find who is trying to communicate with you. What are they saying?",
+        "flag": "BSY{y5rtwesdoirufweiordstufoieurdfoidsuwe45423344255342343llllww}"
+      }
+    ]
+  }  
