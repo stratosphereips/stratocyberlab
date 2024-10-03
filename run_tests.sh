@@ -23,13 +23,14 @@ sleep 2
 
 LABUSER='root'
 LABPASS='ByteThem123'
-LABHOST='172.20.0.2'
+LABHOST='127.0.0.1'
+LABPORT=2222
 
 CHALLENGES_DIR="challenges"
 
 echo ""
 echo "Starting all challenges"
-response=$(curl -s -X POST http://172.20.0.3/api/challenges/start/all)
+response=$(curl -s -X POST http://127.0.0.1/api/challenges/start/all)
 if [ "$response" != "All started! 🎉" ]; then
     echo "Error starting all the challenges, got response: $response"
     exit 3
@@ -54,6 +55,7 @@ for chal_dir in "$CHALLENGES_DIR"/*/; do
                 -o LogLevel=error \
                 -o UserKnownHostsFile=/dev/null \
                 -o StrictHostKeyChecking=no \
+                -P $LABPORT \
                 $solve_script \
                 $LABUSER@$LABHOST:/tmp/auto-solve.sh
         # Run the auto-solve script from within the hackerlab container
@@ -61,6 +63,7 @@ for chal_dir in "$CHALLENGES_DIR"/*/; do
         -o LogLevel=error \
         -o UserKnownHostsFile=/dev/null \
         -o StrictHostKeyChecking=no \
+        -p $LABPORT \
         $LABUSER@$LABHOST \
         /tmp/auto-solve.sh
 
@@ -76,7 +79,7 @@ done
 
 echo ""
 echo "Stopping all challenges"
-response=$(curl -s -X POST http://172.20.0.3/api/challenges/stop/all)
+response=$(curl -s -X POST http://127.0.0.1/api/challenges/stop/all)
 if [ "$response" != "All stopped! 🎉" ]; then
     echo "Error stopping all the challenges, got response: $response"
     exit 3
