@@ -52,12 +52,13 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
             class_data = json.load(f)
 
         dir = ""
+        googleDocUrl = class_data.get("googleDocUrl", "")
         if os.path.isfile(f"{cl_dir}/docker-compose.yml"):
             # set dir only if there is a docker-compose file
             dir = cl_dir
 
         id, name, desc = class_data["id"], class_data["name"], class_data["description"]
-        db.insert_class_data(id, name, desc, dir)
+        db.insert_class_data(id, name, desc, dir, googleDocUrl)
 
     file.touch()
     eprint("DB successfully initialised.")

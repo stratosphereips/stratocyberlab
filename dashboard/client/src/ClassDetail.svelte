@@ -43,7 +43,11 @@
     </div>
 </div>
 <p class="pt-3 text-muted">{curClass.description}</p>
-
+<iframe width="100%" height="100%"
+        src="https://www.youtube-nocookie.com/embed/ye8lGXTcdCE?si=dBAWDNIhDH9yo--h"
+        title="CVUT Cybersecurity Live Stream" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 {#if curClass.dir}
 <div class="alert me-2 d-flex justify-content-between align-items-center {curClass.running ? 'alert-success' : 'alert-light'}" role="alert">
     <div class="d-flex align-items-center">

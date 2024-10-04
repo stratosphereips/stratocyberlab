@@ -16,7 +16,8 @@ def init_db_tables():
                 id TEXT NOT NULL PRIMARY KEY,
                 name TEXT NOT NULL,
                 description TEXT NOT NULL,
-                dir TEXT NOT NULL
+                dir TEXT NOT NULL,
+                googleDocUrl TEXT NOT NULL
             );""")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS challenges (
@@ -46,11 +47,11 @@ def init_db_tables():
     conn.commit()
     conn.close()
 
-def insert_class_data(id: str, name: str, desc: str, cl_dir: str):
+def insert_class_data(id: str, name: str, desc: str, cl_dir: str, googleDocUrl: str):
     conn = get_db()
     cursor = conn.cursor()
-    q = 'INSERT INTO classes (id, name, description, dir) VALUES (?, ?, ?, ?)'
-    cursor.execute(q, (id, name, desc, cl_dir))
+    q = 'INSERT INTO classes (id, name, description, dir, googleDocUrl) VALUES (?, ?, ?, ?, ?)'
+    cursor.execute(q, (id, name, desc, cl_dir, googleDocUrl))
     conn.commit()
 
 
@@ -58,7 +59,7 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
     conn = get_db()
     cursor = conn.cursor()
     q = """
-    SELECT id, name, description, dir
+    SELECT id, name, description, dir, googleDocUrl
     FROM classes
     """
     if only_with_compose:

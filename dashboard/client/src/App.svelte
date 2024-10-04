@@ -1,6 +1,7 @@
 <script>
   import Dashboard from "./Dashboard.svelte";
   import AssistantLLM from "./AssistantLLM.svelte";
+  import ClassDoc from "./ClassDoc.svelte";
   import LoadingOverlay from './LoadingOverlay.svelte';
   import SSH from "./Ssh.svelte";
   import {onMount} from "svelte";
@@ -77,8 +78,12 @@
       <div class="col-8">
         <Dashboard bind:chosenChallenge={chosenChallenge} bind:chosenClass={chosenClass} />
       </div>
-      <div class="col-4 {showSSH ? '' : 'h-75'}">
-        <AssistantLLM/>
+      <div class="col-4 {showSSH ? '' : (chosenClass !== undefined ? '' : 'h-75')}">
+        {#if chosenChallenge !== undefined}
+          <AssistantLLM/>
+        {:else if chosenClass !== undefined}
+          <ClassDoc bind:chosenClass={chosenClass} />
+        {/if}
       </div>
   </div>
 
