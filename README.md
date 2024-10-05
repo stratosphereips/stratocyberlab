@@ -11,8 +11,9 @@ StratoCyberLab is an offline security cyber range to test your knowledge and cap
 
 <br>
 
+
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/458dc8eb-c164-4615-8ad6-27745f732342" alt="Logo" width="800"/>
+  <img src="https://github.com/user-attachments/assets/842b6364-c682-4227-a012-d656694d91af" alt="Logo" width="800"/>
 </p>
 
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg)
@@ -86,6 +87,11 @@ We appreciate all **PRs** with **new challenges** or bug fixes.
 
 Please refer to a separate Development documentation at [./docs/development.md](./docs/development.md).
 
+
 ## Documentation on adaptations
 
 If you want to use a new LLM model follow the instructions [here](https://github.com/stratosphereips/stratocyberlab/blob/main/docs/add-new-llm-model.md)
+
+## Connection Architecture
+
+The diagram of connectivity and IP address of all containers is [./docs/connection_architecture.md](./docs/connection_architecture.md).

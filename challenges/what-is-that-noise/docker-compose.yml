@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+  what-is-that-noise:
+    container_name: what-is-that-noise
+    stop_grace_period: 0s
+    build: .
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.35
+    healthcheck:
+      test: ["CMD", "python", "-c", "'assert True'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  playground-net:
+    external: true
