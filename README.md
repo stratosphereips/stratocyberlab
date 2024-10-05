@@ -1,7 +1,7 @@
 <h1 align="center">StratoCyberLab</h1>
 
 <p align="center">
-  <img src="./docs/banner.jpg" alt="Logo"/>
+  <img src="./docs/banner-light.jpg" alt="Logo"/>
 </p>
 
 StratoCyberLab is an offline security cyber range to test your knowledge and capabilities on cybersecurity. It was developed by the [Stratosphere Laboratory](https://www.stratosphereips.org/) with two primary goals:
