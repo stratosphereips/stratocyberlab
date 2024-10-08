@@ -8,13 +8,13 @@ RUN npm install
 RUN npm run build
 
 # Stage 2: Download Python dependencies
-FROM python:3-slim as download-python
+FROM python:3.12-slim as download-python
 
 COPY server/requirements.txt .
 RUN pip install -r requirements.txt --user
 
 # Final stage
-FROM python:3-slim
+FROM python:3.12-slim
 
 # Install Docker client
 RUN apt-get update && apt-get install -y docker.io docker-compose
