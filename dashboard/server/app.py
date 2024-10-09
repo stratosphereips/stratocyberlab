@@ -57,7 +57,8 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
             dir = cl_dir
 
         id, name, desc = class_data["id"], class_data["name"], class_data["description"]
-        db.insert_class_data(id, name, desc, dir)
+        doc_url, yt_url = class_data.get("google_doc_url", ""), class_data.get("yt_recording_url", ""),
+        db.insert_class_data(id, name, desc, dir, doc_url, yt_url)
 
     file.touch()
     eprint("DB successfully initialised.")

@@ -4,6 +4,7 @@
   import LoadingOverlay from './LoadingOverlay.svelte';
   import SSH from "./Ssh.svelte";
   import {onMount} from "svelte";
+  import ClassDoc from "./ClassDoc.svelte";
 
   let showSSH = false
   let sshInitialised = false
@@ -11,6 +12,11 @@
   let sshHeight = 50
   let isSshResizing = false;
   $: dashboardHeight = showSSH ? 100 - sshHeight : 100
+
+  let widthVertical1st = 66
+  let isVerticalResizing = false
+  $: widthVertical2nd = 98 - widthVertical1st // 98 is tmp hack to fit in the vertical dragging line
+
 
   let chosenChallenge;
   let chosenClass;
@@ -20,6 +26,9 @@
   onMount(() => {
     window.addEventListener("mousemove", resizeSSH);
     window.addEventListener("mouseup", stopSshResizing);
+
+    window.addEventListener("mousemove", resizeVertical);
+    window.addEventListener("mouseup", stopVerticalResizing);
   });
 
   function toggleShowSSH() {
@@ -52,6 +61,23 @@
     }
   }
 
+  function startVerticalResizing(){
+    isVerticalResizing = true
+  }
+  function stopVerticalResizing() {
+    isVerticalResizing = false
+  }
+  function resizeVertical(e) {
+    if (!isVerticalResizing) {
+      return
+    }
+    const totalWidth = window.innerWidth;
+    const newWidth = (e.clientX / totalWidth) * 100;
+    if (newWidth >= 30 && newWidth <= 90) {
+      widthVertical1st = newWidth;
+    }
+  }
+
 
 </script>
 <style>
@@ -74,11 +100,16 @@
 
   <!-- Main dashboard content -->
   <div class="row flex-grow-1 m-1">
-      <div class="col-8">
+      <div style="width: {widthVertical1st}vw">
         <Dashboard bind:chosenChallenge={chosenChallenge} bind:chosenClass={chosenClass} />
       </div>
-      <div class="col-4 {showSSH ? '' : 'h-75'}">
+    <div class="p-0 bg-secondary" on:mousedown={startVerticalResizing} style="width: 3px; cursor: col-resize;"></div>
+    <div style="width: {widthVertical2nd}vw">
+        {#if chosenClass !== undefined && chosenClass.google_doc_url}
+        <ClassDoc docUrl={chosenClass.google_doc_url} />
+        {:else}
         <AssistantLLM/>
+        {/if}
       </div>
   </div>
 
