@@ -1,0 +1,14 @@
+{
+    "name": "Shockwave Report",
+    "id": "shockwave-report",
+    "difficulty": "medium",
+    "description": "Monitoring system resources is important",
+    "tasks": [
+      {
+        "id": "task1",
+        "name": "DIY reporting",
+        "description": "Someone created a custom reporting service at a machine with IP address 172.20.0.39. Was it a good idea?",
+        "flag": "BSY{cIAXNcTzjPEkH5nZU1LV6uPrSIvHpGPEoApUQXfkyftsZOmnsUokQeUfDmEW}"
+      }
+    ]
+  }  
