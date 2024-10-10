@@ -36,7 +36,14 @@ Nmap done: 1 IP address (1 host up) scanned in 0.26 seconds
            Raw packets sent: 1001 (44.028KB) | Rcvd: 1001 (40.032KB)
 ```
 
-2. We find HTTP port 80. After sending some HTTP requests, we find /report endpoint:
+It can be also scanned with version, and it will reveal `80/tcp open  http    Apache httpd 2.4.62 ((Unix))`. However, the vulnerability to exploit is not related to this version of Apache.
+
+2. We find HTTP port 80. In the hints of the challenge it says it is a 'reporting' service.
+
+   So it is possible to try to get `curl http://172.20.0.39/reporting` but it will give Not Found.
+
+   Or also curl `http://172.20.0.39/report`, which should give a webpage.
+   
 ```bash
 root@hackerlab:~# curl 172.20.0.39
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
