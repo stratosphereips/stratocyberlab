@@ -5,6 +5,7 @@ services:
     container_name: shockwave-report
     stop_grace_period: 0s
     build: .
+    platform: linux/amd64
     networks:
       playground-net:
         ipv4_address: 172.20.0.39
