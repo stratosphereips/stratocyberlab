@@ -82,6 +82,14 @@ The dashboard contains:
 
 **A:** The ID of hackerlab container is re-generated when the container is recreated. Add `-o UserKnownHostsFile=/dev/null` option to your SSH command to fix the issue.
 
+**Q: I have a windows OS and the challenges are not working correctly for me**
+
+**A:** Git for Windows puts _CRLF_ line endings to checkout files by default which may break some desinged functionality. Please either replace all the _CRLF_ line endings with _LF_ or set this behaviour globally to your git using these commands (note that you have to re-clone the repository again after making this change to take effect)
+```bash
+git config --global core.autocrlf false
+git config --global core.eol lf
+```
+
 ## Development
 
 We appreciate all **PRs** with **new challenges** or bug fixes.
