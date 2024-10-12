@@ -3,25 +3,28 @@
   import AssistantLLM from "./AssistantLLM.svelte";
   import LoadingOverlay from './LoadingOverlay.svelte';
   import SSH from "./Ssh.svelte";
-  import {onMount} from "svelte";
+  import { onMount } from "svelte";
   import ClassDoc from "./ClassDoc.svelte";
+  import NotePad from './NotePad.svelte'; // Import the new NotePad component
 
-  let showSSH = false
-  let sshInitialised = false
+  let showSSH = false;
+  let sshInitialised = false;
 
-  let sshHeight = 50
+  let sshHeight = 50;
   let isSshResizing = false;
-  $: dashboardHeight = showSSH ? 100 - sshHeight : 100
+  $: dashboardHeight = showSSH ? 100 - sshHeight : 100;
 
-  let widthVertical1st = 66
-  let isVerticalResizing = false
-  $: widthVertical2nd = 98 - widthVertical1st // 98 is tmp hack to fit in the vertical dragging line
-
+  let widthVertical1st = 66;
+  let isVerticalResizing = false;
+  $: widthVertical2nd = 98 - widthVertical1st; // 98 is tmp hack to fit in the vertical dragging line
 
   let chosenChallenge;
   let chosenClass;
 
   let resizeTerminalContentFunc;
+  let theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  let notePadContent = localStorage.getItem('notePadContent') || 'Type notes here, and save to you editor';
+  let modalElement;
 
   onMount(() => {
     window.addEventListener("mousemove", resizeSSH);
@@ -29,47 +32,49 @@
 
     window.addEventListener("mousemove", resizeVertical);
     window.addEventListener("mouseup", stopVerticalResizing);
+
+    modalElement = document.getElementById('notePadModal'); // Get the modal element by its ID
   });
 
   function toggleShowSSH() {
-    sshInitialised = true
-    showSSH = !showSSH
+    sshInitialised = true;
+    showSSH = !showSSH;
   }
 
   function handleBrandClick() {
-    chosenChallenge = undefined
-    chosenClass = undefined
+    chosenChallenge = undefined;
+    chosenClass = undefined;
   }
 
   function startSshResizing() {
-    isSshResizing = true
+    isSshResizing = true;
   }
 
   function stopSshResizing() {
-    isSshResizing = false
+    isSshResizing = false;
   }
 
   function resizeSSH(e) {
     if (!isSshResizing) {
-      return
+      return;
     }
     const totalHeight = window.innerHeight;
     const newHeight = 100 - ((e.clientY / totalHeight) * 100);
     if (newHeight >= 10 && newHeight <= 90) {
       sshHeight = newHeight;
-      resizeTerminalContentFunc()
+      resizeTerminalContentFunc();
     }
   }
 
-  function startVerticalResizing(){
-    isVerticalResizing = true
+  function startVerticalResizing() {
+    isVerticalResizing = true;
   }
   function stopVerticalResizing() {
-    isVerticalResizing = false
+    isVerticalResizing = false;
   }
   function resizeVertical(e) {
     if (!isVerticalResizing) {
-      return
+      return;
     }
     const totalWidth = window.innerWidth;
     const newWidth = (e.clientX / totalWidth) * 100;
@@ -78,8 +83,16 @@
     }
   }
 
+  // Save note pad content to localStorage when it changes
+  $: localStorage.setItem('notePadContent', notePadContent);
 
+  // Function to open the modal
+  function openModal() {
+    modalElement.classList.add('show');
+    modalElement.style.display = 'block';
+  }
 </script>
+
 <style>
   .custom-rounded-button {
     border-radius: 20px 20px 0 0;
@@ -95,6 +108,7 @@
         <img src="/media/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
         StratoCyberLab
       </a>
+      <button class="btn btn-secondary" on:click="{openModal}">Note Pad</button> <!-- New button to open the Note Pad modal -->
     </div>
   </nav>
 
@@ -137,3 +151,6 @@
   </div>
 </div>
 {/if}
+
+<!-- Modal -->
+<NotePad bind:notePadContent /> <!-- New NotePad component for the modal -->
