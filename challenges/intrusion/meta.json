@@ -1,0 +1,14 @@
+{
+    "name": "Intrusion",
+    "id": "intrusion",
+    "difficulty": "easy",
+    "description": "There was a security incident in a server that you administrate!!! IP of the server is 172.20.0.41. You usually log in using credentials \"root:i_am_administrator\"",
+    "tasks": [
+      { 
+        "id": "task1",
+        "name": "TODO",
+        "description": "Can you find what the attacker did and discover a flag?",
+        "flag": "BSY{9kPlbVBYuWtSxk6Oq62AAuYClinZc0CYayMjFSd5OUppQxXPTYtG9hAaBjjJ}"
+      }
+    ]
+}

@@ -46,9 +46,11 @@
 | playground-net | `172.20.0.30` | Challenge [What's the date?](./../challenges/what-is-the-date/)     |
 | playground-net | `172.20.0.35` | Challenge [What's that noise?](./../challenges/what-is-that-noise/) |
  | playground-net | `172.20.0.39` | Callenge [Shockwave Report](./../challenges/shockwave-report)       |
+ | playground-net | `172.20.0.41` | Callenge [Intrusion](./../challenges/intrusion)                     |
  | playground-net | `172.20.0.88` | [Class02](./../classes/class02)                                     |                                                
  | playground-net | `172.20.0.90` | [Class03](./../classes/class03)                                     |                                                
- | playground-net | `172.20.0.95` | [Class03](./../classes/class03)                                     |                                                
+ | playground-net | `172.20.0.95` | [Class03](./../classes/class03)                                     |  
+
 
 
 ## Testing
