@@ -70,7 +70,7 @@
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 {:else if isClassLiveNow()}
 <iframe width="100%" height="100%" class="flex-grow-1"
-        src="https://www.youtube.com/embed/ye8lGXTcdCE?si=IbEDfCRbmLXakuvV"
+        src="https://www.youtube.com/embed/HShkFvjHPjw?si=91yBH7dC-uB85dKr"
         title="BSY class Live Stream"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
