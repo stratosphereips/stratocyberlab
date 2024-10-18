@@ -1,6 +1,6 @@
 {
   "name": "StratoCyberLab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "build": "rollup -c --bundleConfigAsCjs",
@@ -23,6 +23,7 @@
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
     "bootstrap": "^5.3.2",
+    "file-saver": "^2.0.5",
     "marked": "^14.1.2",
     "sirv-cli": "^2.0.0",
     "socket.io-client": "^4.7.5",
