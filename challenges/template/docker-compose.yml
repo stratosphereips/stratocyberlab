@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   challenge-template:
-    container_name: challenge-template
+    container_name: scl-challenge-template
     stop_grace_period: 0s
     build: .
     networks:

@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   what-is-that-noise:
-    container_name: what-is-that-noise
+    container_name: scl-what-is-that-noise
     stop_grace_period: 0s
     build: .
     networks:

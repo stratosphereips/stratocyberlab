@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   challenge-what-is-the-date:
-    container_name: challenge-what-is-the-date
+    container_name: scl-what-is-the-date
     build: .
     stop_grace_period: 0s
     networks:
