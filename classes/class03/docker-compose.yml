@@ -4,7 +4,7 @@ services:
   class-03-ssh:
     build: ssh/
     stop_grace_period: 0s
-    container_name: class-03-ssh
+    container_name: scl-class-03-ssh
     networks:
       playground-net:
         ipv4_address: 172.20.0.90
@@ -12,7 +12,7 @@ services:
   class-03-apache:
     build: apache/
     stop_grace_period: 0s
-    container_name: class-03-apache
+    container_name: scl-class-03-apache
     networks:
       playground-net:
         ipv4_address: 172.20.0.95
