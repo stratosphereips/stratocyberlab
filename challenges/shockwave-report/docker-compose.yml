@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   shockwave-report:
-    container_name: shockwave-report
+    container_name: scl-shockwave-report
     stop_grace_period: 0s
     build: .
     platform: linux/amd64

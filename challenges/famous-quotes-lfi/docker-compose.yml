@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   challenge-famous-quotes-lfi:
-    container_name: challenge-famous-quotes-lfi
+    container_name: scl-famous-quotes-lfi
     stop_grace_period: 0s
     build: ./
     networks:

@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   challenge-hello-world:
-    container_name: challenge-hello-world
+    container_name: scl-hello-world
     stop_grace_period: 0s
     build: ./
     networks:

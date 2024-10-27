@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   intrusion:
-    container_name: intrusion
+    container_name: scl-intrusion
     stop_grace_period: 0s
     build: .
     networks:
