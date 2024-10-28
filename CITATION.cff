@@ -1,16 +1,12 @@
 cff-version: 1.2.0
-title: "StratoCyberLab"
+title: "StratoCyberLab: Cyber Range to learn cybersecurity attacking and defending techniques locally in your computer"
 message: 'If you use this software, please cite it as specified below.'
 url: "https://github.com/stratosphereips/stratocyberlab"
 type: software
 authors:
-  - given-names: Veronica
-    family-names: Valeros
-    email: valerver@fel.cvut.cz
-    affiliation: >-
-      Stratosphere Laboratory, AIC, FEL, Czech
-      Technical University in Prague
-    orcid: 'https://orcid.org/0000-0003-2554-3231'
+  - given-names: Martin
+    family-names: Řepa
+    affiliation: "Freelance ethical hacker" 
   - given-names: Maria
     family-names: Rigaki
     email: maria.rigaki@aic.fel.cvut.cz
@@ -18,6 +14,10 @@ authors:
       Stratosphere Laboratory, AIC, FEL, Czech
       Technical University in Prague
     orcid: 'https://orcid.org/0000-0002-0688-7752'
-  - given-names: Martin
-    family-names: Řepa
-    affiliation: "Freelance ethical hacker" 
+- given-names: Veronica
+    family-names: Valeros
+    email: valerver@fel.cvut.cz
+    affiliation: >-
+      Stratosphere Laboratory, AIC, FEL, Czech
+      Technical University in Prague
+    orcid: 'https://orcid.org/0000-0003-2554-3231'
