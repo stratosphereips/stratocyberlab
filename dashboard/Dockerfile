@@ -8,7 +8,7 @@ RUN npm install
 RUN npm run build
 
 # Stage 2: Download Python dependencies
-FROM python:3.12-slim as download-python
+FROM python:3.12-slim AS download-python
 
 COPY server/requirements.txt .
 RUN pip install -r requirements.txt --user
