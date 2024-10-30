@@ -1,4 +1,4 @@
-  GNU nano 7.2                                                                                        server.py                                                                                                  from fastapi import FastAPI
+from fastapi import FastAPI
 from string import ascii_letters, digits
 from random import choices, randint
 import time
