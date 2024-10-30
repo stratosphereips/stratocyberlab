@@ -50,6 +50,8 @@
  | playground-net | `172.20.0.88` | [Class02](./../classes/class02)                                     |                                                
  | playground-net | `172.20.0.90` | [Class03](./../classes/class03)                                     |                                                
  | playground-net | `172.20.0.95` | [Class03](./../classes/class03)                                     |  
+ | playground-net | `172.20.0.98` | [Class06](./../classes/class06)                                     |  
+ | playground-net | `172.20.0.99` | [Class06](./../classes/class06)                                     |  
 
 
 
