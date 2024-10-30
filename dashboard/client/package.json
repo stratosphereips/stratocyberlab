@@ -8,16 +8,21 @@
     "start": "./serve.js public /api http://localhost:31415 --single"
   },
   "devDependencies": {
+    "@eslint/js": "^9.13.0",
     "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-eslint": "^9.0.5",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-terser": "^0.4.0",
+    "eslint": "^9.13.0",
+    "eslint-plugin-svelte": "^2.46.0",
+    "globals": "^15.11.0",
     "http-proxy-middleware": "^2.0.0",
     "polka": "^0.5.2",
     "rollup": "^3.25.0",
     "rollup-plugin-css-only": "^4.3.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
-    "svelte": "^3.0.0"
+    "svelte": "^3.59.2"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.10.0",
@@ -28,5 +33,10 @@
     "socket.io-client": "^4.7.5",
     "xterm": "^5.3.0",
     "yaml": "^2.3.0"
+  },
+  "overrides": {
+    "@rollup/plugin-eslint": {
+      "eslint": "^9.13.0"
+    }
   }
 }

@@ -21,7 +21,7 @@
             const data = await res.json();
 
             if (res.status !== 200) {
-                throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+                throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
             }
 
             // sort based on challenges difficulties - first we show easy, then medium and lastly hard
@@ -34,7 +34,7 @@
             const res2 = await fetch(`/api/challenges/up`);
             const upChallenges = await res2.json();
             if (res2.status !== 200) {
-                throw new String(`Error: request failed with HTTP status ${res2.status}: ${res2.body}`);
+                throw new Error(`Error: request failed with HTTP status ${res2.status}: ${res2.body}`);
             }
             upChallenges.forEach(ch_id => {
                 const ch = challenges.find(ch => ch.id === ch_id);
@@ -44,7 +44,8 @@
             });
 
         } catch(err) {
-            alert(err)
+            console.error(err);
+            alert(err instanceof Error ? err.message : err);
         }
     }
 
@@ -54,7 +55,7 @@
             const data = await res.json();
 
             if (res.status !== 200) {
-                throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+                throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
             }
 
             classes = data
@@ -62,7 +63,7 @@
             const res2 = await fetch(`/api/classes/up`);
             const upClasses = await res2.json();
             if (res2.status !== 200) {
-                throw new String(`Error: request failed with HTTP status ${res2.status}: ${res2.body}`);
+                throw new Error(`Error: request failed with HTTP status ${res2.status}: ${res2.body}`);
             }
             upClasses.forEach(c_id => {
                 const c = classes.find(c => c.id === c_id);
@@ -72,7 +73,8 @@
             });
 
         } catch(err) {
-            alert(err)
+            console.error(err);
+            alert(err instanceof Error ? err.message : err);
         }
     }
 

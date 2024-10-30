@@ -23,7 +23,7 @@
             const data = await res.text();
 
             if (res.status !== 200) {
-                throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+                throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
             }
 
             if (data.includes("Congratulations")) {
@@ -33,7 +33,8 @@
             alert(data)
 
         } catch(err) {
-            alert(err)
+            console.error(err);
+            alert(err instanceof Error ? err.message : err);
         }
     }
 
@@ -52,13 +53,14 @@
                 body: JSON.stringify(payload),
             });
             if (res.status !== 200) {
-                throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+                throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
             }
 
             challenge.running = action === "start"
 
         } catch(err) {
-            alert(err)
+            console.error(err);
+            alert(err instanceof Error ? err.message : err);
         }
         isLoading.set(false);
     }
@@ -109,8 +111,8 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Flag: </span>
-            <input disabled={!challenge.running} type="text" bind:value={task.flag} class="form-control">
-            <button disabled={!challenge.running} class="btn btn-outline-secondary" on:click={()=>flagSubmit(task)} type="button">Submit</button>
+            <input disabled={!challenge.running || task.solved} type="text" bind:value={task.flag} class="form-control">
+            <button disabled={!challenge.running || task.solved} class="btn btn-outline-secondary" on:click={()=>flagSubmit(task)} type="button">Submit</button>
          </div>
 
       </div>

@@ -202,7 +202,7 @@
           {#if (role === 'user')}
             {content}
           {:else}
-            <!-- render the ollama response -->
+            <!-- eslint-disable-next-line svelte/no-at-html-tags -- render the ollama response -->
             {@html marked.parse(content)}
           {/if}
         </div>
