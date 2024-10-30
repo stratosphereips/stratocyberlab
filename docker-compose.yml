@@ -4,6 +4,8 @@ services:
     container_name: scl-hackerlab
     hostname: hackerlab
     restart: always
+    volumes:
+      - ./hackerlab/data:/data
     ports:
       - "2222:22"
     networks:
