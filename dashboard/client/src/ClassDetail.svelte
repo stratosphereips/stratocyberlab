@@ -43,7 +43,7 @@
         const currentTimeUTC = now.getUTCHours()
 
         const isThursday = currentDay === 4;
-        const isWithinTimeRange = currentTimeUTC >= 12 && currentTimeUTC < 16;
+        const isWithinTimeRange = currentTimeUTC >= 12 && currentTimeUTC < 17;
         return isThursday && isWithinTimeRange;
     }
 
