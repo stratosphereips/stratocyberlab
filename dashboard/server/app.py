@@ -16,6 +16,9 @@ import docker
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
+def get_dirs(parent: str) -> List[str]:
+    return [d for d in os.listdir(parent) if os.path.isdir(os.path.join(parent, d))]
+
 # load challenges from files and bootstrap DB
 def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
     # this file works as a check to know if DB was already bootstrapped or not
@@ -26,7 +29,7 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
 
     db.init_db_tables()
 
-    for name in os.listdir(parent_ch_dir):
+    for name in get_dirs(parent_ch_dir):
         if name == "template":
             continue
 
@@ -45,7 +48,7 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
             t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
             db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag)
 
-    for name in os.listdir(parent_cl_dir):
+    for name in get_dirs(parent_cl_dir):
         cl_dir = f"{parent_cl_dir}/{name}"
 
         with open(f"{cl_dir}/meta.json", 'r') as f:

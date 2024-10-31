@@ -1,0 +1,20 @@
+{
+    "name": "Jump Around",
+    "id": "jump-around",
+    "difficulty": "hard",
+    "description": "",
+    "tasks": [
+      {
+        "id": "task1",
+        "name": "Pwn the Hop",
+        "description": "You got restricted access to a machine with IP address 172.20.0.47 via SSH. The credentials are \"bob:iloveyoumandy\". Can you escape the restrictions?",
+        "flag": "BSY{QQgCzB3HmryOC7aijBJfeylUYOzgMviOIkdBzlMmGYgJWoY4Sz21s3ZcIPiW}"
+      },
+      { 
+        "id": "task2",
+        "name": "Who's jumping?!",
+        "description": "Now when you own the system, find out what it's used for. Is \"someone\" using the machine in any way? ",
+        "flag": "BSY{THd8a6l0GCoRDpRThK9z1FnoEcl0y0cV8CTUGNBWwXHXAC5XDyNVqIP5mDHH}"
+      }
+    ]
+}

@@ -1,9 +1,11 @@
 services:
   hackerlab:
     build: ./hackerlab
-    container_name: hackerlab
+    container_name: scl-hackerlab
     hostname: hackerlab
     restart: always
+    volumes:
+      - ./hackerlab/data:/data
     ports:
       - "2222:22"
     networks:
@@ -12,7 +14,7 @@ services:
 
   dashboard:
     build: ./dashboard
-    container_name: dashboard
+    container_name: scl-dashboard
     hostname: dashboard
     restart: always
     ports:
@@ -34,7 +36,7 @@ services:
 
   ollama:
     image: ollama/ollama
-    container_name: ollama
+    container_name: scl-ollama
     volumes:
       - ./ollama:/root/.ollama
     restart: always

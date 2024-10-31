@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  challenge-saas-platform:
+    build: saas-platform
+    container_name: scl-challenge-saas-platform
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.45
+
+  challenge-proxy-hop:
+    build: proxy-hop
+    container_name: scl-challenge-proxy-hop
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.47
+
+  challenge-victim:
+    build: victim
+    container_name: scl-challenge-victim
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.49
+
+networks:
+  playground-net:
+    external: true
