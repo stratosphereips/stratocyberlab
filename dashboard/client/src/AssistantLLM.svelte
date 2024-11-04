@@ -1,88 +1,86 @@
 <script>
-  import { onMount } from "svelte";
-  import { writable, get } from "svelte/store";
-  import { marked } from "marked";
+  import { onMount } from 'svelte';
+  import { writable, get } from 'svelte/store';
+  import { marked } from 'marked';
 
   let modelAvailable;
   let chatHistory = writable([]);
-  let newMessage = "";
+  let newMessage = '';
 
   let pullingModel = false;
   let waitingForReply = false;
 
-  const INTERVAL_CHECKING = 5000 // 5 seconds
+  const INTERVAL_CHECKING = 5000; // 5 seconds
 
   onMount(async () => {
-      await checkModelAvailability()
+    await checkModelAvailability();
   });
 
   async function pullModel() {
-      pullingModel = true
-      try {
-          const response = await fetch("/api/llm/pull_model", {
-              method: "POST"
-          });
-          // 409 happens if pulling was already in progress
-          if (!response.ok && response.status !== 409) {
-              throw new Error(`Failed to start pulling the model: ${response.status}`)
-          }
-
-          // check model availability after 5 seconds
-          setTimeout(checkModelAvailability, INTERVAL_CHECKING);
-
-      } catch(err) {
-          alert(err)
-          pullingModel = false
+    pullingModel = true;
+    try {
+      const response = await fetch('/api/llm/pull_model', {
+        method: 'POST',
+      });
+      // 409 happens if pulling was already in progress
+      if (!response.ok && response.status !== 409) {
+        throw new Error(`Failed to start pulling the model: ${response.status}`);
       }
+
+      // check model availability after 5 seconds
+      setTimeout(checkModelAvailability, INTERVAL_CHECKING);
+    } catch (err) {
+      alert(err);
+      pullingModel = false;
+    }
   }
 
   async function checkModelAvailability() {
-      const response = await fetch("/api/llm/is_model_available");
-      const data = await response.json();
+    const response = await fetch('/api/llm/is_model_available');
+    const data = await response.json();
 
-      modelAvailable = data.available;
-      pullingModel = data.pulling
+    modelAvailable = data.available;
+    pullingModel = data.pulling;
 
-      if (!modelAvailable && pullingModel) {
-          // recheck after 5 seconds if pulling is in progress
-          setTimeout(checkModelAvailability, INTERVAL_CHECKING);
-      }
+    if (!modelAvailable && pullingModel) {
+      // recheck after 5 seconds if pulling is in progress
+      setTimeout(checkModelAvailability, INTERVAL_CHECKING);
+    }
   }
 
   async function sendMessage() {
-      chatHistory.update(history => {
-          return [...history, {role: "user", content: newMessage}];
+    chatHistory.update((history) => {
+      return [...history, { role: 'user', content: newMessage }];
+    });
+    newMessage = '';
+
+    waitingForReply = true;
+    try {
+      const body = get(chatHistory);
+      const response = await fetch('/api/llm/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
       });
-      newMessage = "";
-
-      waitingForReply = true
-      try {
-          const body = get(chatHistory);
-          const response = await fetch("/api/llm/chat", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(body)
-          });
-          chatHistory.set(await response.json());
-
-      } catch(err) {
-          alert(err)
-      }
-      waitingForReply = false
+      chatHistory.set(await response.json());
+    } catch (err) {
+      alert(err);
+    }
+    waitingForReply = false;
   }
 
   function clearChat() {
-      chatHistory.set([]);
+    chatHistory.set([]);
   }
 
   function handleKeyPress(event) {
-      if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
 
-          if (!waitingForReply){
-              sendMessage();
-          }
+      if (!waitingForReply) {
+        sendMessage();
       }
+    }
   }
 </script>
 
@@ -117,27 +115,27 @@
     border-radius: 5px;
   }
   .message.user {
-  background:  #FFE6E6;
-  color: black;
-  align-self: flex-end;
-  text-align: left;
-  max-width: 92%;
-  padding: 10px;
-  border-radius: 5px;
-  margin-left: auto;
-  width: max-content;
-}
+    background: #ffe6e6;
+    color: black;
+    align-self: flex-end;
+    text-align: left;
+    max-width: 92%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: auto;
+    width: max-content;
+  }
 
-.message.bot {
-  background: #f8f8f8;
-  color: black;
-  align-self: flex-start;
-  text-align: left;
-  max-width: fit-content;
-  padding: 10px;
-  border-radius: 5px;
-  margin-right: auto;
-}
+  .message.bot {
+    background: #f8f8f8;
+    color: black;
+    align-self: flex-start;
+    text-align: left;
+    max-width: fit-content;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: auto;
+  }
 
   .typing-indicator {
     display: inline-block;
@@ -154,7 +152,8 @@
     animation-delay: 0.6s;
   }
   @keyframes blink {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0;
     }
     50% {
@@ -181,43 +180,48 @@
   }
 </style>
 
-<div class="mt-1 pt-2 position-relative h-100 w-100 border border-3 rounded border-dark ">
+<div class="mt-1 pt-2 position-relative h-100 w-100 border border-3 rounded border-dark">
   <div class="title">AI Assistant</div>
   <div class="reset-button">
     <button class="btn btn-sm btn-dark" on:click={clearChat}>reset</button>
   </div>
   {#if modelAvailable === undefined}
-     <div class="container"> Loading... </div>
+    <div class="container">Loading...</div>
   {:else if !modelAvailable}
-  <div class="container">
+    <div class="container">
       <button class="btn btn-secondary {pullingModel ? 'disabled' : ''}" on:click={pullModel}>
         {pullingModel ? 'Pulling Model...' : 'Pull Model'}
       </button>
-  </div>
+    </div>
   {:else}
-  <div class="chat container-fluid">
-    <div class="mt-2 messages">
-      {#each $chatHistory as { role, content }}
-        <div class="message {role === 'user' ? 'user' : 'bot'}">
-          {#if (role === 'user')}
-            {content}
-          {:else}
-            <!-- render the ollama response -->
-            {@html marked.parse(content)}
-          {/if}
-        </div>
-      {/each}
-      {#if waitingForReply}
-      <div class="ms-3 typing-indicator">
-        <span>.</span>
-        <span>.</span>
-        <span>.</span>
+    <div class="chat container-fluid">
+      <div class="mt-2 messages">
+        {#each $chatHistory as { role, content }}
+          <div class="message {role === 'user' ? 'user' : 'bot'}">
+            {#if role === 'user'}
+              {content}
+            {:else}
+              <!-- render the ollama response -->
+              {@html marked.parse(content)}
+            {/if}
+          </div>
+        {/each}
+        {#if waitingForReply}
+          <div class="ms-3 typing-indicator">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </div>
+        {/if}
       </div>
-      {/if}
+      <div class="input-area input-group">
+        <textarea
+          class="bg-light form-control"
+          bind:value={newMessage}
+          placeholder="Type a message and hit enter"
+          on:keypress={handleKeyPress}
+        ></textarea>
+      </div>
     </div>
-    <div class="input-area input-group">
-      <textarea class="bg-light form-control" bind:value={newMessage} placeholder="Type a message and hit enter" on:keypress={handleKeyPress}></textarea>
-    </div>
-  </div>
   {/if}
 </div>

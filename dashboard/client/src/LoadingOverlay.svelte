@@ -5,7 +5,7 @@
 
   let loading = false;
 
-  const unsubscribe = isLoading.subscribe(value => {
+  const unsubscribe = isLoading.subscribe((value) => {
     loading = value;
   });
 
@@ -39,7 +39,6 @@
 
 {#if loading}
   <div class="overlay" transition:fade>
-    <div class="spinner-border text-light" role="status">
-    </div>
+    <div class="spinner-border text-light" role="status"></div>
   </div>
 {/if}

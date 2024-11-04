@@ -1,14 +1,13 @@
 import App from './App.svelte';
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/js/bootstrap.min.js'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 let app;
 
 app = new App({
-    target: document.getElementById('main'),
-    props: {
-    }
+  target: document.getElementById('main'),
+  props: {},
 });
 
 export default app;
