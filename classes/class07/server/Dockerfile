@@ -1,6 +1,6 @@
-FROM alpine:latest
+FROM debian:bookworm
 
-RUN apk update && apk add --no-cache vsftpd openssh-server
+RUN apt update && apt install -y vsftpd openssh-server
 
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /root/.ssh
@@ -13,7 +13,7 @@ RUN echo "TODO: this is some publicly available content (not secret)" > /home/pe
 RUN echo "TODO: Ooh no, this was suppsed to be secret" > /home/pepitto/files/secret.txt
 
 # Create the FTP user and set a password
-RUN adduser -D pepitto && echo "pepitto:Hard2GuessP@ssw0rd!" | chpasswd
+RUN useradd -m -d /home/pepitto -s /bin/bash pepitto && echo "pepitto:Hard2GuessP@ssw0rd!" | chpasswd
 
 # Set permissions for the FTP user's directory
 RUN chown -R pepitto:pepitto /home/pepitto/files
