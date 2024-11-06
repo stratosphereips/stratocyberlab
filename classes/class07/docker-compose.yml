@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  class-07-clients:
+    build: client/
+    stop_grace_period: 0s
+    hostname: class7-clients
+    container_name: scl-class-07-clients
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.108
+
+  class-07-servers:
+    build: server/
+    stop_grace_period: 0s
+    hostname: class7-servers
+    container_name: scl-class-07-servers
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.110
+
+networks:
+  playground-net:
+    external: true
