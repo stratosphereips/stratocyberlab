@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update && apt install -y vsftpd openssh-server
+RUN apt update && apt install -y vsftpd openssh-server vim
 
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /root/.ssh
