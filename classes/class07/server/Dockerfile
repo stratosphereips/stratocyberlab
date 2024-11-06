@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update && apt install -y vsftpd openssh-server vim
+RUN apt update && apt install -y vsftpd openssh-server vim iproute2
 
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /root/.ssh
