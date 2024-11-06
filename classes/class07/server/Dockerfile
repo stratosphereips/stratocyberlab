@@ -1,6 +1,11 @@
 FROM alpine:latest
 
-RUN apk update && apk add --no-cache vsftpd
+RUN apk update && apk add --no-cache vsftpd openssh-server
+
+RUN mkdir -p /var/run/sshd
+RUN mkdir -p /root/.ssh
+
+RUN echo "root:admin" | chpasswd
 
 # Create a directory for the FTP user and add lorem ipsum files
 RUN mkdir -p /home/pepitto/files
@@ -15,9 +20,11 @@ RUN chown -R pepitto:pepitto /home/pepitto/files
 
 # Copy the vsftpd configuration file into the container
 COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
+COPY sshd_config /etc/ssh/sshd_config
+COPY start.sh /start.sh
 
 # Expose FTP port and passive port range
 EXPOSE 21 40000-50000
 
 # Start vsftpd
-CMD ["/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf"]
+CMD ["/start.sh"]

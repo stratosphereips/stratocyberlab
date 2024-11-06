@@ -1,0 +1,6 @@
+PermitRootLogin yes
+ChallengeResponseAuthentication no
+X11Forwarding yes
+PrintMotd no
+AcceptEnv LANG LC_*
+Banner /etc/banner

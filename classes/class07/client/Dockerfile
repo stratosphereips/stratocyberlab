@@ -1,5 +1,14 @@
 FROM python:3-slim
 
-COPY server.py /server.py
+RUN apt update && apt install -y openssh-server ftp
 
-CMD ["python3", "/server.py"]
+RUN mkdir -p /var/run/sshd
+RUN mkdir -p /root/.ssh
+
+COPY sshd_config /etc/ssh/sshd_config
+
+RUN echo "root:admin" | chpasswd
+
+COPY start.sh server.py /
+
+CMD ["./start.sh"]
