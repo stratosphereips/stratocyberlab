@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update && apt install -y vsftpd openssh-server vim iproute2
+RUN apt update && apt install -y vsftpd openssh-server vim iproute2 net-tools tmux
 
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /root/.ssh
