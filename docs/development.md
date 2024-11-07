@@ -55,8 +55,11 @@
  | playground-net | `172.20.0.95`  | [Class03](./../classes/class03)                                     |  
  | playground-net | `172.20.0.98`  | [Class06](./../classes/class06)                                     |  
  | playground-net | `172.20.0.99`  | [Class06](./../classes/class06)                                     |  
+ | playground-net | `172.20.0.108` | [Class07](./../classes/class07)                                     |
+| playground-net | `172.20.0.110` | [Class07](./../classes/class07)                                     |
  | playground-net | `172.20.0.101` | [Class11](./../classes/class11)                                     |  
 
+TODO
 
 
 ## Testing
