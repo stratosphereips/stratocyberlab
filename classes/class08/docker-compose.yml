@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  class-08-exploit-lab:
+    build: .
+    platform: linux/amd64 # important
+    security_opt:
+      - seccomp:/classes/class08/seccomp-profile.json
+    stop_grace_period: 0s
+    hostname: class8-exploitation-lab
+    container_name: scl-class-08-exploitation-lab
+
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.115
+
+networks:
+  playground-net:
+    external: true
