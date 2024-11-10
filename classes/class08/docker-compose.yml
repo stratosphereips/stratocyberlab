@@ -4,6 +4,7 @@ services:
   class-08-exploit-lab:
     build: .
     platform: linux/amd64 # important
+    privileged: true
     security_opt:
       - seccomp:/classes/class08/seccomp-profile.json
     stop_grace_period: 0s
