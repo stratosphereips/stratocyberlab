@@ -1,12 +1,12 @@
 import sqlite3
-from typing import Tuple, List, Set, Dict
-from collections import defaultdict
+from typing import List, Dict
 
 DATABASE = 'db.sqlite3'
 
+
 def get_db():
     return sqlite3.connect(DATABASE)
-    return conn
+
 
 def init_db_tables():
     conn = get_db()
@@ -48,6 +48,7 @@ def init_db_tables():
     conn.commit()
     conn.close()
 
+
 def insert_class_data(id: str, name: str, desc: str, cl_dir: str, doc_url: str, yt_url: str):
     conn = get_db()
     cursor = conn.cursor()
@@ -80,7 +81,7 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
 
 def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str):
     conn = get_db()
-    cursor = conn.cursor()    
+    cursor = conn.cursor()
     q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir) VALUES (?, ?, ?, ?, ?)'
     cursor.execute(q, (id, name, desc, diff, ch_dir))
     conn.commit()
@@ -88,10 +89,11 @@ def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str)
 
 def insert_task_data(chal_id: str, id: str, name: str, desc: str, flag: str):
     conn = get_db()
-    cursor = conn.cursor()    
+    cursor = conn.cursor()
     q = 'INSERT INTO tasks (challenge_id, task_id, task_name, task_description, flag) VALUES (?, ?, ?, ?, ?)'
     cursor.execute(q, (chal_id, id, name, desc, flag))
     conn.commit()
+
 
 def get_tasks(sess: str) -> List[Dict]:
     conn = get_db()
@@ -139,8 +141,9 @@ def get_task_flag(chal_id: str, task_id: str) -> str:
 
     if rows:
         return rows[0][0]
-    else:
-        return ""
+
+    return ""
+
 
 def get_challenge_dir(chal_id: str) -> str:
     conn = get_db()
@@ -154,8 +157,7 @@ def get_challenge_dir(chal_id: str) -> str:
 
     if rows:
         return rows[0][0]
-    else:
-        return ""
+    return ""
 
 
 def get_class_dir(c_id: str) -> str:
@@ -170,8 +172,7 @@ def get_class_dir(c_id: str) -> str:
 
     if rows:
         return rows[0][0]
-    else:
-        return ""
+    return ""
 
 
 def get_challenges() -> List[Dict]:
@@ -191,6 +192,7 @@ def get_challenges() -> List[Dict]:
     res = [dict(zip(columns, row)) for row in rows]
 
     return res
+
 
 def write_new_solve(sess: str, challenge_id: str, task_id: str):
     conn = get_db()
