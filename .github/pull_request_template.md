@@ -28,3 +28,7 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
 - [ ] My changes generate no new warnings
+- [ ] (If modifying dashboard client) I have checked my code for lints with 
+  `eslint` and formatted it properly using `prettier`
+- [ ] (If modifying dashboard server) I have checked my code for lints with 
+  `pylint` and formatted it properly using `autopep8`
