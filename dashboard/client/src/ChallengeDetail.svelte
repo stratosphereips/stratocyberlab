@@ -23,7 +23,7 @@
       const data = await res.text();
 
       if (res.status !== 200) {
-        throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
       }
 
       if (data.includes('Congratulations')) {
@@ -32,7 +32,8 @@
       }
       alert(data);
     } catch (err) {
-      alert(err);
+      console.error(err);
+      alert(err instanceof Error ? err.message : err);
     }
   }
 
@@ -51,12 +52,13 @@
         body: JSON.stringify(payload),
       });
       if (res.status !== 200) {
-        throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
       }
 
       challenge.running = action === 'start';
     } catch (err) {
-      alert(err);
+      console.error(err);
+      alert(err instanceof Error ? err.message : err);
     }
     isLoading.set(false);
   }
