@@ -5,14 +5,14 @@ int main() {
     volatile int modified;
     char buffer[64];
 
-    modified = 0;
+    modified = 1;
 
     gets(buffer);
 
     if (modified != 0 ) {
-   	 printf("Access granted\n");
-    } else {
    	 printf("Access denied\n");
+    } else {
+   	 printf("Access granted\n");
     }
 
     return 0;
