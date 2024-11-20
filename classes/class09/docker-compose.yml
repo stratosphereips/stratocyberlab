@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  class-09-reversing-lab:
+    build: .
+    platform: linux/amd64 # important
+    security_opt:
+      - seccomp:/classes/class09/seccomp-profile.json
+    stop_grace_period: 0s
+    hostname: class9-reversing-lab
+    container_name: scl-class-09-reversing-lab
+
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.120
+
+networks:
+  playground-net:
+    external: true
