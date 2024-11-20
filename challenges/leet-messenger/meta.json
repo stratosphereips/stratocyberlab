@@ -1,0 +1,20 @@
+{
+    "name": "Leet Messenger",
+    "id": "leet_messenger_id",
+    "difficulty": "hard",
+    "description": "",
+    "tasks": [
+      { 
+        "id": "task1",
+        "name": "A message",
+        "description": "A leet coder is trying to tell you something, can you find it and make a sense of it?",
+        "flag": "BSY{a!sk&fjlhý76S5F9OUILFNRQKJLRHIUFKHAS}"
+      },
+      {
+        "id": "task2",
+        "name": "Reverse it",
+        "description": "After you find the 1st message, there might be a 2nd hidden message.",
+        "flag": "iam-reverse-king"
+      }
+    ]
+  }  
