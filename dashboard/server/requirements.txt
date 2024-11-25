@@ -4,5 +4,3 @@ flask-socketio
 eventlet
 paramiko
 ollama
-autopep8
-pylint

@@ -2,8 +2,12 @@
 
 ## Development
 
-- `pip install -r requirements.txt` to install dependencies
+- `pip install -r requirements.txt && pip install -r requirements-dev.txt` to 
+  install dependencies (including development tools)
 - `python app.py` to run the development server (also done in Docker)
+- `python ws_ssh.py` to run the websocket server 
+  - The reason for 2 servers is a conflict of threading (used for SSH 
+    connections in `ws_ssh.py`) and asyncio (used by Quart in http server)  
 
 ## Code Quality
 
