@@ -1,0 +1,49 @@
+version: '3.3'
+
+services:
+  class-10-lab:
+    build: .
+    platform: linux/amd64 # important
+    stop_grace_period: 0s
+    hostname: class10-lab
+    container_name: scl-class-10-lab
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.125
+
+  class-10-irc:
+    image: inspircd/inspircd-docker
+    stop_grace_period: 0s
+    hostname: class10-irc
+    container_name: scl-class-10-irc
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.130
+
+  class-10-bot1:
+    build: .
+    platform: linux/amd64 # important
+    stop_grace_period: 0s
+    hostname: class10-bot1
+    container_name: scl-class-10-bot1
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.131
+
+  class-10-bot2:
+    build: .
+    platform: linux/amd64 # important
+    stop_grace_period: 0s
+    hostname: class10-bot2
+    container_name: scl-class-10-bot2
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.132
+
+
+
+
+
+networks:
+  playground-net:
+    external: true
