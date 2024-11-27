@@ -1,12 +1,13 @@
 # pylint: disable=wrong-import-position, wrong-import-order
+import eventlet
+eventlet.monkey_patch()
+
 import paramiko
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, request
 import socket
 import sys
 import threading
-import eventlet
-eventlet.monkey_patch()
 
 
 def eprint(*args, **kwargs):
