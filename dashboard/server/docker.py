@@ -1,6 +1,7 @@
 import subprocess
 import sys
 
+
 def start_compose(dir: str):
     file = f"{dir}/docker-compose.yml"
 
@@ -12,6 +13,7 @@ def start_compose(dir: str):
     if result.returncode != 0:
         raise Exception("Error doing docker-compose up")
 
+
 def stop_compose(dir: str):
     file = f"{dir}/docker-compose.yml"
 
@@ -22,6 +24,7 @@ def stop_compose(dir: str):
     )
     if result.returncode != 0:
         raise Exception("Error doing docker-compose down")
+
 
 def is_up(dir: str) -> bool:
     file = f"{dir}/docker-compose.yml"
@@ -48,4 +51,3 @@ def is_up(dir: str) -> bool:
 
     # all running containers must be equal to all defined services
     return all_services == all_healthy
-

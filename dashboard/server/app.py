@@ -1,25 +1,30 @@
-from typing import List, Tuple
-from pathlib import Path
-from functools import wraps
-from quart import Quart, request, send_from_directory, make_response, session, Response, jsonify
-import json
-import glob
-import uuid
-import sys
-import db
-import llm
 import asyncio
-import os, os.path
+import json
+import os
+import os.path
+import sys
+import uuid
+from functools import wraps
+from pathlib import Path
+from typing import List
+
+from quart import Quart, request, send_from_directory, session, jsonify
+
+import db
 import docker
+import llm
 
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
+
 def get_dirs(parent: str) -> List[str]:
     return [d for d in os.listdir(parent) if os.path.isdir(os.path.join(parent, d))]
 
 # load challenges from files and bootstrap DB
+
+
 def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
     # this file works as a check to know if DB was already bootstrapped or not
     # because otherwise this code could run multiple times if the container was restarted
@@ -38,7 +43,7 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
             eprint(f"challenge {name} is missing docker-compose.yml file")
             return
 
-        with open(f"{ch_dir}/meta.json", 'r') as f:
+        with open(f"{ch_dir}/meta.json", 'r', encoding='utf8') as f:
             ch = json.load(f)
 
         ch_id, ch_name, ch_diff, ch_desc = ch["id"], ch["name"], ch["difficulty"], ch["description"]
@@ -51,7 +56,7 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
     for name in get_dirs(parent_cl_dir):
         cl_dir = f"{parent_cl_dir}/{name}"
 
-        with open(f"{cl_dir}/meta.json", 'r') as f:
+        with open(f"{cl_dir}/meta.json", 'r', encoding='utf8') as f:
             class_data = json.load(f)
 
         dir = ""
@@ -60,7 +65,8 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
             dir = cl_dir
 
         id, name, desc = class_data["id"], class_data["name"], class_data["description"]
-        doc_url, yt_url = class_data.get("google_doc_url", ""), class_data.get("yt_recording_url", ""),
+        doc_url, yt_url = class_data.get(
+            "google_doc_url", ""), class_data.get("yt_recording_url", "")
         db.insert_class_data(id, name, desc, dir, doc_url, yt_url)
 
     file.touch()
@@ -69,6 +75,7 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
 
 app = Quart(__name__, static_folder='public', static_url_path='')
 app.secret_key = 'does not matter since this is all local'
+
 
 @app.before_serving
 async def startup():
@@ -86,7 +93,6 @@ async def startup():
     eprint(banner)
 
 
-
 # wrapper that just creates session_id if it did not exist before
 def manage_session(func):
     @wraps(func)
@@ -98,15 +104,20 @@ def manage_session(func):
         return response
     return wrapper
 
+
 def get_session_id():
     return session['id']
 
 # live check
+
+
 @app.route('/live', methods=['GET'])
 async def live():
     return "OK"
 
 # graceful shutdown
+
+
 @app.after_serving
 async def shutdown():
     eprint("Initiating graceful shutdown - stopping all challenges and classes...")
@@ -114,11 +125,15 @@ async def shutdown():
     await challenges_stop_all()
 
 # root
+
+
 @app.route('/', methods=['GET'])
 async def root():
     return await app.send_static_file('index.html')
 
 # Static files
+
+
 @app.route('/<path:filename>', methods=["GET"])
 @manage_session
 async def static_files(filename):
@@ -132,6 +147,7 @@ async def static_files(filename):
 @manage_session
 async def classes_get():
     return jsonify(db.get_classes())
+
 
 @app.route('/api/classes/up', methods=['GET'])
 @manage_session
@@ -168,13 +184,15 @@ async def class_start():
 
     try:
         eprint(f"Let's start a class with id: '{c_id}'")
-        docker.stop_compose(class_dir)  # first try to turn-off previous containers
+        # first try to turn-off previous containers
+        docker.stop_compose(class_dir)
         docker.start_compose(class_dir)
     except Exception as e:
         eprint(f"error starting a class: {e}")
         return f"error starting a class: {e}", 500
 
     return 'Class started! 🎉'
+
 
 @app.route('/api/classes/stop', methods=['POST'])
 @manage_session
@@ -247,6 +265,7 @@ async def challenges_submit():
 
     return 'Congratulations, you found a correct flag! 🎉'
 
+
 @app.route('/api/challenges', methods=['GET'])
 @manage_session
 async def challenges_get():
@@ -255,8 +274,10 @@ async def challenges_get():
     challenges = []
     challenges_map = {}
     for t in tasks:
-        ch_id, ch_name, ch_diff, ch_desc = t["challenge_id"], t["challenge_name"], t["difficulty"], t["challenge_description"]
-        t_id, t_name, t_desc, t_flag, solved = t["task_id"], t["task_name"], t["task_description"], t["flag"], t["solved"]
+        ch_id, ch_name, ch_diff, ch_desc = t["challenge_id"], t[
+            "challenge_name"], t["difficulty"], t["challenge_description"]
+        t_id, t_name, t_desc, t_flag, solved = t["task_id"], t[
+            "task_name"], t["task_description"], t["flag"], t["solved"]
 
         ch = challenges_map.get(ch_id, None)
         if not ch:
@@ -280,6 +301,7 @@ async def challenges_get():
 
     return jsonify(challenges)
 
+
 @app.route('/api/challenges/start/all', methods=['POST'])
 @manage_session
 async def challenges_start_all():
@@ -292,7 +314,8 @@ async def challenges_start_all():
 
         try:
             eprint(f"Let's start a challenge with id: '{ch_id}'")
-            docker.stop_compose(ch_dir)  # first try to turn-off previous containers
+            # first try to turn-off previous containers
+            docker.stop_compose(ch_dir)
             docker.start_compose(ch_dir)
         except Exception as e:
             eprint(f"error starting a challenge: {e}")
@@ -305,6 +328,7 @@ async def challenges_start_all():
 @manage_session
 async def route_challenges_stop_all():
     return await challenges_stop_all()
+
 
 async def challenges_stop_all():
     challenges = db.get_challenges()
@@ -323,6 +347,7 @@ async def challenges_stop_all():
 
     return 'All stopped! 🎉'
 
+
 @app.route('/api/challenges/start', methods=['POST'])
 @manage_session
 async def challenge_start():
@@ -339,13 +364,15 @@ async def challenge_start():
 
     try:
         eprint(f"Let's start a challenge with id: '{challenge_id}'")
-        docker.stop_compose(ch_dir)  # first try to turn-off previous containers
+        # first try to turn-off previous containers
+        docker.stop_compose(ch_dir)
         docker.start_compose(ch_dir)
     except Exception as e:
         eprint(f"error starting a challenge: {e}")
         return f"error starting a challenge: {e}", 500
 
     return 'Challenge started! 🎉'
+
 
 @app.route('/api/challenges/stop', methods=['POST'])
 @manage_session
@@ -369,6 +396,7 @@ async def challenge_stop():
         return f"error stopping a challenge: {e}", 500
 
     return 'Challenge stopped'
+
 
 @app.route('/api/challenges/up', methods=['GET'])
 @manage_session
@@ -395,6 +423,8 @@ async def llm_is_model_available():
     })
 
 pull_in_progress = False
+
+
 @app.route('/api/llm/pull_model', methods=['POST'])
 async def llm_pull_model():
     global pull_in_progress
@@ -403,7 +433,6 @@ async def llm_pull_model():
     if pull_in_progress:
         return "Model pull is already in progress", 409
     pull_in_progress = True
-
 
     async def job():
         global pull_in_progress
@@ -415,6 +444,7 @@ async def llm_pull_model():
     loop.create_task(job())
 
     return "Model pull started in the background", 200
+
 
 @app.route('/api/llm/chat', methods=['POST'])
 async def llm_chat():

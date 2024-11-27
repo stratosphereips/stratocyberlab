@@ -18,12 +18,13 @@
         body: JSON.stringify(payload),
       });
       if (res.status !== 200) {
-        throw new String(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
       }
 
       curClass.running = action === 'start';
     } catch (err) {
-      alert(err);
+      console.error(err);
+      alert(err instanceof Error ? err.message : err);
     }
     isLoading.set(false);
   }

@@ -4,11 +4,12 @@ import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import terser from '@rollup/plugin-terser';
 import css from 'rollup-plugin-css-only';
+import eslint from '@rollup/plugin-eslint';
 
 const production = !process.env.ROLLUP_WATCH;
 
 function serve() {
-    let server;
+  let server;
 
   function toExit() {
     if (server) server.kill(0);
@@ -43,6 +44,7 @@ export default {
         dev: !production,
       },
     }),
+    eslint(),
     // we'll extract any component CSS out into
     // a separate file - better for performance
     css({ output: 'bundle.css' }),
