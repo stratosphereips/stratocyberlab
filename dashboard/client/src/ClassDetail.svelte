@@ -58,7 +58,10 @@
     <h4 class="d-inline">{curClass.name}</h4>
   </div>
 </div>
-<p class="pt-3 text-muted">{curClass.description}</p>
+<p class="pt-3 text-muted">
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html curClass.description}
+</p>
 
 {#if curClass.yt_recording_url}
   <iframe
