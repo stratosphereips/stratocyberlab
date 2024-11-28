@@ -12,7 +12,9 @@ services:
         ipv4_address: 172.20.0.125
 
   class-10-irc:
-    image: inspircd/inspircd-docker
+    build:
+      context: .
+      dockerfile: Dockerfile.irc
     stop_grace_period: 0s
     hostname: class10-irc
     container_name: scl-class-10-irc

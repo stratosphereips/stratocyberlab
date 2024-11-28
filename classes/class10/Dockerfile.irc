@@ -1,0 +1,3 @@
+FROM inspircd/inspircd-docker
+
+COPY inspircd.conf /inspircd/conf/inspircd.conf
