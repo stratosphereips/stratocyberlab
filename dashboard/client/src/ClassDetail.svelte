@@ -80,7 +80,7 @@
     width="100%"
     height="100%"
     class="flex-grow-1"
-    src="https://www.youtube.com/embed/_qtmZNZIlq8?si=jNUknhYQ77Ry8pm7"
+    src="https://www.youtube.com/embed/HShkFvjHPjw?si=SD9QTP6_i-VSC7rf"
     title="BSY class Live Stream"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     referrerpolicy="strict-origin-when-cross-origin"
