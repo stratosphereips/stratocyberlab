@@ -60,6 +60,10 @@
 | playground-net | `172.20.0.110` | [Class07](./../classes/class07)                                     |
 | playground-net | `172.20.0.115` | [Class08](./../classes/class08)                                     |
 | playground-net | `172.20.0.120` | [Class09](./../classes/class09)                                     |
+| playground-net | `172.20.0.125` | [Class10](./../classes/class10)                                     |
+| playground-net | `172.20.0.130` | [Class10](./../classes/class10)                                     |
+| playground-net | `172.20.0.131` | [Class10](./../classes/class10)                                     |
+| playground-net | `172.20.0.132` | [Class10](./../classes/class10)                                     |
 
 ## Testing
 
