@@ -1,0 +1,14 @@
+{
+    "name": "Cybernet",
+    "id": "cybernet",
+    "difficulty": "medium",
+    "description": "",
+    "tasks": [
+      { 
+        "id": "task1",
+        "name": "Understand the master",
+        "description": "You are a botnet researcher. You were just told there is a C2 server hosted at ip address 172.20.0.52. You should understand its protocol fast!",
+        "flag": "BSY{eBhnIBKYNuHlaAKk2JhoDCBGJLJFogAk6uQ7gQxU89IADQGpe2ATVAbyagAg}"
+      }
+    ]
+  }  

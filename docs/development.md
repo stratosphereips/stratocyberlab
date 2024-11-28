@@ -45,12 +45,13 @@
 | playground-net | `172.20.0.10`  | Challenge [Famous Quotes LFI](./../challenges/famous-quotes-lfi/)   |
 | playground-net | `172.20.0.30`  | Challenge [What's the date?](./../challenges/what-is-the-date/)     |
 | playground-net | `172.20.0.35`  | Challenge [What's that noise?](./../challenges/what-is-that-noise/) |
- | playground-net | `172.20.0.39`  | Callenge [Shockwave Report](./../challenges/shockwave-report)       |
- | playground-net | `172.20.0.41`  | Callenge [Intrusion](./../challenges/intrusion)                     |
- | playground-net | `172.20.0.45`  | Callenge [Jump Around](./../challenges/jump-around)                 |
- | playground-net | `172.20.0.47`  | Callenge [Jump Around](./../challenges/jump-around)                 |
- | playground-net | `172.20.0.49`  | Callenge [Jump Around](./../challenges/jump-around)                 |
- | playground-net | `172.20.0.67`  | Callenge [Leet Messenger](./../challenges/leet-messenger)           |
+ | playground-net | `172.20.0.39`  | Challenge [Shockwave Report](./../challenges/shockwave-report)      |
+ | playground-net | `172.20.0.41`  | Challenge [Intrusion](./../challenges/intrusion)                    |
+ | playground-net | `172.20.0.45`  | Challenge [Jump Around](./../challenges/jump-around)                |
+ | playground-net | `172.20.0.47`  | Challenge [Jump Around](./../challenges/jump-around)                |
+ | playground-net | `172.20.0.49`  | Challenge [Jump Around](./../challenges/jump-around)                |
+ | playground-net | `172.20.0.67`  | Challenge [Leet Messenger](./../challenges/leet-messenger)          |
+ | playground-net | `172.20.0.52`  | Challenge [Cybernet](./../challenges/cybernet)                      |
  | playground-net | `172.20.0.88`  | [Class02](./../classes/class02)                                     |                                                
  | playground-net | `172.20.0.90`  | [Class03](./../classes/class03)                                     |                                                
  | playground-net | `172.20.0.95`  | [Class03](./../classes/class03)                                     |  
