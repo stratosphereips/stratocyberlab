@@ -18,8 +18,8 @@ services:
       - /bin/sh
       - -c
       - |
-        mkdir -p /StratosphereLinuxIPs/dataset && \
-        curl -L -o /StratosphereLinuxIPs/dataset/reverse_pe_powershell_port80.zip https://github.com/jstrosch/malware-samples/raw/master/training_pcaps/reverse_pe_powershell_port80.zip && \
+        mkdir -p /StratosphereLinuxIPS/dataset && \
+        curl -L -o /StratosphereLinuxIPS/dataset/reverse_pe_powershell_port80.zip https://github.com/jstrosch/malware-samples/raw/master/training_pcaps/reverse_pe_powershell_port80.zip && \
         exec /bin/bash
 
 networks:
