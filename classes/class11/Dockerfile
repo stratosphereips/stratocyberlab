@@ -1,6 +1,6 @@
 FROM stratosphereips/slips_light:latest
 
-RUN apt update && apt install -y openssh-server vim nano tmux
+RUN apt update && apt install -y openssh-server vim nano tmux bsdmainutils
 
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /root/.ssh
