@@ -5,6 +5,7 @@ services:
     container_name: scl-class-11-lab
     hostname: class-11-lab
     stop_grace_period: 0s
+    platform: linux/amd64 # important
     deploy:
       resources:
         limits:
