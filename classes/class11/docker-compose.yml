@@ -1,8 +1,9 @@
 version: '3.7'
 services:
-  class-11-slips:
-    image: stratosphereips/slips_light:latest
-    container_name: slips
+  class-11-lab:
+    build: .
+    container_name: scl-class-11-lab
+    hostname: class-11-lab
     stop_grace_period: 0s
     deploy:
       resources:
@@ -13,14 +14,6 @@ services:
     networks:
       playground-net:
         ipv4_address: 172.20.0.101
-    # a sample pcap to run slips on
-    entrypoint:
-      - /bin/sh
-      - -c
-      - |
-        mkdir -p /StratosphereLinuxIPs/dataset && \
-        curl -L -o /StratosphereLinuxIPs/dataset/reverse_pe_powershell_port80.zip https://github.com/jstrosch/malware-samples/raw/master/training_pcaps/reverse_pe_powershell_port80.zip && \
-        exec /bin/bash
 
 networks:
   playground-net:

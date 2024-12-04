@@ -1,0 +1,1 @@
+cat alerts.log |awk -F 'Detected' '{print $2}'|sort|uniq -c|sort -rn

@@ -1,7 +1,7 @@
 {
-    "name": "Class 11 - TODO",
+    "name": "Class 11 - C&C detection",
     "id": "class-11",
-    "description": "TODO",
+    "description": "The eleventh class focuses on manual and automatic detection of C&C channels. <br>Please open the Google document provided to all registered students and follow the document. <br><ul><li>After starting the class, connect to your lab with '<b>ssh root@172.20.0.101</b>' and 'admin' password</li></ul>",
     "google_doc_url": "",
     "yt_recording_url": ""
 }
