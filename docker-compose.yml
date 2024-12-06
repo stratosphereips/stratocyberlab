@@ -7,7 +7,7 @@ services:
     volumes:
       - ./hackerlab/data:/data
     ports:
-      - "2222:22"
+      - "127.0.0.1:2222:22"
     networks:
       playground-net:
         ipv4_address: 172.20.0.2
@@ -18,8 +18,8 @@ services:
     hostname: dashboard
     restart: always
     ports:
-      - "80:80"
-      - "8080:8080"
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:8080:8080"
     networks:
       playground-net:
         ipv4_address: 172.20.0.3
