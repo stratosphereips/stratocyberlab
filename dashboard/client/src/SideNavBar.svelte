@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { slide } from 'svelte/transition';
+  import CollapsibleSection from './components/CollapsibleSection.svelte';
 
   let challenges;
   let classes;
@@ -9,8 +10,8 @@
   export let chosenClass;
 
   onMount(async () => {
-    await fetchChallenges();
-    await fetchClasses();
+    fetchChallenges().then();
+    fetchClasses().then();
   });
 
   const difficultyOrder = { easy: 1, medium: 2, hard: 3 };
@@ -118,56 +119,47 @@
           <span class="visually-hidden">Loading...</span>
         </div>
       {:else}
-        <div class="list-group">
-          <button
-            class="list-group-item list-group-item-action d-flex justify-content-between"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#classesList"
-            aria-expanded="false"
-            aria-controls="classesList"
-          >
-            <b>Classes</b>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path d="M7 10l5 5 5-5z" />
-            </svg>
-          </button>
-
-          <div id="classesList" class="collapse">
+        <ul class="list-unstyled">
+          <CollapsibleSection id="classesList" label="Classes">
             {#each classes as c}
-              <button
-                on:click={() => {
-                  chosenClass = c;
-                  chosenChallenge = undefined;
-                }}
-                type="button"
-                class="list-group-item list-group-item-action d-flex justify-content-between"
-              >
-                {c.name}
-              </button>
+              <li class="mb-1">
+                <button
+                  on:click={() => {
+                    chosenClass = c;
+                    chosenChallenge = undefined;
+                  }}
+                  type="button"
+                  class="list-group-item list-group-item-action d-flex justify-content-between {chosenClass === c
+                    ? 'fw-bold'
+                    : ''}"
+                >
+                  {c.name}
+                </button>
+              </li>
             {/each}
-          </div>
-        </div>
+          </CollapsibleSection>
 
-        <!-- Challenges List -->
-        <div class="pt-2 list-group">
-          <div class="list-group-item list-group-item-action d-flex justify-content-between">
-            <b>Challenges</b>
-          </div>
-          {#each challenges as ch}
-            <button
-              on:click={() => {
-                chosenChallenge = ch;
-                chosenClass = undefined;
-              }}
-              type="button"
-              class="list-group-item list-group-item-action d-flex justify-content-between"
-            >
-              {ch.name}
-              <span class="badge {difficulty_background(ch.difficulty)} rounded-pill">{ch.difficulty}</span>
-            </button>
-          {/each}
-        </div>
+          <!-- Challenges List -->
+          <CollapsibleSection id="challengeList" label="Challenges">
+            {#each challenges as ch}
+              <li class="mb-1">
+                <button
+                  on:click={() => {
+                    chosenChallenge = ch;
+                    chosenClass = undefined;
+                  }}
+                  type="button"
+                  class="list-group-item list-group-item-action d-flex justify-content-between {chosenChallenge === ch
+                    ? 'fw-bold'
+                    : ''}"
+                >
+                  {ch.name}
+                  <span class="badge {difficulty_background(ch.difficulty)} rounded-pill">{ch.difficulty}</span>
+                </button>
+              </li>
+            {/each}
+          </CollapsibleSection>
+        </ul>
       {/if}
     </div>
   {:else}
