@@ -23,7 +23,7 @@
       const data = await res.text();
 
       if (res.status !== 200) {
-        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
 
       if (data.includes('Congratulations')) {
@@ -52,7 +52,7 @@
         body: JSON.stringify(payload),
       });
       if (res.status !== 200) {
-        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
 
       challenge.running = action === 'start';

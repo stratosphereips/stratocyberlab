@@ -21,7 +21,7 @@
       const data = await res.json();
 
       if (res.status !== 200) {
-        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
 
       // sort based on challenges difficulties - first we show easy, then medium and lastly hard
@@ -53,7 +53,7 @@
       const data = await res.json();
 
       if (res.status !== 200) {
-        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
 
       classes = data;
