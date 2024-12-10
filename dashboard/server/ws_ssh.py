@@ -1,4 +1,5 @@
 # pylint: disable=wrong-import-position, wrong-import-order
+# autopep8: off
 import eventlet
 eventlet.monkey_patch()
 
@@ -8,6 +9,7 @@ from flask import Flask, request
 import socket
 import sys
 import threading
+# autopep8: on
 
 
 def eprint(*args, **kwargs):
