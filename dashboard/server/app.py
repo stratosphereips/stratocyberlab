@@ -13,6 +13,7 @@ from quart import Quart, request, send_from_directory, session, jsonify
 import db
 import docker
 import llm
+from config import getenv
 
 
 def eprint(*args, **kwargs):
@@ -25,7 +26,7 @@ def get_dirs(parent: str) -> List[str]:
 # load challenges from files and bootstrap DB
 
 
-def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
+def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=getenv('CLASS_DIR') or '/classes'):
     # this file works as a check to know if DB was already bootstrapped or not
     # because otherwise this code could run multiple times if the container was restarted
     file = Path(".was_db_inited")
@@ -453,4 +454,4 @@ async def llm_chat():
 
 if __name__ == '__main__':
     init()
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=True, host=getenv('HOST') or '0.0.0.0', port=getenv('PORT') or 80)
