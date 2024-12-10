@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+   <title>JSON Viewer and Formatter - JSON.pub</title>
+   <meta name="keywords" content="JSON,javascript object notation,parser,parseur,online,tool,free,javascript,tree,treeview,tree view,post,syntax highlighting,парсер,解析器,محلل جسون"/>
+   <meta name="description" content="Convert JSON Strings to a Friendly Readable Format. Analyze your JSON string as you type with an online Javascript parser, featuring tree view and syntax highlighting. Processing is local: no data is sent to server."/>
+   <link rel="icon" href="/assets/favicon.png?2" id="favicon"/>
+    <!-- 100% privacy-first analytics -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.0/dist/purify.min.js"></script>
+    <title>JSON Visualizer</title>
+    <style>
+
+        html,body {
+            max-width:100%;
+        }
+        body {
+            margin: 0;
+            font-family: "system-ui", sans-serif;
+        }
+
+        header {
+            height: 40px;
+            background: #204a87;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+        }
+        header a {
+            color:#fff;
+        }
+        a {
+            text-decoration:none;
+        }
+        a:hover {
+            opacity:0.5;
+        }
+        a:active {
+            opacity:0.25;
+        }
+
+        footer {
+            height: 40px;
+            background: #f5f5f5;
+            color: #888;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        footer a {
+            color:#888;
+            /* text-decoration: underline;; */
+            /* font-weight:bold; */
+            font-style:italic;
+        }
+
+        main {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+
+        textarea {
+            outline:none;
+            width: calc(50% - 5px);
+            height: 100%;
+            border: none;
+            resize: none;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: monospace;
+        }
+
+
+       #resizer {
+           width: 10px;
+           background: #ddd;
+           cursor: ew-resize;
+           position: relative;
+           z-index: 10;
+       }
+       #resizer:hover {
+            opacity:0.5;
+       }
+       #resizer:active {
+            opacity:0.25;
+       }
+
+
+        #json-view {
+            outline:none;
+            width: calc(50% - 5px);
+            height: 100%;
+            background: #f9f9f9;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: monospace;
+            line-height:23px;
+            font-size:14px;
+        }
+
+        #json-view a {
+            text-decoration: underline;;
+        }
+
+        .key {
+            color: #204a87;
+        }
+
+        .string,
+        .string a {
+            color: #4e9a06;
+        }
+
+        .error {
+            color:#9a0606;
+        }
+        .null {
+            color:#babdb6;
+        }
+        .boolean {
+            color:#c4a000;
+        }
+        .number {
+            color: #ad7fa8;
+        }
+
+        .toggle {
+            cursor: pointer;
+        }
+
+        .toggle::before {
+            font-size:17px;
+            border-radius: 2px;
+            border-color: #AAA;
+            border-style: solid;
+            border-width: 2px;
+            color: #AAA;
+            content: '-';
+            display: inline-block;
+            line-height: 11px;
+            -webkit-font-smoothing: subpixel-antialiased;
+            margin: 0 2px;
+            overflow: hidden;
+            padding: 0;
+            position:relative;
+            top:3px;
+        }
+
+        .collapsed .indent {
+            display:none;
+        }
+
+
+        .collapsed .toggle::before {
+            content: '+';
+        }
+
+        .collapsed > .children {
+            display: none;
+        }
+
+        .toggle:hover + .children {
+            opacity: 0.25;
+        }
+
+        /* Media query for screens with max-width 600px */
+        @media (max-width: 600px) {
+            main {
+                flex-direction: column; /* Switch to vertical layout */
+                height: auto; /* Allow scrolling for smaller screens */
+            }
+            textarea,
+            #json-view {
+                width: 100% !important; /* Full width */
+                height: calc(50vh - 40px); /* Half of the viewport height */
+                overflow-y: auto; /* Make each section scrollable */
+                overflow-x: auto; /* Make each section scrollable */
+            }
+            textarea {
+                height: calc(40vh - 40px); /* Half of the viewport height */
+                border-bottom:1px solid #d6d6d6;
+            }
+            #json-view {
+                height: calc(60vh - 40px); /* Half of the viewport height */
+            }
+            #resizer {
+                display: none; /* Hide the resizer */
+            }
+            .hide-before-600px {
+                display:none;
+            }
+            footer {
+                justify-content: normal;
+                position:fixed;
+                bottom:0;
+                border-top:1px solid #d6d6d6;
+                width:100vw;
+            }
+        }
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            body,
+            main,
+            textarea,
+            #json-view {
+                background-color: #1f1f1f;
+                color: #f8f8f3;
+            }
+            /* JSON keys */
+            .key {
+                color: #97bce1; /* Light blue */
+                font-weight: bold;
+            }
+
+            /* JSON string values */
+            .string,
+            .string a {
+                color: #93d65a; /* Soft green */
+                font-style: italic;
+            }
+
+            .error {
+                color:#ed4343;
+            }
+
+            /* JSON number values */
+            .number {
+                color: #e463cd; /* Lavender purple */
+                font-weight: normal;
+            }
+
+            /* JSON boolean values (true/false) */
+            .boolean {
+                color: #ebcb8b; /* Gold */
+                font-weight: bold;
+            }
+
+            /* JSON null values */
+            .null {
+                color: #e53f73;
+                font-style: italic;
+                font-weight: normal;
+            }
+
+            /* General body styling for dark mode */
+            body {
+                color: #eceff4; /* Near-white for text */
+                font-family: monospace;
+                line-height: 1.5;
+            }
+
+            footer {
+                background-color:#0f0f0f;
+            }
+            #resizer {
+                background-color:#252525;
+            }
+            @media (max-width: 600px) {
+                textarea,
+                footer {
+                    border-color:#484848;
+                }
+            }
+
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/#new">
+            json.pub
+        </a>
+    </header>
+    <main>
+        <textarea id="json-input" placeholder="Paste your JSON, XML, CSV, YAML, SVG, .INI, serialized, hex, base64 or binary here.
+
+Processing is 100% local: no data is sent to server.
+
+Auto-save: write stuff and it's saved in your localStorage, clear the text field and it's gone.
+
+Share data: write stuff and data is saved into the URL which you can share. The data is saved as a 100% private #hash that isn't stored on our servers.">{"people":[{"id":1,"name":{"first":"Pieter","last":"Levels","nickname":"levelsio"},"gender":"male","one_of_the_boys":true,"null":null,"contact":{"email":"hi@levels.io","phone":"+1-555-1234"},"interests":["shitposting","traveling","coding"],"address":{"name":"Hi-Sukhumvit Hostel","room":221,"street number":29,"street":"Sukhumvit Soi 38","neighborhood":"Khlong Tan","district":"Khlong Toei","city":"Bangkok","state":"Bangkok","postalCode":"10110","country":"Thailand"}},{"id":2,"name":{"first":"Jane","last":"Smith"},"gender":"female","contact":{"email":"janesmith@example.com","phone":"+1-555-5678"},"address":{"street":"456 Elm St","city":"Metropolis","state":"NY","postalCode":"10001","country":"USA"},"interests":["yoga","photography","baking"]},{"id":3,"name":{"first":"Carlos","last":"Gonzalez"},"gender":"male","contact":{"email":"carlosg@example.com","phone":"+34-600-123-456"},"address":{"street":"Calle Mayor 12","city":"Madrid","state":"Community of Madrid","postalCode":"28013","country":"Spain"},"interests":["football","cooking","gaming"]},{"id":4,"name":{"first":"Aiko","last":"Tanaka"},"gender":"female","contact":{"email":"aikotanaka@example.jp","phone":"+81-90-1234-5678"},"address":{"street":"1-2-3 Shibuya","city":"Tokyo","state":"Tokyo","postalCode":"150-0002","country":"Japan"},"interests":["art","hiking","technology"]}]}</textarea>
+        <div id="resizer"></div>
+        <div id="json-view" contenteditable></div>
+    </main>
+    <footer>
+        <div>
+            <a target="_blank" href="https://x.com/levelsio">
+                by @levelsio
+            </a>
+            <!---
+            <span class="hide-before-600px">
+                &mdash; a spiritual successor to <a href="http://json.parser.online.fr">Olivier's JSON parser</a>
+            </span>
+            -->
+            &mdash;
+            <span class="hide-before-600px">
+                <a target="_blank" href="https://simpleanalytics.com/json.pub">Analytics</a> &mdash;
+                <a target="_blank" href="https://ideasandbugs.com/c/jsonpub">Ideas + bugs</a>
+            </span>
+        </div>
+
+
+
+
+        <div id="footer-stats"></div>
+
+    </footer>
+    <script>
+        var firstFocus=true;
+        $(function() {
+
+
+            // <allow tab press in input>
+                $('textarea').on('keydown', function(e) {
+                    if (e.key === 'Tab') {
+                        e.preventDefault(); // Prevent default tab behavior
+                        let $this = $(this);
+                        let start = this.selectionStart;
+                        let end = this.selectionEnd;
+
+                        // Insert tab character at the cursor position
+                        let value = $this.val();
+                        $this.val(value.substring(0, start) + '\t' + value.substring(end));
+
+                        // Move caret position
+                        this.selectionStart = this.selectionEnd = start + 1;
+                    }
+                });
+            // </allow tab press in input>
+
+
+            // <save input to localStorage and reload when opening page>
+                if(window.location.hash=='#new') {
+                    // make new page
+                    $('textarea').val('');
+                }
+                else {
+                    const storageKey = "userJsonInput";
+
+                    // Load saved input from localStorage on page load
+                    const savedInput = localStorage.getItem(storageKey);
+                    if (savedInput) {
+                        // console.log("Read from localStorage: "+savedInput)
+                        $('textarea').val(savedInput).trigger('input');
+                        // set firstFocus false because we do not want to clear textarea on focus now because it's not sample text now
+                        firstFocus=false;
+                    }
+                    // Save input to localStorage on every change
+                    $('textarea').bind('input',function() {
+                        // if(!$(this).val()) return;
+                        // console.log("Saved to localStorage: "+$(this).val())
+                        localStorage.setItem(storageKey,$(this).val());
+                    });
+                }
+
+                // <save and load data in URL>
+                    // <save to url>
+                        // Save input to the URL on every change so it's shareable
+                        // Encode it for use in a URL
+                        $('textarea').bind('input',function() {
+
+                            // Get the input data
+                            inputData=$(this).val();
+
+                            // Compress and encode the data
+                            const compressedData = LZString.compressToEncodedURIComponent(inputData);
+
+                            // Encode for URL safety
+                            const encodedData = encodeURIComponent(compressedData);
+
+                            // Create the shareable URL
+                            // const shareableURL = `${window.location.origin}?d=${encodedData}`;
+
+                            // use #d= instead of ?d= for privacy as it doesn't end up in server logs
+                            const shareableURL = `${window.location.origin}#d=${encodedData}`;
+
+                            // Update the browser's URL without reloading
+                            if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+                                // Running on a server, update URL
+                                history.replaceState(null, '', shareableURL);
+                            } else {
+                                // Running locally, do not update URL
+                                console.log("Running locally, URL not updated:", shareableURL);
+                            }
+
+                            // Optionally, display the shareable URL in the console
+                            console.log("URL updated:", shareableURL);
+
+                        });
+                    // </save to url>
+
+                    // <load from url>
+                        if(window.location.hash=='#new') {
+                            // make new page
+                        }
+                        else {
+                            // Detect the query string in the URL
+                            const urlParams = new URLSearchParams(window.location.search);
+
+                            // also allow for #d= for privacy as it doesn't end up in server logs
+                            const encodedData = urlParams.get("d") || window.location.hash.slice(3); // Look for the 'd' parameter or '#d=' in hash
+
+                            // console.log('data in query/hash='+encodedData);
+
+                            if (encodedData) {
+                                try {
+                                    // Decode and decompress the data
+                                    const compressedData = decodeURIComponent(encodedData);
+                                    const decompressedData = LZString.decompressFromEncodedURIComponent(compressedData);
+
+                                    // Check if decompression succeeded
+                                    if (decompressedData) {
+                                        // Populate the textarea with the decompressed data
+                                        $('textarea').val(decompressedData);
+                                    } else {
+                                        console.error("Failed to decompress the data.");
+                                    }
+                                } catch (error) {
+
+                                    shareableURL='';
+
+                                    // Update the browser's URL without reloading
+                                    history.replaceState(null, '', shareableURL);
+
+                                    console.error("Error processing query string:", error);
+                                }
+                            }
+                        }
+                    // </load from url>
+
+                // </save and load data in URL>
+
+            // </save input to localStorage and reload when opening page>
+
+            // <clear textarea sample when start using>
+                // $('textarea').bind('click',function() {
+                //     if(firstFocus) {
+                //         $(this).val('').trigger('input');
+                //         firstFocus=false;
+                //         console.log('cleared on first focus');
+                //     }
+                // });
+            // </clear textarea sample when start using>
+
+            const $resizer = $("#resizer");
+            const $jsonInput = $("#json-input");
+            const $jsonView = $("#json-view");
+
+            // Load saved position from localStorage
+            const savedXPos = localStorage.getItem("xPos");
+            if (savedXPos) {
+                const percentage = `${savedXPos}%`;
+                $jsonInput.css("width", `calc(${percentage} - 5px)`);
+                $jsonView.css("width", `calc(${100 - savedXPos}% - 5px)`);
+            }
+
+            let isResizing = false;
+
+            $resizer.on("mousedown", function () {
+                isResizing = true;
+                $("body").css("cursor", "ew-resize");
+            });
+
+            $(document).on("mousemove", function (e) {
+                if (!isResizing) return;
+                const totalWidth = $("body").width();
+                const xPos = (e.clientX / totalWidth) * 100;
+                if (xPos < 10 || xPos > 90) return; // Set limits
+                $jsonInput.css("width", `calc(${xPos}% - 5px)`);
+                $jsonView.css("width", `calc(${100 - xPos}% - 5px)`);
+
+                // Save position to localStorage
+                localStorage.setItem("xPos", xPos);
+            });
+
+            $(document).on("mouseup", function () {
+                if (isResizing) {
+                    isResizing = false;
+                    $("body").css("cursor", "default");
+                }
+            });
+
+
+        });
+
+        function detectBinary(value) {
+            const base64Regex = /^[A-Za-z0-9+/=]+$/;
+            const hexRegex = /^[0-9a-fA-F]+$/;
+
+            if (typeof value === 'string') {
+                if (base64Regex.test(value)) return { type: 'base64', decoded: atob(value) };
+                if (hexRegex.test(value)) return { type: 'hex', decoded: hexToString(value) };
+            }
+            return null;
+        }
+
+        function hexToString(hex) {
+            return hex.match(/.{1,2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
+        }
+
+        function isYaml(input) {
+            try {
+                // Remove YAML document delimiters if present
+                const cleanedInput = input
+                    .trim()
+                    .replace(/^---\s*/, "") // Remove leading '---'
+                    .replace(/\s*\.\.\.\s*$/, ""); // Remove trailing '...'
+
+                // Check for key-value structure or list syntax
+                const yamlRegex = /^(\s*-\s+.+|[a-zA-Z0-9_-]+:\s+.+)/m;
+
+                return yamlRegex.test(cleanedInput);
+            } catch {
+                return false; // Return false if there's any error
+            }
+        }
+
+        function decodeYaml(yamlString) {
+            const lines = yamlString.trim().split("\n");
+            const result = {};
+            const stack = [result];
+            let currentIndent = 0;
+
+            for (const line of lines) {
+                // Skip empty lines, comments, and YAML document delimiters
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith("#") || trimmed === "---" || trimmed === "...") continue;
+
+                // Determine current indentation level
+                const indent = line.match(/^\s*/)[0].length;
+
+                // Adjust stack based on indentation
+                while (indent < currentIndent) {
+                    stack.pop();
+                    currentIndent -= 2; // Assuming 2 spaces per level
+                }
+
+                const parent = stack[stack.length - 1];
+
+                if (trimmed.startsWith("-")) {
+                    // Handle lists properly
+                    const value = trimmed.substring(1).trim();
+                    if (!Array.isArray(parent)) {
+                        stack[stack.length - 1] = []; // Force parent to be an array
+                        if (stack.length > 1) {
+                            const grandParent = stack[stack.length - 2];
+                            const parentKey = Object.keys(grandParent).find(key => grandParent[key] === parent);
+                            if (parentKey) {
+                                grandParent[parentKey] = stack[stack.length - 1];
+                            }
+                        }
+                    }
+                    if (value) {
+                        stack[stack.length - 1].push(parseValue(value));
+                    } else {
+                        const newItem = [];
+                        stack[stack.length - 1].push(newItem);
+                        stack.push(newItem);
+                        currentIndent = indent + 2;
+                    }
+                } else {
+                    // Handle key-value pairs
+                    const [key, value] = trimmed.split(":").map(s => s.trim());
+                    if (value) {
+                        parent[key] = parseValue(value);
+                    } else {
+                        parent[key] = {};
+                        stack.push(parent[key]);
+                        currentIndent = indent + 2;
+                    }
+                }
+            }
+
+            console.log(result);
+            return result;
+        }
+
+        function parseValue(value) {
+            // Handle quoted strings properly
+            if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+                return value.slice(1, -1); // Remove surrounding quotes
+            }
+            // Detect and parse numbers, booleans, or null
+            if (/^-?\d+(\.\d+)?$/.test(value)) {
+                return parseFloat(value);
+            } else if (/^(true|false)$/.test(value)) {
+                return value === "true";
+            } else if (value === "null") {
+                return null;
+            }
+            return value; // Return as string if none of the above
+        }
+
+        function isCSV(input) {
+            const lines = input.trim().split(/\r?\n/);
+
+            if (lines.length < 3) {
+                // Not enough lines to be a CSV
+                return false;
+            }
+
+            // Count the number of commas in each line
+            const commaCounts = lines.map(line => (line.match(/,/g) || []).length);
+
+            // Check if most lines have commas (CSV-like structure)
+            const linesWithCommas = commaCounts.filter(count => count > 0).length;
+            const threshold = Math.ceil(lines.length * 0.5); // At least 50% of lines must have commas
+
+            if (linesWithCommas < threshold) {
+                return false;
+            }
+
+            // Ensure consistent comma counts across lines
+            const firstLineCount = commaCounts[0];
+
+            if (!firstLineCount) {
+                return false;
+            }
+
+            // Exclude structures like [section headers] or key-value pairs
+            const isLikelySectionHeader = lines.some(line => line.startsWith("[") && line.endsWith("]"));
+            const isLikelyKeyValue = lines.some(line => line.includes("="));
+
+            if (isLikelySectionHeader || isLikelyKeyValue) {
+                return false;
+            }
+
+            const isStructured = commaCounts.every(count => Math.abs(count - firstLineCount) <= 1);
+
+            return isStructured;
+        }
+
+        function isSvg(input) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(input.trim(), "image/svg+xml");
+            // Check for parsing errors
+            return !doc.querySelector("parsererror") && doc.documentElement.nodeName === "svg";
+        }
+
+        function sanitizeSvg(input) {
+            return DOMPurify.sanitize(input, { FORBID_TAGS: ['script'], FORBID_ATTR: ['onload', 'onclick', 'xlink:href'] });
+        }
+
+        function calculateStats(text) {
+            const wordCount = text.trim().split(/\s+/).filter(Boolean).length; // Numerical word count
+            const characterCount = text.length; // Numerical character count
+            const tokenCount = Math.ceil(characterCount / 4); // Numerical token count
+
+            return {
+                words: wordCount.toLocaleString(),
+                characters: characterCount.toLocaleString(),
+                tokens: tokenCount.toLocaleString()
+            };
+        }
+
+        function updateFooterStats() {
+            const text = $("#json-input").val();
+            const { words, characters, tokens } = calculateStats(text);
+
+            $("#footer-stats").html('&nbsp;<span class="hide-before-600px">Words: '+words+'&nbsp;|&nbsp;</span>Chars: '+characters+'&nbsp;|&nbsp;Tokens: '+tokens);
+        }
+
+        function csvToHtmlTable(csv) {
+            const rows = csv.trim().split(/\r?\n/);
+            const table = document.createElement("table");
+            table.style.borderCollapse = "collapse";
+            table.style.width = "100%";
+
+            rows.forEach((row, rowIndex) => {
+                const tr = document.createElement("tr");
+                const columns = row.split(",");
+
+                columns.forEach(col => {
+                    const cell = rowIndex === 0 ? document.createElement("th") : document.createElement("td");
+                    const parsedValue = parseValue(col.trim()); // Use parseValue here
+                    cell.textContent = parsedValue; // Set the processed value
+                    cell.style.border = "1px solid #ddd";
+                    cell.style.padding = "8px";
+                    tr.appendChild(cell);
+                });
+
+                table.appendChild(tr);
+            });
+
+            return table.outerHTML;
+        }
+
+
+        function isIni(input) {
+            // Check if the input has sections like [SectionName] and key=value pairs
+            const iniSectionRegex = /^\s*\[.+\]\s*$/m;
+            const iniKeyValueRegex = /^\s*[^;#=\s]+\s*=\s*.+$/m;
+
+            return iniSectionRegex.test(input) || iniKeyValueRegex.test(input);
+        }
+
+        function parseIniToJson(iniString) {
+            const lines = iniString.split(/\r?\n/);
+            const result = {};
+            let currentSection = null;
+
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+
+                // Skip comments and empty lines
+                if (!trimmedLine || trimmedLine.startsWith("rem") || trimmedLine.startsWith("#") || trimmedLine.startsWith(";")) {
+                    return;
+                }
+
+                // Check for section headers
+                if (trimmedLine.startsWith("[") && trimmedLine.endsWith("]")) {
+                    currentSection = trimmedLine.slice(1, -1).trim();
+                    result[currentSection] = {};
+                } else if (currentSection) {
+                    // Handle key-value pairs inside sections
+                    const [key, ...valueParts] = trimmedLine.split("=");
+                    const keyTrimmed = key.trim();
+                    const value = valueParts.join("=").trim(); // Handle values with '='
+                    result[currentSection][keyTrimmed] = parseValue(value);
+                }
+            });
+
+            return result;
+        }
+
+
+        function isXml(input) {
+            console.log('isXml',input);
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(input, "application/xml");
+                return !doc.querySelector("parsererror"); // Check for parsing errors
+            } catch {
+                console.log('xml failed');
+                return false;
+            }
+        }
+
+        function parseXmlToJson(xml) {
+            const obj = {};
+            if (xml.nodeType === 1) { // Element
+                if (xml.attributes.length > 0) {
+                    obj["@attributes"] = {};
+                    for (let i = 0; i < xml.attributes.length; i++) {
+                        const attribute = xml.attributes[i];
+                        obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                    }
+                }
+            } else if (xml.nodeType === 3) { // Text
+                return xml.nodeValue.trim();
+            }
+
+            // Process child nodes
+            if (xml.hasChildNodes()) {
+                for (let i = 0; i < xml.childNodes.length; i++) {
+                    const item = xml.childNodes[i];
+                    const nodeName = item.nodeName;
+                    const nodeValue = parseXmlToJson(item);
+
+                    if (nodeName.charAt(0) === '#') {
+                        // console.log('name='+nodeName,'value='+nodeValue);
+                        console.log(nodeValue);
+                        // obj[nodeName] = nodeValue;
+                        // nodeValue=item.nodeValue;
+                    }
+
+
+                    if (nodeValue) {
+                        if (!obj[nodeName]) {
+                            obj[nodeName] = nodeValue;
+                        } else {
+                            // Handle multiple nodes with the same name
+                            if (!Array.isArray(obj[nodeName])) {
+                                obj[nodeName] = [obj[nodeName]];
+                            }
+                            obj[nodeName].push(nodeValue);
+                            // console.log(nodeName,nodeValue);
+                        }
+                    }
+                }
+            }
+            return obj;
+        }
+
+        function isSerializedString(input) {
+            // Detect serialized data (PHP-style)
+            const serializedRegex = /^(a|i|s|d|b|O):.*(;|})$/s;
+            return serializedRegex.test(input.trim());
+        }
+        function unserialize(data) {
+            var that = this,
+            utf8Overhead = function(chr) {
+                // http://phpjs.org/functions/unserialize:571#comment_95906
+                var code = chr.charCodeAt(0);
+                if (code < 0x0080) {
+                return 0;
+                }
+                if (code < 0x0800) {
+                return 1;
+                }
+                return 2;
+            };
+            error = function(type, msg, filename, line) {
+            throw new that.window[type](msg, filename, line);
+            };
+            read_until = function(data, offset, stopchr) {
+            var i = 2,
+                buf = [],
+                chr = data.slice(offset, offset + 1);
+
+            while (chr != stopchr) {
+                if ((i + offset) > data.length) {
+                error('Error', 'Invalid');
+                }
+                buf.push(chr);
+                chr = data.slice(offset + (i - 1), offset + i);
+                i += 1;
+            }
+            return [buf.length, buf.join('')];
+            };
+            read_chrs = function(data, offset, length) {
+            var i, chr, buf;
+
+            buf = [];
+            for (i = 0; i < length; i++) {
+                chr = data.slice(offset + (i - 1), offset + i);
+                buf.push(chr);
+                length -= utf8Overhead(chr);
+            }
+            return [buf.length, buf.join('')];
+            };
+            _unserialize = function(data, offset) {
+            var dtype, dataoffset, keyandchrs, keys, contig,
+                length, array, readdata, readData, ccount,
+                stringlength, i, key, kprops, kchrs, vprops,
+                vchrs, value, chrs = 0,
+                typeconvert = function(x) {
+                return x;
+                };
+
+            if (!offset) {
+                offset = 0;
+            }
+            dtype = (data.slice(offset, offset + 1))
+                .toLowerCase();
+
+            dataoffset = offset + 2;
+
+            switch (dtype) {
+            case 'i':
+                typeconvert = function(x) {
+                return parseInt(x, 10);
+                };
+                readData = read_until(data, dataoffset, ';');
+                chrs = readData[0];
+                readdata = readData[1];
+                dataoffset += chrs + 1;
+                break;
+            case 'b':
+                typeconvert = function(x) {
+                return parseInt(x, 10) !== 0;
+                };
+                readData = read_until(data, dataoffset, ';');
+                chrs = readData[0];
+                readdata = readData[1];
+                dataoffset += chrs + 1;
+                break;
+            case 'd':
+                typeconvert = function(x) {
+                return parseFloat(x);
+                };
+                readData = read_until(data, dataoffset, ';');
+                chrs = readData[0];
+                readdata = readData[1];
+                dataoffset += chrs + 1;
+                break;
+            case 'n':
+                readdata = null;
+                break;
+            case 's':
+                ccount = read_until(data, dataoffset, ':');
+                chrs = ccount[0];
+                stringlength = ccount[1];
+                dataoffset += chrs + 2;
+
+                readData = read_chrs(data, dataoffset + 1, parseInt(stringlength, 10));
+                chrs = readData[0];
+                readdata = readData[1];
+                dataoffset += chrs + 2;
+                if (chrs != parseInt(stringlength, 10) && chrs != readdata.length) {
+                error('SyntaxError', 'String length mismatch');
+                }
+                break;
+            case 'a':
+                readdata = {};
+
+                keyandchrs = read_until(data, dataoffset, ':');
+                chrs = keyandchrs[0];
+                keys = keyandchrs[1];
+                dataoffset += chrs + 2;
+
+                length = parseInt(keys, 10);
+                contig = true;
+
+                for (i = 0; i < length; i++) {
+                kprops = _unserialize(data, dataoffset);
+                kchrs = kprops[1];
+                key = kprops[2];
+                dataoffset += kchrs;
+
+                vprops = _unserialize(data, dataoffset);
+                vchrs = vprops[1];
+                value = vprops[2];
+                dataoffset += vchrs;
+
+                if (key !== i)
+                    contig = false;
+
+                readdata[key] = value;
+                }
+
+                if (contig) {
+                array = new Array(length);
+                for (i = 0; i < length; i++)
+                    array[i] = readdata[i];
+                readdata = array;
+                }
+
+                dataoffset += 1;
+                break;
+            default:
+                error('SyntaxError', 'Unknown / Unhandled data type(s): ' + dtype);
+                break;
+            }
+            return [dtype, dataoffset - offset, typeconvert(readdata)];
+            };
+
+            return _unserialize((data + ''), 0)[2];
+        }
+
+        function isEscapedString(input) {
+            // Check if the string starts and ends with quotes and contains common escape sequences
+            const escapedStringRegex = /^".*(\\["\\/bfnrt]|\\u[0-9a-fA-F]{4}).*"$/;
+            return escapedStringRegex.test(input);
+        }
+
+        function unescapeString(escapedStr) {
+            // Remove the enclosing quotes if present
+            if (escapedStr.startsWith('"') && escapedStr.endsWith('"')) {
+                escapedStr = escapedStr.slice(1, -1);
+            }
+            // Replace common escaped sequences with their unescaped equivalents
+            escapedStr = escapedStr.replace(/\\(['"\\/bfnrt])/g, (_, char) => {
+                const escapeMap = {
+                    '"': '"',
+                    "'": "'", // Add support for single quotes
+                    '\\': '\\',
+                    '/': '/',
+                    b: '\b',
+                    f: '\f',
+                    n: '\n',
+                    r: '\r',
+                    t: '\t',
+                };
+                return escapeMap[char];
+            });
+            // Replace Unicode escape sequences (\uXXXX) with the corresponding character
+            return escapedStr.replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+        }
+
+        function isJSON(input) {
+            // Trim whitespace to avoid false negatives
+            const trimmedInput = input.trim();
+
+            // JSON strings must start and end with { } or [ ]
+            if ((trimmedInput.startsWith("{") && trimmedInput.endsWith("}")) ||
+                (trimmedInput.startsWith("[") && trimmedInput.endsWith("]"))) {
+                try {
+                    // Try parsing the JSON
+                    JSON.parse(trimmedInput);
+                    return true; // Valid JSON
+                } catch (error) {
+                    // If parsing fails, extract error details
+                    const errorPosition = error.message.match(/position (\d+)/i);
+                    if (errorPosition) {
+                        const position = parseInt(errorPosition[1], 10);
+                        highlightInvalidJSON(trimmedInput, position);
+                    } else {
+                        $('#json-view').html('<div class="error"><strong>Invalid JSON: ' + escapeHtml(error.message)+'</strong><br/><br/>');
+                    }
+                    return false; // Invalid JSON
+                }
+            }
+
+            return false; // Doesn't match JSON structure
+        }
+
+        function highlightInvalidJSON(jsonString, position) {
+            // Split the JSON string into two parts: before and after the error position
+            const beforeError = escapeHtml(jsonString.slice(0, position));
+            const errorChar = escapeHtml(jsonString.charAt(position)); // The problematic character
+            const afterError = escapeHtml(jsonString.slice(position + 1));
+
+            // Create highlighted HTML for the invalid JSON
+            const highlightedHtml = `
+                ${beforeError}
+                <span class="error" style="color: red; font-weight: bold;">${errorChar}</span>
+                ${afterError}
+            `;
+
+            // Display the highlighted JSON in the #json-view element
+            $('#json-view').html(`
+                <div><strong>Invalid JSON detected at position ${position}:</strong></div>
+                <pre style="white-space: pre-wrap; word-wrap: break-word;">${highlightedHtml}</pre>
+            `);
+        }
+
+
+        function isBase64String(input) {
+            // Check if the input is Base64 encoded
+            const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+            return base64Regex.test(input.trim());
+        }
+
+        function decodeBase64String(base64String) {
+            // Decode Base64 string
+            return atob(base64String.trim());
+        }
+
+        function isHexString(input) {
+            const hexRegex = /^[0-9a-fA-F\s]+$/;
+            return hexRegex.test(input.trim());
+        }
+        function decodeHexString(hexString) {
+            var hex = hexString.toString();//force conversion
+            var str = '';
+            for (var i = 0; i < hex.length; i += 2)
+                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            return str;
+        }
+
+        function isBinaryString(input) {
+            // Check if the input is a string of binary digits separated by spaces
+            const binaryRegex = /^[01\s]+$/;
+            return binaryRegex.test(input.trim());
+        }
+
+        function decodeBinaryString(binaryString) {
+            // Convert binary string to text
+            return binaryString
+                .split(' ') // Split the binary string by spaces
+                .map(bin => String.fromCharCode(parseInt(bin, 2))) // Convert each binary to a character
+                .join(''); // Combine the characters into a single string
+        }
+
+        function createJsonView(json, parent, depth = 0) {
+            const indent = "&nbsp;".repeat(depth * 4); // Add indentation based on depth
+            const keys = Object.keys(json); // Get all keys for tracking last element
+
+            keys.forEach((key, index) => {
+                let value = json[key];
+                const isLast = index === keys.length - 1; // Check if this is the last key
+                const element = $("<div></div>");
+                element.html(indent); // Add indentation
+
+                key=escapeHtml(key);
+
+                if (value === null) {
+                    let keyEl = $(`<span class='key'>"${key}"</span>`);
+                    const valueEl = $(`<span class='null'>null</span>`);
+                    element.append(keyEl).append(':').append(valueEl);
+                    if (!isLast) element.append(","); // Add a comma if not last
+                    parent.append(element);
+                } else if (Array.isArray(value) || typeof value === "object") {
+                    const toggle = $("<span class='toggle'></span>");
+                    let keyEl = $(`<span class='key'>"${key}"</span>: `);
+                    const children = $("<div class='children'></div>");
+
+                    // hide numeric keys so ["books","cars"] does not become "0":"books","1":"cars"
+                    const isNumericKey = !isNaN(parseFloat(key)) && isFinite(key);
+                    if (isNumericKey) {
+                        keyEl = '';
+                    }
+                    if (keyEl != '') {
+                        element.append(keyEl).append(':');
+                    }
+
+                    createJsonView(value, children, depth + 1);
+
+                    if (Array.isArray(value) && typeof value[0] !== 'undefined') {
+                        element.append(toggle).append('[');
+                        element.append(children);
+                        element.append('<span class="indent">'+indent+'</span>').append(']');
+                    } else {
+                        element.append(toggle).append('{');
+                        element.append(children);
+                        element.append('<span class="indent">'+indent+'</span>').append('}');
+                    }
+
+                    if (!isLast) element.append(","); // Add a comma if not last
+                    parent.append(element);
+
+                    toggle.on("click", function () {
+                        $(this).parent().toggleClass("collapsed");
+                    });
+                } else {
+                    let keyEl = $(`<span class='key'>"${key}"</span>`);
+
+                    // hide numeric keys so ["books","cars"] does not become "0":"books","1":"cars"
+                    const isNumericKey = !isNaN(parseFloat(key)) && isFinite(key);
+                    if (isNumericKey) {
+                        keyEl = '';
+                    }
+
+                    if (keyEl != '') {
+                        element.append(keyEl).append(':');
+                    }
+
+                    var valueEl;
+
+                    if (typeof value === "string") {
+
+                        value=escapeHtml(value);
+
+                        // <if link, linkify>
+                            // Check if the value is a URL
+                            const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+                            // avoid linking non-https style links like javascript: to avoid XSS
+                            const valueStartsWithHttp = value.startsWith('http://') || value.startsWith('https://');
+                            if (urlRegex.test(value) && valueStartsWithHttp) {
+                                valueEl = $(`<span class='string'>\"<a href="${value}" target="_blank" rel="noopener noreferrer">${value}</a>\"</span>`);
+                            }
+                        // </if link, linkify>
+
+                        // <otherwise just show as string>
+                            else {
+                                valueEl = "<span class='string'>\""+value+"\"</span>";
+                            }
+                        // </otherwise just show as string>
+
+                        element.append(valueEl);
+                    } else if (typeof value === "number") {
+                        valueEl = $(`<span class='number'>${value}</span>`);
+                        element.append(valueEl);
+                    } else if (typeof value === "boolean") {
+                        valueEl = $(`<span class='boolean'>${value}</span>`);
+                        element.append(valueEl);
+                    }
+
+                    if (!isLast) element.append(","); // Add a comma if not last
+                    parent.append(element);
+                }
+            });
+        }
+
+        function updateJsonView() {
+            var rawInput = $("#json-input").val().trim();
+            var view = $("#json-view");
+            view.empty();
+
+            // try {
+
+                // <detect escaped string data sets>
+                    // 2024-11-29: from user feedback: it would just allow someone to cut and paste into json.pub without having to run it through a utility function. In ruby you currently have to do “puts xml_strung” and then cut and paste that into JSON.pub. Same is true with any string that has a “character in it. It’s called escaped strings.
+                    console.log('isEscapedString',isEscapedString(rawInput));
+                    if(isEscapedString(rawInput)) {
+                        rawInput=unescapeString(rawInput);
+                        console.log('unescaped string: '+rawInput);
+                    }
+                // </detect escaped string data sets>
+
+                if(rawInput.trim()=='') {
+                    // empty
+                    // console.log('empty detected');
+                }
+                else if (isSvg(rawInput)) {
+                    // If input is SVG, render it
+                    console.log('SVG detected');
+                    const sanitizedSvg=sanitizeSvg(rawInput);
+                    console.log(sanitizedSvg);
+                    view.html(sanitizedSvg); // Directly insert SVG into #json-view
+                }
+                else if (isCSV(rawInput)) {
+                    console.log("CSV detected");
+                    const tableHtml = csvToHtmlTable(rawInput);
+                    view.html(tableHtml);
+                }
+                else if (isIni(rawInput)) {
+                    console.log('INI detected');
+                    const iniJson = parseIniToJson(rawInput);
+                    createJsonView(iniJson, view);
+                }
+                else if (isBinaryString(rawInput)) {
+                    // If input is binary, decode and display it
+                    console.log('binary detected');
+                    const decodedText = decodeBinaryString(rawInput);
+                    view.append(escapeHtml(decodedText));
+                } else if (isHexString(rawInput)) {
+                    console.log('hex detected');
+                    const decodedText = decodeHexString(rawInput);
+                    view.append(escapeHtml(decodedText));
+                } else if (isBase64String(rawInput)) {
+                    console.log('base64 detected');
+                    // If input is Base64, decode and display it
+                    const decodedText = decodeBase64String(rawInput);
+                    view.append(escapeHtml(decodedText));
+                } else if (isSerializedString(rawInput)) {
+                    console.log('serialized detected');
+                    const deserializedData = unserialize(rawInput);
+                    createJsonView(deserializedData, view);
+                } else if (isYaml(rawInput)) {
+                    console.log('yaml detected');
+                    const deserializedData = decodeYaml(rawInput);
+                    // console.log(deserializedData);
+                    createJsonView(deserializedData, view);
+                } else if (isXml(rawInput)) {
+                    console.log('xml detected');
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(rawInput, "application/xml");
+                    console.log(xmlDoc);
+                    const xmlJson = parseXmlToJson(xmlDoc);
+                    console.log(xmlJson);
+                    createJsonView(xmlJson, view);
+                } else if (isJSON(rawInput)) {
+                    console.log('json detected');
+                    let json = JSON.parse(rawInput);
+                    createJsonView([json], view);
+                }
+                else {
+                    view.append(escapeHtml(rawInput));
+                }
+            // } catch (e) {
+            //     view.html(`<div style='color: red;'>Error: ${e.message}</div>`);
+            // }
+        }
+
+
+        $(document).ready(function () {
+            $("#json-input").on("input", updateJsonView);
+            $("#json-input").on("input", updateFooterStats);
+
+            // init on first load
+            updateJsonView();
+            updateFooterStats();
+        });
+
+        function escapeHtml(str) {
+            return str;
+        }
+    </script>
+</body>
+</html>

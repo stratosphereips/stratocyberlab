@@ -1,0 +1,7 @@
+{
+    "name": "Class 12 - Web Attacks",
+    "id": "class-12",
+    "description": "The 12th focuses on Web Attacks. <br>Please open the Google document provided to all registered students and follow the document. <br><ol><li>Start the class.</li><li><b>FROM THE BROWSER TERMINAL</b> connect to the class 12 container with preinstalled tools <b>ssh root@class12</b> and <b>admin</b> password</li><li><b>FROM YOUR COMPUTER</b> execute following SSH port forwarding <b>ssh -L 3000:juiceshop:3000 -L 8080:juicynginx:80 root@127.0.0.1 -p 2222</b> this time password is <b>ByteThem123</b></li></ol>",
+    "google_doc_url": "https://docs.google.com/document/d/1aMsSpDaaXnHBcVc6P4E4b-Y0M3mi9_2GmlgotASKEyM",
+    "yt_recording_url": ""
+}
