@@ -4,6 +4,9 @@
 
 - `pip install -r requirements.txt && pip install -r requirements-dev.txt` to 
   install dependencies (including development tools)
+- Locally edit `.env` (do not commit it!) to remove the leading slash from 
+  `CHALLENGE_DIR` and `CLASS_DIR`, so that relative paths are used, unlike 
+  in the Docker where both the directories are indeed located at `/`
 - `python app.py` to run the development server (also done in Docker)
 - `python ws_ssh.py` to run the websocket server 
   - The reason for 2 servers is a conflict of threading (used for SSH 
