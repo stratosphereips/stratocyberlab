@@ -1,13 +1,43 @@
 <script>
+  import { onMount } from 'svelte';
+  import { storageBackedWritable } from '../stores';
+
   export let id;
   export let label;
-  export let level;
+  export let level = 1;
 
   let buttonClass = {
     1: 'btn-lg',
     2: '',
     3: 'btn-sm',
   }[level ?? 1];
+
+  let expanded = false;
+  const collapseStore = storageBackedWritable(`scl.collapse.${id}`, 'false');
+  const unsubscribe = collapseStore.subscribe((value) => {
+    expanded = value === 'true';
+  });
+
+  onMount(() => {
+    const setExpandedFalse = (e) => {
+      e.stopPropagation();
+      $collapseStore = 'false';
+    };
+    const setExpandedTrue = (e) => {
+      e.stopPropagation();
+      $collapseStore = 'true';
+    };
+    const element = document.querySelector(`#${id}-collapse`);
+
+    element.addEventListener('hidden.bs.collapse', setExpandedFalse);
+    element.addEventListener('shown.bs.collapse', setExpandedTrue);
+
+    return () => {
+      unsubscribe();
+      element.removeEventListener('hidden.bs.collapse', setExpandedFalse);
+      element.removeEventListener('shown.bs.collapse', setExpandedTrue);
+    };
+  });
 </script>
 
 <style>
@@ -27,17 +57,17 @@
   <div class="d-flex justify-content-between">
     <button
       id="{id}-header"
-      class="btn {buttonClass} btn-toggle d-inline-flex align-items-center rounded collapsed p-0"
+      class="btn {buttonClass} btn-toggle d-inline-flex align-items-center rounded p-0 {!expanded ? 'collapsed' : ''}"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#{id}-collapse"
-      aria-expanded="false"
+      aria-expanded={expanded ? 'true' : 'false'}
       aria-controls="{id}-collapse"
     >
       {label ?? ''}
     </button>
   </div>
-  <div class="collapse" aria-labelledby="{id}-header" id="{id}-collapse">
+  <div class="collapse {expanded ? 'show' : ''}" aria-labelledby="{id}-header" id="{id}-collapse">
     <ul class="list-unstyled ms-3">
       <slot />
     </ul>
