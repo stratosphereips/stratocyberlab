@@ -54,7 +54,8 @@ RUN apt-get install -y \
         nano \
         net-tools \
         knot-dnsutils \
-        dnsutils
+        dnsutils \
+        jq
 
 # Install Pyenv
 ENV PYENV_ROOT=/usr/local/pyenv
