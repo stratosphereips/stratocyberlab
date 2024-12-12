@@ -21,12 +21,29 @@ def init_db_tables():
                 yt_recording_url TEXT
             );""")
     cursor.execute("""
+        CREATE TABLE IF NOT EXISTS campaigns (
+                campaign_id TEXT NOT NULL PRIMARY KEY,
+                name TEXT NOT NULL,
+                description TEXT NOT NULL,
+                enforce_order BOOLEAN NOT NULL,
+                show_locked BOOLEAN NOT NULL
+            );""")
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS campaign_steps (
+                campaign_id REFERENCES campaigns(campaign_id),
+                "order" INTEGER NOT NULL,
+                challenge_id REFERENCES challenges(challenge_id),
+                PRIMARY KEY(campaign_id, "order")
+            );""")
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS challenges (
-            challenge_id TEXT NOT NULL PRIMARY KEY,
+            challenge_id TEXT NOT NULL,
             challenge_name TEXT NOT NULL,
             challenge_description TEXT NOT NULL,
             difficulty TEXT NOT NULL,
-            challenge_dir TEXT NOT NULL
+            challenge_dir TEXT NOT NULL,
+            campaign_id REFERENCES campaigns(campaign_id),
+            PRIMARY KEY (challenge_id, campaign_id)
         );""")
 
     cursor.execute("""CREATE TABLE IF NOT EXISTS tasks (
@@ -80,18 +97,42 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
     return res
 
 
-def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str):
+def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str, campaign_id: str | None = None):
     conn = get_db()
     cursor = conn.cursor()
-    q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir) VALUES (?, ?, ?, ?, ?)'
-    cursor.execute(q, (id, name, desc, diff, ch_dir))
+    if campaign_id is None:
+        q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir) VALUES (?, ?, ?, ?, ?)'
+        p = (id, name, desc, diff, ch_dir)
+    else:
+        q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir, campaign_id) VALUES (?, ?, ?, ?, ?, ?)'
+        p = (id, name, desc, diff, ch_dir, campaign_id)
+    cursor.execute(q, p)
     conn.commit()
+
 
 def insert_task_data(chal_id: str, id: str, name: str, desc: str, flag: str, order: int):
     conn = get_db()
     cursor = conn.cursor()
     q = 'INSERT INTO tasks (challenge_id, task_id, task_name, task_description, flag, task_order) VALUES (?, ?, ?, ?, ?, ?)'
     cursor.execute(q, (chal_id, id, name, desc, flag, order))
+    conn.commit()
+
+
+def insert_campaign_data(id: str, name: str, description: str, enforce_order: bool, show_locked: bool):
+    conn = get_db()
+    cursor = conn.cursor()
+    q = 'INSERT INTO campaigns (campaign_id, name, description, enforce_order, show_locked) VALUES (?, ?, ?, ?, ?)'
+    p = (id, name, description, enforce_order, show_locked)
+    cursor.execute(q, p)
+    conn.commit()
+
+
+def insert_campaign_step(campaign_id: str, order: int, challenge_id: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    q = 'INSERT INTO campaign_steps (campaign_id, "order", challenge_id) VALUES (?, ?, ?)'
+    p = (campaign_id, order, challenge_id)
+    cursor.execute(q, p)
     conn.commit()
 
 
@@ -116,9 +157,82 @@ def get_tasks(sess: str) -> List[Dict]:
     LEFT JOIN 
         (SELECT challenge_id, task_id, true as solved FROM task_solves WHERE session = ? )
             USING(challenge_id, task_id)
+    WHERE campaign_id IS NULL
     ORDER BY task_order ASC
     """
     cursor.execute(q, (sess, ))
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Extract column names from the cursor
+    columns = [column[0] for column in cursor.description]
+
+    res = [dict(zip(columns, row)) for row in rows]
+
+    return res
+
+
+def get_campaigns():
+    conn = get_db()
+    cursor = conn.cursor()
+    q = """
+    SELECT
+    campaign_id as id,
+    name,
+    description
+    FROM
+    campaigns
+    """
+
+    cursor.execute(q)
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Extract column names from the cursor
+    columns = [column[0] for column in cursor.description]
+
+    res = [dict(zip(columns, row)) for row in rows]
+
+    return res
+
+
+def get_campaign_steps(campaign_id: str, sess: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    q = """
+    SELECT
+    campaigns.campaign_id,
+    campaigns.enforce_order,
+    campaigns.show_locked,
+    campaign_steps.challenge_id,
+    challenges.challenge_name,
+    challenges.challenge_description,
+    challenges.challenge_dir,
+    challenges.difficulty,
+    tasks.task_id,
+    tasks.task_name,
+    tasks.task_description,
+    CASE
+        WHEN solved = true THEN tasks.flag
+        ELSE ''
+    END as flag,
+    CASE
+        WHEN campaign_steps.challenge_id IS NULL THEN 'page'
+        ELSE 'challenge'
+    END as step_type,
+    COALESCE(solved, false) AS solved
+    FROM campaigns
+    JOIN campaign_steps USING(campaign_id)
+    LEFT JOIN challenges ON (campaign_steps.challenge_id = challenges.challenge_id)
+    LEFT JOIN tasks USING(challenge_id)
+     LEFT JOIN
+        (SELECT challenge_id, task_id, true as solved FROM task_solves WHERE session = ? )
+            USING(challenge_id, task_id)
+    WHERE campaigns.campaign_id = ?
+    ORDER BY "order" ASC, task_order ASC
+    ;"""
+
+    cursor.execute(q, (sess, campaign_id))
     rows = cursor.fetchall()
     conn.close()
 
@@ -182,6 +296,7 @@ def get_challenges() -> List[Dict]:
     q = """
         SELECT challenge_id, challenge_name, challenge_description, challenge_dir
         FROM challenges
+        WHERE campaign_id IS NULL
     """
     cursor.execute(q)
     rows = cursor.fetchall()
