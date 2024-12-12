@@ -1,0 +1,64 @@
+version: '3.7'
+
+services:
+  lab:
+    build: .
+    container_name: scl-class-12-lab
+    stop_grace_period: 0s
+    hostname: class12
+    networks:
+      playground-net:
+        aliases:
+          - class12
+
+  juiceshop:
+    image: bkimminich/juice-shop
+    container_name: scl-class-12-juiceshop
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        aliases:
+          - juiceshop
+          - juiceshop1
+          - juiceshop2
+          - juiceshop3
+          - juice.bsy.com
+
+  waf:
+    image: gbe0/coraza:latest
+    container_name: scl-class-12-coraza
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        aliases:
+          - protected-juiceshop
+          - waf
+          - waf.bsy.com
+    depends_on:
+      - juiceshop
+    environment:
+      - CADDY_REVERSE_PROXY=juiceshop:3000
+      - CORAZA_SECRULEENGINE=On
+
+  nginx:
+    build: ./nginx
+    container_name: scl-class-12-nginx
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        aliases:
+          - juicynginx
+          - bsy.com
+          - app.bsy.com
+          - example.bsy.com
+          - hidden.bsy.com
+          - pub.bsy.com
+    depends_on:
+      - juiceshop
+
+networks:
+  playground-net:
+    external: true
