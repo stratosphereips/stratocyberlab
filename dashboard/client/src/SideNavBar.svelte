@@ -1,8 +1,9 @@
 <script>
   import { slide } from 'svelte/transition';
   import CollapsibleSection from './components/CollapsibleSection.svelte';
-  import { challenges, classes } from './stores';
-  import { chooseChallenge, chooseClass, chosenClass, chosenChallenge } from './routing';
+  import { challenges, classes, campaigns } from './stores';
+  import { chooseChallenge, chooseClass, chosenClass, chosenChallenge, chooseCampaignDetail } from './routing';
+  import CampaignStepList from './campaigns/CampaignStepList.svelte';
 
   let visible = true;
 
@@ -81,6 +82,24 @@
                   <span class="badge {difficulty_background(ch.difficulty)} rounded-pill">{ch.difficulty}</span>
                 </button>
               </li>
+            {/each}
+          </CollapsibleSection>
+
+          <CollapsibleSection id="campaignList" label="Campaigns">
+            {#each $campaigns as campaign}
+              <CollapsibleSection id={campaign.id} label={campaign.name} level={2}>
+                <span slot="labelExtra">
+                  <span
+                    role="button"
+                    tabindex="0"
+                    class="badge bg-black"
+                    on:keypress={() => chooseCampaignDetail(campaign.id)}
+                    on:click={() => chooseCampaignDetail(campaign.id)}
+                    title="Show campaign details">i</span
+                  >
+                </span>
+                <CampaignStepList id={campaign.id} />
+              </CollapsibleSection>
             {/each}
           </CollapsibleSection>
         </ul>

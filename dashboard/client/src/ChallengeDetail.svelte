@@ -1,5 +1,5 @@
 <script>
-  import { isLoading } from './stores';
+  import { isLoading, loadSingleCampaign, setChallengeRunning } from './stores';
 
   export let challenge;
 
@@ -31,6 +31,9 @@
         challenge.tasks = challenge.tasks; // Reassign to trigger reactivity
       }
       alert(data);
+      if (task.solved && challenge.campaignId) {
+        loadSingleCampaign(challenge.campaignId).then();
+      }
     } catch (err) {
       console.error(err);
       alert(err instanceof Error ? err.message : err);
@@ -55,7 +58,7 @@
         throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
 
-      challenge.running = action === 'start';
+      setChallengeRunning(challenge.id, challenge.campaignId, action === 'start');
     } catch (err) {
       console.error(err);
       alert(err instanceof Error ? err.message : err);

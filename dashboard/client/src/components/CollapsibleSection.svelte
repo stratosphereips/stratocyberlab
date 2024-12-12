@@ -66,6 +66,7 @@
     >
       {label ?? ''}
     </button>
+    <slot name="labelExtra" />
   </div>
   <div class="collapse {expanded ? 'show' : ''}" aria-labelledby="{id}-header" id="{id}-collapse">
     <ul class="list-unstyled ms-3">
