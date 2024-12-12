@@ -50,9 +50,9 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
         ch_id, ch_name, ch_diff, ch_desc = ch["id"], ch["name"], ch["difficulty"], ch["description"]
         db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff, ch_dir)
 
-        for task in ch["tasks"]:
+        for i, task in enumerate(ch["tasks"]):
             t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
-            db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag)
+            db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag, order=i)
 
     for name in get_dirs(parent_cl_dir):
         cl_dir = f"{parent_cl_dir}/{name}"
