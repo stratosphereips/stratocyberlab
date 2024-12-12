@@ -26,7 +26,7 @@ def get_dirs(parent: str) -> List[str]:
 # load challenges from files and bootstrap DB
 
 
-def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=getenv('CLASS_DIR') or '/classes'):
+def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=getenv('CLASS_DIR') or '/classes', parent_campaign_dir=getenv('CAMPAIGN_DIR') or '/campaigns'):
     # this file works as a check to know if DB was already bootstrapped or not
     # because otherwise this code could run multiple times if the container was restarted
     file = Path(".was_db_inited")
@@ -53,6 +53,30 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
         for i, task in enumerate(ch["tasks"]):
             t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
             db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag, order=i)
+
+    for camp_name in get_dirs(parent_campaign_dir):
+        if camp_name == '_template':
+            continue
+
+        camp_dir = f'{parent_campaign_dir}/{camp_name}'
+        with open(f"{camp_dir}/meta.json", 'r', encoding='utf8') as f:
+            camp = json.load(f)
+
+        db.insert_campaign_data(camp['id'], camp['name'], camp['description'], camp['enforceOrder'], camp['showLocked'])
+
+        chall_ids = [step['id'] for step in camp['timeline'] if step['type'] == 'challenge']
+        for i, chall_id in enumerate(chall_ids):
+            chall_dir = f'{camp_dir}/{chall_id}'
+            with open(f"{chall_dir}/meta.json", 'r', encoding='utf8') as f:
+                chall = json.load(f)
+
+            db.insert_challenge_data(chall['id'], chall['name'], chall['description'],
+                                     chall['difficulty'], chall_dir, camp['id'])
+
+            db.insert_campaign_step(camp['id'], challenge_id=chall['id'], order=i)
+
+            for j, task in enumerate(chall["tasks"]):
+                db.insert_task_data(chall_id, task["id"], task["name"], task["description"], task["flag"], order=j)
 
     for name in get_dirs(parent_cl_dir):
         cl_dir = f"{parent_cl_dir}/{name}"
@@ -238,6 +262,80 @@ async def classes_stop_all():
 
     return 'All stopped! 🎉'
 
+# ======================================
+# ||             Campaigns            ||
+# ======================================
+
+
+@app.route('/api/campaigns', methods=['GET'])
+@manage_session
+async def campaigns_get():
+    return jsonify(db.get_campaigns())
+
+
+@app.route('/api/campaigns/<campaign_id>', methods=['GET'])
+@manage_session
+async def campaign_get(campaign_id: str):
+    steps_from_db = db.get_campaign_steps(campaign_id, get_session_id())
+
+    if len(steps_from_db) == 0:
+        return "Campaign not found", 404
+
+    enforce_order = steps_from_db[0]['enforce_order']
+    show_locked = steps_from_db[0]['show_locked'] or not enforce_order
+
+    parsed_steps = []
+    step_map = {}
+    for t in steps_from_db:
+        if t['step_type'] == 'page':
+            parsed_steps.append({
+                'id': 'todo-page-id',
+                'type': 'page',
+                'content': 'TODO: page content',
+            })
+            continue
+
+        ch_id = t["challenge_id"]
+
+        ch = step_map.get(ch_id, None)
+        if not ch:
+            ch = {
+                "id": ch_id,
+                'type': 'challenge',
+                "name": t['challenge_name'],
+                "difficulty": t["difficulty"],
+                "description": t["challenge_description"],
+                "tasks": [],
+                "dir": t['challenge_dir'],
+            }
+            step_map[ch_id] = ch
+            parsed_steps.append(ch)
+
+        ch["tasks"].append({
+            "id": t["task_id"],
+            "name": t["task_name"],
+            "description": t["task_description"],
+            "flag": t["flag"],
+            "solved": t["solved"],
+        })
+
+        if not t['solved'] and not show_locked:
+            break
+
+    for ch in parsed_steps:
+        if ch['type'] != 'challenge':
+            continue
+        up = docker.is_up(ch["dir"])
+        if up:
+            ch['running'] = True
+
+        # do not expose directories to FE
+        del ch['dir']
+
+    return jsonify({
+        'id': steps_from_db[0]['campaign_id'],
+        'steps': parsed_steps,
+    })
 
 # ======================================
 # ||             Challenges           ||
