@@ -3,7 +3,9 @@
   import ClassDetail from './ClassDetail.svelte';
   import Introduction from './Introduction.svelte';
   import SideNavBar from './SideNavBar.svelte';
-  import { chosenChallenge, chosenClass } from './routing';
+  import { chosenChallenge, chosenClass, chosenCampaignDetail, chosenCampaignStep } from './routing';
+  import CampaignStep from './campaigns/CampaignStep.svelte';
+  import CampaignDetail from './campaigns/CampaignDetail.svelte';
 </script>
 
 <style>
@@ -18,6 +20,10 @@
       <ChallengeDetail challenge={$chosenChallenge} />
     {:else if $chosenClass}
       <ClassDetail curClass={$chosenClass} />
+    {:else if $chosenCampaignDetail}
+      <CampaignDetail campaign={$chosenCampaignDetail} />
+    {:else if $chosenCampaignStep}
+      <CampaignStep step={$chosenCampaignStep} />
     {:else}
       <Introduction />
     {/if}

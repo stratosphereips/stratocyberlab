@@ -6,9 +6,9 @@
   import { onMount } from 'svelte';
   import ClassDoc from './ClassDoc.svelte';
   import Snowfall from "./Snowfall.svelte";
-  import { challenges, classes } from './stores';
+  import { challenges, classes, campaigns } from './stores';
   import { navigate, chosenClass } from './routing';
-  import { fetchChallenges, fetchClasses } from './fetch';
+  import { fetchChallenges, fetchClasses, fetchCampaigns } from './fetch';
 
   let showSSH = false;
   let sshInitialised = false;
@@ -24,6 +24,7 @@
   onMount(async () => {
     fetchChallenges().then((loadedChallenges) => ($challenges = loadedChallenges));
     fetchClasses().then((loadedClasses) => ($classes = loadedClasses));
+    fetchCampaigns().then((loadedCampaigns) => ($campaigns = loadedCampaigns));
   });
 
   let resizeTerminalContentFunc;

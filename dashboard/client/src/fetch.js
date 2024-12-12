@@ -58,3 +58,33 @@ export async function fetchClasses() {
     alert(err instanceof Error ? err.message : err);
   }
 }
+
+export async function fetchCampaigns() {
+  try {
+    const res = await fetch(`/api/campaigns`);
+    const campaigns = await res.json();
+
+    if (res.status !== 200) {
+      throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
+    }
+    return campaigns;
+  } catch (err) {
+    console.error(err);
+    alert(err instanceof Error ? err.message : err);
+  }
+}
+
+export async function fetchSingleCampaign(campaignId) {
+  try {
+    const res = await fetch(`/api/campaigns/${campaignId}`);
+
+    if (res.status !== 200) {
+      throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
+    }
+
+    return res.json();
+  } catch (err) {
+    console.error(err);
+    alert(err instanceof Error ? err.message : err);
+  }
+}
