@@ -44,7 +44,7 @@
   {#if visible}
     <div transition:slide={{ axis: 'x' }} class="sidebar pt-5 flex-shrink-0">
       <button type="button" class="btn-close close-btn" on:click={() => (visible = false)}></button>
-      {#if !($challenges.length && $classes.length)}
+      {#if !($challenges && $classes)}
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>

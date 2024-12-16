@@ -2,8 +2,8 @@ import { get, writable } from 'svelte/store';
 
 export const isLoading = writable(false);
 
-export const classes = writable([]);
-export const challenges = writable([]);
+export const classes = writable(null);
+export const challenges = writable(null);
 
 export const storageBackedWritable = (key, defaultData) => {
   const store = writable(localStorage.getItem(key) ?? defaultData);

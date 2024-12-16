@@ -19,12 +19,12 @@ export const chosenChallenge = derived([challenges, path], ([challenges, path]) 
   const match = path.match(/^#challenge\/(.+)$/);
   if (!match) return null;
 
-  return challenges.find((chall) => chall.id === match[1]) ?? null;
+  return challenges?.find((chall) => chall.id === match[1]) ?? null;
 });
 
 export const chosenClass = derived([classes, path], ([classes, path]) => {
   const match = path.match(/^#class\/(.+)$/);
   if (!match) return null;
 
-  return classes.find((cls) => cls.id === match[1]) ?? null;
+  return classes?.find((cls) => cls.id === match[1]) ?? null;
 });
