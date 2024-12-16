@@ -13,6 +13,7 @@ from quart import Quart, request, send_from_directory, session, jsonify
 import db
 import docker
 import llm
+from config import getenv
 
 
 def eprint(*args, **kwargs):
@@ -25,7 +26,7 @@ def get_dirs(parent: str) -> List[str]:
 # load challenges from files and bootstrap DB
 
 
-def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
+def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=getenv('CLASS_DIR') or '/classes'):
     # this file works as a check to know if DB was already bootstrapped or not
     # because otherwise this code could run multiple times if the container was restarted
     file = Path(".was_db_inited")
@@ -49,9 +50,9 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
         ch_id, ch_name, ch_diff, ch_desc = ch["id"], ch["name"], ch["difficulty"], ch["description"]
         db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff, ch_dir)
 
-        for task in ch["tasks"]:
+        for i, task in enumerate(ch["tasks"]):
             t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
-            db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag)
+            db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag, order=i)
 
     for name in get_dirs(parent_cl_dir):
         cl_dir = f"{parent_cl_dir}/{name}"
@@ -453,4 +454,4 @@ async def llm_chat():
 
 if __name__ == '__main__':
     init()
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=True, host=getenv('HOST') or '0.0.0.0', port=getenv('PORT') or 80)

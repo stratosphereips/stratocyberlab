@@ -35,6 +35,7 @@ def init_db_tables():
             task_name TEXT NOT NULL,
             task_description TEXT NOT NULL,
             flag TEXT NOT NULL,
+            task_order INTEGER NOT NULL,
             PRIMARY KEY(challenge_id, task_id)
         );""")
 
@@ -86,12 +87,11 @@ def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str)
     cursor.execute(q, (id, name, desc, diff, ch_dir))
     conn.commit()
 
-
-def insert_task_data(chal_id: str, id: str, name: str, desc: str, flag: str):
+def insert_task_data(chal_id: str, id: str, name: str, desc: str, flag: str, order: int):
     conn = get_db()
     cursor = conn.cursor()
-    q = 'INSERT INTO tasks (challenge_id, task_id, task_name, task_description, flag) VALUES (?, ?, ?, ?, ?)'
-    cursor.execute(q, (chal_id, id, name, desc, flag))
+    q = 'INSERT INTO tasks (challenge_id, task_id, task_name, task_description, flag, task_order) VALUES (?, ?, ?, ?, ?, ?)'
+    cursor.execute(q, (chal_id, id, name, desc, flag, order))
     conn.commit()
 
 
@@ -116,6 +116,7 @@ def get_tasks(sess: str) -> List[Dict]:
     LEFT JOIN 
         (SELECT challenge_id, task_id, true as solved FROM task_solves WHERE session = ? )
             USING(challenge_id, task_id)
+    ORDER BY task_order ASC
     """
     cursor.execute(q, (sess, ))
     rows = cursor.fetchall()
