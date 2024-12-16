@@ -17,7 +17,6 @@
     {#if $chosenChallenge}
       <ChallengeDetail challenge={$chosenChallenge} />
     {:else if $chosenClass}
-      <ClassDetail />
       <ClassDetail curClass={$chosenClass} />
     {:else}
       <Introduction />
