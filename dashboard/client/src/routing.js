@@ -39,7 +39,7 @@ export const chosenCampaignStep = derived([campaigns, path], ([campaigns, path])
 
   const [, campaignId, stepId] = match;
 
-  const step = campaigns.find((camp) => camp.id === campaignId)?.steps?.find((step) => step.id === stepId) ?? null;
+  const step = campaigns?.find((camp) => camp.id === campaignId)?.steps?.find((step) => step.id === stepId) ?? null;
   return step === null
     ? null
     : {
@@ -52,5 +52,5 @@ export const chosenCampaignDetail = derived([campaigns, path], ([campaigns, path
   const match = path.match(/^#campaign\/(.+)$/);
   if (!match) return null;
 
-  return campaigns.find((camp) => camp.id === match[1]) ?? null;
+  return campaigns?.find((camp) => camp.id === match[1]) ?? null;
 });

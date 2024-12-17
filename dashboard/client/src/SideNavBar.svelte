@@ -85,23 +85,25 @@
             {/each}
           </CollapsibleSection>
 
-          <CollapsibleSection id="campaignList" label="Campaigns">
-            {#each $campaigns as campaign}
-              <CollapsibleSection id={campaign.id} label={campaign.name} level={2}>
-                <span slot="labelExtra">
-                  <span
-                    role="button"
-                    tabindex="0"
-                    class="badge bg-black"
-                    on:keypress={() => chooseCampaignDetail(campaign.id)}
-                    on:click={() => chooseCampaignDetail(campaign.id)}
-                    title="Show campaign details">i</span
-                  >
-                </span>
-                <CampaignStepList id={campaign.id} />
-              </CollapsibleSection>
-            {/each}
-          </CollapsibleSection>
+          {#if $campaigns}
+            <CollapsibleSection id="campaignList" label="Campaigns">
+              {#each $campaigns as campaign}
+                <CollapsibleSection id={campaign.id} label={campaign.name} level={2}>
+                  <span slot="labelExtra">
+                    <span
+                      role="button"
+                      tabindex="0"
+                      class="badge bg-black"
+                      on:keypress={() => chooseCampaignDetail(campaign.id)}
+                      on:click={() => chooseCampaignDetail(campaign.id)}
+                      title="Show campaign details">i</span
+                    >
+                  </span>
+                  <CampaignStepList id={campaign.id} />
+                </CollapsibleSection>
+              {/each}
+            </CollapsibleSection>
+          {/if}
         </ul>
       {/if}
     </div>
