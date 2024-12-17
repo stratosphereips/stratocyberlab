@@ -49,6 +49,23 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    deploy: # These lines needs to be added for the GPU to take over
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]  # Specify that the container needs GPU access
+    runtime: nvidia  # This enables the container to use NVIDIA runtime
+
+# Explanation:
+# For this (from "deploy:" till the end) to work, you will need Linux and/or 
+# Windows with WSL2 (updated), both OS must be equiped with the dedicated GPU
+# which is usable for LLM (with CUDA cores).
+
+# If this is the case, then ollama service will start with the GPU and AI
+# assistant will be super fast in responses compared to the CPU only.
+# Notebook users, be careful about the nVIDIA Optimus, that can break things.
+# If you have Optimus enabled notebook, just switch to dedicated GPU (sometimes
+# it may be required to do that in the BIOS directly).
 
 networks:
   playground-net:
