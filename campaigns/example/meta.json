@@ -1,0 +1,17 @@
+{
+	"id": "example",
+	"name": "Example Campaign",
+	"description": "_Best_ **challenges** ever!\n\nFully markdownish!",
+	"timeline": [
+		{
+			"type": "challenge",
+			"id": "hell-ohs"
+		},
+		{
+			"type": "challenge",
+			"id": "good-byes"
+		}
+	],
+	"enforceOrder": true,
+	"showLocked": false
+}

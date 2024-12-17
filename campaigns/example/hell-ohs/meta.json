@@ -1,0 +1,26 @@
+{
+	"id": "hell-ohs",
+	"name": "Hellos",
+	"difficulty": "hard",
+	"description": "This challenge will drive you crazy.",
+	"tasks": [
+		{
+			"id": "sub-test",
+			"name": "Submission test",
+			"description": "Just submit a \"M1r0{hello-world}\" as a flag to test the dashboard.",
+			"flag": "M1r0{hello-world}"
+		},
+		{
+			"id": "hide-test",
+			"name": "Hidden test",
+			"description": "Just submit a \"M1r0{hell0-world}\" as a flag to test the dashboard.",
+			"flag": "M1r0{hell0-world}"
+		},
+		{
+			"id": "hide-test-2",
+			"name": "Hidden test 2",
+			"description": "Just submit a \"M1r0{hell0-w0rld}\" as a flag to test the dashboard.",
+			"flag": "M1r0{hell0-w0rld}"
+		}
+	]
+}
