@@ -404,7 +404,7 @@ async def challenges_get():
 @app.route('/api/challenges/start/all', methods=['POST'])
 @manage_session
 async def challenges_start_all():
-    challenges = db.get_challenges()
+    challenges = db.get_challenges(include_campaigns=True)
 
     eprint("Starting all challenges")
     for ch in challenges:
@@ -430,7 +430,7 @@ async def route_challenges_stop_all():
 
 
 async def challenges_stop_all():
-    challenges = db.get_challenges()
+    challenges = db.get_challenges(include_campaigns=True)
 
     eprint("Stopping all challenges")
     for ch in challenges:

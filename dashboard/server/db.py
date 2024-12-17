@@ -290,14 +290,15 @@ def get_class_dir(c_id: str) -> str:
     return ""
 
 
-def get_challenges() -> List[Dict]:
+def get_challenges(include_campaigns = False) -> List[Dict]:
     conn = get_db()
     cursor = conn.cursor()
     q = """
         SELECT challenge_id, challenge_name, challenge_description, challenge_dir
         FROM challenges
-        WHERE campaign_id IS NULL
     """
+    if not include_campaigns:
+        q += "WHERE campaign_id IS NULL"
     cursor.execute(q)
     rows = cursor.fetchall()
     conn.close()
