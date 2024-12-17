@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  lab:
+    build: .
+    container_name: scl-class-13-lab
+    stop_grace_period: 0s
+    hostname: class13
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.106
+        aliases:
+          - class13
+
+  juiceshop:
+    image: bkimminich/juice-shop
+    container_name: scl-class-13-juiceshop
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.107
+        aliases:
+          - juiceshop
+
+networks:
+  playground-net:
+    external: true

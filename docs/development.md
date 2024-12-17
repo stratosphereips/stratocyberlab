@@ -70,6 +70,8 @@
 | playground-net | `172.20.0.103` | [Class12](./../classes/class12)                                     |  
 | playground-net | `172.20.0.104` | [Class12](./../classes/class12)                                     |  
 | playground-net | `172.20.0.105` | [Class12](./../classes/class12)                                     |  
+| playground-net | `172.20.0.106` | [Class13](./../classes/class13)                                     |  
+| playground-net | `172.20.0.107` | [Class13](./../classes/class13)                                     |  
 
 
 ## Testing
