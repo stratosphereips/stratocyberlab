@@ -8,6 +8,7 @@ services:
     hostname: class12
     networks:
       playground-net:
+        ipv4_address: 172.20.0.102
         aliases:
           - class12
 
@@ -18,6 +19,7 @@ services:
     stop_grace_period: 0s
     networks:
       playground-net:
+        ipv4_address: 172.20.0.103
         aliases:
           - juiceshop
           - juiceshop1
@@ -32,6 +34,7 @@ services:
     stop_grace_period: 0s
     networks:
       playground-net:
+        ipv4_address: 172.20.0.104
         aliases:
           - protected-juiceshop
           - waf
@@ -49,6 +52,7 @@ services:
     stop_grace_period: 0s
     networks:
       playground-net:
+        ipv4_address: 172.20.0.105
         aliases:
           - juicynginx
           - bsy.com
