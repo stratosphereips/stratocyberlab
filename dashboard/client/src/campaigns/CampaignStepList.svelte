@@ -7,7 +7,7 @@
   export let id;
 
   let root;
-  let campaign = derived([campaigns], ([campaigns]) => campaigns.find((camp) => camp.id === id));
+  let campaign = derived([campaigns], ([campaigns]) => campaigns?.find((camp) => camp.id === id));
 
   const load = () => loadSingleCampaign(id).then();
 
