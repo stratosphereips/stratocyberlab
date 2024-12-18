@@ -54,7 +54,7 @@ services:
     stop_grace_period: 0s
     networks:
       class13-private-net:
-        ipv4_address: 172.25.0.5
+        ipv4_address: 172.25.0.4
         aliases:
           - nginx
           - secret-server

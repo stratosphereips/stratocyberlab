@@ -7,17 +7,24 @@
 
 ### Adding a challenge
 
-* Create a new directory in the [/challenges](./../challenges/) directory (preferably copy and update a prepared challenge template located at [/challenges/template](./../challenges/template/))
+* Create a new directory in the [/challenges](./../challenges/) directory (preferably copy and update a prepared
+  challenge template located at [/challenges/template](./../challenges/template/))
 * Create/update mandatory files:
-    * `meta.json` specifies metadata of the challenge such as name, id, description, difficulty and all tasks with appropriate flags. The file is used by the dashboard server to show tasks' descriptions and to verify submitted flags.
+    * `meta.json` specifies metadata of the challenge such as name, id, description, difficulty and all tasks with
+      appropriate flags. The file is used by the dashboard server to show tasks' descriptions and to verify submitted
+      flags.
     * `docker-compose.yml` defines services started for the challenge when user starts the challenge from the dashboard
         * Use external network `playground-net` to connect a container to the base lab network
-        * Assign a static IP address to every service. Look below to a table of IP allocations, choose free IP and add a record to the table. 
+        * Assign a static IP address to every service. Look below to a table of IP allocations, choose free IP and add a
+          record to the table.
         * Ideally set `stop_grace_period: 0s` for all services to speed-up stopping of containers
     * `README.md` with simple description of the challenge and a section with steps how to solve the challenge
-    * `auto_solve.sh` bash script that tests challenge functionality. This script is automatically imported by the root [run_tests.sh](./../run_tests.sh) script and is executed from the hackerlab container. The script should ideally perform all required steps to solve all tasks and submit the flags in the dashboard via an API.
+    * `auto_solve.sh` bash script that tests challenge functionality. This script is automatically imported by the
+      root [run_tests.sh](./../run_tests.sh) script and is executed from the hackerlab container. The script should
+      ideally perform all required steps to solve all tasks and submit the flags in the dashboard via an API.
     * optional other source code, data or docker files for the challenge
-* To test the new challenge, run the lab using command `docker compose up --force-recreate` so the dashboard loads the new challenge information 
+* To test the new challenge, run the lab using command `docker compose up --force-recreate` so the dashboard loads the
+  new challenge information
 
 ## How to add a new class environment
 
@@ -27,15 +34,16 @@
     * optional `docker-compose.yml` file
         * if present, the dashboard offers to start the defined services
         * Use external network `playground-net` to connect a container to the base lab network
-        * Assign a static IP address to every service. Look below to a table of IP allocations, choose free IP and add a record to the table. 
+        * Assign a static IP address to every service. Look below to a table of IP allocations, choose free IP and add a
+          record to the table.
         * Ideally set `stop_grace_period: 0s` for all services to speed-up stopping of containers
     * optional other source code, data or docker files needed for the class
 
 ## Networking
 
-| Network          | Subnet        |
-|------------------|---------------|
-| playground-net   | 172.20.0.0/24 |  
+| Network        | Subnet        |
+|----------------|---------------|
+| playground-net | 172.20.0.0/24 |  
 
 #### IP allocations
 
@@ -45,19 +53,19 @@
 | playground-net | `172.20.0.10`  | Challenge [Famous Quotes LFI](./../challenges/famous-quotes-lfi/)   |
 | playground-net | `172.20.0.30`  | Challenge [What's the date?](./../challenges/what-is-the-date/)     |
 | playground-net | `172.20.0.35`  | Challenge [What's that noise?](./../challenges/what-is-that-noise/) |
- | playground-net | `172.20.0.39`  | Challenge [Shockwave Report](./../challenges/shockwave-report)      |
- | playground-net | `172.20.0.41`  | Challenge [Intrusion](./../challenges/intrusion)                    |
- | playground-net | `172.20.0.45`  | Challenge [Jump Around](./../challenges/jump-around)                |
- | playground-net | `172.20.0.47`  | Challenge [Jump Around](./../challenges/jump-around)                |
- | playground-net | `172.20.0.49`  | Challenge [Jump Around](./../challenges/jump-around)                |
- | playground-net | `172.20.0.67`  | Challenge [Leet Messenger](./../challenges/leet-messenger)          |
- | playground-net | `172.20.0.52`  | Challenge [Cybernet](./../challenges/cybernet)                      |
- | playground-net | `172.20.0.88`  | [Class02](./../classes/class02)                                     |                                                
- | playground-net | `172.20.0.90`  | [Class03](./../classes/class03)                                     |                                                
- | playground-net | `172.20.0.95`  | [Class03](./../classes/class03)                                     |  
- | playground-net | `172.20.0.98`  | [Class06](./../classes/class06)                                     |  
- | playground-net | `172.20.0.99`  | [Class06](./../classes/class06)                                     |  
- | playground-net | `172.20.0.108` | [Class07](./../classes/class07)                                     |
+| playground-net | `172.20.0.39`  | Challenge [Shockwave Report](./../challenges/shockwave-report)      |
+| playground-net | `172.20.0.41`  | Challenge [Intrusion](./../challenges/intrusion)                    |
+| playground-net | `172.20.0.45`  | Challenge [Jump Around](./../challenges/jump-around)                |
+| playground-net | `172.20.0.47`  | Challenge [Jump Around](./../challenges/jump-around)                |
+| playground-net | `172.20.0.49`  | Challenge [Jump Around](./../challenges/jump-around)                |
+| playground-net | `172.20.0.67`  | Challenge [Leet Messenger](./../challenges/leet-messenger)          |
+| playground-net | `172.20.0.52`  | Challenge [Cybernet](./../challenges/cybernet)                      |
+| playground-net | `172.20.0.88`  | [Class02](./../classes/class02)                                     |                                                
+| playground-net | `172.20.0.90`  | [Class03](./../classes/class03)                                     |                                                
+| playground-net | `172.20.0.95`  | [Class03](./../classes/class03)                                     |  
+| playground-net | `172.20.0.98`  | [Class06](./../classes/class06)                                     |  
+| playground-net | `172.20.0.99`  | [Class06](./../classes/class06)                                     |  
+| playground-net | `172.20.0.108` | [Class07](./../classes/class07)                                     |
 | playground-net | `172.20.0.110` | [Class07](./../classes/class07)                                     |
 | playground-net | `172.20.0.115` | [Class08](./../classes/class08)                                     |
 | playground-net | `172.20.0.120` | [Class09](./../classes/class09)                                     |
@@ -71,14 +79,18 @@
 | playground-net | `172.20.0.104` | [Class12](./../classes/class12)                                     |  
 | playground-net | `172.20.0.105` | [Class12](./../classes/class12)                                     |  
 | playground-net | `172.20.0.106` | [Class13](./../classes/class13)                                     |  
-| playground-net | `172.20.0.107` | [Class13](./../classes/class13)                                     |  
-
+| playground-net | `172.20.0.107` | [Class13](./../classes/class13)                                     |
+| playground-net | `172.20.0.108` | [Class13](./../classes/class13)                                     |
+| playground-net | `172.20.0.109` | [Class13](./../classes/class13)                                     |
+| playground-net | `172.25.0.1`   | [Class13](./../classes/class13)                                     |
+| playground-net | `172.25.0.2`   | [Class13](./../classes/class13)                                     |
+| playground-net | `172.25.0.3`   | [Class13](./../classes/class13)                                     |
+| playground-net | `172.25.0.4`   | [Class13](./../classes/class13)                                     |
 
 ## Testing
 
-To run all tests, use script `run_tests.sh`. The script starts the lab, fires up all challenges and runs all existing `auto-solve.sh` scripts from within the hackerlab container.
-
-
+To run all tests, use script `run_tests.sh`. The script starts the lab, fires up all challenges and runs all existing
+`auto-solve.sh` scripts from within the hackerlab container.
 
 ## Code quality
 
