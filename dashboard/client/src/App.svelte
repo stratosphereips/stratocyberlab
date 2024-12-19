@@ -5,6 +5,7 @@
   import SSH from './Ssh.svelte';
   import { onMount } from 'svelte';
   import ClassDoc from './ClassDoc.svelte';
+  import Snowfall from "./Snowfall.svelte";
 
   let showSSH = false;
   let sshInitialised = false;
@@ -76,14 +77,38 @@
       widthVertical1st = newWidth;
     }
   }
+
+  let isSnowfallEnabled = true;
+
+  function toggleSnowfall() {
+    isSnowfallEnabled = !isSnowfallEnabled;
+  }
+
+
 </script>
 <style>
+  .snowfall-toggle {
+    font-size: 1rem;
+    margin-right: 15px;
+    background-color: transparent; /* Transparent background for cleaner look */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+  }
+
+  .snowfall-toggle:hover {
+    background-color: #f0f0f0; /* Light gray background */
+    transform: scale(1.1); /* Slightly enlarge */
+  }
+
   .custom-rounded-button {
     border-radius: 20px 20px 0 0;
   }
 </style>
 
 <LoadingOverlay />
+{#if isSnowfallEnabled}
+  <Snowfall />
+{/if}
 <div class="container-fluid p-0 d-flex flex-column" style="height: {dashboardHeight}vh; overflow-y: auto;">
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
@@ -92,6 +117,11 @@
         <img src="/media/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top" />
         StratoCyberLab
       </a>
+    </div>
+    <div class="mr-3">
+      <button class="btn snowfall-toggle" on:click={toggleSnowfall}>
+        ☀️
+      </button>
     </div>
   </nav>
 
