@@ -1,6 +1,6 @@
 FROM debian:12 AS gobuilder
 
-RUN apt update && apt install -y openssh-server tmux vim nano curl ncat jq
+RUN apt update && apt install -y openssh-server tmux vim nano curl ncat jq iputils-ping iproute2
 
 RUN mkdir -p /var/run/sshd /root/.ssh
 COPY sshd_config /etc/ssh/sshd_config
