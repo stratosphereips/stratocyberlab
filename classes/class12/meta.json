@@ -3,5 +3,5 @@
     "id": "class-12",
     "description": "The 12th focuses on Web Attacks. <br>Please open the Google document provided to all registered students and follow the document. <br><ol><li>Start the class.</li><li><b>From the hackerlab (browser terminal)</b>, connect to the class 12 container with preinstalled tools using command <b>ssh root@class12</b> and <b>admin</b> password</li><li><b>From a new terminal on your computer (NOT StratoCyberLab)</b>, execute following command <b>ssh -L 3000:juiceshop:3000 -L 8080:juicynginx:80 root@127.0.0.1 -p 2222</b> with password <b>ByteThem123</b>. This setups port forwarding so you can access the services in your browser.</li></ol>",
     "google_doc_url": "https://docs.google.com/document/d/1aMsSpDaaXnHBcVc6P4E4b-Y0M3mi9_2GmlgotASKEyM",
-    "yt_recording_url": "https://www.youtube.com/embed/enkeCEpTL34?si=cxx513_5t4Oq-o13"
+    "yt_recording_url": "https://www.youtube.com/embed/oeOXvdufPgk?si=KtrYx6h0LqKracTY"
 }
