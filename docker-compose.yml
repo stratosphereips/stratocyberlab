@@ -3,7 +3,7 @@ services:
     build: ./hackerlab
     container_name: scl-hackerlab
     hostname: hackerlab
-    restart: always
+    restart: on-failure
     volumes:
       - ./hackerlab/data:/data
     ports:
@@ -16,7 +16,7 @@ services:
     build: ./dashboard
     container_name: scl-dashboard
     hostname: dashboard
-    restart: always
+    restart: on-failure
     ports:
       - "127.0.0.1:80:80"
       - "127.0.0.1:8080:8080"
@@ -39,7 +39,7 @@ services:
     container_name: scl-ollama
     volumes:
       - ./ollama:/root/.ollama
-    restart: always
+    restart: on-failure
     networks:
       playground-net:
         ipv4_address: 172.20.0.100
