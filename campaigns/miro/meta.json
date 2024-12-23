@@ -2,7 +2,12 @@
   "id": "miro",
   "name": "Miro DP",
   "description": "",
-  "timeline": [],
+  "timeline": [
+    {
+      "type": "challenge",
+      "id": "bearific"
+    }
+  ],
   "enforceOrder": true,
   "showLocked": false
 }

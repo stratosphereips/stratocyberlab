@@ -1,0 +1,14 @@
+{
+	"id": "bearific",
+	"name": "Bearific",
+	"difficulty": "medium",
+	"description": "See if you can attract some honey consumers and slap them on the wrist. According to zoologists, these animals are curious specifically about the port 2222.",
+	"tasks": [
+		{
+			"id": "planted",
+			"name": "Left behind",
+			"description": "Did the honey consumer perhaps leave something behind?",
+			"flag": "M1r0{fGeeeyhxF399xyjItxBRDKel1QxvuVhVfbVE7CEUUVdFAz4WLXmie2nm0ugs}"
+		}
+	]
+}
