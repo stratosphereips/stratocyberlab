@@ -27,6 +27,7 @@ LABHOST='127.0.0.1'
 LABPORT=2222
 
 CHALLENGES_DIR="challenges"
+CAMPAIGNS_DIR="campaigns"
 
 echo ""
 echo "Starting all challenges"
@@ -38,10 +39,11 @@ fi
 echo "All challenges started"
 
 failed=false
-for chal_dir in "$CHALLENGES_DIR"/*/; do
-    if [[ "$chal_dir" == "challenges/template/" ]]; then
+solve () {
+    local chal_dir=$1
+    if [[ "$chal_dir" == *"template"* ]]; then
         # skip template
-        continue
+        return 0
     fi
 
     echo ""
@@ -75,6 +77,23 @@ for chal_dir in "$CHALLENGES_DIR"/*/; do
     else
         echo "WARNING - missing $solve_script script"
     fi
+}
+
+for chal_dir in "$CHALLENGES_DIR"/*/; do
+    if ! solve "$chal_dir"; then
+        failed=true
+    fi
+done
+for campaign_dir in "$CAMPAIGNS_DIR"/*/; do
+    if [[ "$campaign_dir" == *"example"* ]]; then
+        # skip example
+        continue
+    fi
+    for chal_dir in "$campaign_dir"*/; do
+        if ! solve "$chal_dir"; then
+            failed=true
+        fi
+    done
 done
 
 echo ""
