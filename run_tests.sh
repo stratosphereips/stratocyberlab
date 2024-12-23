@@ -49,7 +49,8 @@ solve () {
     echo ""
     echo "Testing $chal_dir:"
 
-    solve_script="$chal_dir/auto-solve.sh"
+    local solve_script="$chal_dir/auto-solve.sh"
+    local solve_deps="$chal_dir/auto-solve"
     if [ -f "$solve_script" ]; then
         # Copy auto-solve script into /tmp dir in hackerlab container
         # We use ssh instead of docker exec to test also the SSH connection
@@ -60,16 +61,28 @@ solve () {
                 -P $LABPORT \
                 $solve_script \
                 $LABUSER@$LABHOST:/tmp/auto-solve.sh
+
+        # also copy all potential dependencies of the solve script
+        if [ -d "$solve_deps" ]; then
+            sshpass -p "$LABPASS" scp -O \
+                    -o LogLevel=error \
+                    -o UserKnownHostsFile=/dev/null \
+                    -o StrictHostKeyChecking=no \
+                    -P $LABPORT \
+                    -r \
+                    $solve_deps \
+                    $LABUSER@$LABHOST:/tmp/
+        fi
         # Run the auto-solve script from within the hackerlab container
         sshpass -p "$LABPASS" ssh \
-        -o LogLevel=error \
-        -o UserKnownHostsFile=/dev/null \
-        -o StrictHostKeyChecking=no \
-        -p $LABPORT \
-        $LABUSER@$LABHOST \
-        /tmp/auto-solve.sh
+                -o LogLevel=error \
+                -o UserKnownHostsFile=/dev/null \
+                -o StrictHostKeyChecking=no \
+                -p $LABPORT \
+                $LABUSER@$LABHOST \
+                'cd /tmp && bash auto-solve.sh'
 
-        retVal=$?
+        local retVal=$?
         if [ $retVal -ne 0 ]; then
             failed=true
         fi
@@ -112,7 +125,7 @@ echo "Project stopped"
 
 echo ""
 if [ "$failed" = true ]; then
-    echo "❌ TEST FAILED - some auto-solve.sh script fialed"
+    echo "❌ TEST FAILED - some auto-solve.sh script failed"
     exit 2
 else
     echo "✅ ALL TESTS PASSED"
