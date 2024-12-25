@@ -1,0 +1,14 @@
+{
+	"id": "corporate-retreat",
+	"name": "Corporate Retreat",
+	"difficulty": "hard",
+	"description": "",
+	"tasks": [
+		{
+			"id": "lil-brother",
+			"name": "Lil Brother",
+			"description": "",
+			"flag": ""
+		}
+	]
+}
