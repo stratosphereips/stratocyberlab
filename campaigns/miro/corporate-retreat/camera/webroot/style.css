@@ -1,61 +1,65 @@
 body {
-	height: 100vh;
-	width: 100vw;
-	overflow: auto;
-	background-color: #eee;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+  background-color: #eee;
 }
 
 body > div {
-	width: 70vw;
-	height: 70vh;
-	border: 1px solid blueviolet;
-	border-radius: 25px;
-	position: relative;
-	padding: 10px;
-	margin: auto;
-	margin-top: 50px;
+  width: 70vw;
+  height: 70vh;
+  border: 1px solid blueviolet;
+  border-radius: 25px;
+  position: relative;
+  padding: 10px;
+  margin: auto;
+  margin-top: 50px;
 }
 
 h1 {
-	color: white;
-	margin: 0;
-	padding: 10px;
+  color: white;
+  margin: 0;
+  padding: 10px;
 }
 
 header {
-	background-color: blueviolet;
-	margin: -10px;
-	margin-bottom: 20px;
-	border-radius: 25px;
+  background-color: blueviolet;
+  margin: -10px;
+  margin-bottom: 20px;
+  border-radius: 25px;
 }
 
 table {
-	table-layout: fixed;
-	width: 100%;
-	margin-left: 10px;
-	margin-right: 10px;
+  table-layout: fixed;
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 table a {
-	color: white;
+  color: white;
 }
 
 footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
 }
 
 input[type="submit"] {
-	display: block;
-	margin: auto;
+  display: block;
+  margin: auto;
 }
 
 table {
-	border-spacing: 10px;
+  border-spacing: 10px;
 }
 
 img {
-	max-width: 100%;
+  max-width: 100%;
+}
+
+.hidden {
+  display: none;
 }
