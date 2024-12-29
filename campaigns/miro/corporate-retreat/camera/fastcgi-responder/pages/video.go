@@ -6,5 +6,5 @@ import (
 )
 
 func VideoFeed(w http.ResponseWriter) {
-	Page(w, Img(Src("CameraCapture.jpg"), Alt("Camera Capture")))
+	Page(w, Img(Src("CameraCapture.jpg"), Alt("Camera Capture")), Script(Src("/refresh.js")))
 }
