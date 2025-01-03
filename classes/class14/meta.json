@@ -1,0 +1,7 @@
+{
+    "name": "Class 14 - Surprise Topic, Recap, and NOC Talk",
+    "id": "class-14",
+    "description": "The 14th class focuses on the surprise topic of analyzing system logs with AI to train on how the use of AI and LLM can be used to automate the understanding of large dataa. It also has a recap of all the assignments and the NOC talk, where we disclose how the whole class was built and the lessons learned. Login to the class14 docker with  <b>ssh root@ssh-server</b> with user <b>root</b> and password <b>admin</b>.",
+    "google_doc_url": "https://",
+    "yt_recording_url": "https://www.youtube.com/embed/KiNLU0lOWbU?si=x9mQ6Bh1NTnFOiKU"
+}

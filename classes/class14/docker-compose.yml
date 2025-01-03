@@ -1,0 +1,37 @@
+services:
+  lab:
+    build: .
+    container_name: scl-class-14-lab
+    stop_grace_period: 0s
+    hostname: class14
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.5
+        aliases:
+          - class14
+
+  ssh-server:
+    build: ./ssh-server
+    container_name: scl-class-14-ssh-server
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.134
+        aliases:
+          - ssh-server
+
+  attacker:
+    build: ./attacker
+    container_name: scl-class-14-attacker
+    restart: unless-stopped
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.133
+        aliases:
+          - attacker
+
+networks:
+  playground-net:
+    external: true
