@@ -1,0 +1,89 @@
+version: '3.3'
+
+# TODO: container names, ...
+services:
+  # Routing between on-prem and auxiliary network(s)
+  off-prem-router1:
+    stop_grace_period: 0s
+    build: off-prem-router1
+    networks:
+      cr-dc1:
+        ipv4_address: 10.2.0.2
+      cr-aux:
+        ipv4_address: 10.3.0.2
+      cr-cn1:
+        ipv4_address: 10.0.0.3
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      - net.ipv4.ip_forward=1
+  # Auxiliary camera connected to auxiliary network + "internet"
+  camera:
+    stop_grace_period: 0s
+    build: camera
+    networks:
+      cr-aux:
+        ipv4_address: 10.3.0.211
+      playground-net:
+        # TODO static IP
+  user-machine:
+    stop_grace_period: 0s
+    build: user-machine
+    networks:
+      cr-cn1:
+        ipv4_address: 10.0.0.6
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+  # Location (1) Proxy
+  locproxy:
+    stop_grace_period: 0s
+    build: locproxy
+    networks:
+      cr-cn1:
+        ipv4_address: 10.0.0.5
+        aliases:
+          - locproxy
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+  # Router from CN1 to the outside world
+  public-facing-router2:
+    stop_grace_period: 0s
+    build: public-facing-router2
+    networks:
+      cr-cn1:
+        ipv4_address: 10.0.0.4
+        aliases:
+          - public-facing-router2
+      playground-net: {}
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      - net.ipv4.ip_forward=1
+
+# ALL GATEWAYS are just specified here to make sure they have static IPs, we are NOT using them at all
+networks:
+  # auxiliary devices outside the main network
+  cr-aux:
+    ipam:
+      config:
+        - subnet: 10.3.0.0/24
+          gateway: 10.3.0.1
+  # company network 1 = location 1
+  cr-cn1:
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
+          gateway: 10.0.0.1
+  # company datacenter 1
+  cr-dc1:
+    ipam:
+      config:
+        - subnet: 10.2.0.0/20
+          gateway: 10.2.0.1
+  # "internet"
+  playground-net:
+    external: true
