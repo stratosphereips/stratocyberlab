@@ -3,7 +3,7 @@ FROM debian:bookworm-slim
 # install apache
 RUN <<EOF
 apt-get update
-apt-get install -y wget libapache2-mod-php8.2 php8.2-sqlite3 php8.2-dom php8.2-gd bzip2 unzip
+apt-get install -y wget libapache2-mod-php8.2 php8.2-sqlite3 php8.2-dom php8.2-gd bzip2 unzip patch sqlite3
 EOF
 
 WORKDIR /tmp
@@ -27,11 +27,6 @@ chmod 777 /var/www/html/store /var/www/html/cache /var/www/html/files /var/www/h
 
 # finish phpbb "installation"
 rm -r /var/www/html/install
-
-# db
-mkdir /var/www/db
-touch /var/www/db/bread.sqlite3
-chown -R www-data:www-data /var/www/db
 EOF
 
 COPY 2fa-patches/* /tmp/
@@ -49,7 +44,19 @@ patch -p1 --directory=/var/www/html/ <phpbb-functions.patch
 rm *.patch
 EOF
 
+COPY db-dump /tmp/db-dump
+RUN <<EOF
+echo "Restoring DB, this might take a while"
+mkdir /var/www/db
+cd /tmp/db-dump
+bash -c 'cat *.sql | sqlite3 /var/www/db/bread.sqlite3'
+chown -R www-data:www-data /var/www/db
+rm -r /tmp/db-dump
+EOF
+
 COPY phpbb-config.php /var/www/html/config.php
+COPY attachments/tx-confirmation.jpg /var/www/html/files/59_e09531b3d562bcce937839c5920faa71
+COPY attachments/flag.txt /var/www/html/files/64_4c86a649b79d1f9a6d241e50019e0e98
 
 CMD bash -c 'service apache2 start && sleep infinity'
 
