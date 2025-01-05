@@ -63,6 +63,12 @@ services:
       - NET_RAW
     sysctls:
       - net.ipv4.ip_forward=1
+  record-system:
+    stop_grace_period: 0s
+    build: record-system
+    networks:
+      cr-cn1:
+        ipv4_address: 10.0.0.8
 
 # ALL GATEWAYS are just specified here to make sure they have static IPs, we are NOT using them at all
 networks:
