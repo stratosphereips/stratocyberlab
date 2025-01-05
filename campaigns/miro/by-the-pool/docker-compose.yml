@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  bread-forum:
+    container_name: scl-btp-bread-forum
+    stop_grace_period: 0s
+    build: bread-forum
+    networks:
+      playground-net:
+        # TODO
+        ipv4_address: 172.20.0.250
+
+networks:
+  playground-net:
+    external: true
