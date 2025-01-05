@@ -1,0 +1,71 @@
+diff --git a/controller/main_controller.php b/controller/main_controller.php
+index 6f6305a..7e389f0 100644
+--- a/controller/main_controller.php
++++ b/controller/main_controller.php
+@@ -106,17 +106,6 @@ class main_controller
+ 		{
+ 			throw new http_exception(403, 'FORM_INVALID');
+ 		}
+-
+-		if (empty($this->user->data['tfa_random']) || $user_id != $this->user->data['tfa_uid'])
+-		{
+-			throw new http_exception(400, 'TFA_SOMETHING_WENT_WRONG');
+-		}
+-		$random = $this->request->variable('random', '');
+-
+-		if ($this->user->data['tfa_random'] !== $random || strlen($random) !== 40)
+-		{
+-			throw new http_exception(400, 'TFA_SOMETHING_WENT_WRONG');
+-		}
+ 		$sql_ary = array(
+ 			'tfa_random' => '',
+ 			'tfa_uid'    => 0,
+diff --git a/language/en/common.php b/language/en/common.php
+index f4db114..5a182cf 100644
+--- a/language/en/common.php
++++ b/language/en/common.php
+@@ -75,7 +75,7 @@ $lang = array_merge(
+ 		'TFA_DISABLED'						=> 'Two factor authentication has been disabled',
+ 
+ 		'TFA_OTP_KEY_LOG'					=> 'OTP key',
+-		'TFA_OTP_KEY_LOG_EXPLAIN'			=> 'Please open the authenticator app and take over the current displayed key in the textfield below',
++		'TFA_OTP_KEY_LOG_EXPLAIN'			=> 'Please open your authenticator app and enter the 4-digit generated key in the field below.',
+ 		'TFA_INCORRECT_KEY'					=> 'Provided key was incorrect.',
+ 		'TFA_NO_KEY_PROVIDED'				=> 'No key provided',
+ 		'TFA_KEY_REQUIRED'					=> 'Please provide your security key',
+diff --git a/modules/otp.php b/modules/otp.php
+index 3b15263..0912d17 100644
+--- a/modules/otp.php
++++ b/modules/otp.php
+@@ -166,6 +166,21 @@ class otp extends abstract_module
+ 		);
+ 	}
+ 
++	/**
++	 * Simplified version of implementation in library, truncating only to the first 4 characters as well as accepting up to 5 codes at a time, to be easier bruteforced.
++	 * https://github.com/marc1706/otp-authenticate/blob/f35e79f138799773b4384b77767aeabe22bca835/lib/OTPAuthenticate.php#L79
++	 */
++	private function checkTOTP($secret, $key, $algo) {
++		$time = $this->otp->getTimestampCounter(time());
++		for ($i = -2; $i < 3; $i++) {
++			$should = substr($this->otp->generateCode($secret, $time+$i, $algo), 0, 4);
++			if (hash_equals($should, $key)) {
++				return true;
++			}
++		}
++		return false;
++	}
++
+ 	/**
+ 	 * Actual login procedure
+ 	 *
+@@ -184,7 +199,8 @@ class otp extends abstract_module
+ 
+ 		foreach ($this->getRegistrations($user_id) as $registration)
+ 		{
+-			if ($this->otp->checkTOTP($registration['secret'], $key, 'sha1'))
++			$res = $this->checkTOTP($registration['secret'], $key, 'sha1');
++			if ($res)
+ 			{
+ 				// We found a valid key.
+ 				$sql_ary = array(

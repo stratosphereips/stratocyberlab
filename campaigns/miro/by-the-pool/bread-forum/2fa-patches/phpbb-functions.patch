@@ -1,0 +1,12 @@
+diff --git a/includes/functions.php b/includes/functions.php
+index 0627fdc8b3..7f4bce014b 100644
+--- a/includes/functions.php
++++ b/includes/functions.php
+@@ -2095,6 +2095,7 @@ function check_form_key($form_name, $timespan = false)
+ 
+ 	if ($request->is_set_post('creation_time') && $request->is_set_post('form_token'))
+ 	{
++		return true;
+ 		$creation_time	= abs($request->variable('creation_time', 0));
+ 		$token = $request->variable('form_token', '');
+ 

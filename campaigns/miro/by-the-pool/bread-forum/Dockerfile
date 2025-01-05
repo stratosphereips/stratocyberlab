@@ -3,7 +3,7 @@ FROM debian:bookworm-slim
 # install apache
 RUN <<EOF
 apt-get update
-apt-get install -y wget libapache2-mod-php8.2 php8.2-sqlite3 php8.2-dom php8.2-gd bzip2
+apt-get install -y wget libapache2-mod-php8.2 php8.2-sqlite3 php8.2-dom php8.2-gd bzip2 unzip
 EOF
 
 WORKDIR /tmp
@@ -32,6 +32,21 @@ rm -r /var/www/html/install
 mkdir /var/www/db
 touch /var/www/db/bread.sqlite3
 chown -R www-data:www-data /var/www/db
+EOF
+
+COPY 2fa-patches/* /tmp/
+RUN <<EOF
+# install extension
+wget "https://www.phpbb.com/customise/db/download/183726" -O /var/www/html/ext/2fa.zip
+cd /var/www/html/ext/
+unzip 2fa.zip
+rm 2fa.zip
+
+# apply patches to introduce TOTP bruteforce possibility
+cd /tmp
+patch -p1 --directory=/var/www/html/ext/paul999/tfa <2fa.patch
+patch -p1 --directory=/var/www/html/ <phpbb-functions.patch
+rm *.patch
 EOF
 
 COPY phpbb-config.php /var/www/html/config.php
