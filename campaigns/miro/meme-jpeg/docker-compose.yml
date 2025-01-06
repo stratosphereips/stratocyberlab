@@ -1,0 +1,11 @@
+services:
+  chat:
+    container_name: scl-mj-chat
+    stop_grace_period: 0s
+    build: chat
+    networks:
+      playground-net:
+
+networks:
+  playground-net:
+    external: true
