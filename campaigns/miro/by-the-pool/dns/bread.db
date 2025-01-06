@@ -1,0 +1,3 @@
+bread.forum. IN SOA dns admin 20241231 300 300 300 300
+www.bread.forum. IN A 172.20.0.250
+bread.forum. IN CNAME www.bread.forum.

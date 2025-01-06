@@ -9,6 +9,16 @@ services:
       playground-net:
         # TODO
         ipv4_address: 172.20.0.250
+  dns:
+    container_name: scl-btp-dns
+    stop_grace_period: 0s
+    build: dns
+    networks:
+      playground-net:
+        # TODO
+        ipv4_address: 172.20.0.249
+        aliases:
+          - hackerdns
 
 networks:
   playground-net:
