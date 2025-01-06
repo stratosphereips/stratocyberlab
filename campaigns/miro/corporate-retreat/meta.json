@@ -2,13 +2,43 @@
 	"id": "corporate-retreat",
 	"name": "Corporate Retreat",
 	"difficulty": "hard",
-	"description": "",
+	"description": "Now you know the incursion has happened from 172.20.0.239, you should perhaps take a look around 172.20.0.224/27. It is the range of BigComp, a company not exactly known for being the most ethical.",
 	"tasks": [
 		{
 			"id": "lil-brother",
 			"name": "Lil Brother",
-			"description": "",
-			"flag": ""
+			"description": "Can you find an IP address of a publicly available camera?",
+			"flag": "172.20.0.231"
+		},
+		{
+			"id": "edgar-allan-route",
+			"name": "Edgar Allan... Route?",
+			"description": "There is a poem hidden (not very well) on the gateway connecting the camera to inside the corporate network. Can you find it and recite the punchline?",
+			"flag": "M1r0{IETSXxvOLhEyosEETfGEqovIYjGQo3HrfitgScfwtVjfxnzoP1kJKzMWShN6}"
+		},
+		{
+			"id": "you-know-where-from",
+			"name": "You-Know-Where-From",
+			"description": "Okay. Enough fun. Remember why we're here in the first place - the attack, we are trying to identify who's responsible for the attack on your cousin! A local IP address (inside the company network) could be a good first lead.",
+			"flag": "10.0.1.233"
+		},
+		{
+			"id": "s-he-who-must-be-located",
+			"name": "(S)He, who must be located!",
+			"description": "Great! Companies are usually pretty good at keeping internal records, therefore it should not be an issue to find the records of the employee with this assigned IP address - specifically, the street name and house number of their registered address.",
+			"flag": "Langelinie Allé 21"
+		},
+		{
+			"id": "baked-goods-and-other-interests",
+			"name": "Baked goods & other interests",
+			"description": "There is a strange feeling around that makes one wonder. Are there any other log entries about this individual? What would be a 2nd level domain name that they would access for inquiries about baked goods? (Make sure to include the TLD.)",
+			"flag": "bread.forum"
+		},
+		{
+			"id": "huh-a-forum",
+			"name": "Huh, a forum!",
+			"description": "That almost sounds like something they would try to log into! What are the credentials used? Ours are for example admin:youcantbreakmypassword",
+			"flag": "Vigilante88:M1r0{mayFXwawow1ezzUjVIOutDhKRcZGJblvzDOgBaA4EMmQG09UpfP8i3XQA4YY}"
 		}
 	]
 }
