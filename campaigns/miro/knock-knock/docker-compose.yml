@@ -1,5 +1,7 @@
 services:
   dashboard:
+    container_name: scl-nn-dashboard
+    stop_grace_period: 0s
     build: dashboard
     networks:
       playground-net:
