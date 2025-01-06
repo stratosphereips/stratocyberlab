@@ -7,4 +7,4 @@ ip route add default via 10.0.0.4
 
 echo "Starting proxy"
 
-mitmdump --set confdir=/app -w /var/proxy/web-proxy.log
+mitmdump --set confdir=/app -w "/var/log/proxy/web-proxy-$(date --iso-8601).log"
