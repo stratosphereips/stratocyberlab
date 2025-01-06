@@ -61,6 +61,20 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+  dashboardus:
+    container_name: scl-fyp-dashboardus
+    stop_grace_period: 0s
+    build: dashboardus
+    networks:
+      fyp-internal:
+        aliases:
+          - dashboardus
+    healthcheck:
+      test: ["CMD", "node", "-e", "'http.get(\"http://localhost/\")'"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
   gatus:
     container_name: scl-fyp-gatus
     stop_grace_period: 0s
