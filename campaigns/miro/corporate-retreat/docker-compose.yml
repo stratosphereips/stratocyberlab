@@ -26,7 +26,8 @@ services:
       cr-aux:
         ipv4_address: 10.3.0.211
       playground-net:
-        # TODO static IP
+        ipv4_address: 172.20.0.231
+  # generic user machine
   user-machine:
     stop_grace_period: 0s
     build: user-machine
@@ -57,7 +58,9 @@ services:
         ipv4_address: 10.0.0.4
         aliases:
           - public-facing-router2
-      playground-net: {}
+      playground-net:
+        # same as the flag to knock-knock/whos-there
+        ipv4_address: 172.20.0.239
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -69,6 +72,25 @@ services:
     networks:
       cr-cn1:
         ipv4_address: 10.0.0.8
+  # these have been used just to create logs and do not have to be (probably should not be) present when solving the challenge:
+#  murray-pc:
+#    stop_grace_period: 0s
+#    build: user-machine
+#    networks:
+#      cr-cn1:
+#        ipv4_address: 10.0.1.233
+#    cap_add:
+#      - NET_ADMIN
+#      - NET_RAW
+#  murray-phone:
+#    stop_grace_period: 0s
+#    build: user-machine
+#    networks:
+#      cr-cn1:
+#        ipv4_address: 10.0.4.18
+#    cap_add:
+#      - NET_ADMIN
+#      - NET_RAW
 
 # ALL GATEWAYS are just specified here to make sure they have static IPs, we are NOT using them at all
 networks:

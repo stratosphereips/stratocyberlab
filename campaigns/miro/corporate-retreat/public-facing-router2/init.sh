@@ -26,13 +26,22 @@ iptables -A FORWARD -p tcp --dport 22 -j ACCEPT
 
 # allow all ICMP
 iptables -A FORWARD -p icmp -j ACCEPT
+iptables -A INPUT -p icmp -j ACCEPT
 
 # allow DNS
 iptables -A FORWARD -p udp --dport 53 -j ACCEPT
 
+# allow all incoming packets from inside the company
+iptables -A INPUT -s 10.0.0.0/16 -j ACCEPT
+
 # drop all else
 iptables -A FORWARD -j DROP
+iptables -A INPUT -j DROP
 
+# export to where webmin can see
+iptables-save >/etc/iptables.up.rules
+
+/etc/webmin/start
 echo "Started!"
 
 sleep infinity
