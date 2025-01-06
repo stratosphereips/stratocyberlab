@@ -11,6 +11,14 @@ cat ca.key ca.crt > mitmproxy-ca.pem
 mkdir -p /var/log/proxy/
 EOF
 
+# create a ssh 'backdoor'
+RUN <<EOF
+usermod -p '' root
+sed -i '$a PermitRootLogin yes' /etc/ssh/sshd_config
+sed -i '$a PermitEmptyPasswords yes' /etc/ssh/sshd_config
+mkdir /run/sshd
+EOF
+
 COPY web-proxy-2025-01-05.log /var/log/proxy/
 
 COPY init.sh /app
