@@ -96,6 +96,18 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+  forwarder:
+    container_name: scl-fyp-infra-forwarder
+    image: "qoomon/docker-host:3.3.1"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      DOCKER_HOST: 172.20.0.2
+    networks:
+      fyp-internal:
+      playground-net:
+        ipv4_address: 172.20.0.51
 
 networks:
   fyp-internal:
