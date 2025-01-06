@@ -1,6 +1,38 @@
 version: '3.3'
 
 services:
+  authus:
+    container_name: scl-fyp-authus
+    stop_grace_period: 0s
+    build: authus
+    networks:
+      fyp-internal:
+        aliases:
+          - authus
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/auth/login"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  db:
+    container_name: scl-fyp-db
+    stop_grace_period: 0s
+    build: db
+    networks:
+      fyp-internal:
+        aliases:
+          - db
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
   gatus:
     container_name: scl-fyp-gatus
     stop_grace_period: 0s
