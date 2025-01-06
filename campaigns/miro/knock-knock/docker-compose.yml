@@ -6,7 +6,7 @@ services:
     networks:
       playground-net:
         # same as fyp/gatus
-        ipv4_address: 172.20.0.50
+        ipv4_address: 172.20.0.203
         aliases:
           - dashboard
 
