@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  gatus:
+    container_name: scl-fyp-gatus
+    stop_grace_period: 0s
+    build: gatus
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.50
+        aliases:
+          - dashboard
+      fyp-internal:
+        aliases:
+          - gatus
+    depends_on:
+      - authus
+      - dashboardus
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost/"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  fyp-internal:
+  playground-net:
+    external: true
