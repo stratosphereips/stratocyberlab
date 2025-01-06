@@ -81,7 +81,7 @@ services:
     build: gatus
     networks:
       playground-net:
-        ipv4_address: 172.20.0.50
+        ipv4_address: 172.20.0.203
         aliases:
           - dashboard
       fyp-internal:
@@ -107,7 +107,7 @@ services:
     networks:
       fyp-internal:
       playground-net:
-        ipv4_address: 172.20.0.51
+        ipv4_address: 172.20.0.204
 
 networks:
   fyp-internal:

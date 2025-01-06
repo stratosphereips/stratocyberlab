@@ -8,7 +8,7 @@ services:
     build: attacker
     networks:
       playground-net:
-        ipv4_address: 172.20.0.54
+        ipv4_address: 172.20.0.201
   victim:
     container_name: scl-bearific-victim
     hostname: bearific-victim
@@ -16,7 +16,7 @@ services:
     build: victim
     networks:
       playground-net:
-        ipv4_address: 172.20.0.53
+        ipv4_address: 172.20.0.202
 
 networks:
   playground-net:
