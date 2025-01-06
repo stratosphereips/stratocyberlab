@@ -1,0 +1,12 @@
+. {
+	# forward all outside our zone to upstream dns = docker's dns
+	forward . 127.0.0.11
+	log
+	errors
+}
+
+bread.forum {
+	file /app/bread.db
+	log
+	errors
+}

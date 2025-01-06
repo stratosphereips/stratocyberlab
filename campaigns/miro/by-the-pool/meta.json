@@ -1,0 +1,20 @@
+{
+	"id": "by-the-pool",
+	"name": "By the Pool",
+	"difficulty": "medium",
+	"description": "Now that you have some login credentials for a hacking forum, why don't you put them to good use? You might have to use an appropriate DNS server, though.",
+	"tasks": [
+		{
+			"id": "tool",
+			"name": "Tool?",
+			"description": "What file type did the hacker disguise the tool as?",
+			"flag": "mp3"
+		},
+		{
+			"id": "location",
+			"name": "Home Sweet Home",
+			"description": "Where was the image sent from? We are interested in comma-separated coordinates with 6 digits after the decimal point.",
+			"flag": "55.698056,12.599945"
+		}
+	]
+}
