@@ -1,0 +1,13 @@
+authorized access to /dashboard
+404 on /robots.txt
+Connection timed out
+Rejecting mutual TLS authentication: invalid client certificate
+invalid jwt
+invalid jwt
+500 on /favicon.ico
+404 on /index.html
+started
+restarting...
+[object Object]
+sprintf(
+command not found

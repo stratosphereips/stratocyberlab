@@ -1,6 +1,34 @@
 version: '3.3'
 
 services:
+  mailus:
+    container_name: scl-fyp-mailus
+    stop_grace_period: 0s
+    build: mailus
+    networks:
+      fyp-internal:
+        aliases:
+          - mailus
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  logus:
+    container_name: scl-fyp-logus
+    stop_grace_period: 0s
+    build: logus
+    networks:
+      fyp-internal:
+        aliases:
+          - logus
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost/"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
   authus:
     container_name: scl-fyp-authus
     stop_grace_period: 0s

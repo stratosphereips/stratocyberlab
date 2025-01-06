@@ -1,0 +1,20 @@
+Uncaught Error: ENOENT: no such file or directory, open ''
+Uncaught Error: EACCES: permission denied
+[object Object]
+started
+restarting...
+TypeError: Cannot read property 'length' of undefined
+SyntaxError: Unexpected token ILLEGAL at line 1 column 0
+RangeError: Maximum call stack size exceeded
+TypeError: Cannot convert undefined or null to object
+SyntaxError: Unexpected identifier at line 1 column 0
+Error: Cannot redefine property on an object that is not extensible
+TypeError: NaN is not an element of this type
+ReferenceError: global is not defined
+SyntaxError: Function statement has no name at line 1 column 0
+RangeError: Invalid date '0000-00-00T00:00:00.000Z'
+TypeError: Cannot convert undefined or null to number
+SyntaxError: Unexpected token U at line 1 column 0
+ReferenceError: module is not defined
+TypeError: this is a TypeError!
+Error: Error parsing JSON: Unexpected token ' at position 0
