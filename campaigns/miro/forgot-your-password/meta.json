@@ -1,0 +1,14 @@
+{
+	"name": "Forgot your password?",
+	"id": "forgot-your-password",
+	"difficulty": "hard",
+	"description": "Your cousin instructed you to visit http://dashboard. Can you find what he hid there?",
+	"tasks": [
+		{
+			"id": "dashboard-content",
+			"name": "Dashboard Content",
+			"description": "After you successfully pass the auth gate, the dashboard greets you by name and gives you an important message.",
+			"flag": "M1r0{MNYQvczBnkgoJyoP5wHLVPcdT44hUMVw4kL2nOWsYKP3WoNNZoK3VbTrFa2q}"
+		}
+	]
+}
