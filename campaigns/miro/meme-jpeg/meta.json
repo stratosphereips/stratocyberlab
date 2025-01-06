@@ -1,0 +1,14 @@
+{
+	"id": "meme-jpeg",
+	"name": "Meme.jpeg",
+	"difficulty": "easy",
+	"description": "You suddenly remember the discussions you used to have with your cousin. Is he secretly telling you to do something?",
+	"tasks": [
+		{
+			"id": "destination",
+			"name": "Destination: undefined",
+			"description": "Where should you go?",
+			"flag": "http://dashboard"
+		}
+	]
+}
