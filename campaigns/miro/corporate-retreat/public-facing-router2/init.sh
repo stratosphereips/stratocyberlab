@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Starting ulogd"
+ulogd -d
+
 echo "Configuring iptables..."
 
 # NATting
@@ -8,24 +11,28 @@ iptables -t nat -A POSTROUTING -j MASQUERADE --random
 # debug only
 #iptables -A FORWARD -j NFLOG
 
-# allow returns - related connections + http(s) responses
+# prevent 172.20.0.250 (bread forum) from accessing the company network
+iptables -I FORWARD -s 172.20.0.250 -p tcp --sport http -j DROP
+
+# allow return communication
 iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -p tcp -m multiport --sports 80,443 -j ACCEPT
 
 # allow outbound http(s) traffic only when proxied
 iptables -A FORWARD -s 10.0.0.5/32 -p tcp -m multiport --dports 80,443 -j ACCEPT
 
-# allow DNS
-iptables -A FORWARD -p udp -m udp --dport 53 -j ACCEPT
-iptables -A FORWARD -p udp -m udp --sport 53 -j ACCEPT
+# allow outbound SSH, but log it first
+iptables -A FORWARD -p tcp --dport 22 -j NFLOG
+iptables -A FORWARD -p tcp --dport 22 -j ACCEPT
 
-# TODO allow inbound traffic?
+# allow all ICMP
+iptables -A FORWARD -p icmp -j ACCEPT
+
+# allow DNS
+iptables -A FORWARD -p udp --dport 53 -j ACCEPT
 
 # drop all else
 iptables -A FORWARD -j DROP
 
 echo "Started!"
 
-while :; do
-  sleep 1
-done
+sleep infinity
