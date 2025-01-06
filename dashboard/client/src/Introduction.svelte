@@ -15,6 +15,13 @@
             Or connect to the hackerlab directly using command <code>ssh root@127.0.0.1 -p 2222</code> and a password
             <code>ByteThem123</code>
           </li>
+          <li>
+            From the hackerlab shell, you can start a transparent proxy on <i>host</i> port 2223 using the command
+            <code>python3 ~/proxy.py TARGET_HOSTNAME TARGET_PORT</code>. This is especially useful for web-based
+            challenges. You can then use your current browser to access
+            <a href="http://localhost:2223" target="_blank" rel="noreferrer">http://TARGET_HOSTNAME:TARGET_PORT</a> as if
+            you were in the hackerlab!
+          </li>
         </ul>
       </li>
 

@@ -8,6 +8,7 @@ services:
       - ./hackerlab/data:/data
     ports:
       - "127.0.0.1:2222:22"
+      - "127.0.0.1:2223:8080"
     networks:
       playground-net:
         ipv4_address: 172.20.0.2
