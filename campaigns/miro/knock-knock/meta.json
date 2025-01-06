@@ -1,0 +1,20 @@
+{
+	"id": "knock-knock",
+	"name": "Knock Knock",
+	"difficulty": "easy",
+	"description": "After getting access to the dashboard (still at http://dashboard), some files are made accessible. Can you find evidence of an incursion?",
+	"tasks": [
+		{
+			"id": "whos-there",
+			"name": "Who's there?",
+			"description": "What IP address was the incursion initiated from?",
+			"flag": "172.20.0.239"
+		},
+		{
+			"id": "whens-there",
+			"name": "When's there?",
+			"description": "When exactly (YYYY-MM-dd hh:mm:ss) did the incursion end?",
+			"flag": "2025-01-05 22:22:48"
+		}
+	]
+}
