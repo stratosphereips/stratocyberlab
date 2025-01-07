@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  bread-forum:
+    container_name: scl-btp-bread-forum
+    stop_grace_period: 0s
+    build: bread-forum
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.250
+  dns:
+    container_name: scl-btp-dns
+    stop_grace_period: 0s
+    build: dns
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.249
+
+networks:
+  playground-net:
+    external: true

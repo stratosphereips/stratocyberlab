@@ -18,7 +18,7 @@
         body: JSON.stringify(payload),
       });
       if (res.status !== 200) {
-        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
 
       curClass.running = action === 'start';

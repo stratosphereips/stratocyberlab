@@ -1,0 +1,114 @@
+version: '3.3'
+
+services:
+  mailus:
+    container_name: scl-fyp-mailus
+    stop_grace_period: 0s
+    build: mailus
+    networks:
+      fyp-internal:
+        aliases:
+          - mailus
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  logus:
+    container_name: scl-fyp-logus
+    stop_grace_period: 0s
+    build: logus
+    networks:
+      fyp-internal:
+        aliases:
+          - logus
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost/"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  authus:
+    container_name: scl-fyp-authus
+    stop_grace_period: 0s
+    build: authus
+    networks:
+      fyp-internal:
+        aliases:
+          - authus
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/auth/login"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  db:
+    container_name: scl-fyp-db
+    stop_grace_period: 0s
+    build: db
+    networks:
+      fyp-internal:
+        aliases:
+          - db
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  dashboardus:
+    container_name: scl-fyp-dashboardus
+    stop_grace_period: 0s
+    build: dashboardus
+    networks:
+      fyp-internal:
+        aliases:
+          - dashboardus
+    healthcheck:
+      test: ["CMD", "node", "-e", "'http.get(\"http://localhost/\")'"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  gatus:
+    container_name: scl-fyp-gatus
+    stop_grace_period: 0s
+    build: gatus
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.203
+        aliases:
+          - dashboard
+      fyp-internal:
+        aliases:
+          - gatus
+    depends_on:
+      - authus
+      - dashboardus
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost/"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  forwarder:
+    container_name: scl-fyp-infra-forwarder
+    image: "qoomon/docker-host:3.3.1"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      DOCKER_HOST: 172.20.0.2
+    networks:
+      fyp-internal:
+      playground-net:
+        ipv4_address: 172.20.0.204
+
+networks:
+  fyp-internal:
+  playground-net:
+    external: true

@@ -1,0 +1,15 @@
+services:
+  dashboard:
+    container_name: scl-nn-dashboard
+    stop_grace_period: 0s
+    build: dashboard
+    networks:
+      playground-net:
+        # same as fyp/gatus
+        ipv4_address: 172.20.0.203
+        aliases:
+          - dashboard
+
+networks:
+  playground-net:
+    external: true

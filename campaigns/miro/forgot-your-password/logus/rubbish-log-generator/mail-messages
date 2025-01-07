@@ -1,0 +1,20 @@
+SMTP connection established from 127.0.0.1 (Client IP) to mailus (Server IP)
+User authenticated successfully using username/password credentials
+Failed delivery of message ID <e61b7e47-dc3c-4989-83b9-fb453b8a21e5@localhost> due to permanent error: Mailbox full
+Message with delivered successfully to user {}
+Client disconnected without sending a QUIT command; forcibly disconnecting
+Certificate verification failed for server 'enmailus' (Certificate Error)
+Failed authentication of user 'jane.smith' using NTLM credentials; attempting PLAIN authentication
+Mailbox quota exceeded for user; refusing to accept new emails
+FIX: defer due to DNS resolution failure
+message with subject 'Invalid Email!' failed SPF validation
+User 'anonymous' attempted to send a message with forged sender address; rejecting the message
+Message with subject 'Delivery Successful!' delivered successfully
+Mail server busy
+Mail server busy
+invalid signature?
+[object Object]
+started
+restarting...
+command not found
+

@@ -3,9 +3,9 @@
   import ClassDetail from './ClassDetail.svelte';
   import Introduction from './Introduction.svelte';
   import SideNavBar from './SideNavBar.svelte';
-
-  export let chosenChallenge;
-  export let chosenClass;
+  import { chosenChallenge, chosenClass, chosenCampaignDetail, chosenCampaignStep } from './routing';
+  import CampaignStep from './campaigns/CampaignStep.svelte';
+  import CampaignDetail from './campaigns/CampaignDetail.svelte';
 </script>
 
 <style>
@@ -13,13 +13,17 @@
 
 <div class="d-flex">
   <div class="flex-grow-0">
-    <SideNavBar class="mb2" bind:chosenChallenge bind:chosenClass />
+    <SideNavBar />
   </div>
   <div class="ps-5 flex-grow-1">
-    {#if chosenChallenge !== undefined}
-      <ChallengeDetail bind:challenge={chosenChallenge} />
-    {:else if chosenClass !== undefined}
-      <ClassDetail bind:curClass={chosenClass} />
+    {#if $chosenChallenge}
+      <ChallengeDetail challenge={$chosenChallenge} />
+    {:else if $chosenClass}
+      <ClassDetail curClass={$chosenClass} />
+    {:else if $chosenCampaignDetail}
+      <CampaignDetail campaign={$chosenCampaignDetail} />
+    {:else if $chosenCampaignStep}
+      <CampaignStep step={$chosenCampaignStep} />
     {:else}
       <Introduction />
     {/if}

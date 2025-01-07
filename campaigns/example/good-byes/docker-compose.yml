@@ -1,0 +1,7 @@
+version: '3.3'
+
+services:
+  nothing:
+    image: alpine:3.20.3
+    command: tail -f /dev/null
+    stop_grace_period: 0s

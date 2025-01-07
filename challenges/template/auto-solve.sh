@@ -6,12 +6,12 @@
 
 # Test also submission of the flag in the submission server. You can use
 # the following code snippet. Use flag, task and challenge IDs from your meta.json file
-# 
-# RES=`curl -s 'http://172.20.0.3/submit' \
+#
+# RES=`curl -s 'http://172.20.0.3/api/challenges/submit' \
 #     -X POST \
 #     -H 'Content-Type: application/json' \
 #     --data-binary '{"challenge_id": "fill_id", "task_id": "fill_id", "flag" : "BSY{...}"}'`
-# 
+#
 # if [[ $RES != *"Congratulations"* ]]; then
 #   echo "Failed to submit the flag - $RES"
 #   exit 5

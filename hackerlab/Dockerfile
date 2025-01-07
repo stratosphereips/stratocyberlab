@@ -17,6 +17,7 @@ COPY config/sshd_config /etc/ssh/sshd_config
 COPY config/banner /etc/banner
 COPY tools/tcpdump-colorize.pl /usr/bin/tcpdump-colorize.pl
 COPY start.sh /root/.start-container.sh
+COPY proxy.py /root/
 
 # 1. Init utmp logging (for "w" command)
 # 2. Disable kernel logging for syslog (not supported in container environment)
