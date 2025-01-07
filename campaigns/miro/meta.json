@@ -4,6 +4,11 @@
   "description": "",
   "timeline": [
     {
+      "type": "page",
+      "id": "miro-introduction",
+      "name": "Introduction"
+    },
+    {
       "type": "challenge",
       "id": "bearific"
     },
@@ -26,6 +31,11 @@
     {
       "type": "challenge",
       "id": "by-the-pool"
+    },
+    {
+      "type": "page",
+      "id": "miro-end",
+      "name": "The End"
     }
   ],
   "enforceOrder": true,

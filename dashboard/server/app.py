@@ -64,19 +64,27 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
 
         db.insert_campaign_data(camp['id'], camp['name'], camp['description'], camp['enforceOrder'], camp['showLocked'])
 
-        chall_ids = [step['id'] for step in camp['timeline'] if step['type'] == 'challenge']
-        for i, chall_id in enumerate(chall_ids):
-            chall_dir = f'{camp_dir}/{chall_id}'
-            with open(f"{chall_dir}/meta.json", 'r', encoding='utf8') as f:
-                chall = json.load(f)
+        for i, step in enumerate(camp['timeline']):
+            if step['type'] == 'challenge':
+                chall_id = step['id']
+                chall_dir = f'{camp_dir}/{chall_id}'
+                with open(f"{chall_dir}/meta.json", 'r', encoding='utf8') as f:
+                    chall = json.load(f)
 
-            db.insert_challenge_data(chall['id'], chall['name'], chall['description'],
-                                     chall['difficulty'], chall_dir, camp['id'])
+                db.insert_challenge_data(chall['id'], chall['name'], chall['description'],
+                                         chall['difficulty'], chall_dir, camp['id'])
 
-            db.insert_campaign_step(camp['id'], challenge_id=chall['id'], order=i)
+                db.insert_campaign_step(camp['id'], challenge_id=chall['id'], order=i)
 
-            for j, task in enumerate(chall["tasks"]):
-                db.insert_task_data(chall_id, task["id"], task["name"], task["description"], task["flag"], order=j)
+                for j, task in enumerate(chall["tasks"]):
+                    db.insert_task_data(chall_id, task["id"], task["name"], task["description"], task["flag"], order=j)
+
+            if step['type'] == 'page':
+                page_id = step['id']
+                with open(f'{camp_dir}/pages/{page_id}.md', 'r', encoding='utf8') as f:
+                    content = f.read()
+                db.insert_page(page_id, step['name'], content)
+                db.insert_campaign_step(camp['id'], page_id=page_id, order=i)
 
     for name in get_dirs(parent_cl_dir):
         cl_dir = f"{parent_cl_dir}/{name}"
@@ -289,9 +297,10 @@ async def campaign_get(campaign_id: str):
     for t in steps_from_db:
         if t['step_type'] == 'page':
             parsed_steps.append({
-                'id': 'todo-page-id',
+                'id': t['page_id'],
                 'type': 'page',
-                'content': 'TODO: page content',
+                'name': t['page_name'],
+                'content': t['page_content'],
             })
             continue
 
@@ -319,7 +328,7 @@ async def campaign_get(campaign_id: str):
             "solved": t["solved"],
         })
 
-        if not t['solved'] and not show_locked:
+        if t['step_type'] == 'challenge' and not t['solved'] and not show_locked:
             break
 
     for ch in parsed_steps:
@@ -340,6 +349,8 @@ async def campaign_get(campaign_id: str):
 # ======================================
 # ||             Challenges           ||
 # ======================================
+
+
 @app.route('/api/challenges/submit', methods=['POST'])
 @manage_session
 async def challenges_submit():

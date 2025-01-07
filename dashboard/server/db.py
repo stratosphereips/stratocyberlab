@@ -29,11 +29,10 @@ def init_db_tables():
                 show_locked BOOLEAN NOT NULL
             );""")
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS campaign_steps (
-                campaign_id REFERENCES campaigns(campaign_id),
-                "order" INTEGER NOT NULL,
-                challenge_id REFERENCES challenges(challenge_id),
-                PRIMARY KEY(campaign_id, "order")
+        CREATE TABLE IF NOT EXISTS pages (
+                page_id TEXT NOT NULL PRIMARY KEY,
+                page_name TEXT NOT NULL,
+                page_content TEXT NOT NULL
             );""")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS challenges (
@@ -45,6 +44,14 @@ def init_db_tables():
             campaign_id REFERENCES campaigns(campaign_id),
             PRIMARY KEY (challenge_id, campaign_id)
         );""")
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS campaign_steps (
+                campaign_id REFERENCES campaigns(campaign_id),
+                "order" INTEGER NOT NULL,
+                challenge_id REFERENCES challenges(challenge_id),
+                page_id REFERENCES pages(page_id),
+                PRIMARY KEY(campaign_id, "order")
+            );""")
 
     cursor.execute("""CREATE TABLE IF NOT EXISTS tasks (
             challenge_id REFERENCES challenges(challenge_id),
@@ -127,11 +134,27 @@ def insert_campaign_data(id: str, name: str, description: str, enforce_order: bo
     conn.commit()
 
 
-def insert_campaign_step(campaign_id: str, order: int, challenge_id: str):
+def insert_page(page_id: str, page_name: str, page_content: str):
     conn = get_db()
     cursor = conn.cursor()
-    q = 'INSERT INTO campaign_steps (campaign_id, "order", challenge_id) VALUES (?, ?, ?)'
-    p = (campaign_id, order, challenge_id)
+    q = 'INSERT INTO pages (page_id, page_name, page_content) VALUES (?, ?, ?)'
+    p = (page_id, page_name, page_content)
+    cursor.execute(q, p)
+    conn.commit()
+
+
+def insert_campaign_step(campaign_id: str, order: int, challenge_id: str | None = None, page_id:
+                         str | None = None):
+    if challenge_id is None and page_id is None:
+        raise Exception("Either challenge_id or page_id must be filled!")
+    conn = get_db()
+    cursor = conn.cursor()
+    if page_id is not None:
+        q = 'INSERT INTO campaign_steps (campaign_id, "order", page_id) VALUES (?, ?, ?)'
+        p = (campaign_id, order, page_id)
+    else:
+        q = 'INSERT INTO campaign_steps (campaign_id, "order", challenge_id) VALUES (?, ?, ?)'
+        p = (campaign_id, order, challenge_id)
     cursor.execute(q, p)
     conn.commit()
 
@@ -212,6 +235,9 @@ def get_campaign_steps(campaign_id: str, sess: str):
     tasks.task_id,
     tasks.task_name,
     tasks.task_description,
+    pages.page_id,
+    pages.page_name,
+    pages.page_content,
     CASE
         WHEN solved = true THEN tasks.flag
         ELSE ''
@@ -224,6 +250,7 @@ def get_campaign_steps(campaign_id: str, sess: str):
     FROM campaigns
     JOIN campaign_steps USING(campaign_id)
     LEFT JOIN challenges ON (campaign_steps.challenge_id = challenges.challenge_id)
+    LEFT JOIN pages ON (campaign_steps.page_id = pages.page_id)
     LEFT JOIN tasks USING(challenge_id)
      LEFT JOIN
         (SELECT challenge_id, task_id, true as solved FROM task_solves WHERE session = ? )
@@ -290,7 +317,7 @@ def get_class_dir(c_id: str) -> str:
     return ""
 
 
-def get_challenges(include_campaigns = False) -> List[Dict]:
+def get_challenges(include_campaigns=False) -> List[Dict]:
     conn = get_db()
     cursor = conn.cursor()
     q = """
