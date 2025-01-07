@@ -2,7 +2,7 @@
 	"id": "knock-knock",
 	"name": "Knock Knock",
 	"difficulty": "easy",
-	"description": "After getting access to the dashboard (still at http://dashboard), some files are made accessible. Can you find evidence of an incursion?",
+	"description": "After getting access to the dashboard (still at http://dashboard, but make sure to stop the previous challenge before running this one), some files are made accessible. Can you find evidence of an incursion?",
 	"tasks": [
 		{
 			"id": "whos-there",
