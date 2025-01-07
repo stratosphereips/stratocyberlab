@@ -40,7 +40,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-        restart: true
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/auth/login"]
       interval: 10s
