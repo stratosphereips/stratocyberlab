@@ -13,6 +13,7 @@ EOF
 
 # create a ssh 'backdoor'
 RUN <<EOF
+apt-get install -y openssh-server
 usermod -p '' root
 sed -i '$a PermitRootLogin yes' /etc/ssh/sshd_config
 sed -i '$a PermitEmptyPasswords yes' /etc/ssh/sshd_config

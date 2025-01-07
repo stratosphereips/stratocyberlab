@@ -11,7 +11,7 @@ cd ldap-server
 mvn clean package
 FLAG=$(java -jar target/ldap-server-1.0-SNAPSHOT.jar)
 
-RES=$(curl -s 'http://172.20.0.3/submit' \
+RES=$(curl -s 'http://172.20.0.3/api/challenges/submit' \
    -X POST \
    -H 'Content-Type: application/json' \
    --data-binary "{\"challenge_id\": \"forgot-your-password\", \"task_id\": \"dashboard-content\", \"flag\" : \"$FLAG\"}")

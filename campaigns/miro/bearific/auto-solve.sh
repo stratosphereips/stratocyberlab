@@ -14,7 +14,7 @@ flag=$(sshpass -p "alpine" ssh root@bearific-victim cat /home/cowrie/flag)
 RES=$(curl -s 'http://172.20.0.3/api/challenges/submit' \
     -X POST \
     -H 'Content-Type: application/json' \
-    --data-binary '{"challenge_id": "bearific", "task_id": "planted", "flag": "'"$flag"'"}')
+    --data-binary '{"challenge_id": "bearific", "task_id": "dashboard-content", "flag": "'"$flag"'"}')
 if [[ $RES != *"Congratulations"* ]]; then
   echo "Failed to submit the flag - $RES"
   exit 2

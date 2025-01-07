@@ -6,6 +6,26 @@
     {
       "type": "challenge",
       "id": "bearific"
+    },
+    {
+      "type": "challenge",
+      "id": "meme-jpeg"
+    },
+    {
+      "type": "challenge",
+      "id": "forgot-your-password"
+    },
+    {
+      "type": "challenge",
+      "id": "knock-knock"
+    },
+    {
+      "type": "challenge",
+      "id": "corporate-retreat"
+    },
+    {
+      "type": "challenge",
+      "id": "by-the-pool"
     }
   ],
   "enforceOrder": true,

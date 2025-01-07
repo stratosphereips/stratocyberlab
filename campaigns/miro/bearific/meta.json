@@ -2,10 +2,10 @@
 	"id": "bearific",
 	"name": "Bearific",
 	"difficulty": "medium",
-	"description": "See if you can attract some honey consumers and slap them on the wrist. According to zoologists, these animals are curious specifically about the port 2222.",
+	"description": "There is a machine prepared for you at 172.20.0.202 with the default credentials root:alpine. See if you can attract some honey consumers to it and slap them on the wrist. According to zoologists, these animals are curious specifically about the port 2222.",
 	"tasks": [
 		{
-			"id": "planted",
+			"id": "left-behind",
 			"name": "Left behind",
 			"description": "Did the honey consumer perhaps leave something behind?",
 			"flag": "M1r0{fGeeeyhxF399xyjItxBRDKel1QxvuVhVfbVE7CEUUVdFAz4WLXmie2nm0ugs}"

@@ -178,5 +178,6 @@ public class Solver extends Thread {
 		String flag = flagMatcher.group("flag");
 
 		System.out.println(flag);
+		System.exit(0);
 	}
 }

@@ -3,7 +3,7 @@ FROM debian:bookworm
 WORKDIR /tmp
 RUN <<EOF
 apt-get update
-apt-get install -y wget perl libnet-ssleay-perl libauthen-pam-perl libio-pty-perl apt-show-versions python3 iptables iproute2 nmap
+apt-get install -y wget perl libnet-ssleay-perl libauthen-pam-perl libio-pty-perl apt-show-versions python3 iptables iproute2 nmap openssh-client curl
 # comment this line for local dev:
 wget https://downloads.sourceforge.net/project/webadmin/webmin/1.920/webmin_1.920_all.deb
 dpkg --force-all -i webmin_1.920_all.deb
@@ -21,7 +21,8 @@ touch /etc/network/interfaces
 EOF
 
 RUN <<EOF
-apt-get install -y iptables ulogd2
+apt-get install -y iptables ulogd2 openssh-server
+mkdir /run/sshd
 EOF
 
 COPY ssh.log /var/log/ulog/syslogemu.log
