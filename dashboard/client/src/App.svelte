@@ -23,7 +23,7 @@
 
   let resizeTerminalContentFunc;
 
-  const snowFlakesEasterEggFeatureFlag = true
+  const snowFlakesEasterEggFeatureFlag = false
 
   onMount(() => {
     window.addEventListener('mousemove', resizeSSH);
