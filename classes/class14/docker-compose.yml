@@ -6,7 +6,7 @@ services:
     hostname: class14
     networks:
       playground-net:
-        ipv4_address: 172.20.0.6
+        ipv4_address: 172.20.0.110
         aliases:
           - class14
 
