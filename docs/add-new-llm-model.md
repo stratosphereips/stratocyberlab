@@ -16,8 +16,8 @@ You can choose any model in this list of [ollama](https://ollama.com/library)
 While the cyberlab is running, open another terminal and do the following:
 1. Fetch the list of downloaded models
    
-    `docker exec ollama ollama list`
+    `docker exec scl-ollama ollama list`
    
 2. Delete the models that are not needed anymore (replace model name with the name of the model you want to delete)
 
-    `docker exec ollama ollama rm <model name>`
+    `docker exec scl-ollama ollama rm <model name>`
