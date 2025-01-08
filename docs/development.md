@@ -86,7 +86,9 @@
 | playground-net | `172.25.0.2`   | [Class13](./../classes/class13)                                     |
 | playground-net | `172.25.0.3`   | [Class13](./../classes/class13)                                     |
 | playground-net | `172.25.0.4`   | [Class13](./../classes/class13)                                     |
-| playground-net | `172.20.0.110`   | [Class14](./../classes/class14)                                     |
+| playground-net | `172.20.0.110` | [Class14](./../classes/class14)                                     |
+| playground-net | `172.20.0.134` | [ssh-server](./../classes/class14/ssh-server)                       |
+| playground-net | `172.20.0.133` | [attacker](./../classes/class14/attacker)                           |
 
 ## Testing
 
