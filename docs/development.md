@@ -86,7 +86,7 @@
 | playground-net | `172.25.0.2`   | [Class13](./../classes/class13)                                     |
 | playground-net | `172.25.0.3`   | [Class13](./../classes/class13)                                     |
 | playground-net | `172.25.0.4`   | [Class13](./../classes/class13)                                     |
-| playground-net | `172.25.0.5`   | [Class14](./../classes/class14)                                     |
+| playground-net | `172.25.0.6`   | [Class14](./../classes/class14)                                     |
 
 ## Testing
 
