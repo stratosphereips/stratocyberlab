@@ -23,6 +23,8 @@
 
   let resizeTerminalContentFunc;
 
+  const snowFlakesEasterEggFeatureFlag = true
+
   onMount(() => {
     window.addEventListener('mousemove', resizeSSH);
     window.addEventListener('mouseup', stopSshResizing);
@@ -78,10 +80,10 @@
     }
   }
 
-  let isSnowfallEnabled = true;
+  let isSnowFalling = snowFlakesEasterEggFeatureFlag;
 
   function toggleSnowfall() {
-    isSnowfallEnabled = !isSnowfallEnabled;
+    isSnowFalling = !isSnowFalling;
   }
 
 
@@ -106,7 +108,7 @@
 </style>
 
 <LoadingOverlay />
-{#if isSnowfallEnabled}
+{#if snowFlakesEasterEggFeatureFlag && isSnowFalling}
   <Snowfall />
 {/if}
 <div class="container-fluid p-0 d-flex flex-column" style="height: {dashboardHeight}vh; overflow-y: auto;">
@@ -118,11 +120,13 @@
         StratoCyberLab
       </a>
     </div>
+    {#if snowFlakesEasterEggFeatureFlag}
     <div class="mr-3">
       <button class="btn snowfall-toggle" on:click={toggleSnowfall}>
         ☀️
       </button>
     </div>
+    {/if}
   </nav>
 
   <!-- Main dashboard content -->
