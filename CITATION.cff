@@ -14,10 +14,10 @@ authors:
       Stratosphere Laboratory, AIC, FEL, Czech
       Technical University in Prague
     orcid: 'https://orcid.org/0000-0002-0688-7752'
-- given-names: Veronica
-    family-names: Valeros
-    email: valerver@fel.cvut.cz
-    affiliation: >-
-      Stratosphere Laboratory, AIC, FEL, Czech
-      Technical University in Prague
-    orcid: 'https://orcid.org/0000-0003-2554-3231'
+  - given-names: Veronica
+      family-names: Valeros
+      email: valerver@fel.cvut.cz
+      affiliation: >-
+        Stratosphere Laboratory, AIC, FEL, Czech
+        Technical University in Prague
+      orcid: 'https://orcid.org/0000-0003-2554-3231'
