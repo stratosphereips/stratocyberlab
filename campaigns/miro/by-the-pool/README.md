@@ -12,4 +12,6 @@ Metadata analysis, finding weaknesses in secure systems.
    might take a few attempts, depending on how much of a performance penalty 
    there is on your computer.
 4. Access the user's private messages to find the tool's extension as the 
-   answer to the first task. 
+   answer to the first task.
+5. Download the image attached by the logged-in user, subject it to
+   `exiftool -n` and reveal the GPS coordinates where the photo was taken.
