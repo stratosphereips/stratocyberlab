@@ -13,8 +13,8 @@
 		{
 			"id": "location",
 			"name": "Home Sweet Home",
-			"description": "Where was the transaction confirmation image sent from? We are interested in comma-separated coordinates with 3 digits after the decimal point.",
-			"flag": "55.698,12.599"
+			"description": "Where was the transaction confirmation image sent from? We are interested in comma-separated coordinates, rounded to 3 digits after the decimal point.",
+			"flag": "55.698,12.600"
 		}
 	]
 }
