@@ -2,7 +2,7 @@
 	"id": "knock-knock",
 	"name": "Knock Knock",
 	"difficulty": "easy",
-	"description": "After getting access to the dashboard (still at http://dashboard), some of Ronnie's old files are made accessible. Why would he want you to see them? What do they contain?\n(Please make sure to stop the previous challenge before running this one.)",
+	"description": "After getting access to the dashboard (still at `http://dashboard`), some of Ronnie's old files are made accessible. Why would he want you to see them? What do they contain?\n(Please make sure to stop the previous challenge before running this one.)",
 	"tasks": [
 		{
 			"id": "whos-there",
@@ -13,7 +13,7 @@
 		{
 			"id": "whens-there",
 			"name": "When's there?",
-			"description": "This connection did something on Ronnie's machine. When exactly (YYYY-MM-dd hh:mm:ss) did it happen?",
+			"description": "This connection did something on Ronnie's machine. When exactly (`YYYY-MM-dd hh:mm:ss`) did it happen?",
 			"flag": "2025-01-05 22:37:30"
 		}
 	]

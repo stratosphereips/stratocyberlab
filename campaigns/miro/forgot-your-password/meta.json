@@ -2,7 +2,7 @@
 	"name": "Forgot your password?",
 	"id": "forgot-your-password",
 	"difficulty": "hard",
-	"description": "Your cousin instructed you to visit http://dashboard in a hidden message. This is both scary and intriguing and the same time. Can you find what he wanted you to see there?\n(Please note that starting this challenge might take a very long time, up to a few minutes.)",
+	"description": "Your cousin instructed you to visit `http://dashboard` in a hidden message. This is both scary and intriguing and the same time. Can you find what he wanted you to see there?\n(Please note that starting this challenge might take a very long time, up to a few minutes.)",
 	"tasks": [
 		{
 			"id": "dashboard-content",
