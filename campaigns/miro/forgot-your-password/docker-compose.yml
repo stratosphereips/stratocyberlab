@@ -9,6 +9,7 @@ services:
       fyp-internal:
         aliases:
           - mailus
+        ipv4_address: 172.21.0.3
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 10s
@@ -23,6 +24,7 @@ services:
       fyp-internal:
         aliases:
           - logus
+        ipv4_address: 172.21.0.4
     healthcheck:
       test: ["CMD", "curl", "http://localhost/"]
       interval: 5s
@@ -37,6 +39,10 @@ services:
       fyp-internal:
         aliases:
           - authus
+        ipv4_address: 172.21.0.5
+    cap_add: # to allow changing default route through gatus
+      - NET_ADMIN
+      - NET_RAW
     depends_on:
       db:
         condition: service_healthy
@@ -54,6 +60,7 @@ services:
       fyp-internal:
         aliases:
           - db
+        ipv4_address: 172.21.0.6
     healthcheck:
       test: ["CMD", "pg_isready"]
       interval: 10s
@@ -68,6 +75,7 @@ services:
       fyp-internal:
         aliases:
           - dashboardus
+        ipv4_address: 172.21.0.7
     healthcheck:
       test: ["CMD", "node", "-e", "'http.get(\"http://localhost/\")'"]
       interval: 10s
@@ -84,8 +92,14 @@ services:
         aliases:
           - dashboard
       fyp-internal:
+        ipv4_address: 172.21.0.2
         aliases:
           - gatus
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      - net.ipv4.ip_forward=1
     depends_on:
       - authus
       - dashboardus
@@ -95,20 +109,12 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
-  forwarder:
-    container_name: scl-fyp-infra-forwarder
-    image: "qoomon/docker-host:3.3.1"
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    environment:
-      DOCKER_HOST: 172.20.0.2
-    networks:
-      fyp-internal:
-      playground-net:
-        ipv4_address: 172.20.0.204
 
 networks:
   fyp-internal:
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24
+          gateway: 172.21.0.1
   playground-net:
     external: true

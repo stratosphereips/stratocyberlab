@@ -93,7 +93,6 @@
 | playground-net | `172.20.0.201` | Campaign challenge [miro/bearific](./../campaigns/miro/bearific)                         |
 | playground-net | `172.20.0.202` | Campaign challenge [miro/bearific](./../campaigns/miro/bearific)                         |
 | playground-net | `172.20.0.203` | Campaign challenge [miro/forgot-your-password](./../campaigns/miro/forgot-your-password) |
-| playground-net | `172.20.0.204` | Campaign challenge [miro/forgot-your-password](./../campaigns/miro/forgot-your-password) |
 | playground-net | `172.20.0.205` | Campaign challenge [miro/meme-jpeg](./../campaigns/miro/meme-jpeg)                       |
 | playground-net | `172.20.0.231` | Campaign challenge [miro/corporate-retreat](./../campaigns/miro/corporate-retreat)       |
 | playground-net | `172.20.0.239` | Campaign challenge [miro/corporate-retreat](./../campaigns/miro/corporate-retreat)       |
