@@ -2,7 +2,7 @@
 	"id": "corporate-retreat",
 	"name": "Corporate Retreat",
 	"difficulty": "hard",
-	"description": "WHAT?! There was an inbound connection from 172.20.0.239, shortly before Ronnie was arrested, uploading the very file he was arrested for having???. Was it all a ploy, a setup to make your cousin take the fall?! A quick internet search feeds your suspicion: this address is a part of the 172.20.0.224/27 range - operated by BigComp! Take a look around that range and see if you can uncover any more information.",
+	"description": "WHAT?! There was an inbound connection from `172.20.0.239`, shortly before Ronnie was arrested, uploading the very file he was arrested for having???. Was it all a ploy, a setup to make your cousin take the fall?! A quick internet search feeds your suspicion: this address is a part of the `172.20.0.224/27` range - operated by **BigComp**! Take a look around that range and see if you can uncover any more information.",
 	"tasks": [
 		{
 			"id": "lil-brother",
@@ -37,7 +37,7 @@
 		{
 			"id": "huh-a-forum",
 			"name": "Huh, a forum!",
-			"description": "BREAD! There was an article in the news just a few days ago about a hacking forum called Bread. And McLaughlin tried to log in there! What credentials did he use? One thing is for sure, it wasn't admin:youcantbreakmypassword",
+			"description": "BREAD! There was an article in the news just a few days ago about a hacking forum called Bread. And McLaughlin tried to log in there! What credentials did he use? One thing is for sure, it wasn't `admin:youcantbreakmypassword`.",
 			"flag": "Vigilante88:M1r0{mayFXwawow1ezzUjVIOutDhKRcZGJblvzDOgBaA4EMmQG09UpfP8i3XQA4YY}"
 		}
 	]
