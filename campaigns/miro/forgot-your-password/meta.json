@@ -2,12 +2,12 @@
 	"name": "Forgot your password?",
 	"id": "forgot-your-password",
 	"difficulty": "hard",
-	"description": "Your cousin instructed you to visit http://dashboard. Can you find what he hid there? (Please note that starting this challenge might take a very long time, up to a few minutes.)",
+	"description": "Your cousin instructed you to visit http://dashboard in a hidden message. This is both scary and intriguing and the same time. Can you find what he wanted you to see there?\n(Please note that starting this challenge might take a very long time, up to a few minutes.)",
 	"tasks": [
 		{
 			"id": "dashboard-content",
 			"name": "Dashboard content",
-			"description": "After you successfully pass the auth gate, the dashboard greets you by name and gives you an important message.",
+			"description": "After you successfully pass the login form, the dashboard greets you by name and gives you a message. What does it say?",
 			"flag": "M1r0{MNYQvczBnkgoJyoP5wHLVPcdT44hUMVw4kL2nOWsYKP3WoNNZoK3VbTrFa2q}"
 		}
 	]

@@ -6,7 +6,7 @@
     {
       "type": "page",
       "id": "miro-introduction",
-      "name": "Introduction"
+      "name": "Hi, I'm Emma"
     },
     {
       "type": "challenge",
@@ -35,7 +35,7 @@
     {
       "type": "page",
       "id": "miro-end",
-      "name": "The End"
+      "name": "Game Over, Injustice"
     }
   ],
   "enforceOrder": true,

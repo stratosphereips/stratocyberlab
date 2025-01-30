@@ -2,42 +2,42 @@
 	"id": "corporate-retreat",
 	"name": "Corporate Retreat",
 	"difficulty": "hard",
-	"description": "Now you know the incursion has happened from 172.20.0.239, you should perhaps take a look around 172.20.0.224/27. It is the range of BigComp, a company not exactly known for being the most ethical.",
+	"description": "WHAT?! There was an inbound connection from 172.20.0.239, shortly before Ronnie was arrested, uploading the very file he was arrested for having???. Was it all a ploy, a setup to make your cousin take the fall?! A quick internet search feeds your suspicion: this address is a part of the 172.20.0.224/27 range - operated by BigComp! Take a look around that range and see if you can uncover any more information.",
 	"tasks": [
 		{
 			"id": "lil-brother",
 			"name": "Lil Brother",
-			"description": "Can you find an IP address of a publicly available camera?",
+			"description": "Does this range contain a publicly accessible camera? What is its IP address?",
 			"flag": "172.20.0.231"
 		},
 		{
 			"id": "edgar-allan-route",
-			"name": "Edgar Allan... Route?",
-			"description": "There is a poem hidden (not very well) on the gateway connecting the camera to inside the corporate network. Can you find it and recite the punchline?",
+			"name": "Edgar A LAN... Route?",
+			"description": "The camera also seems to be connected to a different network than just the internet. Can you find a poem hidden (not very well) on the gateway connecting the camera to inside the other network, and recite the punchline?",
 			"flag": "M1r0{IETSXxvOLhEyosEETfGEqovIYjGQo3HrfitgScfwtVjfxnzoP1kJKzMWShN6}"
 		},
 		{
 			"id": "you-know-where-from",
 			"name": "You-Know-Where-From",
-			"description": "Okay. Enough fun. Remember why we're here in the first place - the attack, we are trying to identify who's responsible for the attack on your cousin! A local IP address (inside the company network) could be a good first lead.",
+			"description": "Okay. Enough poetry. Remember why we're here in the first place - the inbound connection, we are trying to find out more information about the attack on your cousin! Finding a local IP address (inside the company network) where the connection originated could be a good first lead. What is the address?",
 			"flag": "10.0.1.233"
 		},
 		{
 			"id": "s-he-who-must-be-located",
 			"name": "(S)He, who must be located!",
-			"description": "Great! Companies are usually pretty good at keeping internal records, therefore it should not be an issue to find the records of the employee with this assigned IP address - specifically, the street name and house number of their registered address.",
+			"description": "Great! Companies are usually pretty good at keeping internal records, therefore it should not be an issue to find the employee with this IP address assigned. Going further, could you also provide the street name and house number of their registered home address?",
 			"flag": "Langelinie Allé 21"
 		},
 		{
 			"id": "baked-goods-and-other-interests",
 			"name": "Baked goods & other interests",
-			"description": "There is a strange feeling around that makes one wonder. Are there any other log entries about this individual? What would be a 2nd level domain name that they would access for inquiries about baked goods? (Make sure to include the TLD.)",
+			"description": "That address is in Copenhagen, the Danish capital. Hmmm, Danish, Danish pastries! Wait, we're getting off track again. Or are we? Let's see what else this McLaughlin guy did - maybe there is some evidence of him making inquiries related to baked goods... If so, please provide the 2nd level domain name (including the TLD) where those inquiries went.",
 			"flag": "bread.forum"
 		},
 		{
 			"id": "huh-a-forum",
 			"name": "Huh, a forum!",
-			"description": "That almost sounds like something they would try to log into! What are the credentials used? Ours are for example admin:youcantbreakmypassword",
+			"description": "BREAD! There was an article in the news just a few days ago about a hacking forum called Bread. And McLaughlin tried to log in there! What credentials did he use? One thing is for sure, it wasn't admin:youcantbreakmypassword",
 			"flag": "Vigilante88:M1r0{mayFXwawow1ezzUjVIOutDhKRcZGJblvzDOgBaA4EMmQG09UpfP8i3XQA4YY}"
 		}
 	]

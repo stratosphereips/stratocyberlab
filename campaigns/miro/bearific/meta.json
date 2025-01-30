@@ -2,13 +2,13 @@
 	"id": "bearific",
 	"name": "Bearific",
 	"difficulty": "medium",
-	"description": "There is a machine prepared for you at 172.20.0.202 with the default credentials root:alpine. See if you can attract some honey consumers to it and slap them on the wrist. According to zoologists, these animals are curious specifically about the port 2222.",
+"description": "Life went on and you all but forgot about those gaming days. However, a few days ago, you noticed that your computer was quite sluggish and when you checked the task manager, one program kept using a lot of CPU even though you were not doing anything: the SSH server. You became curious and searched the internet for ways to discover what an SSH server is and why it could be using so much processing power. One of the articles mentioned that a lot of connections on the internet are simply scanners trying to find vulnerable machines for their malicious purposes. This article also mentioned that honeypots are a means to gain insight into what the person trying to connect wants to do. You downloaded Cowrie for this purpose. Configure Cowrie and follow the connecting party's steps.",
 	"tasks": [
 		{
 			"id": "left-behind",
 			"name": "Left behind",
-			"description": "Did the honey consumer perhaps leave something behind?",
-			"flag": "M1r0{fGeeeyhxF399xyjItxBRDKel1QxvuVhVfbVE7CEUUVdFAz4WLXmie2nm0ugs}"
+			"description": "Did the attacker leave something behind?",
+			"flag": "M1r0{B1G_C0MP_L1NUX_hxF399xyjI}"
 		}
 	]
 }

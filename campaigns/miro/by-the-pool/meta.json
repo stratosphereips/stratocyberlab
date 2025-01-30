@@ -2,7 +2,7 @@
 	"id": "by-the-pool",
 	"name": "By the Pool",
 	"difficulty": "medium",
-	"description": "Now that you have some login credentials for a hacking forum, why don't you put them to good use? You might have to use an appropriate DNS server, though.",
+	"description": "So this guy, McLaughlin, tried to access a hacking forum called Bread, and then he uploaded a very inflammatory file onto your cousin's computer. You have his login credentials, so why don't you put them to good use and see if this forum visit was somehow related to what happened to your cousin? You might have to use an appropriate DNS server, though.",
 	"tasks": [
 		{
 			"id": "tool",
