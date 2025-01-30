@@ -1,4 +1,4 @@
-# The End
+# Game Over, Injustice
 
 If you remember, `55.698,12.600` are the GPS coordinates for Langelinie Allé, which is where McLaughlin lives.
 This is all the evidence Emma needs.
