@@ -8,7 +8,7 @@ import netmiko
 
 HOST = os.getenv('HOST')
 PORT = int(os.getenv('PORT'))
-FLAG = "M1r0{fGeeeyhxF399xyjItxBRDKel1QxvuVhVfbVE7CEUUVdFAz4WLXmie2nm0ugs}"
+FLAG = "M1r0{B1G_C0MP_L1NUX_hxF399xyjI}"
 FLAG_LOCATION = "/root/.flag"
 
 

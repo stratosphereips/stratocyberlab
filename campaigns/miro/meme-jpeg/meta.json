@@ -2,12 +2,12 @@
 	"id": "meme-jpeg",
 	"name": "Meme.jpeg",
 	"difficulty": "easy",
-	"description": "You suddenly recall the discussions you used to have with your cousin and have the sudden urge to revisit your last conversation, available at http://172.20.0.205. Is he secretly telling you to do something?",
+	"description": "\"B1G_C0MP... Big Comp... Wasn't that the company your cousin Ronnie was investigating shortly before getting arrested?\", you think. Those were the times, really. You just spent your days gaming. You feel nostalgic about the discussions you used to have with him and have the sudden urge to relive your last conversation. The chat is available at http://172.20.0.205. Visit this page and find out whether there are any hidden messages.",
 	"tasks": [
 		{
 			"id": "destination",
 			"name": "Destination: undefined",
-			"description": "Where should you go?",
+			"description": "Ronnie might be to telling you to go somewhere. Where would that be?",
 			"flag": "http://dashboard"
 		}
 	]
