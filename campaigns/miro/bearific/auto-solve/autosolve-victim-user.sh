@@ -1,14 +1,7 @@
 #!/bin/bash
 set -e
 
-cd
-
-# install cowrie - steps as per https://docs.cowrie.org/en/latest/INSTALL.html
-git clone http://github.com/cowrie/cowrie
-cd cowrie
-python3 -m venv cowrie-env
-source cowrie-env/bin/activate
-python -m pip install --upgrade -r requirements.txt
+cd ~/cowrie
 
 # create a custom userdb with only one user
 cat >etc/userdb.txt <<EOF
