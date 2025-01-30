@@ -1,13 +1,13 @@
 {
 	"id": "meme-jpeg",
 	"name": "Meme.jpeg",
-	"difficulty": "easy",
-	"description": "\"B1G_C0MP... Big Comp... Wasn't that the company your cousin Ronnie was investigating shortly before getting arrested?\", you think. Those were the times, really. You just spent your days gaming. You feel nostalgic about the discussions you used to have with him and have the sudden urge to relive your last conversation. The chat is available at http://172.20.0.205. Visit this page and find out whether there are any hidden messages.",
+	"difficulty": "medium",
+	"description": "\"B1G_C0MP... Big Comp... Wasn't that the company your cousin Ronnie was investigating shortly before getting arrested?\", you think. Those were the times, really. You just spent your days gaming. You feel nostalgic about the discussions you used to have with him and have the sudden urge to relive your last conversation. The chat is available at `http://172.20.0.205`. Visit this page and find out whether there are any hidden messages.",
 	"tasks": [
 		{
 			"id": "destination",
 			"name": "Destination: undefined",
-			"description": "Ronnie might be to telling you to go somewhere. Where would that be?",
+			"description": "Ronnie might be to telling you to go somewhere. Where would that be? The answer should contain an English word.\n<details><summary>Hint 1</summary>The ciphertext looks like a URL. Focus on decrypting the first part first (before the scheme separator), since there are not that many schemes commonly used.</details>\n<details><summary>Hint 2</summary>When decrypting the ciphertext, consider the fact that most alphabetic ciphers completely ignore non-alphabetic characters and act as if they were not there at all.</details>\n<details><summary>Hint 3</summary>The key is also an English word.</details>",
 			"flag": "http://dashboard"
 		}
 	]
