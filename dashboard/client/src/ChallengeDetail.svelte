@@ -1,4 +1,5 @@
 <script>
+  import { marked } from 'marked';
   import { isLoading, loadSingleCampaign, setChallengeRunning } from './stores';
 
   export let challenge;
@@ -78,7 +79,10 @@
     <h4 class="d-inline">{challenge.name}</h4>
   </div>
 </div>
-<p class="pt-3 text-muted">{challenge.description}</p>
+<div class="pt-3 text-muted">
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -- render the description -->
+  {@html marked(challenge.description)}
+</div>
 
 <div
   class="alert me-2 d-flex justify-content-between align-items-center {challenge.running
@@ -108,7 +112,10 @@
       {task.name}
     </div>
     <div class="card-body">
-      <p class="card-text">{task.description}</p>
+      <div class="card-text mb-3">
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -- render the description -->
+        {@html marked.parse(task.description)}
+      </div>
 
       <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Flag: </span>
