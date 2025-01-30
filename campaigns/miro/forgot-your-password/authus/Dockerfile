@@ -4,8 +4,13 @@ WORKDIR /tmp
 RUN mvn clean package
 
 FROM openjdk:8-alpine
-RUN apk add bash nmap nmap-scripts openssh-client sshpass curl && mkdir /app && chown -R daemon:daemon /app
+RUN <<EOD
+apk add bash nmap nmap-scripts openssh-client sshpass curl sudo
+mkdir /app
+chown -R daemon:daemon /app
+EOD
+
 COPY --from=build /tmp/target/*.jar /app/
+COPY start.sh /app/
 WORKDIR /app
-USER daemon
-CMD java -jar *.jar
+CMD bash start.sh

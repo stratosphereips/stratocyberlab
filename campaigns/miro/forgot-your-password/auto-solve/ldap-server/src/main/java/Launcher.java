@@ -4,8 +4,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Launcher {
-	private static final String HACKERLAB_HOST = "scl-fyp-infra-forwarder";
-	private static final String VICTIM_HOST = "dashboard";
+	private static final String HACKERLAB_HOST = "172.20.0.2";
+	private static final String VICTIM_HOST = "172.20.0.203";
 
 	public static void main(String[] args) {
 		new PayloadHTTPServer().start();
