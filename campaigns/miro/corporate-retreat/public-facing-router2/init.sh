@@ -16,6 +16,7 @@ iptables -I FORWARD -s 172.20.0.250 -p tcp --sport http -j DROP
 
 # allow return communication
 iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 # allow outbound http(s) traffic only when proxied
 iptables -A FORWARD -s 10.0.0.5/32 -p tcp -m multiport --dports 80,443 -j ACCEPT
