@@ -2,6 +2,9 @@
 
 set -e
 
+apt-get update
+apt-get install -y openjdk-17-jdk-headless maven
+
 cd auto-solve
 # compile the payload and allow the LDAP server's ClassLoader to access it
 # (using older Java because older openjdk docker images are smaller)
