@@ -2,7 +2,7 @@
 	"id": "knock-knock",
 	"name": "Knock Knock",
 	"difficulty": "easy",
-	"description": "After getting access to the dashboard (still at `http://dashboard`), some of Ronnie's old files are made accessible. Why would he want you to see them? What do they contain?\n(Please make sure to stop the previous challenge before running this one.)",
+	"description": "After getting access to the repository (still at `http://repository`), some of Ronnie's old files are made accessible. Why would he want you to see them? What do they contain?",
 	"tasks": [
 		{
 			"id": "whos-there",

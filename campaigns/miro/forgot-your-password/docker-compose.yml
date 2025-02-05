@@ -90,7 +90,7 @@ services:
       playground-net:
         ipv4_address: 172.20.0.203
         aliases:
-          - dashboard
+          - repository
       fyp-internal:
         ipv4_address: 172.21.0.2
         aliases:

@@ -8,7 +8,7 @@
 			"id": "destination",
 			"name": "Destination: undefined",
 			"description": "Ronnie might be to telling you to go somewhere. Where would that be? The answer should contain an English word.\n<details><summary>Hint 1</summary>The ciphertext looks like a URL. Focus on decrypting the first part first (before the scheme separator), since there are not that many schemes commonly used.</details>\n<details><summary>Hint 2</summary>When decrypting the ciphertext, consider the fact that most alphabetic ciphers completely ignore non-alphabetic characters and act as if they were not there at all.</details>\n<details><summary>Hint 3</summary>The key is also an English word.</details>",
-			"flag": "http://dashboard"
+			"flag": "http://repository"
 		}
 	]
 }

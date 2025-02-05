@@ -30,7 +30,7 @@ http.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/html')
   res.write(data
     .replace('$$$USER$$$', userMap[uid])
-    .replace('$$$PAR$$$', uid in userMap ? `<p>You have accessed the dashboard. The flag is ${process.env.FLAG}</p>` : '')
+    .replace('$$$PAR$$$', uid in userMap ? `<p>You have accessed the repository dashboard. The flag is ${process.env.FLAG}</p>` : '')
   );
   res.end()
 }).listen(80)

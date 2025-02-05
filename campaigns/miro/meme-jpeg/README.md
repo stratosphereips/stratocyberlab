@@ -13,5 +13,5 @@ Steganography + cryptography.
 ## Solution
 <details>
 <summary>Solution</summary>
-You should arrive at the conclusion that the key is KEY and the open text thus <code>http://dashboard</code>, which is the flag
+You should arrive at the conclusion that the key is KEY and the open text thus <code>http://repository</code>, which is the flag
 </details>

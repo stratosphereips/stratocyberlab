@@ -17,4 +17,4 @@ TLDR:
 7. Find a `mailus` suffering from CVE-2021-42013, allowing an attacker to read `/etc/shadow`
 8. Reuse the same credentials to SSH into `logus` and extract a user ID from `/var/log/dashboard/proxy2021-12-09.log`
 9. Forge a JWT with containing simply the user ID, and sign it with the signing secret
-10. Access the dashboard and copy and submit the flag
+10. Access the dashboard (repository) and copy and submit the flag

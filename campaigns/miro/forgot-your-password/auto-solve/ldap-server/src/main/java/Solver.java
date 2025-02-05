@@ -166,10 +166,10 @@ public class Solver extends Thread {
 		HttpRequest request = HttpRequest
 			.newBuilder()
 			.GET()
-			.uri(URI.create("http://dashboard/dashboard"))
+			.uri(URI.create("http://repository/dashboard"))
 			.header("cookie", "jwt=" + jwt)
 			.build();
-		System.err.println("!! GET dashboard/dashboard");
+		System.err.println("!! GET repository/dashboard");
 		HttpResponse<String> resp = client.send(request, HttpResponse.BodyHandlers.ofString());
 		String body = resp.body();
 		System.err.println(body);
