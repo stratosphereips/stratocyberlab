@@ -55,7 +55,7 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
             db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag, order=i)
 
     for camp_name in get_dirs(parent_campaign_dir):
-        if camp_name == '_template':
+        if camp_name == '_template' or camp_name == 'example':
             continue
 
         camp_dir = f'{parent_campaign_dir}/{camp_name}'
