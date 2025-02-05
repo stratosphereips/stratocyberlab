@@ -11,6 +11,6 @@ Spending time with Ronnie, an ex-programmer turned activist in the area of publi
 However, that all stopped when a few years ago, Ronnie was arrested.
 Suddenly, this someone who you used to look up to, was considered a bad influence, and in effect, your parents forbid you from playing video games.
 You often wondered what had happened with your cousin, but your parents were not very receptive in explaining this.
-Once, you pressed the issue and were told that Ronnie was caught threatening an executive of _Big Corp_ while investigating a possible corruption case: he was found in possession of a file `file.txt` (TODO) stored on his computer, containing very concrete threats to the executive's children.
+Once, you pressed the issue and were told that Ronnie was caught threatening an executive of _Big Corp_ while investigating a possible corruption case: he was found in possession of a file `file.txt` stored on his computer, containing very concrete threats to the executive's children.
 The police raided his house and arrested him.
 He was later sentenced to 17 years in prison.
