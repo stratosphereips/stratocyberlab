@@ -16,11 +16,11 @@
             <code>ByteThem123</code>
           </li>
           <li>
-            From the hackerlab shell, you can start a transparent proxy on <i>host</i> port 2223 using the command
-            <code>python3 ~/proxy.py TARGET_HOSTNAME TARGET_PORT</code>. This is especially useful for web-based
-            challenges. You can then use your current browser to access
-            <a href="http://localhost:2223" target="_blank" rel="noreferrer">http://TARGET_HOSTNAME:TARGET_PORT</a> as if
-            you were in the hackerlab!
+            In the hackerlab, there is a script that allows you to proxy traffic from the <i>host</i> port 2223 using
+            the command <code>python3 ~/proxy.py TARGET_HOSTNAME TARGET_PORT</code>. This is especially useful for
+            web-based challenges. You can then navigate to
+            <a href="http://localhost:2223" target="_blank" rel="noreferrer">http://localhost:2223</a> in your current
+            browser to access <code>http://TARGET_HOSTNAME:TARGET_PORT</code> as if you were in the hackerlab!
           </li>
         </ul>
       </li>
