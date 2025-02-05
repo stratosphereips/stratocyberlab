@@ -1,7 +1,7 @@
 {
   "id": "miro",
   "name": "Miro DP",
-  "description": "",
+  "description": "Follow the story of Emma and uncover secrets about her cousin Ronnie!\n\nFeatures 6 unique challenges which will put both your offensive and defensive skills to test, including but not limited to lateral movement, log analysis, credential extraction and deception. Most flags do not follow a fixed format and their tasks are posed as questions whose answer proceeds the story, but some are in the format of `M1r0{...}` (which should be submitted including the boundary). Some challenges are more complex and might take up to a few minutes to start.\n\nThis campaign was created by Miroslav Holeček as part of his \"Advanced Free Offline Cybersecurity Challenges for Learning\" Master thesis at the Technical University of Denmark.",
   "timeline": [
     {
       "type": "page",
