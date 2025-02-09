@@ -154,7 +154,7 @@ public class Solver extends Thread {
 		System.err.printf("!! user id from log is %s%n", uid);
 
 		// get jwt signing secret from authus
-		write("cd /app/ && unzip -o *.jar && grep secret BOOT-INF/classes/application.properties");
+		write("cd /app/ && unzip -o *.jar >/dev/null && grep secret BOOT-INF/classes/application.properties");
 		String secretLines = read();
 		String secret = secretLines.split("\n")[0].split("=")[1];
 		System.err.println("!! secret is " + secret);
