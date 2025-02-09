@@ -1,5 +1,6 @@
 <script>
-  import { isLoading } from './stores';
+  import { marked } from 'marked';
+  import { isLoading, loadSingleCampaign, setChallengeRunning } from './stores';
 
   export let challenge;
 
@@ -23,7 +24,7 @@
       const data = await res.text();
 
       if (res.status !== 200) {
-        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
 
       if (data.includes('Congratulations')) {
@@ -31,6 +32,9 @@
         challenge.tasks = challenge.tasks; // Reassign to trigger reactivity
       }
       alert(data);
+      if (task.solved && challenge.campaignId) {
+        loadSingleCampaign(challenge.campaignId).then();
+      }
     } catch (err) {
       console.error(err);
       alert(err instanceof Error ? err.message : err);
@@ -52,10 +56,10 @@
         body: JSON.stringify(payload),
       });
       if (res.status !== 200) {
-        throw new Error(`Error: request failed with HTTP status ${res.status}: ${res.body}`);
+        throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
 
-      challenge.running = action === 'start';
+      setChallengeRunning(challenge.id, challenge.campaignId, action === 'start');
     } catch (err) {
       console.error(err);
       alert(err instanceof Error ? err.message : err);
@@ -75,7 +79,10 @@
     <h4 class="d-inline">{challenge.name}</h4>
   </div>
 </div>
-<p class="pt-3 text-muted">{challenge.description}</p>
+<div class="pt-3 text-muted">
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -- render the description -->
+  {@html marked(challenge.description)}
+</div>
 
 <div
   class="alert me-2 d-flex justify-content-between align-items-center {challenge.running
@@ -105,7 +112,10 @@
       {task.name}
     </div>
     <div class="card-body">
-      <p class="card-text">{task.description}</p>
+      <div class="card-text mb-3">
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -- render the description -->
+        {@html marked.parse(task.description)}
+      </div>
 
       <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Flag: </span>

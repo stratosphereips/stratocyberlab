@@ -1,0 +1,14 @@
+{
+	"id": "bearific",
+	"name": "Bearific",
+	"difficulty": "medium",
+	"description": "Life went on and you all but forgot about those gaming days. However, a few days ago, you noticed that your computer was quite sluggish and when you checked the task manager, one program kept using a lot of CPU even though you were not doing anything: the SSH server. You became curious and searched the internet for ways to discover what an SSH server is and why it could be using so much processing power. One of the articles mentioned that a lot of connections on the internet are simply scanners trying to find vulnerable machines for their malicious purposes. This article also mentioned that honeypots are a means to gain insight into what the person trying to connect wants to do. You downloaded Cowrie for this purpose, into `/home/cowrie/cowrie`. Connect to the computer at `172.20.0.202` with the credentials `root:alpine`, configure Cowrie and follow the connecting party's steps.",
+	"tasks": [
+		{
+			"id": "left-behind",
+			"name": "Left behind",
+			"description": "Did the attacker leave something behind?",
+			"flag": "M1r0{B1G_C0MP_L1NUX_hxF399xyjI}"
+		}
+	]
+}

@@ -4,3 +4,4 @@ flask-socketio
 eventlet
 paramiko
 ollama==0.3.3
+python-dotenv

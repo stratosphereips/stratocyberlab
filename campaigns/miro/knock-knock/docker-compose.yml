@@ -1,0 +1,14 @@
+services:
+  dashboard:
+    container_name: scl-nn-dashboard
+    stop_grace_period: 0s
+    build: dashboard
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.204
+        aliases:
+          - repository
+
+networks:
+  playground-net:
+    external: true

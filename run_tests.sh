@@ -27,6 +27,7 @@ LABHOST='127.0.0.1'
 LABPORT=2222
 
 CHALLENGES_DIR="challenges"
+CAMPAIGNS_DIR="campaigns"
 
 echo ""
 echo "Starting all challenges"
@@ -38,16 +39,18 @@ fi
 echo "All challenges started"
 
 failed=false
-for chal_dir in "$CHALLENGES_DIR"/*/; do
-    if [[ "$chal_dir" == "challenges/template/" ]]; then
+solve () {
+    local chal_dir=$1
+    if [[ "$chal_dir" == *"template"* ]]; then
         # skip template
-        continue
+        return 0
     fi
 
     echo ""
     echo "Testing $chal_dir:"
 
-    solve_script="$chal_dir/auto-solve.sh"
+    local solve_script="$chal_dir/auto-solve.sh"
+    local solve_deps="$chal_dir/auto-solve"
     if [ -f "$solve_script" ]; then
         # Copy auto-solve script into /tmp dir in hackerlab container
         # We use ssh instead of docker exec to test also the SSH connection
@@ -58,16 +61,28 @@ for chal_dir in "$CHALLENGES_DIR"/*/; do
                 -P $LABPORT \
                 $solve_script \
                 $LABUSER@$LABHOST:/tmp/auto-solve.sh
+
+        # also copy all potential dependencies of the solve script
+        if [ -d "$solve_deps" ]; then
+            sshpass -p "$LABPASS" scp -O \
+                    -o LogLevel=error \
+                    -o UserKnownHostsFile=/dev/null \
+                    -o StrictHostKeyChecking=no \
+                    -P $LABPORT \
+                    -r \
+                    $solve_deps \
+                    $LABUSER@$LABHOST:/tmp/
+        fi
         # Run the auto-solve script from within the hackerlab container
         sshpass -p "$LABPASS" ssh \
-        -o LogLevel=error \
-        -o UserKnownHostsFile=/dev/null \
-        -o StrictHostKeyChecking=no \
-        -p $LABPORT \
-        $LABUSER@$LABHOST \
-        /tmp/auto-solve.sh
+                -o LogLevel=error \
+                -o UserKnownHostsFile=/dev/null \
+                -o StrictHostKeyChecking=no \
+                -p $LABPORT \
+                $LABUSER@$LABHOST \
+                'cd /tmp && bash auto-solve.sh'
 
-        retVal=$?
+        local retVal=$?
         if [ $retVal -ne 0 ]; then
             failed=true
         fi
@@ -75,6 +90,23 @@ for chal_dir in "$CHALLENGES_DIR"/*/; do
     else
         echo "WARNING - missing $solve_script script"
     fi
+}
+
+for chal_dir in "$CHALLENGES_DIR"/*/; do
+    if ! solve "$chal_dir"; then
+        failed=true
+    fi
+done
+for campaign_dir in "$CAMPAIGNS_DIR"/*/; do
+    if [[ "$campaign_dir" == *"example"* ]]; then
+        # skip example
+        continue
+    fi
+    for chal_dir in "$campaign_dir"*/; do
+        if ! solve "$chal_dir"; then
+            failed=true
+        fi
+    done
 done
 
 echo ""
@@ -93,7 +125,7 @@ echo "Project stopped"
 
 echo ""
 if [ "$failed" = true ]; then
-    echo "❌ TEST FAILED - some auto-solve.sh script fialed"
+    echo "❌ TEST FAILED - some auto-solve.sh script failed"
     exit 2
 else
     echo "✅ ALL TESTS PASSED"

@@ -1,0 +1,120 @@
+version: '3.3'
+
+services:
+  mailus:
+    container_name: scl-fyp-mailus
+    stop_grace_period: 0s
+    build: mailus
+    networks:
+      fyp-internal:
+        aliases:
+          - mailus
+        ipv4_address: 172.21.0.3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  logus:
+    container_name: scl-fyp-logus
+    stop_grace_period: 0s
+    build: logus
+    networks:
+      fyp-internal:
+        aliases:
+          - logus
+        ipv4_address: 172.21.0.4
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost/"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  authus:
+    container_name: scl-fyp-authus
+    stop_grace_period: 0s
+    build: authus
+    networks:
+      fyp-internal:
+        aliases:
+          - authus
+        ipv4_address: 172.21.0.5
+    cap_add: # to allow changing default route through gatus
+      - NET_ADMIN
+      - NET_RAW
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/auth/login"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  db:
+    container_name: scl-fyp-db
+    stop_grace_period: 0s
+    build: db
+    networks:
+      fyp-internal:
+        aliases:
+          - db
+        ipv4_address: 172.21.0.6
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  dashboardus:
+    container_name: scl-fyp-dashboardus
+    stop_grace_period: 0s
+    build: dashboardus
+    networks:
+      fyp-internal:
+        aliases:
+          - dashboardus
+        ipv4_address: 172.21.0.7
+    healthcheck:
+      test: ["CMD", "node", "-e", "'http.get(\"http://localhost/\")'"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  gatus:
+    container_name: scl-fyp-gatus
+    stop_grace_period: 0s
+    build: gatus
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.203
+        aliases:
+          - repository
+      fyp-internal:
+        ipv4_address: 172.21.0.2
+        aliases:
+          - gatus
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      - net.ipv4.ip_forward=1
+    depends_on:
+      - authus
+      - dashboardus
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost/"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  fyp-internal:
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24
+          gateway: 172.21.0.1
+  playground-net:
+    external: true

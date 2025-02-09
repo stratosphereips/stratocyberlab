@@ -13,6 +13,7 @@ from quart import Quart, request, send_from_directory, session, jsonify
 import db
 import docker
 import llm
+from config import getenv
 
 
 def eprint(*args, **kwargs):
@@ -25,7 +26,7 @@ def get_dirs(parent: str) -> List[str]:
 # load challenges from files and bootstrap DB
 
 
-def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
+def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=getenv('CLASS_DIR') or '/classes', parent_campaign_dir=getenv('CAMPAIGN_DIR') or '/campaigns'):
     # this file works as a check to know if DB was already bootstrapped or not
     # because otherwise this code could run multiple times if the container was restarted
     file = Path(".was_db_inited")
@@ -49,9 +50,41 @@ def init(parent_ch_dir='/challenges', parent_cl_dir='/classes'):
         ch_id, ch_name, ch_diff, ch_desc = ch["id"], ch["name"], ch["difficulty"], ch["description"]
         db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff, ch_dir)
 
-        for task in ch["tasks"]:
+        for i, task in enumerate(ch["tasks"]):
             t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
-            db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag)
+            db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag, order=i)
+
+    for camp_name in get_dirs(parent_campaign_dir):
+        if camp_name == '_template' or camp_name == 'example':
+            continue
+
+        camp_dir = f'{parent_campaign_dir}/{camp_name}'
+        with open(f"{camp_dir}/meta.json", 'r', encoding='utf8') as f:
+            camp = json.load(f)
+
+        db.insert_campaign_data(camp['id'], camp['name'], camp['description'], camp['enforceOrder'], camp['showLocked'])
+
+        for i, step in enumerate(camp['timeline']):
+            if step['type'] == 'challenge':
+                chall_id = step['id']
+                chall_dir = f'{camp_dir}/{chall_id}'
+                with open(f"{chall_dir}/meta.json", 'r', encoding='utf8') as f:
+                    chall = json.load(f)
+
+                db.insert_challenge_data(chall['id'], chall['name'], chall['description'],
+                                         chall['difficulty'], chall_dir, camp['id'])
+
+                db.insert_campaign_step(camp['id'], challenge_id=chall['id'], order=i)
+
+                for j, task in enumerate(chall["tasks"]):
+                    db.insert_task_data(chall_id, task["id"], task["name"], task["description"], task["flag"], order=j)
+
+            if step['type'] == 'page':
+                page_id = step['id']
+                with open(f'{camp_dir}/pages/{page_id}.md', 'r', encoding='utf8') as f:
+                    content = f.read()
+                db.insert_page(page_id, step['name'], content)
+                db.insert_campaign_step(camp['id'], page_id=page_id, order=i)
 
     for name in get_dirs(parent_cl_dir):
         cl_dir = f"{parent_cl_dir}/{name}"
@@ -237,10 +270,87 @@ async def classes_stop_all():
 
     return 'All stopped! 🎉'
 
+# ======================================
+# ||             Campaigns            ||
+# ======================================
+
+
+@app.route('/api/campaigns', methods=['GET'])
+@manage_session
+async def campaigns_get():
+    return jsonify(db.get_campaigns())
+
+
+@app.route('/api/campaigns/<campaign_id>', methods=['GET'])
+@manage_session
+async def campaign_get(campaign_id: str):
+    steps_from_db = db.get_campaign_steps(campaign_id, get_session_id())
+
+    if len(steps_from_db) == 0:
+        return "Campaign not found", 404
+
+    enforce_order = steps_from_db[0]['enforce_order']
+    show_locked = steps_from_db[0]['show_locked'] or not enforce_order
+
+    parsed_steps = []
+    step_map = {}
+    for t in steps_from_db:
+        if t['step_type'] == 'page':
+            parsed_steps.append({
+                'id': t['page_id'],
+                'type': 'page',
+                'name': t['page_name'],
+                'content': t['page_content'],
+            })
+            continue
+
+        ch_id = t["challenge_id"]
+
+        ch = step_map.get(ch_id, None)
+        if not ch:
+            ch = {
+                "id": ch_id,
+                'type': 'challenge',
+                "name": t['challenge_name'],
+                "difficulty": t["difficulty"],
+                "description": t["challenge_description"],
+                "tasks": [],
+                "dir": t['challenge_dir'],
+            }
+            step_map[ch_id] = ch
+            parsed_steps.append(ch)
+
+        ch["tasks"].append({
+            "id": t["task_id"],
+            "name": t["task_name"],
+            "description": t["task_description"],
+            "flag": t["flag"],
+            "solved": t["solved"],
+        })
+
+        if t['step_type'] == 'challenge' and not t['solved'] and not show_locked:
+            break
+
+    for ch in parsed_steps:
+        if ch['type'] != 'challenge':
+            continue
+        up = docker.is_up(ch["dir"])
+        if up:
+            ch['running'] = True
+
+        # do not expose directories to FE
+        del ch['dir']
+
+    return jsonify({
+        'id': steps_from_db[0]['campaign_id'],
+        'steps': parsed_steps,
+    })
 
 # ======================================
 # ||             Challenges           ||
 # ======================================
+
+
 @app.route('/api/challenges/submit', methods=['POST'])
 @manage_session
 async def challenges_submit():
@@ -305,7 +415,7 @@ async def challenges_get():
 @app.route('/api/challenges/start/all', methods=['POST'])
 @manage_session
 async def challenges_start_all():
-    challenges = db.get_challenges()
+    challenges = db.get_challenges(include_campaigns=True)
 
     eprint("Starting all challenges")
     for ch in challenges:
@@ -331,7 +441,7 @@ async def route_challenges_stop_all():
 
 
 async def challenges_stop_all():
-    challenges = db.get_challenges()
+    challenges = db.get_challenges(include_campaigns=True)
 
     eprint("Stopping all challenges")
     for ch in challenges:
@@ -453,4 +563,4 @@ async def llm_chat():
 
 if __name__ == '__main__':
     init()
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=True, host=getenv('HOST') or '0.0.0.0', port=getenv('PORT') or 80)

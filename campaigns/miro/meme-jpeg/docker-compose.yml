@@ -1,0 +1,12 @@
+services:
+  chat:
+    container_name: scl-mj-chat
+    stop_grace_period: 0s
+    build: chat
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.205
+
+networks:
+  playground-net:
+    external: true

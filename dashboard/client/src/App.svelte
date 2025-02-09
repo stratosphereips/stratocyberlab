@@ -6,6 +6,9 @@
   import { onMount } from 'svelte';
   import ClassDoc from './ClassDoc.svelte';
   import Snowfall from "./Snowfall.svelte";
+  import { challenges, classes, campaigns } from './stores';
+  import { navigate, chosenClass } from './routing';
+  import { fetchChallenges, fetchClasses, fetchCampaigns } from './fetch';
 
   let showSSH = false;
   let sshInitialised = false;
@@ -18,8 +21,11 @@
   let isVerticalResizing = false;
   $: widthVertical2nd = 98 - widthVertical1st; // 98 is tmp hack to fit in the vertical dragging line
 
-  let chosenChallenge;
-  let chosenClass;
+  onMount(async () => {
+    fetchChallenges().then((loadedChallenges) => ($challenges = loadedChallenges));
+    fetchClasses().then((loadedClasses) => ($classes = loadedClasses));
+    fetchCampaigns().then((loadedCampaigns) => ($campaigns = loadedCampaigns));
+  });
 
   let resizeTerminalContentFunc;
 
@@ -39,8 +45,7 @@
   }
 
   function handleBrandClick() {
-    chosenChallenge = undefined;
-    chosenClass = undefined;
+    navigate('');
   }
 
   function startSshResizing() {
@@ -132,12 +137,12 @@
   <!-- Main dashboard content -->
   <div class="row flex-grow-1 m-1">
     <div style="width: {widthVertical1st}vw">
-      <Dashboard bind:chosenChallenge bind:chosenClass />
+      <Dashboard />
     </div>
     <div class="p-0 bg-secondary" on:mousedown={startVerticalResizing} style="width: 3px; cursor: col-resize;"></div>
     <div style="width: {widthVertical2nd}vw">
-      {#if chosenClass !== undefined && chosenClass.google_doc_url}
-        <ClassDoc docUrl={chosenClass.google_doc_url} />
+      {#if $chosenClass && $chosenClass.google_doc_url}
+        <ClassDoc docUrl={$chosenClass.google_doc_url} />
       {:else}
         <AssistantLLM />
       {/if}
