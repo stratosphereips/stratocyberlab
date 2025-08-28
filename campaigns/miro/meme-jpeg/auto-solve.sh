@@ -9,10 +9,13 @@
 #                                            __/ |
 #                                           |___/
 
-# TODO: pip install Stegano
-# TODO: install steghide
+echo "⬇️ Installing dependencies"
+pip install --break-system-packages Stegano >/dev/null
+apt-get install -y steghide >/dev/null
 
-stegano-lsb reveal -i level-2.png -o l1re.jpg
+echo "⛏️ Breaking stegano"
+wget -q http://172.20.0.205/attachments/c8edf7b6621df4bc6728f8642967530cec7ffcbcc0669353efd7c5f5211621ae.png
+stegano-lsb reveal -i c8edf7b6621df4bc6728f8642967530cec7ffcbcc0669353efd7c5f5211621ae.png -o l1re.jpg
 steghide extract -sf l1re.jpg -xf l0re.txt -p ""
 
 #                                           _
@@ -24,43 +27,51 @@ steghide extract -sf l1re.jpg -xf l0re.txt -p ""
 #                                              __/ |
 #                                             |___/
 
+echo "⛏️ Breaking Vigenere"
 to_chars() {
-	read inp
+	read -r inp
 	echo "$inp" | od -An -t u1 | xargs
 }
 
-len=$(cat l0re.txt | wc -c | xargs)
-read -r -a ct <<< $(cat l0re.txt | to_chars)
-read -r -a key <<< $(echo "key" | to_chars)
+read -r -a ct <<< "$(to_chars < l0re.txt)"
+read -r -a key <<< "$(echo "key" | to_chars)"
 
 to_text() {
-	echo $(awk 'BEGIN{printf "%c",'$1'}')
+	awk 'BEGIN{printf "%c",'$1'}'
 }
 
 out=""
 i=0
 for c in "${ct[@]}"; do
 	if (( c < 97 )) || (( c > 122 )); then
-		# echo $c
-		l=$(to_text $c)
+		l=$(to_text "$c")
 		out="$out$l"
 		continue
 	fi
-	k=$(($i % 3))
+	k=$((i % 3))
 	k=${key[$k]}
-	o=$(($c - $k))
-	o=$(($o % 26))
+	o=$((c - k))
+	o=$((o % 26))
 	if (( o < 0 )); then
-		o=$(($o + 26))
+		o=$((o + 26))
 	fi
-	o=$(($o + 97))
+	o=$((o + 97))
 
-	# echo "$c ct"
-	# echo "$k key"
-	# echo "$o ot"
 	l=$(to_text $o)
 	out="$out$l"
-	i=$(($i + 1))
+	i=$((i + 1))
 done
 
-echo $out
+echo "⬆️ POSTing flag $out"
+RES=$(curl -s 'http://172.20.0.3/api/challenges/submit' \
+   -X POST \
+   -H 'Content-Type: application/json' \
+   --data-binary "{\"challenge_id\": \"meme-jpeg\", \"task_id\": \"destination\", \"flag\" : \"$out\"}")
+
+if [[ $RES != *"Congratulations"* ]]; then
+ echo "Failed to submit the flag - $RES"
+ exit 5
+fi
+
+echo "OK - tests passed"
+exit 0
