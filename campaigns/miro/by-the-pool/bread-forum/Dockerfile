@@ -12,7 +12,7 @@ RUN <<EOF
 rm /var/www/html/*
 
 # download+extract phpbb
-wget https://download.phpbb.com/pub/release/3.3/3.3.14/phpBB-3.3.14.tar.bz2
+wget -q https://download.phpbb.com/pub/release/3.3/3.3.14/phpBB-3.3.14.tar.bz2
 tar jxvf phpBB-3.3.14.tar.bz2
 mv phpBB3/* /var/www/html/
 mv phpBB3/.htaccess /var/www/html/
@@ -32,7 +32,7 @@ EOF
 COPY 2fa-patches/* /tmp/
 RUN <<EOF
 # install extension
-wget "https://www.phpbb.com/customise/db/download/183726" -O /var/www/html/ext/2fa.zip
+wget -q "https://www.phpbb.com/customise/db/download/183726" -O /var/www/html/ext/2fa.zip
 cd /var/www/html/ext/
 unzip 2fa.zip
 rm 2fa.zip

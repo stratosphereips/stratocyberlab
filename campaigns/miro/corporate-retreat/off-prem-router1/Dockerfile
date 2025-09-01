@@ -9,7 +9,7 @@ RUN <<EOF
 apt-get update
 apt-get install -y wget perl libnet-ssleay-perl libauthen-pam-perl libio-pty-perl apt-show-versions python3 iptables iproute2 nmap openssh-client curl
 # comment this line for local dev:
-wget https://downloads.sourceforge.net/project/webadmin/webmin/1.920/webmin_1.920_all.deb
+wget -q https://downloads.sourceforge.net/project/webadmin/webmin/1.920/webmin_1.920_all.deb
 dpkg --force-all -i webmin_1.920_all.deb
 # fix broken dependency on 'python' which no longer exists in the repos
 sed -i 's/, python$//' /var/lib/dpkg/status
