@@ -109,4 +109,3 @@ submit_flag "huh-a-forum" "$username:$password"
 
 killall curl
 echo "OK - tests passed"
-exit 0

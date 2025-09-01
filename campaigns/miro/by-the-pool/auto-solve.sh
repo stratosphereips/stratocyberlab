@@ -53,4 +53,3 @@ submit_flag "location" "$lat,$lon"
 rm image
 
 echo "OK - tests passed"
-exit 0

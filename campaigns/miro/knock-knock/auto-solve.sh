@@ -34,4 +34,3 @@ rm network.pcapng
 rm fs-inotify.log
 
 echo "OK - tests passed"
-exit 0

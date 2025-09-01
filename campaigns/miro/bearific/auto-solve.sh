@@ -22,4 +22,3 @@ fi
 
 
 echo "OK - tests passed"
-exit 0

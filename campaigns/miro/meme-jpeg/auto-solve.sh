@@ -74,4 +74,3 @@ if [[ $RES != *"Congratulations"* ]]; then
 fi
 
 echo "OK - tests passed"
-exit 0
