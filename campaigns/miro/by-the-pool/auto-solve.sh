@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt-get install -y exiftool >/dev/null
+apt-get update && apt-get install -y exiftool >/dev/null
 
 submit_flag() {
     local task_id=$1

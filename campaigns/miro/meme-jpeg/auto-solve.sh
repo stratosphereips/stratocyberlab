@@ -11,7 +11,7 @@
 
 echo "⬇️ Installing dependencies"
 pip install --break-system-packages Stegano >/dev/null
-apt-get install -y steghide >/dev/null
+apt-get install -y steghide libgl1 libglib2.0-0 >/dev/null
 
 echo "⛏️ Breaking stegano"
 wget -q http://172.20.0.205/attachments/c8edf7b6621df4bc6728f8642967530cec7ffcbcc0669353efd7c5f5211621ae.png

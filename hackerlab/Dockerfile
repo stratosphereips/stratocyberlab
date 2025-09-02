@@ -5,7 +5,7 @@ COPY data /data
 RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-server curl vim-tiny nano nmap net-tools iputils-ping htop \
     dnsutils less tcpdump tmux wget iproute2 python3-pip git rsyslog \
-    attr acl btop sshpass python3-venv proxychains binwalk ncat file \
+    attr acl btop sshpass python3-venv proxychains binwalk ncat file binutils \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 

@@ -107,5 +107,5 @@ username=$(echo "$proxy_entry" | awk -F 'username=' '{print $2}' | awk -F '&' '{
 password=$(echo "$proxy_entry" | awk -F 'password=' '{print $2}' | awk -F '&' '{print $1}' | sed 's/%7B/{/' | sed 's/%7D/}/')
 submit_flag "huh-a-forum" "$username:$password"
 
-killall curl
+kill $(pgrep curl)
 echo "OK - tests passed"
