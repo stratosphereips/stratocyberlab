@@ -1,11 +1,14 @@
-FROM debian:bookworm
+FROM ubuntu:24.04
 
 COPY data /data
 
-RUN apt update && \
-    apt install -y openssh-server curl vim nano nmap net-tools iputils-ping htop netcat-traditional dnsutils \
-    less tcpdump tmux wget iproute2 python3-pip git ncat rsyslog attr acl logcheck btop sshpass telnet python3-venv \
-    proxychains binwalk
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openssh-server curl vim-tiny nano nmap net-tools iputils-ping htop \
+    dnsutils less tcpdump tmux wget iproute2 python3-pip git rsyslog \
+    attr acl btop sshpass python3-venv proxychains binwalk ncat file \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
 
 ENV TERM=xterm-256color
 RUN echo "PS1='\e[92m\u\e[0m@\e[94m\h\e[0m:\e[35m\w\e[0m# '" >> /root/.bashrc
