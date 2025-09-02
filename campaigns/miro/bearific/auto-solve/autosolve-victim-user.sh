@@ -14,8 +14,6 @@ cat >etc/cowrie.cfg <<EOF
 hostname = notapot
 EOF
 
-# TODO: to change port: [ssh]\nlisten_endpoints = tcp:22:interface=0.0.0.0
-
 # make `ping` to the weird ip fail
 line=$(grep -n 'def valid_ip(' src/cowrie/commands/ping.py | cut -f1 -d ':')
 line=$((line + 1))

@@ -428,8 +428,8 @@ async def challenges_start_all():
             docker.stop_compose(ch_dir)
             docker.start_compose(ch_dir)
         except Exception as e:
-            eprint(f"error starting a challenge: {e}")
-            return f"error starting a challenge: {e}", 500
+            eprint(f"error starting a challenge ({ch_id}): {e}")
+            return f"error starting a challenge ({ch_id}): {e}", 500
 
     return 'All started! 🎉'
 
@@ -452,8 +452,8 @@ async def challenges_stop_all():
             eprint(f"Let's stop a challenge with id: '{ch_id}'")
             docker.stop_compose(ch_dir)
         except Exception as e:
-            eprint(f"error stopping a challenge: {e}")
-            return f"error stopping a challenge: {e}", 500
+            eprint(f"error stopping a challenge ({ch_id}): {e}")
+            return f"error stopping a challenge ({ch_id}): {e}", 500
 
     return 'All stopped! 🎉'
 

