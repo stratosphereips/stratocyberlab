@@ -98,7 +98,7 @@ solve () {
 
 for chal_dir in "$CHALLENGES_DIR"/*/; do
     if ! solve "$chal_dir"; then
-        failed=true
+        failed+=("$chal_dir")
     fi
 done
 for campaign_dir in "$CAMPAIGNS_DIR"/*/; do
