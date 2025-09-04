@@ -3,6 +3,7 @@ version: '3.3'
 services:
   challenge-saas-platform:
     build: saas-platform
+    image: scl-challenge-jump-around-saas-platform  # name of the built image
     container_name: scl-challenge-saas-platform
     stop_grace_period: 0s
     networks:
@@ -11,6 +12,7 @@ services:
 
   challenge-proxy-hop:
     build: proxy-hop
+    image: scl-challenge-jump-around-proxy-hop  # name of the built image
     container_name: scl-challenge-proxy-hop
     stop_grace_period: 0s
     networks:
@@ -19,6 +21,7 @@ services:
 
   challenge-victim:
     build: victim
+    image: scl-challenge-jump-around-victim  # name of the built image
     container_name: scl-challenge-victim
     stop_grace_period: 0s
     networks:

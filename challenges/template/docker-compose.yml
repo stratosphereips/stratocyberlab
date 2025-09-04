@@ -2,9 +2,10 @@ version: '3.3'
 
 services:
   challenge-template:
+    build: .
+    image: scl-challenge-template  # name of the built image
     container_name: scl-challenge-template
     stop_grace_period: 0s
-    build: .
     networks:
       playground-net:
         ipv4_address: 172.20.0.30

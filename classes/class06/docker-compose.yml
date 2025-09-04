@@ -3,18 +3,20 @@ version: '3.3'
 services:
   class-06-victim:
     build: ssh/
+    image: scl-class-06-victim  # name of the built image
+    container_name: scl-class-06-victim
     stop_grace_period: 0s
     hostname: class6-victim
-    container_name: scl-class-06-victim
     networks:
       playground-net:
         ipv4_address: 172.20.0.98
 
   class-06-proxy-hop:
     build: ssh/
+    image: scl-class-06-proxy-hop  # name of the built image
+    container_name: scl-class-06-proxy-hop
     stop_grace_period: 0s
     hostname: class6-hop
-    container_name: scl-class-06-proxy-hop
     networks:
       playground-net:
         ipv4_address: 172.20.0.99

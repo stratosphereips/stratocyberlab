@@ -3,5 +3,6 @@ version: '3.3'
 services:
   nothing:
     image: alpine:3.20.3
+    container_name: scl-campaign-example-hell
     command: tail -f /dev/null
     stop_grace_period: 0s

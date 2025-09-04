@@ -2,18 +2,20 @@ version: '3.3'
 
 services:
   attacker:
-    container_name: scl-bearific-attacker
+    build: attacker
+    image: scl-campaign-miro-bearific-attacker  # name of the built image
+    container_name: scl-campaign-miro-bearific-attacker
     hostname: bearific-attacker
     stop_grace_period: 0s
-    build: attacker
     networks:
       playground-net:
         ipv4_address: 172.20.0.201
   victim:
-    container_name: scl-bearific-victim
+    build: victim
+    image: scl-campaign-miro-bearific-victim  # name of the built image
+    container_name: scl-campaign-miro-bearific-victim
     hostname: bearific-victim
     stop_grace_period: 0s
-    build: victim
     networks:
       playground-net:
         ipv4_address: 172.20.0.202

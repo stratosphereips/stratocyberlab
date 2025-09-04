@@ -3,12 +3,13 @@ version: '3.3'
 services:
   class-08-exploit-lab:
     build: .
+    image: scl-class-08-exploitation-lab  # name of the built image
+    container_name: scl-class-08-exploitation-lab
     platform: linux/amd64 # important
     security_opt:
       - seccomp:/classes/class08/seccomp-profile.json
     stop_grace_period: 0s
     hostname: class8-exploitation-lab
-    container_name: scl-class-08-exploitation-lab
 
     networks:
       playground-net:

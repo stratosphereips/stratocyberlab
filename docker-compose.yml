@@ -1,6 +1,7 @@
 services:
   hackerlab:
     build: ./hackerlab
+    image: scl-hackerlab  # name of the built image
     container_name: scl-hackerlab
     hostname: hackerlab
     restart: on-failure
@@ -15,6 +16,7 @@ services:
 
   dashboard:
     build: ./dashboard
+    image: scl-dashboard  # name of the built image
     container_name: scl-dashboard
     hostname: dashboard
     restart: on-failure

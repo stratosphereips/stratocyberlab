@@ -2,6 +2,7 @@ version: '3.7'
 services:
   class-11-lab:
     build: .
+    image: scl-class-11-lab  # name of the built image
     container_name: scl-class-11-lab
     hostname: class-11-lab
     stop_grace_period: 0s

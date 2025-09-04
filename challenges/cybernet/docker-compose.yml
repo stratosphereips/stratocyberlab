@@ -2,9 +2,10 @@ version: '3.3'
 
 services:
   challenge-cybernet:
+    build: .
+    image: scl-challenge-cybernet  # name of the built image
     container_name: scl-challenge-cybernet
     stop_grace_period: 0s
-    build: .
     networks:
       playground-net:
         ipv4_address: 172.20.0.52

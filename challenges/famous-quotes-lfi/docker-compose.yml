@@ -2,9 +2,10 @@ version: '3.3'
 
 services:
   challenge-famous-quotes-lfi:
-    container_name: scl-famous-quotes-lfi
-    stop_grace_period: 0s
     build: ./
+    image: scl-challenge-famous-quotes-lfi  # name of the built image
+    container_name: scl-challenge-famous-quotes-lfi
+    stop_grace_period: 0s
     networks:
       playground-net:
         ipv4_address: 172.20.0.10

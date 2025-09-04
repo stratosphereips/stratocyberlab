@@ -2,9 +2,10 @@ version: '3.3'
 
 services:
   shockwave-report:
-    container_name: scl-shockwave-report
-    stop_grace_period: 0s
     build: .
+    image: scl-challenge-shockwave-report  # name of the built image
+    container_name: scl-challenge-shockwave-report
+    stop_grace_period: 0s
     platform: linux/amd64
     networks:
       playground-net:

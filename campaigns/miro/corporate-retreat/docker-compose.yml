@@ -3,9 +3,10 @@ version: '3.3'
 services:
   # Routing between on-prem and auxiliary network(s)
   off-prem-router1:
-    container_name: scl-cr-off-prem-router1
-    stop_grace_period: 0s
     build: off-prem-router1
+    image: scl-campaign-miro-cr-off-prem-router1  # name of the built image
+    container_name: scl-campaign-miro-cr-off-prem-router1
+    stop_grace_period: 0s
     networks:
       cr-dc1:
         ipv4_address: 10.2.0.2
@@ -20,9 +21,10 @@ services:
       - net.ipv4.ip_forward=1
   # Auxiliary camera connected to auxiliary network + "internet"
   camera:
-    container_name: scl-cr-camera
-    stop_grace_period: 0s
     build: camera
+    image: scl-campaign-miro-cr-camera  # name of the built image
+    container_name: scl-campaign-miro-cr-camera
+    stop_grace_period: 0s
     networks:
       cr-aux:
         ipv4_address: 10.3.0.211
@@ -30,9 +32,10 @@ services:
         ipv4_address: 172.20.0.231
   # generic user machine
   user-machine:
-    container_name: scl-cr-user-machine
-    stop_grace_period: 0s
     build: user-machine
+    image: scl-campaign-miro-cr-user-machine  # name of the built image
+    container_name: scl-campaign-miro-cr-user-machine
+    stop_grace_period: 0s
     networks:
       cr-cn1:
         ipv4_address: 10.0.0.6
@@ -41,9 +44,10 @@ services:
       - NET_RAW
   # Location (1) Proxy
   locproxy:
-    container_name: scl-cr-locproxy
-    stop_grace_period: 0s
     build: locproxy
+    image: scl-campaign-miro-cr-locproxy  # name of the built image
+    container_name: scl-campaign-miro-cr-locproxy
+    stop_grace_period: 0s
     networks:
       cr-cn1:
         ipv4_address: 10.0.0.5
@@ -54,9 +58,10 @@ services:
       - NET_RAW
   # Router from CN1 to the outside world
   public-facing-router2:
-    container_name: scl-cr-public-facing-router2
-    stop_grace_period: 0s
     build: public-facing-router2
+    image: scl-campaign-miro-cr-public-facing-router2  # name of the built image
+    container_name: scl-campaign-miro-cr-public-facing-router2
+    stop_grace_period: 0s
     networks:
       cr-cn1:
         ipv4_address: 10.0.0.4
@@ -72,9 +77,10 @@ services:
       - net.ipv4.ip_forward=1
   # Employee record system
   record-system:
-    container_name: scl-cr-record-system
-    stop_grace_period: 0s
     build: record-system
+    image: scl-campaign-miro-cr-record-system
+    container_name: scl-campaign-miro-cr-record-system
+    stop_grace_period: 0s
     networks:
       cr-cn1:
         ipv4_address: 10.0.0.8

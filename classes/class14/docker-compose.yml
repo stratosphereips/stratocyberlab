@@ -1,6 +1,7 @@
 services:
   lab:
     build: .
+    image: scl-class-14-lab  # name of the built image
     container_name: scl-class-14-lab
     stop_grace_period: 0s
     hostname: class14
@@ -12,6 +13,7 @@ services:
 
   ssh-server:
     build: ./ssh-server
+    image: scl-class-14-ssh-server  # name of the built image
     container_name: scl-class-14-ssh-server
     restart: unless-stopped
     stop_grace_period: 0s
@@ -23,6 +25,7 @@ services:
 
   attacker:
     build: ./attacker
+    image: scl-class-14-attacker  # name of the built image
     container_name: scl-class-14-attacker
     restart: unless-stopped
     stop_grace_period: 0s
