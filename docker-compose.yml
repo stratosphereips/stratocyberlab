@@ -15,7 +15,9 @@ services:
         ipv4_address: 172.20.0.2
 
   dashboard:
-    build: ./dashboard
+    build:
+      context: .   # ugly hack - context is "parent" directory for access to .git to read current commit hash
+      dockerfile: ./dashboard/Dockerfile
     image: scl-dashboard  # name of the built image
     container_name: scl-dashboard
     hostname: dashboard

@@ -9,6 +9,7 @@
   import { challenges, classes, campaigns } from './stores';
   import { navigate, chosenClass } from './routing';
   import { fetchChallenges, fetchClasses, fetchCampaigns } from './fetch';
+  import TopNavBar from "./TopNavBar.svelte";
 
   let showSSH = false;
   let sshInitialised = false;
@@ -42,10 +43,6 @@
   function toggleShowSSH() {
     sshInitialised = true;
     showSSH = !showSSH;
-  }
-
-  function handleBrandClick() {
-    navigate('');
   }
 
   function startSshResizing() {
@@ -118,21 +115,15 @@
 {/if}
 <div class="container-fluid p-0 d-flex flex-column" style="height: {dashboardHeight}vh; overflow-y: auto;">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
-    <div class="container-fluid">
-      <a href="/#" class="navbar-brand ms-2" on:click|preventDefault={handleBrandClick}>
-        <img src="/media/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top" />
-        StratoCyberLab
-      </a>
-    </div>
-    {#if snowFlakesEasterEggFeatureFlag}
-    <div class="mr-3">
-      <button class="btn snowfall-toggle" on:click={toggleSnowfall}>
-        ☀️
-      </button>
-    </div>
-    {/if}
-  </nav>
+  <TopNavBar/>
+  <!--  TODO: migrate this to TopNavBar before enabling-->
+  {#if snowFlakesEasterEggFeatureFlag}
+  <div class="mr-3">
+    <button class="btn snowfall-toggle" on:click={toggleSnowfall}>
+      ☀️
+    </button>
+  </div>
+  {/if}
 
   <!-- Main dashboard content -->
   <div class="row flex-grow-1 m-1">

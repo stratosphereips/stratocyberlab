@@ -88,3 +88,46 @@ export async function fetchSingleCampaign(campaignId) {
     alert(err instanceof Error ? err.message : err);
   }
 }
+
+export async function fetchLocalCommit() {
+  try {
+    const res = await fetch(`/current-commit.txt`);
+
+    if (res.status !== 200) {
+      throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
+    }
+    return await res.text()
+  } catch (err) {
+    console.error(err);
+    alert(err instanceof Error ? err.message : err);
+    return null
+  }
+}
+
+export async function fetchGitHubMainCommit() {
+  const url = "https://api.github.com/repos/stratosphereips/stratocyberlab/branches/main";
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`GitHub API request failed (status ${res.status}): ${await res.text()}`);
+    }
+
+    const data = await res.json();
+    const commitSha = data?.commit?.sha;
+
+    if (!commitSha) {
+      throw new Error("Unexpected response format: commit SHA not found.");
+    }
+
+    return commitSha; // ✅ success case
+  } catch (err) {
+    console.error("fetchGitHubMainCommit failed:", err);
+    return null
+  }
+}
