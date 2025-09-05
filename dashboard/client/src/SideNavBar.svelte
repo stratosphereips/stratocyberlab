@@ -105,7 +105,7 @@
                     type="button"
                     class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 rounded-2 {($chosenClass === c) ? 'fw-bold' : ''}"
                   >
-                    <span class="text-truncate">{c.name}</span>
+                    <span title={c.name} class="text-truncate">{c.name}</span>
                   </button>
                 </li>
               {/each}
