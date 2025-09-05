@@ -8,7 +8,7 @@ function handleBrandClick() {
 
 </script>
 
-<nav aria-label="Top" class="bg-light border-bottom mb-2">
+<nav aria-label="Top" class="bg-light border-bottom">
 <div class="container-fluid py-2">
   <div class="d-flex align-items-center justify-content-between">
 

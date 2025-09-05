@@ -11,11 +11,9 @@
 <style>
 </style>
 
-<div class="d-flex">
-  <div class="flex-grow-0">
-    <SideNavBar />
-  </div>
-  <div class="ps-5 flex-grow-1">
+<div class="d-flex h-100">
+  <SideNavBar />
+  <div class="ps-5 pt-4 flex-grow-1">
     {#if $chosenChallenge}
       <ChallengeDetail challenge={$chosenChallenge} />
     {:else if $chosenClass}

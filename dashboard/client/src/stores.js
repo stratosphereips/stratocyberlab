@@ -23,7 +23,12 @@ export const storageBackedWritable = (key, defaultData) => {
   };
 };
 
+// remember which campaigns we've already loaded
+const loadedCampaignIds = new Set();
+
 export const loadSingleCampaign = async (id) => {
+  if (loadedCampaignIds.has(id)) return;
+
   const campaign = await fetchSingleCampaign(id);
   campaigns.update((old) => {
     const neu = old === null ? [] : [...old];
@@ -34,6 +39,7 @@ export const loadSingleCampaign = async (id) => {
     };
     return neu;
   });
+  loadedCampaignIds.add(id);
 };
 
 export const setChallengeRunning = (challengeId, campaignId, running) => {

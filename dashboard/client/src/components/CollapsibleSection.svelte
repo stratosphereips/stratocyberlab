@@ -1,76 +1,75 @@
 <script>
-  import { onMount } from 'svelte';
   import { storageBackedWritable } from '../stores';
 
   export let id;
   export let label;
   export let level = 1;
+  export let icon = null; // a Heroicons Svelte component (e.g., AcademicCap)
+  export let title = "Click to expand/collapse"
 
-  let buttonClass = {
-    1: 'btn-lg',
-    2: '',
-    3: 'btn-sm',
-  }[level ?? 1];
+  let buttonClass = { 1: 'btn-lg', 2: '', 3: 'btn-sm' }[level ?? 1];
 
   let expanded = false;
   const collapseStore = storageBackedWritable(`scl.collapse.${id}`, 'false');
-  const unsubscribe = collapseStore.subscribe((value) => {
-    expanded = value === 'true';
-  });
+  const unsubscribe = collapseStore.subscribe((value) => (expanded = value === 'true'));
 
-  onMount(() => {
-    const setExpandedFalse = (e) => {
-      e.stopPropagation();
-      $collapseStore = 'false';
-    };
-    const setExpandedTrue = (e) => {
-      e.stopPropagation();
-      $collapseStore = 'true';
-    };
-    const element = document.querySelector(`#${id}-collapse`);
+  // Toggle only if the click didn't come from labelExtra
+  function onHeaderClick(e) {
+    if (e.target.closest('[data-label-extra]')) return;
+    $collapseStore = expanded ? 'false' : 'true';
+  }
 
-    element.addEventListener('hidden.bs.collapse', setExpandedFalse);
-    element.addEventListener('shown.bs.collapse', setExpandedTrue);
-
-    return () => {
-      unsubscribe();
-      element.removeEventListener('hidden.bs.collapse', setExpandedFalse);
-      element.removeEventListener('shown.bs.collapse', setExpandedTrue);
-    };
-  });
+  function onHeaderKey(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onHeaderClick(e);
+    }
+  }
 </script>
 
 <style>
-  :global(.btn-toggle[aria-expanded='true']::before) {
-    transform: rotate(90deg);
+  :global(.btn-toggle[aria-expanded='true'] .chev) { transform: rotate(90deg); }
+  .chev { transition: transform .25s ease; }
+
+  .btn-toggle:hover {
+    background-color: var(--bs-gray-200);
+    box-shadow: inset 0 0 0 1px var(--bs-border-color);
   }
-  .btn-toggle::before {
-    width: 1.25em;
-    line-height: 0;
-    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
-    transition: transform 0.35s ease;
-    transform-origin: 0.5em 50%;
+  .btn-toggle:focus-visible {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
   }
 </style>
 
-<li class="mb-1">
-  <div class="d-flex justify-content-between">
-    <button
-      id="{id}-header"
-      class="btn {buttonClass} btn-toggle d-inline-flex align-items-center rounded p-0 {!expanded ? 'collapsed' : ''}"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#{id}-collapse"
-      aria-expanded={expanded ? 'true' : 'false'}
-      aria-controls="{id}-collapse"
-    >
-      {label ?? ''}
-    </button>
+<li class="mb-2">
+  <div
+    id="{id}-header"
+    role="button"
+    tabindex="0"
+    class="btn {buttonClass} btn-toggle w-100 text-start d-inline-flex align-items-center gap-2 px-2 py-2"
+    aria-expanded={expanded ? 'true' : 'false'}
+    aria-controls="{id}-panel"
+    title={title}
+    on:click={onHeaderClick}
+    on:keydown={onHeaderKey}
+  >
+    {#if icon}
+      <svelte:component this={icon} width="18" height="18" />
+    {/if}
+    <span class="flex-grow-1">{label ?? ''}</span>
     <slot name="labelExtra" />
+
+    <!-- chevron -->
+    <svg class="chev" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+      <path fill="none" stroke="rgba(0,0,0,.55)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 14l6-6-6-6" />
+    </svg>
   </div>
-  <div class="collapse {expanded ? 'show' : ''}" aria-labelledby="{id}-header" id="{id}-collapse">
-    <ul class="list-unstyled ms-3">
+
+  {#if expanded}
+  <div id="{id}-panel" aria-labelledby="{id}-header">
+    <ul class="list-unstyled ms-2 my-2">
       <slot />
     </ul>
   </div>
+  {/if}
 </li>

@@ -54,7 +54,7 @@
   }
 </style>
 
-<div class="pt-4 ms-2 d-flex justify-content-between align-items-center">
+<div class="ms-2 d-flex justify-content-between align-items-center">
   <div>
     <h4 class="d-inline">{curClass.name}</h4>
   </div>

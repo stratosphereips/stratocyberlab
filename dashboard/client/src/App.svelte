@@ -126,7 +126,7 @@
   {/if}
 
   <!-- Main dashboard content -->
-  <div class="row flex-grow-1 m-1">
+  <div class="d-flex row flex-grow-1 h-100">
     <div style="width: {widthVertical1st}vw">
       <Dashboard />
     </div>

@@ -6,27 +6,14 @@
 
   export let id;
 
-  let root;
   let campaign = derived([campaigns], ([campaigns]) => campaigns?.find((camp) => camp.id === id));
 
   const load = () => loadSingleCampaign(id).then();
 
-  onMount(() => {
-    const parentCollapse = root.parentElement.parentElement;
-
-    // lazy-load on expand
-    parentCollapse.addEventListener('shown.bs.collapse', load);
-
-    // if already expanded (e.g. from localstorage)
-    if (parentCollapse.classList.contains('show')) {
-      load();
-    }
-
-    return () => parentCollapse.removeEventListener('shown.bs.collapse', load);
-  });
+  onMount(load)
 </script>
 
-<div bind:this={root}>
+<div>
   {#if $campaign && $campaign.steps}
     {#each $campaign.steps as step}
       <li class="mb-1">
