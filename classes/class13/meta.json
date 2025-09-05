@@ -1,5 +1,5 @@
 {
-    "name": "Class 13 - Advanced Web Attacks",
+    "name": "0x13 - Advanced Web Attacks",
     "id": "class-13",
     "description": "The 13th focuses on Advanced Web Attacks. <br>Please open the Google document provided to all registered students and follow the document. <br><ol><li>Start the class.</li><li><b>From the hackerlab (browser terminal)</b>, connect to the class 13 container with preinstalled tools using command <b>ssh root@class13</b> and <b>admin</b> password</li><li><b>From a new terminal on your computer (NOT StratoCyberLab)</b>, execute following command <b>ssh -L 3000:juiceshop:3000 root@127.0.0.1 -p 2222</b> with password <b>ByteThem123</b>. This setups port forwarding so you can access the services in your browser.</li></ol>",
     "google_doc_url": "https://docs.google.com/document/d/1ok_DWjY2m4Lan4xHeoDM8hSnROgEGo5cXD8qNpKkenU/edit?usp=sharing",
