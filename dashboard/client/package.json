@@ -23,8 +23,8 @@
     "rollup": "^3.25.0",
     "rollup-plugin-css-only": "^4.3.0",
     "rollup-plugin-livereload": "^2.0.0",
-    "rollup-plugin-svelte": "^7.0.0",
-    "svelte": "^3.0.0"
+    "rollup-plugin-svelte": "^7.2.3",
+    "svelte": "^4.2.20"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.10.0",
