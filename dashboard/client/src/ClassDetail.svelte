@@ -33,8 +33,8 @@
     // Class happens every thursday from 14:30 CEST til let's say end of january 2025
     const now = new Date();
 
-    const february2025 = new Date('2025-02-01T00:00:00Z');
-    if (now > february2025) {
+    const february2026 = new Date('2026-02-01T00:00:00Z');
+    if (now > february2026) {
       // class is over
       return false;
     }
