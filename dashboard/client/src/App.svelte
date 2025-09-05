@@ -131,7 +131,7 @@
       <Dashboard />
     </div>
     <div class="p-0 bg-dark-subtle" on:mousedown={startVerticalResizing} style="width: 3px; cursor: col-resize;"></div>
-    <div style="width: {widthVertical2nd}vw">
+    <div class="p-0" style="width: {widthVertical2nd}vw">
       {#if $chosenClass && $chosenClass.google_doc_url}
         <ClassDoc docUrl={$chosenClass.google_doc_url} />
       {:else}

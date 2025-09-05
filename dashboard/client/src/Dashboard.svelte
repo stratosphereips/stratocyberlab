@@ -13,7 +13,7 @@
 
 <div class="d-flex h-100">
   <SideNavBar />
-  <div class="ps-5 pt-4 flex-grow-1">
+  <div class="ps-5 pt-4 flex-grow-1" style="min-width:0; flex-basis:0;">
     {#if $chosenChallenge}
       <ChallengeDetail challenge={$chosenChallenge} />
     {:else if $chosenClass}

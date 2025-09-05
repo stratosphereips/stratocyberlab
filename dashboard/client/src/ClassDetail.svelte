@@ -1,26 +1,34 @@
 <script>
   import { isLoading } from './stores';
+  import {onMount} from "svelte";
 
   export let curClass;
+
+  export let initialWidth = 640;
+  export let initialHeight = 360;
+  export let minWidth = 320;
+  export let minHeight = 180;
+
+  let isClassLive = false
+
+  onMount(async () => {
+    isClassLive = isClassLiveNow()
+  });
+
 
   async function flipActivity() {
     isLoading.set(true);
     try {
-      let payload = {
-        id: curClass.id,
-      };
+      let payload = { id: curClass.id };
       const action = curClass.running === true ? 'stop' : 'start';
       const res = await fetch(`/api/classes/${action}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       if (res.status !== 200) {
         throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
       }
-
       curClass.running = action === 'start';
     } catch (err) {
       console.error(err);
@@ -30,18 +38,13 @@
   }
 
   function isClassLiveNow() {
-    // Class happens every thursday from 14:30 CEST til let's say end of january 2025
+    // Class happens every Thursday from 14:30 CEST until end of January 2025 (kept as in your snippet)
     const now = new Date();
-
     const february2026 = new Date('2026-02-01T00:00:00Z');
-    if (now > february2026) {
-      // class is over
-      return false;
-    }
+    if (now > february2026) return false;
 
     const currentDay = now.getDay();
     const currentTimeUTC = now.getUTCHours();
-
     const isThursday = currentDay === 4;
     const isWithinTimeRange = currentTimeUTC >= 12 && currentTimeUTC < 17;
     return isThursday && isWithinTimeRange;
@@ -49,8 +52,36 @@
 </script>
 
 <style>
-  .slow-spinner {
-    animation-duration: 1.5s;
+  .slow-spinner { animation-duration: 1.5s; }
+
+  /* NEW: resizable wrapper around the iframe */
+  .resizable-frame {
+    /* initial size via CSS vars (set inline below) */
+    width: var(--w, 640px);
+    height: var(--h, 360px);
+
+    /* don't exceed parent */
+    max-width: 100%;
+
+    /* limits so it can't collapse too small */
+    min-width: var(--min-w, 320px);
+    min-height: var(--min-h, 180px);
+
+    /* enable user resizing */
+    resize: both;
+    overflow: auto; /* required for resize to show up */
+
+    /* nice look in Bootstrap contexts */
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .5rem; /* ~rounded-3 */
+    background: #000;     /* avoids white flash around video during resize */
+  }
+
+  .resizable-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block; /* avoid stray gaps */
   }
 </style>
 
@@ -59,34 +90,39 @@
     <h4 class="d-inline">{curClass.name}</h4>
   </div>
 </div>
+
 <p class="pt-3 text-muted">
-  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html curClass.description}
 </p>
 
-{#if curClass.yt_recording_url}
+{#if curClass.yt_recording_url || isClassLive}
+<div class="resizable-frame"
+    style="
+      --w: {initialWidth}px;
+      --h: {initialHeight}px;
+      --min-w: {minWidth}px;
+      --min-h: {minHeight}px;
+    ">
+  {#if curClass.yt_recording_url}
   <iframe
-    width="100%"
-    height="100%"
-    class="flex-grow-1"
     src={curClass.yt_recording_url}
     title="Recording of BSY class lecture"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     referrerpolicy="strict-origin-when-cross-origin"
     allowfullscreen
   ></iframe>
-{:else if isClassLiveNow()}
+  {:else if isClassLive}
   <iframe
-    width="100%"
-    height="100%"
-    class="flex-grow-1"
     src="https://www.youtube.com/embed/HShkFvjHPjw?si=SD9QTP6_i-VSC7rf"
     title="BSY class Live Stream"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     referrerpolicy="strict-origin-when-cross-origin"
     allowfullscreen
   ></iframe>
+  {/if}
+</div>
 {/if}
+
 {#if curClass.dir}
   <div
     class="alert me-2 d-flex justify-content-between align-items-center {curClass.running
