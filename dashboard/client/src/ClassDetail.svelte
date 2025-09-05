@@ -1,6 +1,6 @@
 <script>
   import { isLoading } from './stores';
-  import {onMount} from "svelte";
+  import { onMount } from 'svelte';
 
   export let curClass;
 
@@ -9,12 +9,11 @@
   export let minWidth = 320;
   export let minHeight = 180;
 
-  let isClassLive = false
+  let isClassLive = false;
 
   onMount(async () => {
-    isClassLive = isClassLiveNow()
+    isClassLive = isClassLiveNow();
   });
-
 
   async function flipActivity() {
     isLoading.set(true);
@@ -52,7 +51,9 @@
 </script>
 
 <style>
-  .slow-spinner { animation-duration: 1.5s; }
+  .slow-spinner {
+    animation-duration: 1.5s;
+  }
 
   /* NEW: resizable wrapper around the iframe */
   .resizable-frame {
@@ -72,9 +73,9 @@
     overflow: auto; /* required for resize to show up */
 
     /* nice look in Bootstrap contexts */
-    border: 1px solid rgba(0,0,0,.125);
-    border-radius: .5rem; /* ~rounded-3 */
-    background: #000;     /* avoids white flash around video during resize */
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.5rem; /* ~rounded-3 */
+    background: #000; /* avoids white flash around video during resize */
   }
 
   .resizable-frame iframe {
@@ -97,31 +98,33 @@
 </p>
 
 {#if curClass.yt_recording_url || isClassLive}
-<div class="resizable-frame"
+  <div
+    class="resizable-frame"
     style="
       --w: {initialWidth}px;
       --h: {initialHeight}px;
       --min-w: {minWidth}px;
       --min-h: {minHeight}px;
-    ">
-  {#if curClass.yt_recording_url}
-  <iframe
-    src={curClass.yt_recording_url}
-    title="Recording of BSY class lecture"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen
-  ></iframe>
-  {:else if isClassLive}
-  <iframe
-    src="https://www.youtube.com/embed/HShkFvjHPjw?si=SD9QTP6_i-VSC7rf"
-    title="BSY class Live Stream"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen
-  ></iframe>
-  {/if}
-</div>
+    "
+  >
+    {#if curClass.yt_recording_url}
+      <iframe
+        src={curClass.yt_recording_url}
+        title="Recording of BSY class lecture"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    {:else if isClassLive}
+      <iframe
+        src="https://www.youtube.com/embed/HShkFvjHPjw?si=SD9QTP6_i-VSC7rf"
+        title="BSY class Live Stream"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    {/if}
+  </div>
 {/if}
 
 {#if curClass.dir}

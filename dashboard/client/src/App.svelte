@@ -5,11 +5,11 @@
   import SSH from './Ssh.svelte';
   import { onMount } from 'svelte';
   import ClassDoc from './ClassDoc.svelte';
-  import Snowfall from "./Snowfall.svelte";
+  import Snowfall from './Snowfall.svelte';
   import { challenges, classes, campaigns } from './stores';
   import { chosenClass } from './routing';
   import { fetchChallenges, fetchClasses, fetchCampaigns } from './fetch';
-  import TopNavBar from "./TopNavBar.svelte";
+  import TopNavBar from './TopNavBar.svelte';
 
   let showSSH = false;
   let sshInitialised = false;
@@ -30,7 +30,7 @@
 
   let resizeTerminalContentFunc;
 
-  const snowFlakesEasterEggFeatureFlag = false
+  const snowFlakesEasterEggFeatureFlag = false;
 
   onMount(() => {
     window.addEventListener('mousemove', resizeSSH);
@@ -87,8 +87,6 @@
   function toggleSnowfall() {
     isSnowFalling = !isSnowFalling;
   }
-
-
 </script>
 <style>
   .snowfall-toggle {
@@ -115,14 +113,12 @@
 {/if}
 <div class="container-fluid p-0 d-flex flex-column" style="height: {dashboardHeight}vh; overflow-y: auto;">
   <!-- Navbar -->
-  <TopNavBar/>
+  <TopNavBar />
   <!--  TODO: migrate this to TopNavBar before enabling-->
   {#if snowFlakesEasterEggFeatureFlag}
-  <div class="mr-3">
-    <button class="btn snowfall-toggle" on:click={toggleSnowfall}>
-      ☀️
-    </button>
-  </div>
+    <div class="mr-3">
+      <button class="btn snowfall-toggle" on:click={toggleSnowfall}> ☀️ </button>
+    </div>
   {/if}
 
   <!-- Main dashboard content -->
@@ -132,9 +128,11 @@
     </div>
     <!-- eslint-disable-next-line svelte/valid-compile -->
     <div class="p-0 bg-dark-subtle" on:mousedown={startVerticalResizing} style="width: 3px; cursor: col-resize;"></div>
-    <div class="p-0" style="width: {widthVertical2nd}vw">
+    <div style="width: {widthVertical2nd}vw">
       {#if $chosenClass && $chosenClass.google_doc_url}
-        <ClassDoc docUrl={$chosenClass.google_doc_url} />
+        <div class="p-0 w-100 h-100">
+          <ClassDoc docUrl={$chosenClass.google_doc_url} />
+        </div>
       {:else}
         <AssistantLLM />
       {/if}
@@ -142,10 +140,8 @@
   </div>
 
   {#if !showSSH}
-      <div class="position-fixed bottom-0 start-50 translate-middle-x"
-       style="z-index: 1050;">
-      <button class="h-50 btn btn-secondary custom-rounded-button shadow"
-              on:click={toggleShowSSH}>
+    <div class="position-fixed bottom-0 start-50 translate-middle-x" style="z-index: 1050;">
+      <button class="h-50 btn btn-secondary custom-rounded-button shadow" on:click={toggleShowSSH}>
         {#if !sshInitialised}
           Open terminal in the lab ↑
         {:else}

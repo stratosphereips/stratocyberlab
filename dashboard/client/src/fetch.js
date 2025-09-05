@@ -96,21 +96,21 @@ export async function fetchLocalCommit() {
     if (res.status !== 200) {
       throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
     }
-    return await res.text()
+    return await res.text();
   } catch (err) {
     console.error(err);
     alert(err instanceof Error ? err.message : err);
-    return null
+    return null;
   }
 }
 
 export async function fetchGitHubMainCommit() {
-  const url = "https://api.github.com/repos/stratosphereips/stratocyberlab/branches/main";
+  const url = 'https://api.github.com/repos/stratosphereips/stratocyberlab/branches/main';
 
   try {
     const res = await fetch(url, {
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: 'application/vnd.github+json',
       },
     });
 
@@ -122,12 +122,12 @@ export async function fetchGitHubMainCommit() {
     const commitSha = data?.commit?.sha;
 
     if (!commitSha) {
-      throw new Error("Unexpected response format: commit SHA not found.");
+      throw new Error('Unexpected response format: commit SHA not found.');
     }
 
     return commitSha; // ✅ success case
   } catch (err) {
-    console.error("fetchGitHubMainCommit failed:", err);
-    return null
+    console.error('fetchGitHubMainCommit failed:', err);
+    return null;
   }
 }

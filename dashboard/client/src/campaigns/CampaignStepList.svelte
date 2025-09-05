@@ -10,7 +10,7 @@
 
   const load = () => loadSingleCampaign(id).then();
 
-  onMount(load)
+  onMount(load);
 </script>
 
 <div>

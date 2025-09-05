@@ -2,31 +2,23 @@
   // removed slide import to kill animations
   import CollapsibleSection from './components/CollapsibleSection.svelte';
   import { challenges, classes, campaigns } from './stores';
-  import {
-    chooseChallenge,
-    chooseClass,
-    chosenClass,
-    chosenChallenge,
-    chooseCampaignDetail
-  } from './routing';
+  import { chooseChallenge, chooseClass, chosenClass, chosenChallenge, chooseCampaignDetail } from './routing';
   import CampaignStepList from './campaigns/CampaignStepList.svelte';
 
   // Heroicons (outline)
   import {
-    AcademicCap,       // Classes
-    PuzzlePiece,       // Challenges
-    Flag,              // Campaigns
-    ChevronLeft,       // Collapse
-    ChevronRight,      // Expand
-    InformationCircle  // "Details" badge
+    AcademicCap, // Classes
+    PuzzlePiece, // Challenges
+    Flag, // Campaigns
+    ChevronLeft, // Collapse
+    ChevronRight, // Expand
+    InformationCircle, // "Details" badge
   } from 'svelte-heros';
 
   let visible = true;
 
   function difficulty_background(d) {
-    return d === 'easy' ? 'bg-success'
-         : d === 'medium' ? 'bg-warning'
-         : 'bg-danger';
+    return d === 'easy' ? 'bg-success' : d === 'medium' ? 'bg-warning' : 'bg-danger';
   }
 </script>
 
@@ -57,8 +49,8 @@
     position: absolute;
     right: -14px; /* slight peek outside the edge */
     top: 56px;
-    border-top-left-radius: .75rem;
-    border-bottom-left-radius: .75rem;
+    border-top-left-radius: 0.75rem;
+    border-bottom-left-radius: 0.75rem;
   }
 
   /* when collapsed, a little "peek" button stays on the far left */
@@ -97,13 +89,21 @@
         {:else}
           <ul class="list-unstyled m-0">
             <!-- Classes -->
-            <CollapsibleSection title="Click to expand classes list" id="classesList" label="Classes" icon={AcademicCap}>
+            <CollapsibleSection
+              title="Click to expand classes list"
+              id="classesList"
+              label="Classes"
+              icon={AcademicCap}
+            >
               {#each $classes as c}
                 <li class="mb-1">
                   <button
                     on:click={() => chooseClass(c.id)}
                     type="button"
-                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 rounded-2 {($chosenClass === c) ? 'fw-bold' : ''}"
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 rounded-2 {$chosenClass ===
+                    c
+                      ? 'fw-bold'
+                      : ''}"
                   >
                     <span title={c.name} class="text-truncate">{c.name}</span>
                   </button>
@@ -112,13 +112,21 @@
             </CollapsibleSection>
 
             <!-- Challenges -->
-            <CollapsibleSection title="Click to expand challenges list" id="challengeList" label="Challenges" icon={PuzzlePiece}>
+            <CollapsibleSection
+              title="Click to expand challenges list"
+              id="challengeList"
+              label="Challenges"
+              icon={PuzzlePiece}
+            >
               {#each $challenges as ch}
                 <li class="mb-1">
                   <button
                     on:click={() => chooseChallenge(ch.id)}
                     type="button"
-                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 rounded-2 {($chosenChallenge === ch) ? 'fw-bold' : ''}"
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 rounded-2 {$chosenChallenge ===
+                    ch
+                      ? 'fw-bold'
+                      : ''}"
                   >
                     <span class="text-truncate">{ch.name}</span>
                     <span class="badge {difficulty_background(ch.difficulty)} rounded-pill text-capitalize">
@@ -131,9 +139,19 @@
 
             <!-- Campaigns -->
             {#if $campaigns}
-              <CollapsibleSection title="Click to expand campaigns list" id="campaignList" label="Campaigns" icon={Flag}>
+              <CollapsibleSection
+                title="Click to expand campaigns list"
+                id="campaignList"
+                label="Campaigns"
+                icon={Flag}
+              >
                 {#each $campaigns as campaign}
-                  <CollapsibleSection title="Click to expand campaign' list of missions" id={campaign.id} label={campaign.name} level={2}>
+                  <CollapsibleSection
+                    title="Click to expand campaign' list of missions"
+                    id={campaign.id}
+                    label={campaign.name}
+                    level={2}
+                  >
                     <span slot="labelExtra">
                       <button
                         class="btn btn-sm btn-outline-secondary rounded-5 d-inline-flex align-items-center"

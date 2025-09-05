@@ -8,17 +8,13 @@
   let loading = true;
   let show = false;
 
-  const normalize = (v) =>
-    (v === undefined || v === null || v === 'null') ? null : String(v).trim();
+  const normalize = (v) => (v === undefined || v === null || v === 'null' ? null : String(v).trim());
 
   async function load() {
     loading = true;
     try {
-      const [local, remote] = await Promise.allSettled([
-        fetchLocalCommit(),
-        fetchGitHubMainCommit()
-      ]);
-      localCommit  = local.status  === 'fulfilled' ? local.value : null;
+      const [local, remote] = await Promise.allSettled([fetchLocalCommit(), fetchGitHubMainCommit()]);
+      localCommit = local.status === 'fulfilled' ? local.value : null;
       githubCommit = remote.status === 'fulfilled' ? remote.value : null;
     } finally {
       loading = false;
@@ -27,40 +23,47 @@
 
   onMount(load);
 
-  $: normalizedLocal  = normalize(localCommit);
+  $: normalizedLocal = normalize(localCommit);
   $: normalizedRemote = normalize(githubCommit);
 
-  $: state =
-    loading ? 'loading'
-    : normalizedRemote === null ? 'unknown'
-    : (normalizedLocal && normalizedRemote && normalizedLocal === normalizedRemote) ? 'ok'
-    : 'outdated';
+  $: state = loading
+    ? 'loading'
+    : normalizedRemote === null
+      ? 'unknown'
+      : normalizedLocal && normalizedRemote && normalizedLocal === normalizedRemote
+        ? 'ok'
+        : 'outdated';
 
   $: label =
-    state === 'loading'   ? 'Checking…'
-    : state === 'ok'      ? 'Up to date'
-    : state === 'outdated'? 'Update available'
-    :                       'Unknown';
+    state === 'loading'
+      ? 'Checking…'
+      : state === 'ok'
+        ? 'Up to date'
+        : state === 'outdated'
+          ? 'Update available'
+          : 'Unknown';
 
   $: pillClasses =
     state === 'ok'
       ? 'text-success-emphasis bg-success-subtle border border-success-subtle'
       : state === 'outdated'
-      ? 'text-danger-emphasis bg-danger-subtle border border-danger-subtle'
-      : state === 'unknown'
-      ? 'text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle'
-      : 'text-body bg-body-tertiary border';
+        ? 'text-danger-emphasis bg-danger-subtle border border-danger-subtle'
+        : state === 'unknown'
+          ? 'text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle'
+          : 'text-body bg-body-tertiary border';
 
-  function openDetails() { if (state !== 'loading') show = true; }
+  function openDetails() {
+    if (state !== 'loading') show = true;
+  }
 </script>
 
 <!-- Navbar pill (ms-auto pushes right) -->
 <div
-  class={"ms-auto d-inline-flex align-items-center gap-2 px-2 py-1 rounded-pill small shadow-sm " + pillClasses}
+  class={'ms-auto d-inline-flex align-items-center gap-2 px-2 py-1 rounded-pill small shadow-sm ' + pillClasses}
   role="button"
   tabindex="0"
   title="Click for details"
-  aria-label={"Project version status — " + label}
+  aria-label={'Project version status — ' + label}
   style="cursor: pointer;"
   on:click={openDetails}
   on:keyup={(e) => (e.key === 'Enter' || e.key === ' ') && openDetails()}
@@ -78,7 +81,7 @@
   </span>
   <div class="d-flex flex-column">
     <span class="fw-semibold">{label}</span>
-<!--    <span class="text-muted">{hint}</span>-->
+    <!--    <span class="text-muted">{hint}</span>-->
   </div>
 </div>
 
@@ -115,25 +118,18 @@
 
     <!-- How to update -->
     {#if state === 'outdated'}
-    <div class="small">
-      <p class="mb-2 fw-semibold">How to update</p>
-      <ol class="ps-3 mb-2">
-        <li>Stop the StratoCyberLab</li>
-        <li>Run <code class="font-monospace">git pull</code> in the project directory.</li>
-        <li>Start the project again.</li>
-      </ol>
-    </div>
+      <div class="small">
+        <p class="mb-2 fw-semibold">How to update</p>
+        <ol class="ps-3 mb-2">
+          <li>Stop the StratoCyberLab</li>
+          <li>Run <code class="font-monospace">git pull</code> in the project directory.</li>
+          <li>Start the project again.</li>
+        </ol>
+      </div>
     {/if}
   </div>
 
   <svelte:fragment slot="footer">
-    <button type="button" class="btn btn-outline-secondary w-auto" on:click={() => (show = false)}>
-      Close
-    </button>
+    <button type="button" class="btn btn-outline-secondary w-auto" on:click={() => (show = false)}> Close </button>
   </svelte:fragment>
 </Modal>
-
-<style>
-  /* Optional: subtle hover affordance for the pill */
-  .rounded-pill:hover { box-shadow: 0 .5rem 1rem rgba(0,0,0,.05) !important; }
-</style>

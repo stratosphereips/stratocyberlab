@@ -5,7 +5,7 @@
   export let label;
   export let level = 1;
   export let icon = null; // a Heroicons Svelte component (e.g., AcademicCap)
-  export let title = "Click to expand/collapse"
+  export let title = 'Click to expand/collapse';
 
   let buttonClass = { 1: 'btn-lg', 2: '', 3: 'btn-sm' }[level ?? 1];
 
@@ -28,8 +28,12 @@
 </script>
 
 <style>
-  :global(.btn-toggle[aria-expanded='true'] .chev) { transform: rotate(90deg); }
-  .chev { transition: transform .25s ease; }
+  :global(.btn-toggle[aria-expanded='true'] .chev) {
+    transform: rotate(90deg);
+  }
+  .chev {
+    transition: transform 0.25s ease;
+  }
 
   .btn-toggle:hover {
     background-color: var(--bs-gray-200);
@@ -49,7 +53,7 @@
     class="btn {buttonClass} btn-toggle w-100 text-start d-inline-flex align-items-center gap-2 px-2 py-2"
     aria-expanded={expanded ? 'true' : 'false'}
     aria-controls="{id}-panel"
-    title={title}
+    {title}
     on:click={onHeaderClick}
     on:keydown={onHeaderKey}
   >
@@ -61,15 +65,22 @@
 
     <!-- chevron -->
     <svg class="chev" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-      <path fill="none" stroke="rgba(0,0,0,.55)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 14l6-6-6-6" />
+      <path
+        fill="none"
+        stroke="rgba(0,0,0,.55)"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M5 14l6-6-6-6"
+      />
     </svg>
   </div>
 
   {#if expanded}
-  <div id="{id}-panel" aria-labelledby="{id}-header">
-    <ul class="list-unstyled ms-2 my-2">
-      <slot />
-    </ul>
-  </div>
+    <div id="{id}-panel" aria-labelledby="{id}-header">
+      <ul class="list-unstyled ms-2 my-2">
+        <slot />
+      </ul>
+    </div>
   {/if}
 </li>

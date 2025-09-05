@@ -33,8 +33,7 @@
     let preferred = '';
     try {
       preferred = localStorage.getItem(LS_KEY_MODEL) || '';
-    }
-    catch {
+    } catch {
       // intentionally ignored
     }
 
@@ -43,10 +42,9 @@
     if (Object.keys(pulls || {}).length > 0) startPolling();
 
     if (preferred) {
-      await setModel(preferred)
+      await setModel(preferred);
     }
   });
-
 
   function schedulePoll() {
     pollTimer = setTimeout(pollTick, POLL_MS);
@@ -162,10 +160,13 @@
   // ---- model mgmt actions ----
   function fmtBytes(n) {
     if (!n && n !== 0) return '—';
-    const units = ['B','KB','MB','GB','TB'];
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
     let i = 0;
     let v = Number(n);
-    while (v >= 1024 && i < units.length - 1) { v /= 1024; i++; }
+    while (v >= 1024 && i < units.length - 1) {
+      v /= 1024;
+      i++;
+    }
     return `${v.toFixed(1)} ${units[i]}`;
   }
 
@@ -175,7 +176,7 @@
       const r = await fetch('/api/llm/model', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
+        body: JSON.stringify({ name }),
       });
       if (!r.ok) throw new Error(await r.text());
       currentModel = name;
@@ -198,7 +199,7 @@
 
     try {
       const r = await fetch(`/api/llm/models/${encodeURIComponent(name)}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
       if (!r.ok) throw new Error(await r.text());
 
@@ -218,7 +219,7 @@
       const r = await fetch('/api/llm/models/pull', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
+        body: JSON.stringify({ name }),
       });
       if (!r.ok && r.status !== 409) throw new Error(await r.text());
 
@@ -232,18 +233,17 @@
     }
   }
 
-
   $: pullingList = Object.entries(pulls || {}).map(([name, p]) => ({
     name,
     ...p,
-    percent: p && p.total ? Math.min(100, Math.round((p.completed || 0) * 100 / p.total)) : undefined
+    percent: p && p.total ? Math.min(100, Math.round(((p.completed || 0) * 100) / p.total)) : undefined,
   }));
 </script>
 
 <style>
   /* Fixed component height: always 90% of viewport */
   .assistant-wrapper {
-    height: 90vh;        /* FIXED, not max-height */
+    height: 90vh; /* FIXED, not max-height */
     width: 100%;
   }
 
@@ -252,7 +252,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;    /* keep scrollbars scoped to internal regions */
+    overflow: hidden; /* keep scrollbars scoped to internal regions */
   }
 
   /* Header: sticky + internal horizontal scroll bar when needed */
@@ -263,7 +263,7 @@
     background: #fff;
   }
   .card-header {
-    overflow-x: auto;    /* horizontal scrollbar appears here (inside header) */
+    overflow-x: auto; /* horizontal scrollbar appears here (inside header) */
     overflow-y: hidden;
   }
   .header-row {
@@ -278,10 +278,10 @@
   /* Body & chat: make messages the vertical scroll area */
   .card-body {
     flex: 1 1 auto;
-    min-height: 0;       /* critical for nested flex scrolling */
+    min-height: 0; /* critical for nested flex scrolling */
     display: flex;
     flex-direction: column;
-    padding: 0;          /* we’ll pad inner areas instead */
+    padding: 0; /* we’ll pad inner areas instead */
   }
   .chat {
     flex: 1 1 auto;
@@ -292,32 +292,67 @@
   .messages {
     flex: 1 1 auto;
     min-height: 0;
-    overflow-y: auto;    /* vertical scrollbar for long chats */
+    overflow-y: auto; /* vertical scrollbar for long chats */
     padding: 10px;
   }
   .input-area {
-    flex: 0 0 auto;      /* input stays fixed at bottom */
+    flex: 0 0 auto; /* input stays fixed at bottom */
     display: flex;
     padding: 10px;
     background: white;
   }
 
   /* Messages look & feel preserved */
-  .message { margin-bottom: 10px; padding: 10px; border-radius: 5px; }
+  .message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+  }
   .message.user {
-    background: #ffe6e6; color: black; align-self: flex-end; text-align: left;
-    max-width: 92%; padding: 10px; border-radius: 5px; margin-left: auto; width: max-content;
+    background: #ffe6e6;
+    color: black;
+    align-self: flex-end;
+    text-align: left;
+    max-width: 92%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: auto;
+    width: max-content;
   }
   .message.bot {
-    background: #f8f8f8; color: black; align-self: flex-start; text-align: left;
-    max-width: fit-content; padding: 10px; border-radius: 5px; margin-right: auto;
+    background: #f8f8f8;
+    color: black;
+    align-self: flex-start;
+    text-align: left;
+    max-width: fit-content;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: auto;
   }
 
-  .typing-indicator { display: inline-block; font-size: 1.5em; }
-  .typing-indicator span { display: inline-block; animation: blink 1s infinite; }
-  .typing-indicator span:nth-child(2) { animation-delay: 0.3s; }
-  .typing-indicator span:nth-child(3) { animation-delay: 0.6s; }
-  @keyframes blink { 0%,100%{opacity:0;} 50%{opacity:1;} }
+  .typing-indicator {
+    display: inline-block;
+    font-size: 1.5em;
+  }
+  .typing-indicator span {
+    display: inline-block;
+    animation: blink 1s infinite;
+  }
+  .typing-indicator span:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  .typing-indicator span:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
 </style>
 
 <div class="assistant-wrapper mt-1 pt-2 position-relative">
@@ -333,12 +368,10 @@
         </div>
 
         <div class="d-flex gap-2 ms-2">
-          <button class="btn btn-outline-secondary btn-sm" on:click={() => manageModelsOpen = true}>
+          <button class="btn btn-outline-secondary btn-sm" on:click={() => (manageModelsOpen = true)}>
             Manage models
           </button>
-          <button class="btn btn-outline-danger btn-sm" on:click={clearChat}>
-            Reset chat
-          </button>
+          <button class="btn btn-outline-danger btn-sm" on:click={clearChat}> Reset chat </button>
         </div>
       </div>
     </div>
@@ -351,7 +384,13 @@
             <div class="flex-grow-1">
               <div class="small fw-semibold">{p.name} — {p.status}</div>
               {#if p.percent !== undefined}
-                <div class="progress" role="progressbar" aria-valuenow={p.percent} aria-valuemin="0" aria-valuemax="100">
+                <div
+                  class="progress"
+                  role="progressbar"
+                  aria-valuenow={p.percent}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
                   <div class="progress-bar" style={`width:${p.percent}%`}></div>
                 </div>
               {/if}
@@ -405,7 +444,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Manage models</h5>
-            <button type="button" class="btn-close" on:click={() => manageModelsOpen = false}></button>
+            <button type="button" class="btn-close" on:click={() => (manageModelsOpen = false)}></button>
           </div>
           <div class="modal-body">
             <div class="mb-3">
@@ -420,9 +459,9 @@
                 </button>
               </div>
               <div class="form-text">
-                Browse models on <a href="https://ollama.com/search" target="_blank" rel="noopener">ollama.com/search</a>.
-                Before downloading, check the model's size. The model will be downloaded locally to your machine.
-                For a start, we recommend <code>llama3.2:latest</code> with a size 1.9GB.
+                Browse models on <a href="https://ollama.com/search" target="_blank" rel="noopener">ollama.com/search</a
+                >. Before downloading, check the model's size. The model will be downloaded locally to your machine. For
+                a start, we recommend <code>llama3.2:latest</code> with a size 1.9GB.
               </div>
             </div>
 
@@ -441,9 +480,7 @@
                     </div>
                     <div class="d-flex align-items-center gap-2">
                       {#if currentModel === m.name}
-                        <button class="btn btn-sm btn-outline-success" disabled>
-                          Selected
-                        </button>
+                        <button class="btn btn-sm btn-outline-success" disabled> Selected </button>
                       {:else}
                         <button class="btn btn-sm btn-outline-secondary" on:click={() => setModel(m.name)}>
                           Use this
@@ -459,7 +496,7 @@
             {/if}
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" on:click={() => manageModelsOpen = false}>Close</button>
+            <button class="btn btn-secondary" on:click={() => (manageModelsOpen = false)}>Close</button>
           </div>
         </div>
       </div>

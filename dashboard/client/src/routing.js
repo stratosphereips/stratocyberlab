@@ -1,5 +1,5 @@
 import { derived, readable } from 'svelte/store';
-import {campaigns, challenges, classes, loadSingleCampaign} from './stores';
+import { campaigns, challenges, classes, loadSingleCampaign } from './stores';
 
 export const navigate = (path) => {
   location.hash = path;
@@ -39,7 +39,7 @@ export const chosenCampaignStep = derived([campaigns, path], ([campaigns, path])
 
   const [, campaignId, stepId] = match;
 
-  loadSingleCampaign(campaignId).then()
+  loadSingleCampaign(campaignId).then();
   const step = campaigns?.find((camp) => camp.id === campaignId)?.steps?.find((step) => step.id === stepId) ?? null;
   return step === null
     ? null

@@ -11,10 +11,15 @@
   let modalEl;
   let lastFocused;
 
-  function close() { dispatch('close'); }
+  function close() {
+    dispatch('close');
+  }
 
   function handleKeydown(e) {
-    if (e.key === 'Escape' && closeOnEsc) { e.stopPropagation(); close(); }
+    if (e.key === 'Escape' && closeOnEsc) {
+      e.stopPropagation();
+      close();
+    }
   }
 
   function onBackdrop(e) {
@@ -39,10 +44,7 @@
     document.body.style.overflow = '';
   });
 
-  const sizeClass =
-    size === 'sm' ? 'modal-sm' :
-    size === 'lg' ? 'modal-lg' :
-    size === 'xl' ? 'modal-xl' : '';
+  const sizeClass = size === 'sm' ? 'modal-sm' : size === 'lg' ? 'modal-lg' : size === 'xl' ? 'modal-xl' : '';
 </script>
 
 {#if open}
@@ -59,7 +61,7 @@
     on:click={onBackdrop}
     on:keydown={handleKeydown}
   >
-    <div class={"modal-dialog modal-dialog-centered " + sizeClass} role="document">
+    <div class={'modal-dialog modal-dialog-centered ' + sizeClass} role="document">
       <div class="modal-content" bind:this={modalEl}>
         {#if title}
           <div class="modal-header">
@@ -81,8 +83,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  /* Let long strings wrap gracefully inside the modal if needed */
-  .modal-body { overflow-wrap: anywhere; }
-</style>

@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount } from 'svelte';
 
   let snowflakes = [];
   const SNOWFLAKE_COUNT = 100;
@@ -25,14 +25,13 @@
   function updateSnowflakes() {
     snowflakes = snowflakes.map((flake) => {
       let newY = flake.y + flake.speed;
-      let newX =
-        flake.x + Math.sin((flake.y / 100) * Math.PI) * flake.swing * 0.01;
-      let newSpeed = flake.speed
+      let newX = flake.x + Math.sin((flake.y / 100) * Math.PI) * flake.swing * 0.01;
+      let newSpeed = flake.speed;
 
       if (newY > 100 || newX > 100) {
-        newY = 0
-        newX = Math.random() * 100
-        newSpeed = Math.random() * (0.3 - 0.1) + 0.1
+        newY = 0;
+        newX = Math.random() * 100;
+        newSpeed = Math.random() * (0.3 - 0.1) + 0.1;
       }
       // if (newX > 100 ) {
       //
@@ -93,16 +92,11 @@
 
 <div class="snowfall-overlay">
   {#each snowflakes as { x, y, size }}
-    <div
-  class="snowflake"
-  style="transform: translate({x}vw, {y}vh); font-size: {size}px;"
->
-  ❄
-</div>
+    <div class="snowflake" style="transform: translate({x}vw, {y}vh); font-size: {size}px;">❄</div>
 
-<!--    <div-->
-<!--      class="snowflake"-->
-<!--      style="transform: translate({x}vw, {y}vh); width: {size}px; height: {size}px;"-->
-<!--    ></div>-->
+    <!--    <div-->
+    <!--      class="snowflake"-->
+    <!--      style="transform: translate({x}vw, {y}vh); width: {size}px; height: {size}px;"-->
+    <!--    ></div>-->
   {/each}
 </div>
