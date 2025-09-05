@@ -3,9 +3,16 @@
   import ClassDetail from './ClassDetail.svelte';
   import Introduction from './Introduction.svelte';
   import SideNavBar from './SideNavBar.svelte';
-  import { chosenChallenge, chosenClass, chosenCampaignDetail, chosenCampaignStep } from './routing';
+  import {
+    chosenChallenge,
+    chosenClass,
+    chosenCampaignDetail,
+    chosenCampaignStep,
+    chosenTipsAndTricks,
+  } from './routing';
   import CampaignStep from './campaigns/CampaignStep.svelte';
   import CampaignDetail from './campaigns/CampaignDetail.svelte';
+  import TipsAndTricks from './TipsAndTricks.svelte';
 </script>
 
 <style>
@@ -22,6 +29,8 @@
       <CampaignDetail campaign={$chosenCampaignDetail} />
     {:else if $chosenCampaignStep}
       <CampaignStep step={$chosenCampaignStep} />
+    {:else if $chosenTipsAndTricks}
+      <TipsAndTricks />
     {:else}
       <Introduction />
     {/if}

@@ -1,6 +1,7 @@
 <script>
   import VersionStatus from './components/VersionStatus.svelte';
   import { navigate } from './routing';
+  import { Sparkles } from 'svelte-heros';
 
   function handleBrandClick() {
     navigate('');
@@ -20,8 +21,16 @@
         <span class="fw-semibold">StratoCyberLab</span>
       </a>
 
-      <!-- Right: status + (optional) toggle -->
+      <!-- Right: tips + divider + version -->
       <div class="d-inline-flex align-items-center gap-2">
+        <a type="button" class="btn tips-btn d-inline-flex align-items-center gap-2 px-3 py-1" href="#tips-and-tricks">
+          <Sparkles width="18" height="18" aria-hidden="true" />
+          <span>Tips &amp; Tricks</span>
+        </a>
+
+        <!-- slim divider -->
+        <div class="vr opacity-50"></div>
+
         <VersionStatus />
       </div>
     </div>

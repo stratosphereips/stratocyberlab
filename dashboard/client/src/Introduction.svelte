@@ -1,57 +1,49 @@
+<script>
+</script>
+
 <div class="d-flex justify-content-center pt-5">
   <div class="shadow p-3 mb-5 bg-body rounded text-center" style="max-width: 700px;">
-    <h4 class="mb-3">Welcome to the StratoCyberLab dashboard</h4>
+    <h4 class="mb-3">Welcome to the StratoCyberLab!</h4>
 
     <p class="text-secondary mb-4">The project to practice your cyber-security skills</p>
 
-    <p class="text-start mb-3">The dashboard offers:</p>
+    <p class="text-start mb-3">You are currently looking at a Dashboard. The dashboard offers:</p>
 
-    <ul class="text-start mb-4" style="list-style-type: decimal; padding-left: 20px;">
+    <ul class="d-flex flex-column gap-1 text-start mb-4" style="list-style-type: decimal; padding-left: 20px;">
       <li>
-        Built-in terminal to your <b>hackerlab</b> machine
+        A built-in terminal to your <b>hackerlab</b> machine:
         <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
-          <li>Click the button at the bottom of the page to open the terminal</li>
-          <li>
-            Or connect to the hackerlab directly using command <code>ssh root@127.0.0.1 -p 2222</code> and a password
-            <code>ByteThem123</code>
-          </li>
-          <li>
-            In the hackerlab, there is a script that allows you to proxy traffic from the <i>host</i> port 2223 using
-            the command <code>python3 ~/proxy.py TARGET_HOSTNAME TARGET_PORT</code>. This is especially useful for
-            web-based challenges. You can then navigate to
-            <a href="http://localhost:2223" target="_blank" rel="noreferrer">http://localhost:2223</a> in your current
-            browser to access <code>http://TARGET_HOSTNAME:TARGET_PORT</code> as if you were in the hackerlab!
-          </li>
+          <li>Click the button at the bottom of the page to open the terminal.</li>
+          <li>Hackerlab is running locally in your machine as a docker container.</li>
+          <li>Use hackerlab to solve all StratoCyberLab tasks.</li>
         </ul>
       </li>
 
-      <li class="mb-2">
-        Class environments for remote students of <a href="https://cybersecurity.bsy.fel.cvut.cz/"
+      <li>
+        Class environments for students of <a target="_blank" href="https://cybersecurity.bsy.fel.cvut.cz/"
           >Introduction to Security</a
         >
-        class
+        course:
         <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
-          <li>Choose a class in a top left collapse menu and start the services</li>
-          <li>
-            New environments will be released during the course. Please refresh changes using <code>git pull</code> and
-            rebuild containers using <code>docker compose up --build --force-recreate</code>
-          </li>
+          <li>Each class contains materials in a form of shared Google Document and Youtube recording/livestream.</li>
+          <li>Classes have often special environments to practice the techniques from the given class.</li>
+          <li>Start the class environment before each class to have a proper hands-on experience.</li>
         </ul>
       </li>
 
-      <li class="mb-2">
+      <li>
         Standalone hacking challenges in a <b>Capture the Flag</b> form
         <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
           <li>Choose a challenge in the left menu, start it, and solve the tasks!</li>
+          <li>
+            If you want a bigger challenge, try to solve a campaign which is a set of challenges connected with a story.
+          </li>
         </ul>
       </li>
 
-      <li class="mb-2">
-        Optionally chat with the local AI assistant️
-        <ul class="text-start small mb-4" style="list-style-type: disc; padding-left: 20px;">
-          <li>Note that using the chat will download a model (llama3) of size <b>~5GB</b></li>
-        </ul>
-      </li>
+      <li>Optionally ask for help a local AI assistant️ (ollama).</li>
+
+      <li>Navigate to <a href="#tips-and-tricks">/#tips-and-tricks</a> to see more useful tips!</li>
     </ul>
 
     <p class="fw-bold">Happy hacking!</p>

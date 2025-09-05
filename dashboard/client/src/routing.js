@@ -33,6 +33,10 @@ export const chosenClass = derived([classes, path], ([classes, path]) => {
   return classes?.find((cls) => cls.id === match[1]) ?? null;
 });
 
+export const chosenTipsAndTricks = derived([path], ([path]) => {
+  return path.startsWith('#tips-and-tricks');
+});
+
 export const chosenCampaignStep = derived([campaigns, path], ([campaigns, path]) => {
   const match = path.match(/^#campaign\/(.+)\/(.+)$/);
   if (!match) return null;
