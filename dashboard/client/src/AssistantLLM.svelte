@@ -397,7 +397,7 @@
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label">Download a new model (enter tag, e.g. <code>llama3.1</code>)</label>
+              <label class="form-label">Download a new model:</label>
               <div class="input-group">
                 <input class="form-control" placeholder="model[:tag]" bind:value={modelToDownload} />
                 <button class="btn btn-primary" on:click={confirmAndDownload} disabled={fetchingInfo}>
@@ -410,6 +410,7 @@
               <div class="form-text">
                 Browse models on <a href="https://ollama.com/search" target="_blank" rel="noopener">ollama.com/search</a>.
                 Before downloading, check the model's size. The model will be downloaded locally to your machine.
+                For a start, we recommend <code>llama3.2:latest</code> with a size 1.9GB.
               </div>
             </div>
 
