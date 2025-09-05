@@ -140,15 +140,18 @@
     </div>
   </div>
 
-  <!-- Bottom button to open/close terminal -->
   {#if !showSSH}
-    <button class="btn btn-secondary me-auto ms-auto custom-rounded-button" on:click={toggleShowSSH}>
-      {#if !sshInitialised}
-        Open terminal in the lab ↑
-      {:else}
-        Reopen terminal ↑
-      {/if}
-    </button>
+      <div class="position-fixed bottom-0 start-50 translate-middle-x"
+       style="z-index: 1050;">
+      <button class="h-50 btn btn-secondary custom-rounded-button shadow"
+              on:click={toggleShowSSH}>
+        {#if !sshInitialised}
+          Open terminal in the lab ↑
+        {:else}
+          Reopen terminal ↑
+        {/if}
+      </button>
+    </div>
   {/if}
 </div>
 
