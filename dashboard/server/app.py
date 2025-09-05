@@ -87,6 +87,9 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
                 db.insert_campaign_step(camp['id'], page_id=page_id, order=i)
 
     for name in get_dirs(parent_cl_dir):
+        if name.startswith("ignore-"):
+            continue
+
         cl_dir = f"{parent_cl_dir}/{name}"
 
         with open(f"{cl_dir}/meta.json", 'r', encoding='utf8') as f:
