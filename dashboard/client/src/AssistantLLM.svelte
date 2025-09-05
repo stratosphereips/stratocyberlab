@@ -31,7 +31,12 @@
   onMount(async () => {
     // Read the browser selection before touching network state
     let preferred = '';
-    try { preferred = localStorage.getItem(LS_KEY_MODEL) || ''; } catch {}
+    try {
+      preferred = localStorage.getItem(LS_KEY_MODEL) || '';
+    }
+    catch {
+      // intentionally ignored
+    }
 
     await refreshState();
     // Start polling only if initial state shows active pulls
@@ -97,7 +102,9 @@
       const res = await fetch('/api/llm/models');
       const data = await res.json();
       localModels = data.models || [];
-    } catch (e) {}
+    } catch {
+      // intentionally ignored
+    }
   }
 
   async function refreshState() {
@@ -172,7 +179,11 @@
       });
       if (!r.ok) throw new Error(await r.text());
       currentModel = name;
-      try { localStorage.setItem(LS_KEY_MODEL, name); } catch {}
+      try {
+        localStorage.setItem(LS_KEY_MODEL, name);
+      } catch {
+        // intentionally ignored
+      }
     } catch (e) {
       alert(e);
     }
@@ -361,6 +372,7 @@
                 {#if role === 'user'}
                   {content}
                 {:else}
+                  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                   {@html marked.parse(content)}
                 {/if}
               </div>
@@ -397,7 +409,7 @@
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label">Download a new model:</label>
+              <span class="form-label">Download a new model:</span>
               <div class="input-group">
                 <input class="form-control" placeholder="model[:tag]" bind:value={modelToDownload} />
                 <button class="btn btn-primary" on:click={confirmAndDownload} disabled={fetchingInfo}>

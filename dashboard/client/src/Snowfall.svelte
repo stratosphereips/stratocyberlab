@@ -92,7 +92,7 @@
 </style>
 
 <div class="snowfall-overlay">
-  {#each snowflakes as { id, x, y, size }}
+  {#each snowflakes as { x, y, size }}
     <div
   class="snowflake"
   style="transform: translate({x}vw, {y}vh); font-size: {size}px;"

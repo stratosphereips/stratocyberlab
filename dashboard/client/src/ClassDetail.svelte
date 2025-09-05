@@ -92,6 +92,7 @@
 </div>
 
 <p class="pt-3 text-muted">
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html curClass.description}
 </p>
 

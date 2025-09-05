@@ -11,7 +11,7 @@
 
   let expanded = false;
   const collapseStore = storageBackedWritable(`scl.collapse.${id}`, 'false');
-  const unsubscribe = collapseStore.subscribe((value) => (expanded = value === 'true'));
+  collapseStore.subscribe((value) => (expanded = value === 'true'));
 
   // Toggle only if the click didn't come from labelExtra
   function onHeaderClick(e) {

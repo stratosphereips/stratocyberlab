@@ -48,6 +48,7 @@
 {#if open}
   <div class="modal-backdrop fade show"></div>
 
+  <!-- eslint-disable-next-line svelte/valid-compile -->
   <div
     class="modal fade show"
     style="display:block"

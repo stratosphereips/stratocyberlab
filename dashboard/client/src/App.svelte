@@ -130,6 +130,7 @@
     <div style="width: {widthVertical1st}vw">
       <Dashboard />
     </div>
+    <!-- eslint-disable-next-line svelte/valid-compile -->
     <div class="p-0 bg-dark-subtle" on:mousedown={startVerticalResizing} style="width: 3px; cursor: col-resize;"></div>
     <div class="p-0" style="width: {widthVertical2nd}vw">
       {#if $chosenClass && $chosenClass.google_doc_url}
@@ -160,6 +161,7 @@
 <!-- we use it just once in the beginning to keep alive the existing SSH connection  -->
 {#if sshInitialised}
   <div class="row flex-grow-1 mx-0 bg-black {!showSSH ? 'visually-hidden' : ''}" style="height: {sshHeight}vh">
+    <!-- eslint-disable-next-line svelte/valid-compile -->
     <div class="bg-secondary" on:mousedown={startSshResizing} style="height: 5px; cursor: row-resize;"></div>
 
     <div class="mx-1 col px-0" style="height: calc(100% - 5px)">
