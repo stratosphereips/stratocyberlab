@@ -525,40 +525,78 @@ async def all_challenges_up():
 # ======================================
 # ||             LLM                  ||
 # ======================================
-@app.route('/api/llm/is_model_available', methods=['GET'])
-async def llm_is_model_available():
+@app.route('/api/llm/state', methods=['GET'])
+async def llm_state():
     return jsonify({
-        "available": await llm.is_model_available(),
-        "pulling": pull_in_progress
+        "current_model": llm.get_current_model(),
+        "models": await llm.list_local_models(),
+        "pulls": llm.get_pulls_snapshot(),
     })
 
-pull_in_progress = False
+@app.route('/api/llm/models', methods=['GET'])
+async def llm_list_models():
+    return jsonify({"models": await llm.list_local_models()})
 
 
-@app.route('/api/llm/pull_model', methods=['POST'])
+@app.route('/api/llm/models/info', methods=['GET'])
+async def llm_model_info():
+    name = request.args.get('name', '').strip()
+    if not name:
+        return "Missing 'name' query parameter", 400
+    try:
+        info = await llm.model_info(name)
+        return jsonify(info)
+    except Exception as e:
+        return f"Could not get info for '{name}': {e}", 404
+
+
+@app.route('/api/llm/models/pull', methods=['POST'])
 async def llm_pull_model():
-    global pull_in_progress
+    data = await request.get_json()
+    name = (data or {}).get('name', '').strip()
+    if not name:
+        return "Missing 'name' in body", 400
+    # Start or no-op if already pulling
+    await llm.pull_model(name)
+    return "Pull started (or already in progress)", 200
 
-    # poor people synchronization with race conditions
-    if pull_in_progress:
-        return "Model pull is already in progress", 409
-    pull_in_progress = True
+@app.route('/api/llm/pulls', methods=['GET'])
+async def llm_pulls():
+    return jsonify({"pulls": llm.get_pulls_snapshot()})
 
-    async def job():
-        global pull_in_progress
-        await llm.pull_model()
-        pull_in_progress = False
 
-    # Do not wait for the result
-    loop = asyncio.get_event_loop()
-    loop.create_task(job())
+@app.route('/api/llm/models/<path:name>', methods=['DELETE'])
+async def llm_delete_model(name):
+    try:
+        await llm.delete_local_model(name)
+        return "Deleted", 200
+    except Exception as e:
+        return f"Delete failed: {e}", 400
 
-    return "Model pull started in the background", 200
+
+@app.route('/api/llm/model', methods=['GET', 'PUT'])
+async def llm_current_model():
+    if request.method == 'GET':
+        return jsonify({"current_model": llm.get_current_model()})
+    else:
+        data = await request.get_json()
+        name = (data or {}).get('name', '').strip()
+        if not name:
+            return "Missing 'name' in body", 400
+        try:
+            await llm.set_current_model(name)
+            return "OK", 200
+        except Exception as e:
+            return str(e), 400
 
 
 @app.route('/api/llm/chat', methods=['POST'])
 async def llm_chat():
-    return await llm.chat_with_llm(await request.json)
+    try:
+        body = await request.get_json()
+        return await llm.chat_with_llm(body)
+    except Exception as e:
+        return str(e), 400
 
 
 if __name__ == '__main__':
