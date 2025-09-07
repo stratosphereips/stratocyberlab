@@ -20,7 +20,7 @@
 
   let widthVertical1st = 66;
   let isVerticalResizing = false;
-  $: widthVertical2nd = 99.5 - widthVertical1st; // 99.5 is tmp hack to fit in the vertical dragging line
+  $: widthVertical2nd = 99 - widthVertical1st; // 99 is tmp hack to fit in the vertical dragging line
 
   onMount(async () => {
     fetchChallenges().then((loadedChallenges) => ($challenges = loadedChallenges));
