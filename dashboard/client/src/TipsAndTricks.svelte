@@ -41,11 +41,7 @@
 
       <li class="mb-2">
         Top right corner shows if you are running the latest version of StratoCyberLab. Latest version (main branch)
-        from Github is fetched upon every website refresh. When you pull new changes from Github, you need to rebuild
-        the containers to see the changes:
-        <ul>
-          <li>Use command: <code>docker compose up --build</code></li>
-        </ul>
+        from Github is fetched upon every website refresh. Follow the instructions in the pop-up to update to latest version.
       </li>
     </ul>
 

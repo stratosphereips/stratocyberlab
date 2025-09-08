@@ -123,6 +123,7 @@
         <ol class="ps-3 mb-2">
           <li>Stop the StratoCyberLab</li>
           <li>Run <code class="font-monospace">git pull</code> in the project directory.</li>
+          <li>Restart the project with rebuilding the images:<br/><code>docker compose up --build --force-recreate</code></li>
           <li>Start the project again.</li>
         </ol>
       </div>
