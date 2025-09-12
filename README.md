@@ -7,7 +7,7 @@
 
 StratoCyberLab (SCL) is a local cyber range to test and practice your offensive and defensive cybersecurity skills. It was developed by the [Stratosphere Laboratory](https://www.stratosphereips.org/) with two primary goals:
 
-* To allow anyone to run local capture-the-flag challenges (_think Hack The Box, but local on your computer!_).
+* To allow anyone to run local capture-the-flag challenges (_think HackTheBox, but local on your computer!_).
 * To set up local security environments for students of the [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) to follow weekly classes and practice hacking.
 
 <br>
