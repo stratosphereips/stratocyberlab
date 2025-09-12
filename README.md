@@ -5,10 +5,10 @@
 </p>
 
 
-StratoCyberLab is an offline security cyber range to test your knowledge and capabilities on cybersecurity. It was developed by the [Stratosphere Laboratory](https://www.stratosphereips.org/) with two primary goals:
+StratoCyberLab (SCL) is a local cyber range to test and practice your offensive and defensive cybersecurity skills. It was developed by the [Stratosphere Laboratory](https://www.stratosphereips.org/) with two primary goals:
 
-* To setup local-only security environments for remote students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) to follow weekly classes.
-* To allow anyone to run local-only realistic cyber range to practice attacking & defending skills in the form of challenges (_think HackTheBox but local in your computer!_)
+* To allow anyone to run local capture the flag challenges (_think HackTheBox but local in your computer!_)
+* To setup local security environments for students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) to follow weekly classes and practice hacking.
 
 <br>
 
@@ -19,14 +19,14 @@ StratoCyberLab is an offline security cyber range to test your knowledge and cap
 [See a demo video on Youtube!](https://www.youtube.com/watch?v=dkNBveT3Sqg) 
 
 ## Features
-* Local-only. No internet is required after download. No cloud. No tracking. No login. No data collection.
-* Many cybersecurity exercises in a form of 'challenges'.
-* Predefined environments of networks and services for remote students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/)
+* Local-only. No cloud. No tracking. No login. No data collection.
+* Many cybersecurity exercises in a form of CTF 'challenges'.
+* Predefined environments of networks and services for students of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/)
 * The lab runs using docker containers on a shared virtual network(s)
 * A container is created for the user to start from. You can install any tool you want without modifying your own host computer.
 * A web interface to manage the challenges and play.
 * All the challenges can be played from the web interface using the built-in WebSSH terminal.
-* AI-assisted. The web interface has a local LLM (using _ollama_) to assist in your hacking. You can change the model used.
+* AI-assisted. The web interface has a local LLM chat (using _ollama_) to assist in your hacking. You can choose any ollama model.
 
 ## Requirements
 
@@ -34,48 +34,36 @@ StratoCyberLab is an offline security cyber range to test your knowledge and cap
 Resource consumption depends a lot on the user actions. We do not recommend starting all challenges at once
 as this may require a lot compute by generating a lot of network traffic and starting many services.
 
-However, we estimate the minium requirements to be **3GB of disk** space and **2GB of spare RAM**. (Note that downloading the LLM model will require extra 5GB of disk space)   
+However, we estimate the minium requirements to be **3GB of disk** space and **2GB of spare RAM**. (Note that downloading the LLM model will require extra disk space depending on the model)   
 
 ### Software
-The only requirement to run StratoCyberLab is to have `docker (v>20.10)` installed.
+The only requirement to run SCL is to have `docker (v>20.10)` installed.
 
 ## How to start
 
-
-
-To start the lab do:
+1.  To start the lab do:
 ```bash
 git clone https://github.com/stratosphereips/stratocyberlab.git
 cd stratocyberlab
 docker compose up
 ```
 
-This uses the already prepared [docker-compose.yml](./docker-compose.yml) file.
+This uses the already prepared [docker-compose.yml](./docker-compose.yml) file to start 3 services:
+* hackerlab - a container with SSH and core utilities for hacking
+* dashboard - a web interface to start/stop challenges, submit flags, control ollama, etc.
+* ollama - a container that optionally handles the local LLM models
 
+2. After the lab bootstraps, navigate in your browser to [http://127.0.0.1/](http://127.0.0.1/) to access a lab's dashboard. 
 
-After the lab bootstraps, navigate in your browser to [http://127.0.0.1/](http://127.0.0.1/) to access a lab's dashboard. 
+3. Read the welcome message and solve a hello world challenge to verify your setup is working correctly.
 
-The dashboard contains:
-* Predefined environments for each weekly class of [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/) for remote students
-* List of standalone hacking challenges 
-    * Challenges are divided by difficulty into 3 categories `EASY`, `MEDIUM`, `HARD`
-    * Each challenge has multiple tasks. 
-    * Tasks are solved by finding a flag (usually in a format `BSY{...}`) and submitting the flag in the dashboard.
-    * Each challenge must be individually started from the dashboard before playing
-* Chat with a local AI assistant using `llama3` model
-    * Usage and downloading of the model is optional and can be initiated from the dashboard. By default no model is downloaded.
-* Built-in SSH web shell to interact with deployed services in the lab
-    * The SSH connection is made to a `hackerlab` container. 
-    * If preferred, you can connect directly using SSH from your terminal to the `hackerlab` container with command
-`ssh root@127.0.0.1 -p 2222` and password `ByteThem123`
-
+4. Hack the world!
 
 ### Troubleshooting
 
 **Q: I pulled new updates but the lab is running the old version.**
 
-**A:** Depending on the changes, sometimes it's required to force docker to re-build the containers. Please run the lab using a command `docker compose up --build` 
-
+**A:** Depending on the changes, sometimes it's required to force docker to re-build and/or restart the containers. Please run the lab using a command `docker compose up --build --force-recreate`.  
 
 **Q: I see _REMOTE HOST IDENTIFICATION_ warning when trying to SSH into the hackerlab container**
 
@@ -95,11 +83,6 @@ We appreciate all **PRs** with **new challenges** or bug fixes.
 
 Please refer to a separate Development documentation at [./docs/development.md](./docs/development.md).
 
-
-## Documentation on adaptations
-
-If you want to use a new LLM model follow the instructions [here](https://github.com/stratosphereips/stratocyberlab/blob/main/docs/add-new-llm-model.md)
-
 ## Connection Architecture
 
-The diagram of connectivity and IP address of all containers is [./docs/connection_architecture.md](./docs/connection_architecture.md).
+Diagram WIP
