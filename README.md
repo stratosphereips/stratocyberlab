@@ -59,8 +59,7 @@ This uses the already prepared [docker-compose.yml](./docker-compose.yml) file t
 ### Troubleshooting
 
 **Q: I pulled new updates but the lab is running the old version.**  
-**A:** Depending on the changes, sometimes it’s required to force Docker to rebuild and/or restart the containers. Please run the lab using:  
-`docker compose up --build --force-recreate`.  
+**A:** Depending on the changes, sometimes it’s required to force Docker to rebuild and/or restart the containers. Re-run the lab using: `docker compose up --build --force-recreate`.  
 
 **Q: I see a _REMOTE HOST IDENTIFICATION_ warning when trying to SSH into the `hackerlab` container.**  
 **A:** The ID of the `hackerlab` container is regenerated when the container is recreated. Add `-o UserKnownHostsFile=/dev/null` to your SSH command to fix the issue.
