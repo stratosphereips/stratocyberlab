@@ -21,7 +21,7 @@ StratoCyberLab (SCL) is a local cyber range to test and practice your offensive 
 * 🧩 Many cybersecurity exercises in the form of CTF challenges.
 * 🎓 Predefined network and service environments for students of the [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/).
 * 🐳 The lab runs using Docker containers on shared virtual network(s).
-* 🛠️ A container is created for the user your attacking machine. Install any tools you want without modifying your host computer.
+* 🛠️ A container is created for you as your attacking machine. Install any tools you want without modifying your host computer.
 * 🌐 A web interface to manage challenges and play.
 * 💻 Solve all challenges from the web interface using the built-in WebSSH terminal.
 * 🤖 AI-assisted: the web interface includes a local LLM chat (using _Ollama_) to assist your hacking. You can choose any Ollama model.
