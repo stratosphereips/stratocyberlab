@@ -41,7 +41,7 @@ services:
       start_period: 10s
 
   ollama:
-    image: ollama/ollama
+    image: ollama/ollama:0.11.10
     container_name: scl-ollama
     volumes:
       - ./ollama:/root/.ollama
