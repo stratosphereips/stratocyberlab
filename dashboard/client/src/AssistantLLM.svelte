@@ -461,7 +461,7 @@
               <div class="form-text">
                 Browse models on <a href="https://ollama.com/search" target="_blank" rel="noopener">ollama.com/search</a
                 >. Before downloading, check the model's size. The model will be downloaded locally to your machine. For
-                a start, we recommend <code>llama3.2:latest</code> with a size 1.9GB.
+                a start, we recommend <code>qwen3:1.7b</code> with a size 1.3GB.
               </div>
             </div>
 
