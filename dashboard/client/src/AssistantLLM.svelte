@@ -18,6 +18,7 @@
   let manageModelsOpen = false;
   let modelToDownload = '';
   let fetchingInfo = false;
+  let expandedThoughts = {};
 
   const POLL_MS = 1200;
 
@@ -148,6 +149,7 @@
 
   function clearChat() {
     chatHistory.set([]);
+    expandedThoughts = {}
   }
 
   function handleKeyPress(event) {
@@ -238,6 +240,28 @@
     ...p,
     percent: p && p.total ? Math.min(100, Math.round(((p.completed || 0) * 100) / p.total)) : undefined,
   }));
+
+  function parseThinking(content) {
+    const thinkRegex = /<think>([\s\S]*?)<\/think>/g;
+    let match;
+    const thoughts = [];
+    let processedContent = content;
+
+    while ((match = thinkRegex.exec(content)) !== null) {
+      thoughts.push(match[1].trim());
+      processedContent = processedContent.replace(match[0], '');
+    }
+
+    return {
+      thoughts,
+      content: processedContent.trim()
+    };
+  }
+
+  function toggleThoughts(messageIndex) {
+    expandedThoughts[messageIndex] = !expandedThoughts[messageIndex];
+    expandedThoughts = { ...expandedThoughts };
+  }
 </script>
 
 <style>
@@ -353,6 +377,31 @@
       opacity: 1;
     }
   }
+
+  .thoughts-toggle {
+    background: #f5f5f5;
+    color: #666;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background-color 0.2s;
+  }
+  .thoughts-toggle:hover {
+    background: #e9e9e9;
+  }
+  .thoughts-content {
+    background: #f9f9f9;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-style: italic;
+    color: #555;
+    font-size: 0.9em;
+    border-left: 3px solid #ddd;
+  }
 </style>
 
 <div class="assistant-wrapper mt-1 pt-2 position-relative">
@@ -406,13 +455,29 @@
       {:else}
         <div class="chat">
           <div class="messages">
-            {#each $chatHistory as { role, content }}
+            {#each $chatHistory as { role, content }, index}
               <div class="message {role === 'user' ? 'user' : 'bot'}">
                 {#if role === 'user'}
                   {content}
                 {:else}
-                  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                  {@html marked.parse(content)}
+                  {@const parsed = parseThinking(content)}
+                  {#if parsed.thoughts.length > 0}
+                    <button
+                      class="thoughts-toggle"
+                      on:click={() => toggleThoughts(index)}
+                    >
+                      💭 Thoughts {expandedThoughts[index] ? '▼' : '▶'}
+                    </button>
+                    {#if expandedThoughts[index]}
+                      {#each parsed.thoughts as thought}
+                        <div class="thoughts-content">{thought}</div>
+                      {/each}
+                    {/if}
+                  {/if}
+                  {#if parsed.content}
+                    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+                    {@html marked.parse(parsed.content)}
+                  {/if}
                 {/if}
               </div>
             {/each}
