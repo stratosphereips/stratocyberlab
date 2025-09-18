@@ -125,6 +125,7 @@
           <li>Run <code class="font-monospace">git pull</code> in the project directory.</li>
           <li>Restart the project with rebuilding the images:<br/><code>docker compose up --build --force-recreate</code></li>
           <li>Start the project again.</li>
+          <li>If the issue persists, hard refresh the page to reload also cached assets:<code>CTRL+SHIFT+R</code></li>
         </ol>
       </div>
     {/if}
