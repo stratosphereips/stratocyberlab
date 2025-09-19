@@ -115,6 +115,7 @@ app.secret_key = 'does not matter since this is all local'
 
 @app.before_serving
 async def startup():
+    init()
     # escaping backslashes makes it ugly here in editor but pretty in terminal
     banner = """
  ____  _             _         ____      _               _          _     
@@ -603,5 +604,6 @@ async def llm_chat():
 
 
 if __name__ == '__main__':
+    # Only for debug running, in docker-compose we use hypercorn
     init()
     app.run(debug=True, host=getenv('HOST') or '0.0.0.0', port=getenv('PORT') or 80)

@@ -23,7 +23,10 @@ RUN pip install -r requirements.txt --user
 FROM python:3.12-slim
 
 # Install Docker client
-RUN apt-get update && apt-get install -y docker.io docker-compose
+RUN apt-get update \
+ && apt-get install -y docker.io docker-compose curl \
+ && rm -rf /var/lib/apt/lists/*
+
 
 ARG APP=/var/opt/app/
 WORKDIR $APP
@@ -37,4 +40,4 @@ COPY --from=build-svelte /app/public $APP/public
 COPY dashboard/server/*.py $APP/
 
 # exec is important to receive sigterm and perform graceful shutdown when container is being terminated
-CMD ["bash", "-c", "python ws_ssh.py & exec python app.py"]
+CMD ["bash", "-c", "python ws_ssh.py & exec python -m hypercorn app:app --bind 0.0.0.0:80 --keep-alive 120 --graceful-timeout 120 --access-log - --error-log -"]

@@ -5,3 +5,4 @@ eventlet
 paramiko
 ollama==0.3.3
 python-dotenv
+hypercorn
