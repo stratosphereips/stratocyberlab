@@ -65,7 +65,7 @@
 </style>
 
 <!-- keep first in layout so there’s no gap on the left; no transition => instant toggle -->
-<div class="d-flex gap-0 h-100">
+<div class="d-flex gap-0">
   {#if visible}
     <aside class="sidebar bg-light border-end border-1 rounded-0 shadow-sm d-flex flex-column h-100 flex-grow-1">
       <div class="p-3">

@@ -149,7 +149,7 @@
 
   function clearChat() {
     chatHistory.set([]);
-    expandedThoughts = {}
+    expandedThoughts = {};
   }
 
   function handleKeyPress(event) {
@@ -254,7 +254,7 @@
 
     return {
       thoughts,
-      content: processedContent.trim()
+      content: processedContent.trim(),
     };
   }
 
@@ -265,95 +265,6 @@
 </script>
 
 <style>
-  /* Fixed component height: always 90% of viewport */
-  .assistant-wrapper {
-    height: 90vh; /* FIXED, not max-height */
-    width: 100%;
-  }
-
-  /* Card layout: column; avoid clipping internal scrollbars */
-  .card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* keep scrollbars scoped to internal regions */
-  }
-
-  /* Header: sticky + internal horizontal scroll bar when needed */
-  .sticky-header {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background: #fff;
-  }
-  .card-header {
-    overflow-x: auto; /* horizontal scrollbar appears here (inside header) */
-    overflow-y: hidden;
-  }
-  .header-row {
-    min-width: max-content; /* allows header content to be wider than card */
-  }
-
-  /* Pull area (optional) should not break flex sizing */
-  .pulls {
-    flex: 0 0 auto;
-  }
-
-  /* Body & chat: make messages the vertical scroll area */
-  .card-body {
-    flex: 1 1 auto;
-    min-height: 0; /* critical for nested flex scrolling */
-    display: flex;
-    flex-direction: column;
-    padding: 0; /* we’ll pad inner areas instead */
-  }
-  .chat {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .messages {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto; /* vertical scrollbar for long chats */
-    padding: 10px;
-  }
-  .input-area {
-    flex: 0 0 auto; /* input stays fixed at bottom */
-    display: flex;
-    padding: 10px;
-    background: white;
-  }
-
-  /* Messages look & feel preserved */
-  .message {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  .message.user {
-    background: #ffe6e6;
-    color: black;
-    align-self: flex-end;
-    text-align: left;
-    max-width: 92%;
-    padding: 10px;
-    border-radius: 5px;
-    margin-left: auto;
-    width: max-content;
-  }
-  .message.bot {
-    background: #f8f8f8;
-    color: black;
-    align-self: flex-start;
-    text-align: left;
-    max-width: fit-content;
-    padding: 10px;
-    border-radius: 5px;
-    margin-right: auto;
-  }
-
   .typing-indicator {
     display: inline-block;
     font-size: 1.5em;
@@ -378,38 +289,17 @@
     }
   }
 
-  .thoughts-toggle {
-    background: #f5f5f5;
-    color: #666;
-    border: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    cursor: pointer;
-    margin-bottom: 8px;
-    transition: background-color 0.2s;
-  }
-  .thoughts-toggle:hover {
-    background: #e9e9e9;
-  }
-  .thoughts-content {
-    background: #f9f9f9;
-    padding: 8px 12px;
-    border-radius: 4px;
-    margin-bottom: 8px;
-    font-style: italic;
-    color: #555;
-    font-size: 0.9em;
-    border-left: 3px solid #ddd;
+  .message-bubble {
+    max-width: 92%;
   }
 </style>
 
-<div class="assistant-wrapper mt-1 pt-2 position-relative">
-  <div class="card shadow-sm">
+<div class="h-100">
+  <div class="card shadow-sm h-100 d-flex flex-column overflow-hidden" style="border-radius: 0">
     <!-- Header (h-scroll lives inside this element) -->
-    <div class="card-header sticky-header">
-      <div class="header-row d-flex flex-nowrap align-items-center justify-content-between">
-        <div>
+    <div class="card-header flex-shrink-0 sticky-top bg-white overflow-auto">
+      <div class="d-flex flex-nowrap align-items-center justify-content-between">
+        <div class="text-nowrap">
           <div class="h5 mb-0">AI Assistant</div>
           <small class="text-muted">
             Model:&nbsp;{#if checking}loading…{:else}{currentModel || '—'}{/if}
@@ -426,7 +316,7 @@
     </div>
 
     {#if pullingList.length}
-      <div class="pulls px-3 pt-2">
+      <div class="px-3 pt-2">
         {#each pullingList as p}
           <div class="d-flex align-items-center gap-2 mb-2">
             <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
@@ -449,49 +339,54 @@
       </div>
     {/if}
 
-    <div class="card-body">
+    <div class="card-body d-flex flex-column p-0 overflow-y-auto">
       {#if checking}
         <div class="d-flex align-items-center justify-content-center py-4">Loading…</div>
       {:else}
-        <div class="chat">
-          <div class="messages">
+        <div class="d-flex flex-column" style="flex: 1">
+          <div class="flex-grow-1 overflow-auto p-3">
             {#each $chatHistory as { role, content }, index}
-              <div class="message {role === 'user' ? 'user' : 'bot'}">
-                {#if role === 'user'}
-                  {content}
-                {:else}
-                  {@const parsed = parseThinking(content)}
-                  {#if parsed.thoughts.length > 0}
-                    <button
-                      class="thoughts-toggle"
-                      on:click={() => toggleThoughts(index)}
-                    >
-                      💭 Thoughts {expandedThoughts[index] ? '▼' : '▶'}
-                    </button>
-                    {#if expandedThoughts[index]}
-                      {#each parsed.thoughts as thought}
-                        <div class="thoughts-content">{thought}</div>
-                      {/each}
+              {#if role === 'user'}
+                <div class="mb-2 d-flex justify-content-end">
+                  <div class="message-bubble p-2 rounded-2 bg-danger-subtle text-body text-start">
+                    {content}
+                  </div>
+                </div>
+              {:else}
+                {@const parsed = parseThinking(content)}
+                <div class="mb-2 d-flex justify-content-start">
+                  <div class="message-bubble p-2 rounded-2 bg-light text-body text-start">
+                    {#if parsed.thoughts.length > 0}
+                      <button class="btn btn-sm btn-light mb-2" on:click={() => toggleThoughts(index)}>
+                        💭 Thoughts {expandedThoughts[index] ? '▼' : '▶'}
+                      </button>
+                      {#if expandedThoughts[index]}
+                        {#each parsed.thoughts as thought}
+                          <div
+                            class="small fst-italic text-secondary border-start ps-3 bg-light-subtle rounded-2 py-2 mb-2"
+                          >
+                            {thought}
+                          </div>
+                        {/each}
+                      {/if}
                     {/if}
-                  {/if}
-                  {#if parsed.content}
-                    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                    {@html marked.parse(parsed.content)}
-                  {/if}
-                {/if}
-              </div>
+                    {#if parsed.content}
+                      <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+                      {@html marked.parse(parsed.content)}
+                    {/if}
+                  </div>
+                </div>
+              {/if}
             {/each}
 
             {#if waitingForReply}
-              <div class="ms-3 typing-indicator">
-                <span>.</span><span>.</span><span>.</span>
-              </div>
+              <div class="ms-3 typing-indicator"><span>.</span><span>.</span><span>.</span></div>
             {/if}
           </div>
 
-          <div class="input-area input-group">
+          <div class="input-group p-2 border-top bg-white">
             <textarea
-              class="bg-light form-control"
+              class="form-control bg-light"
               bind:value={newMessage}
               placeholder="Type a message and hit enter"
               on:keypress={handleKeyPress}
@@ -504,7 +399,8 @@
 
   <!-- Manage models modal -->
   {#if manageModelsOpen}
-    <div class="modal d-block" tabindex="-1" style="background: rgba(0,0,0,.4);">
+    <div class="modal-backdrop show"></div>
+    <div class="modal d-block" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">

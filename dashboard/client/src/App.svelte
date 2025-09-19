@@ -18,9 +18,10 @@
   let isSshResizing = false;
   $: dashboardHeight = showSSH ? 100 - sshHeight : 100;
 
-  let widthVertical1st = 66;
+  // splitRatio variable in [0.3, 0.9] range
+  let splitRatio = 0.6; // 66% left panel by default
   let isVerticalResizing = false;
-  $: widthVertical2nd = 99 - widthVertical1st; // 99 is tmp hack to fit in the vertical dragging line
+  let splitWrap; // container ref to compute local positions
 
   onMount(async () => {
     fetchChallenges().then((loadedChallenges) => ($challenges = loadedChallenges));
@@ -67,19 +68,22 @@
 
   function startVerticalResizing() {
     isVerticalResizing = true;
+    document.body.classList.add('resizing-col');
   }
   function stopVerticalResizing() {
+    if (!isVerticalResizing) return;
     isVerticalResizing = false;
+    document.body.classList.remove('resizing-col');
   }
   function resizeVertical(e) {
-    if (!isVerticalResizing) {
-      return;
-    }
-    const totalWidth = window.innerWidth;
-    const newWidth = (e.clientX / totalWidth) * 100;
-    if (newWidth >= 30 && newWidth <= 90) {
-      widthVertical1st = newWidth;
-    }
+    if (!isVerticalResizing || !splitWrap) return;
+    const rect = splitWrap.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const ratio = x / rect.width;
+
+    // clamp between 30% and (100% - handle guard). We don’t subtract the draggable handle,
+    // because the handle is its own flex item and layout handles the remainder.
+    splitRatio = Math.min(0.9, Math.max(0.3, ratio));
   }
 
   let isSnowFalling = snowFlakesEasterEggFeatureFlag;
@@ -105,6 +109,42 @@
   .custom-rounded-button {
     border-radius: 20px 20px 0 0;
   }
+
+  /* Prevent accidental text selection and show col-resize globally while dragging */
+  /* "Global" is a hack otherwise compiler does not include the class in final bundle as it thinks it's not used */
+  :global(body.resizing-col) {
+    cursor: col-resize;
+    user-select: none;
+  }
+
+  /* Split layout */
+  .split-wrap {
+    display: flex;
+    flex-wrap: nowrap; /* critical: never wrap */
+    width: 100%;
+    height: 100%;
+    min-width: 0; /* allow shrinking inside */
+    overflow: hidden; /* keep everything in viewport */
+    box-sizing: border-box;
+    gap: 0; /* no gaps so 3px handle is exact */
+  }
+
+  .split-left {
+    flex: 0 0 var(--left);
+    max-width: var(--left); /* ensure it never exceeds intended width */
+    min-width: 0; /* content won’t force overflow */
+  }
+
+  .split-handle {
+    flex: 0 0 3px;
+    width: 3px;
+    cursor: col-resize;
+  }
+
+  .split-right {
+    flex: 1 1 auto; /* take the remaining width exactly */
+    min-width: 0; /* allow content to shrink */
+  }
 </style>
 
 <LoadingOverlay />
@@ -122,13 +162,13 @@
   {/if}
 
   <!-- Main dashboard content -->
-  <div class="d-flex row flex-grow-1 h-100 w-100">
-    <div style="width: {widthVertical1st}vw">
+  <div class="split-wrap flex-grow-1" bind:this={splitWrap} style="--left: {Math.round(splitRatio * 10000) / 100}%">
+    <div class="split-left overflow-y-auto">
       <Dashboard />
     </div>
     <!-- eslint-disable-next-line svelte/valid-compile -->
-    <div class="p-0 bg-dark-subtle" on:mousedown={startVerticalResizing} style="width: 3px; cursor: col-resize;"></div>
-    <div style="width: {widthVertical2nd}vw">
+    <div class="split-handle bg-dark-subtle" on:mousedown={startVerticalResizing}></div>
+    <div class="split-right overflow-y-auto">
       {#if $chosenClass && $chosenClass.google_doc_url}
         <div class="p-0 w-100 h-100">
           <ClassDoc docUrl={$chosenClass.google_doc_url} />
