@@ -41,7 +41,8 @@
 
       <li class="mb-2">
         Top right corner shows if you are running the latest version of StratoCyberLab. Latest version (main branch)
-        from Github is fetched upon every website refresh. Follow the instructions in the pop-up to update to latest version.
+        from Github is fetched upon every website refresh. Follow the instructions in the pop-up to update to latest
+        version.
       </li>
     </ul>
 
