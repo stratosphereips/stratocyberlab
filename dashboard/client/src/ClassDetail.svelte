@@ -30,7 +30,7 @@
   }
 
   function isClassLiveNow() {
-    // Class happens every Thursday from 14:30 CEST until end of January 2025 (kept as in your snippet)
+    // Class happens every Thursday from 14:30 CEST until end of January 2025
     const now = new Date();
     const february2026 = new Date('2026-02-01T00:00:00Z');
     if (now > february2026) return false;
