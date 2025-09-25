@@ -108,7 +108,7 @@
       --min-w: {minWidth}px;
       --min-h: {minHeight}px;">
     <iframe
-      src="https://www.youtube.com/embed/TOg_2JgwmG4?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh"
+      src="https://www.youtube.com/embed/Tx2pQLtQW6c?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh"
       title="BSY class Live Stream"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerpolicy="strict-origin-when-cross-origin"
