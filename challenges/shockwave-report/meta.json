@@ -3,6 +3,7 @@
     "id": "shockwave-report",
     "difficulty": "medium",
     "description": "Monitoring system resources is important",
+    "tags": ["Covered in Class 0x03"],
     "tasks": [
       {
         "id": "task1",

@@ -3,6 +3,7 @@
     "id": "intrusion",
     "difficulty": "easy",
     "description": "There was a security incident in a server that you administrate!!! IP of the server is 172.20.0.41. You usually log in using credentials \"root:i_am_administrator\"",
+    "tags": ["Covered in Class 0x04"],
     "tasks": [
       { 
         "id": "task1",

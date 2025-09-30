@@ -3,6 +3,7 @@
     "id": "cybernet",
     "difficulty": "medium",
     "description": "",
+    "tags": ["Covered in Class 0x11"],
     "tasks": [
       { 
         "id": "task1",

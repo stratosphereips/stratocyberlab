@@ -3,6 +3,7 @@
     "id": "what-is-that-noise-id",
     "difficulty": "medium",
     "description": "Somebody is trying to tell you something",
+    "tags": ["Covered in Class 0x02"],
     "tasks": [
       { 
         "id": "task1",

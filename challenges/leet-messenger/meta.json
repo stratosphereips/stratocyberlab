@@ -3,6 +3,7 @@
     "id": "leet_messenger_id",
     "difficulty": "hard",
     "description": "",
+    "tags": ["Covered in Class 0x09"],
     "tasks": [
       { 
         "id": "task1",

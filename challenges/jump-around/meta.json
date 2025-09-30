@@ -3,6 +3,7 @@
     "id": "jump-around",
     "difficulty": "hard",
     "description": "",
+    "tags": ["Covered in Class 0x06"],
     "tasks": [
       {
         "id": "task1",

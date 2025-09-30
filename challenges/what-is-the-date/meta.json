@@ -3,6 +3,7 @@
     "id": "what_is_the_date",
     "difficulty": "hard",
     "description": "",
+    "tags": ["Covered in Class 0x12"],
     "tasks": [
       { 
         "id": "task1",
