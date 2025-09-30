@@ -74,7 +74,7 @@
   }
 </style>
 
-<div class="ms-2 d-flex justify-content-between align-items-center">
+<div class="d-flex justify-content-between align-items-center">
   <div>
     <h4 class="d-inline">{challenge.name}</h4>
   </div>
