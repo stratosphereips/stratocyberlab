@@ -77,6 +77,15 @@
 <div class="d-flex justify-content-between align-items-center">
   <div>
     <h4 class="d-inline">{challenge.name}</h4>
+    <div class="d-flex gap-1">
+    {#each challenge.tags as tag}
+    <div class="mt-1">
+      <span class="badge rounded-pill text-bg-secondary" >
+        {tag}
+      </span>
+    </div>
+    {/each}
+    </div>
   </div>
 </div>
 <div class="pt-3 text-muted">

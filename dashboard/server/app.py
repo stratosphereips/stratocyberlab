@@ -48,7 +48,8 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
             ch = json.load(f)
 
         ch_id, ch_name, ch_diff, ch_desc = ch["id"], ch["name"], ch["difficulty"], ch["description"]
-        db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff, ch_dir)
+        ch_tags = ch.get("tags", [])
+        db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff, ch_dir, ch_tags)
 
         for i, task in enumerate(ch["tasks"]):
             t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
@@ -70,9 +71,10 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
                 chall_dir = f'{camp_dir}/{chall_id}'
                 with open(f"{chall_dir}/meta.json", 'r', encoding='utf8') as f:
                     chall = json.load(f)
+                ch_tags = chall.get("tags", [])
 
                 db.insert_challenge_data(chall['id'], chall['name'], chall['description'],
-                                         chall['difficulty'], chall_dir, camp['id'])
+                                         chall['difficulty'], chall_dir, ch_tags, camp['id'])
 
                 db.insert_campaign_step(camp['id'], challenge_id=chall['id'], order=i)
 
@@ -388,8 +390,8 @@ async def challenges_get():
     challenges = []
     challenges_map = {}
     for t in tasks:
-        ch_id, ch_name, ch_diff, ch_desc = t["challenge_id"], t[
-            "challenge_name"], t["difficulty"], t["challenge_description"]
+        ch_id, ch_name, ch_diff, ch_desc, ch_tags = t["challenge_id"], t[
+            "challenge_name"], t["difficulty"], t["challenge_description"], t["challenge_tags"]
         t_id, t_name, t_desc, t_flag, solved = t["task_id"], t[
             "task_name"], t["task_description"], t["flag"], t["solved"]
 
@@ -401,6 +403,7 @@ async def challenges_get():
                 "difficulty": ch_diff,
                 "description": ch_desc,
                 "tasks": [],
+                "tags": ch_tags,
             }
             challenges_map[ch_id] = ch
             challenges.append(ch)

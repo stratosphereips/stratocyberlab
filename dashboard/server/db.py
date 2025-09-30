@@ -1,4 +1,5 @@
 import sqlite3
+import json
 from typing import List, Dict
 
 DATABASE = 'db.sqlite3'
@@ -41,6 +42,7 @@ def init_db_tables():
             challenge_description TEXT NOT NULL,
             difficulty TEXT NOT NULL,
             challenge_dir TEXT NOT NULL,
+            tags TEXT NOT NULL, -- json encoded list of strings because sqlite does not support arrays
             campaign_id REFERENCES campaigns(campaign_id),
             PRIMARY KEY (challenge_id, campaign_id)
         );""")
@@ -104,15 +106,18 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
     return res
 
 
-def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str, campaign_id: str | None = None):
+def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str, tags: List[str], campaign_id: str | None = None):
+    if not isinstance(tags, list):
+        raise Exception(f"Challenge tags must be array and not {type(tags)}")
+
     conn = get_db()
     cursor = conn.cursor()
     if campaign_id is None:
-        q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir) VALUES (?, ?, ?, ?, ?)'
-        p = (id, name, desc, diff, ch_dir)
+        q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir, tags) VALUES (?, ?, ?, ?, ?, ?)'
+        p = (id, name, desc, diff, ch_dir, json.dumps(tags))
     else:
-        q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir, campaign_id) VALUES (?, ?, ?, ?, ?, ?)'
-        p = (id, name, desc, diff, ch_dir, campaign_id)
+        q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir, campaign_id, tags) VALUES (?, ?, ?, ?, ?, ?, ?)'
+        p = (id, name, desc, diff, ch_dir, campaign_id, json.dumps(tags))
     cursor.execute(q, p)
     conn.commit()
 
@@ -166,7 +171,8 @@ def get_tasks(sess: str) -> List[Dict]:
     SELECT challenges.challenge_id,
            challenges.challenge_name,
            challenges.challenge_description,
-           challenges.difficulty,   
+           challenges.difficulty,
+           challenges.tags as challenge_tags,
            tasks.task_id, 
            tasks.task_name, 
            tasks.task_description, 
@@ -191,6 +197,10 @@ def get_tasks(sess: str) -> List[Dict]:
     columns = [column[0] for column in cursor.description]
 
     res = [dict(zip(columns, row)) for row in rows]
+
+    for it in res:
+        # Parse the json encoded tags
+        it["challenge_tags"] = json.loads(it.get("challenge_tags", "[]"))
 
     return res
 
