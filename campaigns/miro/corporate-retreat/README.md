@@ -1,11 +1,30 @@
 # Corporate Retreat
 
-Network discovery, public CVE exploitation, credential abuse, lateral movement.
+This challenge simulates an investigation into a corporate network.
+Students must discover a publicly accessible camera and abuse its interface to gain access to an internal network.
+From there, they exploit a known CVE to further deepen the access to the network, where they uncover evidence related to an attack.
+The challenge emphasizes network scanning, exploitation of vulnerabilities, and basic forensic analysis.
+
+## Skills Used
+
+1. **Network Scanning and Discovery**: Students scan the network range to identify vulnerable devices.
+2. **Exploitation of Known Vulnerabilities**: Students exploit CVE-2019-15107 to gain unauthorized access.
+3. **Credential Abuse**: Students extract and reuse credentials to escalate privileges.
+4. **Lateral Movement**: Students use compromised devices to pivot into internal networks and discover additional devices.
+5. **Forensic Analysis**: Students analyze logs to trace the origin of an attack and uncover evidence.
+
+## Learning Objectives
+
+- Understand how to perform network discovery to identify vulnerable devices.
+- Learn to exploit known CVEs to gain unauthorized access.
+- Practice lateral movement techniques to pivot across internal networks.
+- Develop skills in forensic log analysis to trace attacker activity and uncover evidence.
+- Recognize the risks of credential reuse and weak authentication mechanisms.
 
 ## How to solve
 
-Contains spoilers!
-
+<details>
+  <summary>Click to reveal how to solve steps</summary>
 1. Scan the network range as suggested
 2. Access the camera UI at `172.20.0.231` and go to settings
 3. Extract the admin password from the source code and log in with it
@@ -22,6 +41,7 @@ Contains spoilers!
 14. The credentials are also logged (but URLencoded): `Vigilante88:M1r0{mayFXwawow1ezzUjVIOutDhKRcZGJblvzDOgBaA4EMmQG09UpfP8i3XQA4YY}`
 
 These instructions of course use a significant amount of shortcuts and knowledge that the attacker would have to spend a lot of effort finding. However, this is simply a short walkthrough, so it makes sense. 
+</details>
 
 ## Notes
 
