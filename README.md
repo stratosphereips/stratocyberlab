@@ -18,6 +18,7 @@ StratoCyberLab (SCL) is a local cyber range to test and practice your offensive 
 
 ## Features
 * 🔒 Local-only. No cloud. No tracking. No login. No data collection.
+* ⚙️ Easy-To-Use. Only Docker required and a single command to start the lab.  
 * 🧩 Many cybersecurity exercises in the form of CTF challenges.
 * 🎓 Predefined network and service environments for students of the [Introduction to Security class](https://cybersecurity.bsy.fel.cvut.cz/).
 * 🐳 The lab runs using Docker containers on shared virtual network(s).
