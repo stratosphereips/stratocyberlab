@@ -102,10 +102,10 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
             # set dir only if there is a docker-compose file
             dir = cl_dir
 
-        id, name, desc = class_data["id"], class_data["name"], class_data["description"]
+        id, name, desc, starting_time = class_data["id"], class_data["name"], class_data["description"], class_data["starting_time"]
         doc_url, yt_url = class_data.get(
             "google_doc_url", ""), class_data.get("yt_recording_url", "")
-        db.insert_class_data(id, name, desc, dir, doc_url, yt_url)
+        db.insert_class_data(id, name, desc, dir, doc_url, yt_url, starting_time)
 
     file.touch()
     eprint("DB successfully initialised.")

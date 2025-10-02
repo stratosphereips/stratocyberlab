@@ -19,7 +19,8 @@ def init_db_tables():
                 description TEXT NOT NULL,
                 dir TEXT NOT NULL,
                 google_doc_url TEXT,
-                yt_recording_url TEXT
+                yt_recording_url TEXT,
+                starting_time TEXT
             );""")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS campaigns (
@@ -76,11 +77,11 @@ def init_db_tables():
     conn.close()
 
 
-def insert_class_data(id: str, name: str, desc: str, cl_dir: str, doc_url: str, yt_url: str):
+def insert_class_data(id: str, name: str, desc: str, cl_dir: str, doc_url: str, yt_url: str, starting_time: str):
     conn = get_db()
     cursor = conn.cursor()
-    q = 'INSERT INTO classes (id, name, description, dir, google_doc_url, yt_recording_url) VALUES (?, ?, ?, ?, ?, ?)'
-    cursor.execute(q, (id, name, desc, cl_dir, doc_url, yt_url))
+    q = 'INSERT INTO classes (id, name, description, dir, google_doc_url, yt_recording_url, starting_time) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    cursor.execute(q, (id, name, desc, cl_dir, doc_url, yt_url, starting_time))
     conn.commit()
 
 
@@ -88,7 +89,7 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
     conn = get_db()
     cursor = conn.cursor()
     q = """
-    SELECT id, name, description, dir, google_doc_url, yt_recording_url
+    SELECT id, name, description, dir, google_doc_url, yt_recording_url, starting_time
     FROM classes
     """
     if only_with_compose:

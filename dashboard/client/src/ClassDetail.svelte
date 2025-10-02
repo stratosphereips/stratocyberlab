@@ -1,4 +1,5 @@
 <script>
+  import { onMount, onDestroy } from 'svelte';
   import { isLoading } from './stores';
 
   export let curClass;
@@ -11,6 +12,56 @@
   // Playlist with all livestreams
   // https://www.youtube.com/playlist?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh
   const liveStreamUrl = 'https://www.youtube.com/embed/riC4k5ty1yg?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh'
+
+  const LECTURE_DURATION_MS = 200 * 60 * 1000; // 200 minutes
+  const BUFFER_BEFORE_MS = 10 * 60 * 1000; // 10 minutes
+
+  let parsedStartingTime = new Date(curClass.starting_time)
+  parsedStartingTime = parsedStartingTime
+          .toString()
+          .replace("Central European Summer Time", "CEST")
+          .replace("Central European Time", "CET")
+
+  let now = new Date();
+  let timer;
+
+  onMount(() => {
+    // Tick every second for countdown/live window
+    timer = setInterval(() => {
+      now = new Date();
+    }, 1000);
+  });
+
+  onDestroy(() => {
+    clearInterval(timer);
+  });
+
+  // --- Time helpers (timezone aware because the ISO string includes the offset) ---
+  $: start = curClass?.starting_time ? new Date(curClass.starting_time) : null;
+  $: end   = start ? new Date(start.getTime() + LECTURE_DURATION_MS) : null;
+
+  $: bufferStart = start ? new Date(start.getTime() - BUFFER_BEFORE_MS) : null;
+  $: bufferEnd = end ? new Date(end.getTime() + BUFFER_BEFORE_MS) : null;
+
+  $: isInBufferOrLive = start && now >= bufferStart && now <= bufferEnd;
+  $: isPast = bufferEnd && now > bufferEnd;
+
+  function formatCountdown(ms) {
+    // Clamp negative values to zero
+    const total = Math.max(0, Math.floor(ms / 1000));
+    const days = Math.floor(total / 86400);
+    const hours = Math.floor((total % 86400) / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const seconds = total % 60;
+
+    const dd = String(days).padStart(2, '0');
+    const hh = String(hours).padStart(2, '0');
+    const mm = String(minutes).padStart(2, '0');
+    const ss = String(seconds).padStart(2, '0');
+    return `${dd}:${hh}:${mm}:${ss}`;
+  }
+
+  $: countdownToStart = start ? formatCountdown(start.getTime() - now.getTime()) : null;
 
   async function flipActivity() {
     isLoading.set(true);
@@ -31,19 +82,6 @@
       alert(err instanceof Error ? err.message : err);
     }
     isLoading.set(false);
-  }
-
-  function isClassLiveNow() {
-    // Class happens every Thursday from 14:30 CEST until end of January 2025
-    const now = new Date();
-    const february2026 = new Date('2026-02-01T00:00:00Z');
-    if (now > february2026) return false;
-
-    const currentDay = now.getDay();
-    const currentTimeUTC = now.getUTCHours();
-    const isThursday = currentDay === 4;
-    const isWithinTimeRange = currentTimeUTC >= 12 && currentTimeUTC < 17;
-    return isThursday && isWithinTimeRange;
   }
 </script>
 
@@ -89,36 +127,62 @@
   </div>
 </div>
 
-{#if curClass.yt_recording_url}
-  <h6>Lecture Recording</h6>
-  <div class="resizable-frame" style="
-    --w: {initialWidth}px;
-    --h: {initialHeight}px;
-    --min-w: {minWidth}px;
-    --min-h: {minHeight}px;">
-    <iframe
-      src={curClass.yt_recording_url}
-      title="Recording of BSY class lecture"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen
-    ></iframe>
+{#if !start}
+  <div class="alert alert-warning me-2" role="alert">
+    The lecture start time is not configured.
   </div>
-{:else if isClassLiveNow()}
-  <h6>Lecture Livestream</h6>
-  <div class="resizable-frame" style="
+{:else}
+  {#if isInBufferOrLive}
+    <h6>Lecture Livestream</h6>
+    <div class="resizable-frame" style="
       --w: {initialWidth}px;
       --h: {initialHeight}px;
       --min-w: {minWidth}px;
       --min-h: {minHeight}px;">
-    <iframe
-      src={liveStreamUrl}
-      title="BSY class Live Stream"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen
-    ></iframe>
+      <iframe
+        src={liveStreamUrl}
+        title="BSY class Live Stream"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+  {:else if isPast && curClass.yt_recording_url}
+    <h6>Lecture Recording</h6>
+    <div class="resizable-frame" style="
+      --w: {initialWidth}px;
+      --h: {initialHeight}px;
+      --min-w: {minWidth}px;
+      --min-h: {minHeight}px;">
+      <iframe
+        src={curClass.yt_recording_url}
+        title="Recording of BSY class lecture"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+  {:else if isPast && !curClass.yt_recording_url}
+    <div class="alert alert-info me-2" role="alert">
+      The lecture has already finished. Please check back later for the recording.
+    </div>
+
+  {:else}
+    <div class="alert alert-info d-flex align-items-center me-2" role="alert">
+    <i class="bi bi-clock me-2"></i>
+    <div>
+      <div class="fw-semibold">Starts at {parsedStartingTime}</div>
+      <div class="small text-muted">
+        The livestream will appear here once we go live.
+      </div>
+    </div>
+    <div class="ms-auto text-nowrap fs-5 fw-bold" aria-live="polite" aria-atomic="true">
+      {countdownToStart}
+    </div>
   </div>
+  {/if}
 {/if}
 
 
