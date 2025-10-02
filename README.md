@@ -80,5 +80,6 @@ Please refer to a separate Development documentation at [./docs/development.md](
 
 ## Architecture Diagram
 
-![StratoCyberLab (SCL) - Components](https://github.com/user-attachments/assets/e875ce06-0fca-4869-9f1d-c145931253ff)
+![StratoCyberLab (SCL) - Architecture](https://github.com/user-attachments/assets/182aebd9-0488-45bb-80db-32e97decc7a7)
+
 
