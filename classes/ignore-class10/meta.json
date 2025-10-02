@@ -3,5 +3,6 @@
     "id": "class-10",
     "description": "The tenth class focuses on automating attacks with malware. <br>Please open the Google document provided to all registered students and follow the document. <br><ul><li>After starting the class, connect to your lab with '<b>ssh root@172.20.0.125</b>' and 'admin' password</li><li>The class starts also IRC Server (<b>172.20.0.130</b>) and 2 bots (<b>172.20.0.131</b>, <b>172.20.0.132</b>). The bots have also SSH server running with 'root:admin' credentials.</li></ul>",
     "google_doc_url": "https://docs.google.com/document/d/1-VhMax-JlbUeToeukWXpm10DTWqgL79K24FsVM_EqmE/edit?usp=sharing",
-    "yt_recording_url": "https://www.youtube.com/embed/JQwvQ94_wRY?si=yrziZzreUY_3FwYc"
+    "yt_recording_url": "https://www.youtube.com/embed/JQwvQ94_wRY?si=yrziZzreUY_3FwYc",
+    "starting_time": "2025-11-27T14:30:00+01:00"
 }

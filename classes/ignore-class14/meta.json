@@ -3,5 +3,6 @@
     "id": "class-14",
     "description": "The 14th class first focuses on AI for Log Analysis, so you learn how to train and use AI and LLMs to automate the understanding of large data. Then, the class does a recap of all the assignments and it finalizes with the NOC talk, where we disclose how the whole class was built and the lessons learned in the process. Login to the class14 docker with  <b>ssh root@class14</b> with user <b>root</b> and password <b>admin</b>. The other two containers in this class (ssh-server and attacker) also have an SSH with root/admin credentials.",
     "google_doc_url": "https://docs.google.com/document/d/16pfh8wGfENO4W9XTALcJaRoa-p0MBVOu6z5GnTnSkDg",
-    "yt_recording_url": "https://www.youtube.com/embed/veII0b57ffk"
+    "yt_recording_url": "https://www.youtube.com/embed/veII0b57ffk",
+    "starting_time": "2026-01-08T14:30:00+01:00"
 }
