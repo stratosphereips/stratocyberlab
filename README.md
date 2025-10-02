@@ -78,6 +78,7 @@ We appreciate all **PRs** with **new challenges** or bug fixes.
 
 Please refer to a separate Development documentation at [./docs/development.md](./docs/development.md).
 
-## Connection Architecture
+## Architecture Diagram
 
-Diagram WIP
+![StratoCyberLab (SCL) - Components](https://github.com/user-attachments/assets/e875ce06-0fca-4869-9f1d-c145931253ff)
+
