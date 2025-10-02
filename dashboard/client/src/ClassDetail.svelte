@@ -8,6 +8,10 @@
   export let minWidth = 320;
   export let minHeight = 180;
 
+  // Playlist with all livestreams
+  // https://www.youtube.com/playlist?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh
+  const liveStreamUrl = 'https://www.youtube.com/embed/riC4k5ty1yg?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh'
+
   async function flipActivity() {
     isLoading.set(true);
     try {
@@ -108,7 +112,7 @@
       --min-w: {minWidth}px;
       --min-h: {minHeight}px;">
     <iframe
-      src="https://www.youtube.com/embed/Tx2pQLtQW6c?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh"
+      src={liveStreamUrl}
       title="BSY class Live Stream"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerpolicy="strict-origin-when-cross-origin"
