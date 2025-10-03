@@ -35,6 +35,7 @@
         Standalone hacking challenges in a <b>Capture the Flag</b> form
         <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
           <li>Choose a challenge in the left menu, start it, and solve the tasks!</li>
+          <li>All challenge flags are in a format <code>BSY&#123;...&#125;</code> unless stated otherwise.</li>
           <li>
             If you want a bigger challenge, try to solve a campaign which is a set of challenges connected with a story.
           </li>
