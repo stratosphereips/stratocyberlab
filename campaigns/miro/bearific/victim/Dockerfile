@@ -14,7 +14,7 @@ USER cowrie
 RUN <<EOD
 cd
 # install cowrie - steps as per https://docs.cowrie.org/en/latest/INSTALL.html
-git clone http://github.com/cowrie/cowrie
+git clone https://github.com/cowrie/cowrie
 cd cowrie
 python3 -m venv cowrie-env
 . cowrie-env/bin/activate
