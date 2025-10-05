@@ -8,7 +8,9 @@
 <div>
   {#if step.type === 'page'}
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-    {@html marked.parse(step.content)}
+    <div class="me-3">
+      {@html marked.parse(step.content)}
+    </div>
   {:else}
     <ChallengeDetail challenge={step} />
   {/if}

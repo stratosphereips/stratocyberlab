@@ -88,7 +88,7 @@
     </div>
   </div>
 </div>
-<div class="pt-3 text-muted">
+<div class="pt-3 text-muted me-3">
   <!-- eslint-disable-next-line svelte/no-at-html-tags -- render the description -->
   {@html marked(challenge.description)}
 </div>
