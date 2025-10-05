@@ -322,6 +322,7 @@ async def campaign_get(campaign_id: str):
                 "description": t["challenge_description"],
                 "tasks": [],
                 "dir": t['challenge_dir'],
+                "tags": t['challenge_tags'],
             }
             step_map[ch_id] = ch
             parsed_steps.append(ch)

@@ -243,6 +243,7 @@ def get_campaign_steps(campaign_id: str, sess: str):
     challenges.challenge_description,
     challenges.challenge_dir,
     challenges.difficulty,
+    challenges.tags as challenge_tags,
     tasks.task_id,
     tasks.task_name,
     tasks.task_description,
@@ -278,6 +279,10 @@ def get_campaign_steps(campaign_id: str, sess: str):
     columns = [column[0] for column in cursor.description]
 
     res = [dict(zip(columns, row)) for row in rows]
+
+    for it in res:
+        # Parse the json encoded tags
+        it["challenge_tags"] = json.loads(it.get("challenge_tags", "[]") or "[]")
 
     return res
 
