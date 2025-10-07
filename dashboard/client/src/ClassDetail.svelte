@@ -203,9 +203,9 @@
         <div class="spinner-grow text-success me-2 slow-spinner" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <span>The class is up and running!</span>
+        <span>The class environment is up and running!</span>
       {:else}
-        <span>The class is not running</span>
+        <span>The class environment is not running</span>
       {/if}
     </div>
 
