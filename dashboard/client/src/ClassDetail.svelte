@@ -1,6 +1,6 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
-  import { isLoading } from './stores';
+  import {onMount, onDestroy} from 'svelte';
+  import {isLoading} from './stores';
 
   export let curClass;
 
@@ -11,7 +11,7 @@
 
   // Playlist with all livestreams
   // https://www.youtube.com/playlist?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh
-  const liveStreamUrl = 'https://www.youtube.com/embed/riC4k5ty1yg?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh'
+  const liveStreamUrl = 'https://www.youtube.com/embed/5_XcD18o08Y?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh'
 
   const LECTURE_DURATION_MS = 200 * 60 * 1000; // 200 minutes
   const BUFFER_BEFORE_MS = 10 * 60 * 1000; // 10 minutes
@@ -38,7 +38,7 @@
 
   // --- Time helpers (timezone aware because the ISO string includes the offset) ---
   $: start = curClass?.starting_time ? new Date(curClass.starting_time) : null;
-  $: end   = start ? new Date(start.getTime() + LECTURE_DURATION_MS) : null;
+  $: end = start ? new Date(start.getTime() + LECTURE_DURATION_MS) : null;
 
   $: bufferStart = start ? new Date(start.getTime() - BUFFER_BEFORE_MS) : null;
   $: bufferEnd = end ? new Date(end.getTime() + BUFFER_BEFORE_MS) : null;
@@ -66,11 +66,11 @@
   async function flipActivity() {
     isLoading.set(true);
     try {
-      let payload = { id: curClass.id };
+      let payload = {id: curClass.id};
       const action = curClass.running === true ? 'stop' : 'start';
       const res = await fetch(`/api/classes/${action}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload),
       });
       if (res.status !== 200) {
