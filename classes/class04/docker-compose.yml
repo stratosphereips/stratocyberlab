@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  class-04-ssh-attcker:
+    build: .
+    container_name: scl-class-04-ssh-attacker  # name of the built image
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.89
+
+networks:
+  playground-net:
+    external: true
