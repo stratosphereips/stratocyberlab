@@ -45,6 +45,7 @@
 
   $: isInBufferOrLive = start && now >= bufferStart && now <= bufferEnd;
   $: isPast = bufferEnd && now > bufferEnd;
+  $: classNotEnded = now < end
 
   function formatCountdown(ms) {
     // Clamp negative values to zero
@@ -185,11 +186,25 @@
   {/if}
 {/if}
 
+{#if classNotEnded}
+  <div class="alert alert-warning text-muted me-2" role="alert">
+    <div class="fw-semibold mb-1">Before the class starts:</div>
+    <ul class="mb-0">
+      <li>Update SCL to have the latest version including built-in study materials.</li>
+      {#if curClass.dir}
+      <li>Start the class environment. Starting for the first time may take some time.</li>
+      {/if}
+    </ul>
+  </div>
+{/if}
 
-<p class="pt-3 text-muted">
+<div class="pt-3 mb-3">
+  <div>
+  <h5>Description</h5>
   <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html curClass.description}
-</p>
+  </div>
+</div>
 
 {#if curClass.dir}
   <div
