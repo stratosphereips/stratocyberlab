@@ -7,7 +7,7 @@
     "tasks": [
       { 
         "id": "task1",
-        "name": "TODO",
+        "name": "Here we go again",
         "description": "Can you find what the attacker did and discover a flag?",
         "flag": "BSY{9kPlbVBYuWtSxk6Oq62AAuYClinZc0CYayMjFSd5OUppQxXPTYtG9hAaBjjJ}"
       }
