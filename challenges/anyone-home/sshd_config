@@ -1,0 +1,8 @@
+PermitRootLogin yes
+ChallengeResponseAuthentication no
+UsePAM yes
+X11Forwarding yes
+PrintMotd no
+AcceptEnv LANG LC_*
+Banner /etc/banner
+PermitRootLogin no
