@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+  anyone-home:
+    build: .
+    image: scl-challenge-anyone-home
+    container_name: scl-challenge-anyone-home
+    stop_grace_period: 0s
+    restart:
+      on-failure
+    environment:
+      - TARGET_HOST=${TARGET_HOST:-172.20.0.2}
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.46
+    healthcheck:
+      test: ["CMD", "python", "-c", "assert True"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  playground-net:
+    external: true

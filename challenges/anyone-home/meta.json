@@ -1,0 +1,21 @@
+{
+    "name": "Anyone home?",
+    "id": "anyone-home",
+    "difficulty": "hard",
+    "description": "Your SOC team received an alert about malicious behaviour coming from IP 172.20.0.46",
+    "tags": ["Covered in Class 0x05"],
+    "tasks": [
+      {
+        "id": "task1",
+        "name": "Is Anyone Home?",
+        "description": "Analyze the malicious behaviour and discover a flag.",
+        "flag": "BSY{9YHgu60tUn5RjoYRTyViAMQWrci3y7w9x49w4qXXA3IHvWCb}"
+      },
+      {
+        "id": "task2",
+        "name": "Bonus: Uno Reverse Card",
+        "description": "Paradoxically, attackers do not care about their own security. Give them a taste of their own medicine and discover a flag.",
+        "flag": "BSY{cQZ3TSoUVgbiO3EeyZiI5IidU6lcknWhjFRdeJppxV8yRs9M}"
+      }
+    ]
+  }
