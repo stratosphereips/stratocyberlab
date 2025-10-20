@@ -1,8 +1,8 @@
 # Anyone Home?
 
-An attacker-controlled container keeps probing hackerlab (telnet ports) and once it gets a shell, and it verifies its authenticity (by running 3 standard commands), it tries to deploy a malicious payload. 
+An attacker-controlled container keeps probing hackerlab (telnet ports) and tries to login. Once it gets a shell, and it verifies its authenticity (by running 3 standard commands), it tries to download a malicious payload from a unique path in the attacker's HTTP server. 
 
-Students must spot the activity, trick the attacker with a honeypot, analyse the dropped payload (1st flag), and finally attack back and pwn the attacker's (2nd flag) server.
+Students must spot the activity, trick the attacker with a honeypot, analyse the dropped payload (contains 1st flag), and finally attack back and pwn the attacker's server (to get a 2nd flag). The attacker's HTTP endpoint that serves the malicious payload in the 1st phase is vulnerable to LFI which students can exploit to read attacker's SSH private key and login. That means students must first solve the 1st task in order to discover the vulnerable HTTP endpoint required for the 2nd task.
 
 ### Tasks
 
