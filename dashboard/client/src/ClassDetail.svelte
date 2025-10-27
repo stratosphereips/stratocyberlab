@@ -20,7 +20,7 @@
   parsedStartingTime = parsedStartingTime
           .toString()
           .replace("Central European Summer Time", "CEST")
-          .replace("Central European Time", "CET")
+          .replace("Central European Standard Time", "CET")
 
   let now = new Date();
   let timer;
