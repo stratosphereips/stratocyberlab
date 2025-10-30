@@ -1,4 +1,4 @@
-# Challenge template
+# Jump Around
 
 This challenge is about privilege escalation and sniffing socks5 proxy traffic
 
