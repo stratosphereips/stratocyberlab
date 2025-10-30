@@ -11,7 +11,7 @@
 
   // Playlist with all livestreams
   // https://www.youtube.com/playlist?list=PLQL6z4JeTTQmu09ItEQaqjt6tk0KnRsLh
-  const liveStreamUrl = 'https://www.youtube.com/embed/nK6WGeyVEz8'
+  const liveStreamUrl = 'https://www.youtube.com/embed/ngZnsOGo6OY'
 
   const LECTURE_DURATION_MS = 200 * 60 * 1000; // 200 minutes
   const BUFFER_BEFORE_MS = 10 * 60 * 1000; // 10 minutes
