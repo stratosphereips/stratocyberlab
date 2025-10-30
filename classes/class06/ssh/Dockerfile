@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update && apt install -y openssh-server ncat tcpdump vim nano tinyproxy cron
+RUN apt update && apt install -y openssh-server ncat tcpdump vim nano tinyproxy cron tmux
 
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /root/.ssh
