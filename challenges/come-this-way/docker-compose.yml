@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  challenge-come-this-way-client:
+    build: client/
+    image: scl-challenge-come-this-way-client  # name of the built image
+    container_name: scl-challenge-come-this-way-client
+    stop_grace_period: 0s
+    hostname: web
+    restart: on-failure
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.71
+
+  challenge-come-this-way-server:
+    build: server/
+    image: scl-challenge-come-this-way-server  # name of the built image
+    container_name: scl-challenge-come-this-way-server
+    stop_grace_period: 0s
+    hostname: ftp-server
+    restart: on-failure
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.72
+
+networks:
+  playground-net:
+    external: true

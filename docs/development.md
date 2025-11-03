@@ -47,59 +47,61 @@
 
 #### IP allocations
 
-| Network        | IP address      | Used By                                                                                  | 
-|----------------|-----------------|------------------------------------------------------------------------------------------|
-| playground-net | `172.20.0.5`    | Challenge [Hello world](./../challenges/hello-world/)                                    |
-| playground-net | `172.20.0.10`   | Challenge [Famous Quotes LFI](./../challenges/famous-quotes-lfi/)                        |
-| playground-net | `172.20.0.30`   | Challenge [What's the date?](./../challenges/what-is-the-date/)                          |
-| playground-net | `172.20.0.35`   | Challenge [What's that noise?](./../challenges/what-is-that-noise/)                      |
-| playground-net | `172.20.0.39`   | Challenge [Shockwave Report](./../challenges/shockwave-report)                           |
-| playground-net | `172.20.0.41`   | Challenge [Intrusion](./../challenges/intrusion)                                         |
-| playground-net | `172.20.0.45`   | Challenge [Jump Around](./../challenges/jump-around)                                     |
-| playground-net | `172.20.0.47`   | Challenge [Jump Around](./../challenges/jump-around)                                     |
-| playground-net | `172.20.0.49`   | Challenge [Jump Around](./../challenges/jump-around)                                     |
-| playground-net | `172.20.0.67`   | Challenge [Leet Messenger](./../challenges/leet-messenger)                               |
-| playground-net | `172.20.0.52`   | Challenge [Cybernet](./../challenges/cybernet)                                           |
-| playground-net | `172.20.0.46`   | Challenge [Anyone Home?](./../challenges/anyone-home)                                    |
-| playground-net | `172.20.0.88`   | [Class02](./../classes/class02)                                                          |                                                
-| playground-net | `172.20.0.90`   | [Class03](./../classes/class03)                                                          |                                                
-| playground-net | `172.20.0.95`   | [Class03](./../classes/class03)                                                          |  
-| playground-net | `172.20.0.98`   | [Class06](./../classes/class06)                                                          |  
-| playground-net | `172.20.0.99`   | [Class06](./../classes/class06)                                                          |  
-| playground-net | `172.20.0.108`  | [Class07](./../classes/class07)                                                          |
-| playground-net | `172.20.0.110`  | [Class07](./../classes/class07)                                                          |
-| playground-net | `172.20.0.115`  | [Class08](./../classes/class08)                                                          |
-| playground-net | `172.20.0.120`  | [Class09](./../classes/class09)                                                          |
-| playground-net | `172.20.0.125`  | [Class10](./../classes/class10)                                                          |
-| playground-net | `172.20.0.130`  | [Class10](./../classes/class10)                                                          |
-| playground-net | `172.20.0.131`  | [Class10](./../classes/class10)                                                          |
-| playground-net | `172.20.0.132`  | [Class10](./../classes/class10)                                                          |
-| playground-net | `172.20.0.101`  | [Class11](./../classes/class11)                                                          |  
-| playground-net | `172.20.0.102`  | [Class12](./../classes/class12)                                                          |  
-| playground-net | `172.20.0.103`  | [Class12](./../classes/class12)                                                          |  
-| playground-net | `172.20.0.104`  | [Class12](./../classes/class12)                                                          |  
-| playground-net | `172.20.0.105`  | [Class12](./../classes/class12)                                                          |  
-| playground-net | `172.20.0.106`  | [Class13](./../classes/class13)                                                          |  
-| playground-net | `172.20.0.107`  | [Class13](./../classes/class13)                                                          |
-| playground-net | `172.20.0.108`  | [Class13](./../classes/class13)                                                          |
-| playground-net | `172.20.0.109`  | [Class13](./../classes/class13)                                                          |
-| playground-net | `172.25.0.1`    | [Class13](./../classes/class13)                                                          |
-| playground-net | `172.25.0.2`    | [Class13](./../classes/class13)                                                          |
-| playground-net | `172.25.0.3`    | [Class13](./../classes/class13)                                                          |
-| playground-net | `172.25.0.4`    | [Class13](./../classes/class13)                                                          |
-| playground-net | `172.20.0.110`  | [Class14](./../classes/class14)                                                          |
-| playground-net | `172.20.0.134`  | [ssh-server](./../classes/class14/ssh-server)                                            |
-| playground-net | `172.20.0.133`  | [attacker](./../classes/class14/attacker)                                                |
-| playground-net | `172.20.0.200`  | Reserved for campaign [miro](./../campaigns/miro)                                        |
-| playground-net | `172.20.0.201`  | Campaign challenge [miro/bearific](./../campaigns/miro/bearific)                         |
-| playground-net | `172.20.0.202`  | Campaign challenge [miro/bearific](./../campaigns/miro/bearific)                         |
-| playground-net | `172.20.0.203`  | Campaign challenge [miro/forgot-your-password](./../campaigns/miro/forgot-your-password) |
-| playground-net | `172.20.0.204`  | Campaign challenge [miro/knock-knock](./../campaigns/miro/knock-knock)                   |
-| playground-net | `172.20.0.205`  | Campaign challenge [miro/meme-jpeg](./../campaigns/miro/meme-jpeg)                       |
-| playground-net | `172.20.0.231`  | Campaign challenge [miro/corporate-retreat](./../campaigns/miro/corporate-retreat)       |
-| playground-net | `172.20.0.239`  | Campaign challenge [miro/corporate-retreat](./../campaigns/miro/corporate-retreat)       |
-| playground-net | `172.20.0.249`  | Campaign challenge [miro/by-the-pool](./../campaigns/miro/by-the-pool)                   |
-| playground-net | `172.20.0.250`  | Campaign challenge [miro/by-the-pool](./../campaigns/miro/by-the-pool)                   |
+| Network        | IP address    | Used By                                                                                  | 
+|----------------|---------------|------------------------------------------------------------------------------------------|
+| playground-net | `172.20.0.5`  | Challenge [Hello world](./../challenges/hello-world/)                                    |
+| playground-net | `172.20.0.10` | Challenge [Famous Quotes LFI](./../challenges/famous-quotes-lfi/)                        |
+| playground-net | `172.20.0.30` | Challenge [What's the date?](./../challenges/what-is-the-date/)                          |
+| playground-net | `172.20.0.35` | Challenge [What's that noise?](./../challenges/what-is-that-noise/)                      |
+| playground-net | `172.20.0.39` | Challenge [Shockwave Report](./../challenges/shockwave-report)                           |
+| playground-net | `172.20.0.41` | Challenge [Intrusion](./../challenges/intrusion)                                         |
+| playground-net | `172.20.0.45` | Challenge [Jump Around](./../challenges/jump-around)                                     |
+| playground-net | `172.20.0.47` | Challenge [Jump Around](./../challenges/jump-around)                                     |
+| playground-net | `172.20.0.49` | Challenge [Jump Around](./../challenges/jump-around)                                     |
+| playground-net | `172.20.0.67` | Challenge [Leet Messenger](./../challenges/leet-messenger)                               |
+| playground-net | `172.20.0.52` | Challenge [Cybernet](./../challenges/cybernet)                                           |
+| playground-net | `172.20.0.46` | Challenge [Anyone Home?](./../challenges/anyone-home)                                    |
+| playground-net | `172.20.0.71` | Challenge [Come This Way](./../challenges/come-this-way)                                 |
+| playground-net | `172.20.0.72` | Challenge [Come This Way](./../challenges/come-this-way)                                   |
+| playground-net | `172.20.0.88` | [Class02](./../classes/class02)                                                          |                                                
+| playground-net | `172.20.0.90` | [Class03](./../classes/class03)                                                          |                                                
+| playground-net | `172.20.0.95` | [Class03](./../classes/class03)                                                          |  
+| playground-net | `172.20.0.98` | [Class06](./../classes/class06)                                                          |  
+| playground-net | `172.20.0.99` | [Class06](./../classes/class06)                                                          |  
+| playground-net | `172.20.0.108` | [Class07](./../classes/class07)                                                          |
+| playground-net | `172.20.0.110` | [Class07](./../classes/class07)                                                          |
+| playground-net | `172.20.0.115` | [Class08](./../classes/class08)                                                          |
+| playground-net | `172.20.0.120` | [Class09](./../classes/class09)                                                          |
+| playground-net | `172.20.0.125` | [Class10](./../classes/class10)                                                          |
+| playground-net | `172.20.0.130` | [Class10](./../classes/class10)                                                          |
+| playground-net | `172.20.0.131` | [Class10](./../classes/class10)                                                          |
+| playground-net | `172.20.0.132` | [Class10](./../classes/class10)                                                          |
+| playground-net | `172.20.0.101` | [Class11](./../classes/class11)                                                          |  
+| playground-net | `172.20.0.102` | [Class12](./../classes/class12)                                                          |  
+| playground-net | `172.20.0.103` | [Class12](./../classes/class12)                                                          |  
+| playground-net | `172.20.0.104` | [Class12](./../classes/class12)                                                          |  
+| playground-net | `172.20.0.105` | [Class12](./../classes/class12)                                                          |  
+| playground-net | `172.20.0.106` | [Class13](./../classes/class13)                                                          |  
+| playground-net | `172.20.0.107` | [Class13](./../classes/class13)                                                          |
+| playground-net | `172.20.0.108` | [Class13](./../classes/class13)                                                          |
+| playground-net | `172.20.0.109` | [Class13](./../classes/class13)                                                          |
+| playground-net | `172.25.0.1`  | [Class13](./../classes/class13)                                                          |
+| playground-net | `172.25.0.2`  | [Class13](./../classes/class13)                                                          |
+| playground-net | `172.25.0.3`  | [Class13](./../classes/class13)                                                          |
+| playground-net | `172.25.0.4`  | [Class13](./../classes/class13)                                                          |
+| playground-net | `172.20.0.110` | [Class14](./../classes/class14)                                                          |
+| playground-net | `172.20.0.134` | [ssh-server](./../classes/class14/ssh-server)                                            |
+| playground-net | `172.20.0.133` | [attacker](./../classes/class14/attacker)                                                |
+| playground-net | `172.20.0.200` | Reserved for campaign [miro](./../campaigns/miro)                                        |
+| playground-net | `172.20.0.201` | Campaign challenge [miro/bearific](./../campaigns/miro/bearific)                         |
+| playground-net | `172.20.0.202` | Campaign challenge [miro/bearific](./../campaigns/miro/bearific)                         |
+| playground-net | `172.20.0.203` | Campaign challenge [miro/forgot-your-password](./../campaigns/miro/forgot-your-password) |
+| playground-net | `172.20.0.204` | Campaign challenge [miro/knock-knock](./../campaigns/miro/knock-knock)                   |
+| playground-net | `172.20.0.205` | Campaign challenge [miro/meme-jpeg](./../campaigns/miro/meme-jpeg)                       |
+| playground-net | `172.20.0.231` | Campaign challenge [miro/corporate-retreat](./../campaigns/miro/corporate-retreat)       |
+| playground-net | `172.20.0.239` | Campaign challenge [miro/corporate-retreat](./../campaigns/miro/corporate-retreat)       |
+| playground-net | `172.20.0.249` | Campaign challenge [miro/by-the-pool](./../campaigns/miro/by-the-pool)                   |
+| playground-net | `172.20.0.250` | Campaign challenge [miro/by-the-pool](./../campaigns/miro/by-the-pool)                   |
 
 
 ## Testing

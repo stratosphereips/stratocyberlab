@@ -1,0 +1,15 @@
+{
+    "name": "Come This Way",
+    "id": "challenge-come-this-way",
+    "difficulty": "medium",
+    "description": "There is an HTTP service running at server 172.20.0.71 which uses a data source running at 172.20.0.72",
+    "tags": ["Covered in Class 0x07"],
+    "tasks": [
+      { 
+        "id": "task1",
+        "name": "Trust me, it's me",
+        "description": "Read a flag stored in the data source. Maybe you can convince the webserver to send you what you need.",
+        "flag": "BSY{cO3G1COwygIapKOVVbR7AEWZ7kDRfaXy0GIEq2Ojr9lXoxnhIQ9IxlJk8ViO3Pws}"
+      }
+    ]
+}
