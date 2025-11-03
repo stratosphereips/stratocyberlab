@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   class-07-clients:
-    build: client/
+    build: .
     image: scl-class-07-clients  # name of the built image
     container_name: scl-class-07-clients
     stop_grace_period: 0s
@@ -12,7 +12,7 @@ services:
         ipv4_address: 172.20.0.108
 
   class-07-servers:
-    build: server/
+    build: .
     image: scl-class-07-servers  # name of the built image
     container_name: scl-class-07-servers
     stop_grace_period: 0s
