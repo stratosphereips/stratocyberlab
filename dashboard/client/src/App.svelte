@@ -145,6 +145,13 @@
     flex: 1 1 auto; /* take the remaining width exactly */
     min-width: 0; /* allow content to shrink */
   }
+
+  .resize-overlay {
+    position: fixed;
+    inset: 0;
+    cursor: col-resize;
+    z-index: 2000; /* above main content but under modals */
+  }
 </style>
 
 <LoadingOverlay />
@@ -204,4 +211,8 @@
       <SSH bind:resize={resizeTerminalContentFunc} on:hide={toggleShowSSH} />
     </div>
   </div>
+{/if}
+
+{#if isVerticalResizing}
+  <div class="resize-overlay"></div>
 {/if}
