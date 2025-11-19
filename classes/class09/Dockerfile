@@ -1,6 +1,9 @@
 FROM debian:bookworm
 
-RUN apt update && apt install -y openssh-server gdb vim nano tmux curl python3 tshark gcc file
+RUN apt update && apt install -y openssh-server gdb vim nano tmux curl python3 tshark gcc file pipx
+
+RUN pipx ensurepath && \
+    pipx install bsy-clippy==0.3.2
 
 # install gef
 RUN curl -fsSL https://gef.blah.cat/sh | bash
