@@ -2,7 +2,7 @@
     "name": "0x10 - Automation",
     "id": "class-10",
     "description": "The tenth class focuses on automating attacks with malware.<br>After starting the class:<br><ul><li>Connect to your lab with <code>ssh root@172.20.0.125</code> and 'admin' password</li><li>The class starts also IRC Server (<code>172.20.0.130</code>) and 2 bots (<code>172.20.0.131</code>, <code>172.20.0.132</code>). The bots have an SSH server running with 'root:admin' credentials.</li></ul>",
-    "google_doc_url": "",
+    "google_doc_url": "https://docs.google.com/document/d/1-fC8SGdDE-mFTDcgPLI9QIxgHCSkUrZlPEi1eb3hCXs",
     "yt_recording_url": "",
     "starting_time": "2025-11-27T14:30:00+01:00"
 }
