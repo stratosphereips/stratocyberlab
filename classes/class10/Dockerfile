@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update && apt install -y openssh-server vim nano tmux ansible sshpass ncat git python3 python3-pip gcc make pssh npm screen
+RUN apt update && apt install -y openssh-server vim nano tmux ansible sshpass ncat git python3 python3-pip gcc make pssh npm screen weechat
 
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /root/.ssh
