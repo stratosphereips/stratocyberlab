@@ -1,8 +1,8 @@
 {
     "name": "0x11 - C&C detection",
     "id": "class-11",
-    "description": "The eleventh class focuses on manual and automatic detection of C&C channels. <br>Please open the Google document provided to all registered students and follow the document. <br><ul><li>After starting the class, connect to your lab with '<b>ssh root@172.20.0.101</b>' and 'admin' password</li></ul>",
-    "google_doc_url": "https://docs.google.com/document/d/1RnfbiDkNp-zHXzTZAv_PoTSHbpDmqGhtYLKxhDaCUns/edit?usp=sharing",
-    "yt_recording_url": "https://www.youtube.com/embed/JndQfaRVOVw?si=7eD3rrQTE3elXY73",
+    "description": "The eleventh class focuses on manual and automatic detection of C&C channels. After starting the class:<br><ul><li>Connect to a class lab with command <code>ssh root@172.20.0.101</code> and 'admin' password from hackerlab</li></ul>",
+    "google_doc_url": "",
+    "yt_recording_url": "",
     "starting_time": "2025-12-04T14:30:00+01:00"
 }
