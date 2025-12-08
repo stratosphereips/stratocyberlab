@@ -1,7 +1,7 @@
 {
     "name": "0x12 - Web Attacks",
     "id": "class-12",
-    "description": "The 12th focuses on Web Attacks. After starting the class:<br><ul><li>Connect to a class lab with command <code>ssh root@172.20.0.101</code> and 'admin' password from hackerlab</li><li>From a new terminal on your computer (NOT StratoCyberLab), execute a following command</br><code>ssh -L 3000:juiceshop:3000 -L 8080:juicynginx:80 root@127.0.0.1 -p 2222</code></br>with a password <code>ByteThem123</code>. The command setups port forwarding so you can access the class services in your browser.</li></ol>",
+    "description": "The 12th focuses on Web Attacks. After starting the class:<br><ul><li>Connect to a class lab with command <code>ssh root@172.20.0.102</code> and 'admin' password from hackerlab</li><li>From a new terminal on your computer (NOT StratoCyberLab), execute a following command</br><code>ssh -L 3000:juiceshop:3000 -L 8080:juicynginx:80 root@127.0.0.1 -p 2222</code></br>with a password <code>ByteThem123</code>. The command setups port forwarding so you can access the class services in your browser.</li></ol>",
     "google_doc_url": "",
     "yt_recording_url": "",
     "starting_time": "2025-12-11T14:30:00+01:00"

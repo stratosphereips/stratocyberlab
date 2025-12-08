@@ -26,7 +26,7 @@ services:
           - juiceshop1
           - juiceshop2
           - juiceshop3
-          - juice.bsy.com
+          - juice.class12.bsy
 
   waf:
     image: gbe0/coraza:latest
@@ -39,7 +39,7 @@ services:
         aliases:
           - protected-juiceshop
           - waf
-          - waf.bsy.com
+          - waf.class12.bsy
     depends_on:
       - juiceshop
     environment:
@@ -57,11 +57,11 @@ services:
         ipv4_address: 172.20.0.105
         aliases:
           - juicynginx
-          - bsy.com
-          - app.bsy.com
-          - example.bsy.com
-          - hidden.bsy.com
-          - pub.bsy.com
+          - class12.bsy
+          - app.class12.bsy
+          - example.class12.bsy
+          - hidden.class12.bsy
+          - pub.class12.bsy
     depends_on:
       - juiceshop
 

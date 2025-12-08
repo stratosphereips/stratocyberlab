@@ -1,4 +1,4 @@
-FROM debian:12 AS gobuilder
+FROM ubuntu:24.04 AS gobuilder
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
@@ -28,14 +28,10 @@ RUN go install github.com/tomnomnom/assetfinder@latest
 # Install gobuster
 RUN go install github.com/OJ/gobuster/v3@latest
 
-# gau
-RUN go install -v github.com/lc/gau/v2/cmd/gau@latest
 
+FROM ubuntu:24.04 AS base
 
-
-FROM debian:12 AS base
-
-RUN dpkg --add-architecture amd64 && apt update -y && apt upgrade -y
+RUN apt update -y && apt upgrade -y
 
 RUN apt-get install -y \
         make \
@@ -55,18 +51,15 @@ RUN apt-get install -y \
         net-tools \
         knot-dnsutils \
         dnsutils \
-        jq
+        jq \
+        python3 \
+        pipx
 
-# Install Pyenv
-ENV PYENV_ROOT=/usr/local/pyenv
-ENV PATH="$PYENV_ROOT/bin:$PATH"
-
-RUN git clone https://github.com/pyenv/pyenv.git /usr/local/pyenv && \
-	eval "$(pyenv init --path)" && \
-	pyenv install $(pyenv install -l | grep -v - | grep -E '^  3\.[0-9]+\.[0-9]+$' | tail -1) && \
-	pyenv global $(pyenv install -l | grep -v - | grep -E '^  3\.[0-9]+\.[0-9]+$' | tail -1)
-
-
+# make python nicer
+RUN ln -s $(which python3) /usr/local/bin/python
+# add bsy-clippy
+RUN pipx ensurepath && \
+    pipx install bsy-clippy==0.3.2
 
 FROM base AS pybuilder
 
@@ -105,11 +98,9 @@ CMD ["/usr/sbin/sshd", "-D"]
 # Copy tools from builder
 COPY --from=gobuilder /root/go/bin/assetfinder /usr/local/bin/
 COPY --from=gobuilder /root/go/bin/gobuster /usr/local/bin/
-COPY --from=gobuilder /root/go/bin/gau /usr/local/bin/
 COPY --from=gobuilder /usr/local/go /usr/local/go
 
 # Copy Pyenv
-COPY --from=pybuilder /usr/local/pyenv /usr/local/pyenv
 COPY --from=pybuilder /opt/sqlmap /opt/sqlmap
 RUN ln -s /opt/sqlmap/sqlmap.py /usr/local/bin/sqlmap
 
@@ -117,20 +108,16 @@ RUN ln -s /opt/sqlmap/sqlmap.py /usr/local/bin/sqlmap
 COPY --from=wordlists /data/wordlist /data/wordlist
 
 # Set environment variables
-ENV PYENV_ROOT="/usr/local/pyenv"
 ENV GOPATH="/root/go"
-ENV PATH="/usr/local/go/bin:$GOPATH/bin:$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"
+ENV PATH="/usr/local/go/bin:$GOPATH/bin:$PATH"
 
 # we need to write this to bashrc so that ssh will set same env variables
-RUN echo 'export PYENV_ROOT="/usr/local/pyenv"' >> /root/.bashrc && \
-    echo 'export GOPATH="/root/go"' >> /root/.bashrc && \
-    echo 'export PATH="/usr/local/go/bin:$GOPATH/bin:$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"' >> /root/.bashrc
+RUN echo 'export GOPATH="/root/go"' >> /root/.bashrc && \
+    echo 'export PATH="/usr/local/go/bin:$GOPATH/bin:$PATH"' >> /root/.bashrc
 
 # Verify installations
 RUN go version && \
-    pyenv versions && \
+    python --version && \
     assetfinder -h && \
-    gobuster version && \
-    sqlmap --version && \
-    gau -h
-
+    gobuster --help && \
+    sqlmap --version
