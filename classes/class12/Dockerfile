@@ -79,7 +79,7 @@ FROM base AS wordlists
 
 RUN mkdir -p /data/wordlist && \
     wget -O /data/wordlist/directories.txt \
-    https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/Web-Content/directory-list-2.3-big.txt
+    https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt
 
 # Final image
 FROM base AS runtime
