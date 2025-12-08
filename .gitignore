@@ -134,3 +134,6 @@ dmypy.json
 
 # Ollama folder with models
 ollama/
+
+# macOS files
+.DS_Store
