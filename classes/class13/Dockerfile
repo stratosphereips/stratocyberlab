@@ -1,6 +1,8 @@
 FROM debian:12 AS gobuilder
 
-RUN apt update && apt install -y openssh-server tmux vim nano curl ncat jq iputils-ping iproute2
+RUN apt update && apt install -y openssh-server tmux vim nano curl ncat jq iputils-ping iproute2 python3 python3-venv
+
+RUN bash -c "cd ~ && python3 -m venv cai_env && source cai_env/bin/activate && pip install cai-framework"
 
 RUN mkdir -p /var/run/sshd /root/.ssh
 COPY sshd_config /etc/ssh/sshd_config
