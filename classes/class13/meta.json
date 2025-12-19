@@ -3,6 +3,6 @@
     "id": "class-13",
     "description": "The 13th focuses on Advanced Web Attacks. After starting the class: <br><ol><li>Connect to a class lab with command <code>ssh root@class13</code> and 'admin' password from hackerlab</li><li>From a new terminal on your computer (NOT StratoCyberLab), execute a following command</br><code>ssh -L 3000:juiceshop:3000 root@127.0.0.1 -p 2222</b></code> with password <code>ByteThem123</code>. The command setups port forwarding so you can access the class services in your browser.</li></ol>",
     "google_doc_url": "https://docs.google.com/document/d/1lUcR5cxyi9T-QYo1tSR1745YkX1aRBSBi9DDPwYc4PU",
-    "yt_recording_url": "",
+    "yt_recording_url": "https://www.youtube.com/embed/ieguM4NMC3Q",
     "starting_time": "2025-12-18T14:30:00+01:00"
 }
