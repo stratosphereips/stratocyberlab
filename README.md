@@ -77,11 +77,11 @@ git config --global core.eol lf
 
 Plugins are third party projects adding custom features to SCL. 
 
-To start using plugins, clone any plugin into the ./plugins directory and restart SCL.
+To start using plugins, clone any plugin into the `./plugins` directory and restart SCL.
 
 To see a more detailed documentation regarding plugins, see [./docs/plugins.md](./docs/plugins.md).
 
-*Important Note: most plugins will have access to docker socket meaning plugins have theoretical access as root to your host machine. Be completely sure you fully trust all plugins you intend to use!*
+**Important Note: most plugins will have access to docker socket meaning plugins have theoretical access as root to your host machine. Be completely sure you fully trust all plugins you intend to use!**
 
 
 ## Development

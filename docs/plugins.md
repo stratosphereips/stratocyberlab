@@ -2,7 +2,7 @@
 
 StratoCyberLab can load third-party plugins from the top-level [`./plugins`](./../plugins/) directory.
 
-*Important Note: Plugins might have mounted docker socket which gives them theoretical root access to your host machine. Use only third party plugins that you fully trust!!!*
+**Important Note: Plugins might have mounted docker socket which gives them theoretical root access to your host machine. Use only third party plugins that you fully trust!!!**
 
 ## Structure
 
@@ -69,7 +69,7 @@ Plugin authors are fully responsible for their own `docker-compose.yml`, includi
 
 ## Runtime Rules
 
-- Plugin services should handle `SIGINT` and shut down cleanly such as stopping dynamically started containers etc.
+- Plugin services should perform graceful shutdown by handling cleanly `SIGINT` signal (received when plugin stops) such as stopping dynamically started containers etc.
 - All containers defined in the plugin compose file, and any containers the plugin starts later, must use the `scl-plugin-<id>-<name>` prefix for observability and debugging reasons.
 
 ## Reference Plugin
