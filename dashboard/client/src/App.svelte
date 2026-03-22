@@ -6,6 +6,7 @@
   import { onMount } from 'svelte';
   import ClassDoc from './ClassDoc.svelte';
   import Snowfall from './Snowfall.svelte';
+  import { ChevronLeft, ChevronRight } from 'svelte-heros';
   import { challenges, classes, campaigns, plugins } from './stores';
   import { chosenClass } from './routing';
   import { fetchChallenges, fetchClasses, fetchCampaigns, fetchPlugins } from './fetch';
@@ -22,6 +23,18 @@
   let splitRatio = 0.6; // 66% left panel by default
   let isVerticalResizing = false;
   let splitWrap; // container ref to compute local positions
+  const ASSISTANT_HIDDEN_STORAGE_KEY = 'ai-assistant.hidden';
+  let assistantHidden = false;
+
+  if (typeof localStorage !== 'undefined') {
+    assistantHidden = localStorage.getItem(ASSISTANT_HIDDEN_STORAGE_KEY) === 'true';
+  }
+
+  $: showClassDoc = Boolean($chosenClass && $chosenClass.google_doc_url);
+  $: showAssistant = !showClassDoc && !assistantHidden;
+  $: showAssistantPeek = !showClassDoc && assistantHidden;
+  $: showRightPane = showClassDoc || showAssistant;
+  $: splitLeftWidth = Math.round((showRightPane ? splitRatio : 1) * 10000) / 100;
 
   onMount(async () => {
     fetchChallenges().then((loadedChallenges) => ($challenges = loadedChallenges));
@@ -76,6 +89,19 @@
     isVerticalResizing = false;
     document.body.classList.remove('resizing-col');
   }
+
+  function setAssistantHidden(hidden) {
+    if (assistantHidden === hidden) return;
+    assistantHidden = hidden;
+    stopVerticalResizing();
+
+    try {
+      localStorage.setItem(ASSISTANT_HIDDEN_STORAGE_KEY, String(hidden));
+    } catch {
+      // intentionally ignored
+    }
+  }
+
   function resizeVertical(e) {
     if (!isVerticalResizing || !splitWrap) return;
     const rect = splitWrap.getBoundingClientRect();
@@ -111,6 +137,16 @@
     border-radius: 20px 20px 0 0;
   }
 
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
   /* Prevent accidental text selection and show col-resize globally while dragging */
   /* "Global" is a hack otherwise compiler does not include the class in final bundle as it thinks it's not used */
   :global(body.resizing-col) {
@@ -130,6 +166,10 @@
     gap: 0; /* no gaps so 3px handle is exact */
   }
 
+  .assistant-layout {
+    position: relative;
+  }
+
   .split-left {
     flex: 0 0 var(--left);
     max-width: var(--left); /* ensure it never exceeds intended width */
@@ -145,6 +185,28 @@
   .split-right {
     flex: 1 1 auto; /* take the remaining width exactly */
     min-width: 0; /* allow content to shrink */
+  }
+
+  .assistant-panel-content {
+    height: 100%;
+  }
+
+  .assistant-collapse-handle {
+    position: absolute;
+    left: calc(var(--left) + 3px);
+    top: 56px;
+    transform: translateX(-50%);
+    z-index: 1021;
+    border-radius: 999px;
+  }
+
+  .assistant-peek {
+    position: fixed;
+    right: 0;
+    top: 72px;
+    z-index: 1021;
+    border-top-left-radius: 999px;
+    border-bottom-left-radius: 999px;
   }
 
   .resize-overlay {
@@ -170,22 +232,55 @@
   {/if}
 
   <!-- Main dashboard content -->
-  <div class="split-wrap flex-grow-1" bind:this={splitWrap} style="--left: {Math.round(splitRatio * 10000) / 100}%">
+  <div class="split-wrap assistant-layout flex-grow-1" bind:this={splitWrap} style="--left: {splitLeftWidth}%">
     <div class="split-left overflow-y-auto">
       <Dashboard />
     </div>
-    <!-- eslint-disable-next-line svelte/valid-compile -->
-    <div class="split-handle bg-dark-subtle" on:mousedown={startVerticalResizing}></div>
-    <div class="split-right overflow-y-auto">
-      {#if $chosenClass && $chosenClass.google_doc_url}
-        <div class="p-0 w-100 h-100">
-          <ClassDoc docUrl={$chosenClass.google_doc_url} />
+    {#if showRightPane}
+      <!-- eslint-disable-next-line svelte/valid-compile -->
+      <div
+        class="split-handle bg-dark-subtle"
+        on:mousedown={startVerticalResizing}
+        role="separator"
+        aria-label="Resize dashboard panels"
+        aria-orientation="vertical"
+      ></div>
+      {#if showClassDoc}
+        <div class="split-right overflow-y-auto">
+          <div class="p-0 w-100 h-100">
+            <ClassDoc docUrl={$chosenClass.google_doc_url} />
+          </div>
         </div>
       {:else}
-        <AssistantLLM />
+        <button
+          type="button"
+          class="btn btn-light border shadow-sm icon-btn assistant-collapse-handle"
+          on:click={() => setAssistantHidden(true)}
+          aria-label="Collapse AI Assistant"
+          title="Hide AI Assistant"
+        >
+          <ChevronRight width="18" height="18" />
+        </button>
+        <div class="split-right overflow-hidden">
+          <div class="assistant-panel-content overflow-y-auto">
+            <AssistantLLM />
+          </div>
+        </div>
       {/if}
-    </div>
+    {/if}
   </div>
+
+  {#if showAssistantPeek}
+    <button
+      class="assistant-peek btn btn-light border shadow-sm icon-btn"
+      on:click={() => setAssistantHidden(false)}
+      aria-label="Expand AI Assistant"
+      title="Show AI Assistant"
+      type="button"
+    >
+      <ChevronLeft width="20" height="20" />
+    </button>
+  {/if}
 
   {#if !showSSH}
     <div class="position-fixed bottom-0 start-50 translate-middle-x" style="z-index: 1050;">
@@ -206,7 +301,14 @@
 {#if sshInitialised}
   <div class="row flex-grow-1 mx-0 bg-black {!showSSH ? 'visually-hidden' : ''}" style="height: {sshHeight}vh">
     <!-- eslint-disable-next-line svelte/valid-compile -->
-    <div class="bg-secondary" on:mousedown={startSshResizing} style="height: 5px; cursor: row-resize;"></div>
+    <div
+      class="bg-secondary"
+      on:mousedown={startSshResizing}
+      role="separator"
+      aria-label="Resize terminal panel"
+      aria-orientation="horizontal"
+      style="height: 5px; cursor: row-resize;"
+    ></div>
 
     <div class="mx-1 col px-0" style="height: calc(100% - 5px)">
       <SSH bind:resize={resizeTerminalContentFunc} on:hide={toggleShowSSH} />
