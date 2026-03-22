@@ -6,6 +6,7 @@ export const isLoading = writable(false);
 export const classes = writable(null);
 export const challenges = writable(null);
 export const campaigns = writable(null);
+export const plugins = writable(null);
 
 export const storageBackedWritable = (key, defaultData) => {
   const store = writable(localStorage.getItem(key) ?? defaultData);
@@ -59,4 +60,16 @@ export const setChallengeRunning = (challengeId, campaignId, running) => {
       return challs;
     });
   }
+};
+
+export const setPluginRunning = (pluginId, running) => {
+  plugins.update((items) => {
+    if (!items) return items;
+
+    const plugin = items.find((item) => item.id === pluginId);
+    if (!plugin) return items;
+    plugin.running = running;
+    plugin.runtime_error = '';
+    return items;
+  });
 };

@@ -7,12 +7,15 @@ import uuid
 from functools import wraps
 from pathlib import Path
 from typing import List
+from urllib import error as urllib_error
+from urllib import request as urllib_request
 
-from quart import Quart, request, send_from_directory, session, jsonify
+from quart import Quart, Response, jsonify, request, send_from_directory, session
 
 import db
 import docker
 import llm
+import plugins
 from config import getenv
 
 
@@ -26,7 +29,12 @@ def get_dirs(parent: str) -> List[str]:
 # load challenges from files and bootstrap DB
 
 
-def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=getenv('CLASS_DIR') or '/classes', parent_campaign_dir=getenv('CAMPAIGN_DIR') or '/campaigns'):
+def init(
+        parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges',
+        parent_cl_dir=getenv('CLASS_DIR') or '/classes',
+        parent_campaign_dir=getenv('CAMPAIGN_DIR') or '/campaigns',
+        parent_plugin_dir=getenv('PLUGIN_DIR') or '/plugins',
+):
     # this file works as a check to know if DB was already bootstrapped or not
     # because otherwise this code could run multiple times if the container was restarted
     file = Path(".was_db_inited")
@@ -107,6 +115,18 @@ def init(parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges', parent_cl_dir=g
             "google_doc_url", ""), class_data.get("yt_recording_url", "")
         db.insert_class_data(id, name, desc, dir, doc_url, yt_url, starting_time)
 
+    for plugin in plugins.discover_plugins(parent_plugin_dir):
+        db.insert_plugin_data(
+            plugin['id'],
+            plugin['name'],
+            plugin['description'],
+            plugin['version'],
+            plugin['dir'],
+            plugin['ui_url'],
+            plugin['valid'],
+            plugin['validation_errors'],
+        )
+
     file.touch()
     eprint("DB successfully initialised.")
 
@@ -159,7 +179,8 @@ async def live():
 
 @app.after_serving
 async def shutdown():
-    eprint("Initiating graceful shutdown - stopping all challenges and classes...")
+    eprint("Initiating graceful shutdown - stopping all plugins, challenges and classes...")
+    await plugins_stop_all()
     await classes_stop_all()
     await challenges_stop_all()
 
@@ -170,6 +191,112 @@ async def shutdown():
 async def root():
     return await app.send_static_file('index.html')
 
+
+HOP_BY_HOP_HEADERS = {
+    'connection',
+    'content-length',
+    'host',
+    'keep-alive',
+    'proxy-authenticate',
+    'proxy-authorization',
+    'te',
+    'trailers',
+    'transfer-encoding',
+    'upgrade',
+}
+
+
+def proxy_request(target_url: str, method: str, headers: dict, body: bytes) -> dict:
+    request_data = body if body else None
+    upstream_request = urllib_request.Request(
+        target_url,
+        data=request_data,
+        headers=headers,
+        method=method,
+    )
+
+    try:
+        with urllib_request.urlopen(upstream_request, timeout=30) as response:
+            return {
+                'status': response.status,
+                'headers': response.getheaders(),
+                'body': response.read(),
+            }
+    except urllib_error.HTTPError as exc:
+        return {
+            'status': exc.code,
+            'headers': list(exc.headers.items()),
+            'body': exc.read(),
+        }
+
+
+def plugin_to_public(plugin: dict) -> dict:
+    public_plugin = dict(plugin)
+    public_plugin['has_ui'] = bool(public_plugin.get('ui_url'))
+    public_plugin['proxy_url'] = f"/plugins/{public_plugin['id']}/" if public_plugin.get('ui_url') else ''
+    public_plugin['running'] = False
+    public_plugin['runtime_error'] = ''
+
+    if public_plugin['valid']:
+        try:
+            public_plugin['running'] = docker.is_up(public_plugin['dir'])
+        except Exception as exc:
+            public_plugin['runtime_error'] = str(exc)
+
+    del public_plugin['dir']
+    del public_plugin['ui_url']
+    return public_plugin
+
+
+@app.route('/plugins/<plugin_id>/', defaults={'proxied_path': ''}, methods=['DELETE', 'GET', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT'])
+@app.route('/plugins/<plugin_id>/<path:proxied_path>', methods=['DELETE', 'GET', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT'])
+@manage_session
+async def plugins_proxy(plugin_id: str, proxied_path: str):
+    plugin = db.get_plugin(plugin_id)
+    if not plugin:
+        return 'Plugin not found', 404
+    if not plugin['valid']:
+        return jsonify({'errors': plugin['validation_errors']}), 400
+    if not plugin['ui_url']:
+        return 'This plugin does not expose a UI', 404
+
+    target_url = plugins.get_proxy_target(plugin, proxied_path, request.query_string)
+    if not target_url:
+        return 'This plugin does not expose a UI', 404
+
+    body = await request.get_data()
+    headers = {
+        key: value
+        for key, value in request.headers.items()
+        if key.lower() not in HOP_BY_HOP_HEADERS
+    }
+    headers['X-Forwarded-Host'] = request.host
+    headers['X-Forwarded-Proto'] = request.scheme
+    headers['X-Forwarded-Prefix'] = f"/plugins/{plugin_id}"
+
+    try:
+        proxied_response = await asyncio.to_thread(
+            proxy_request,
+            target_url,
+            request.method,
+            headers,
+            body,
+        )
+    except Exception as exc:  # pragma: no cover - exercised only with live proxy target
+        eprint(f"error proxying plugin {plugin_id}: {exc}")
+        return f"Could not reach plugin UI: {exc}", 502
+
+    response = Response(proxied_response['body'], status=proxied_response['status'])
+    for key, value in proxied_response['headers']:
+        if key.lower() in HOP_BY_HOP_HEADERS:
+            continue
+        if key.lower() == 'content-type':
+            response.content_type = value
+            continue
+        response.headers.add(key, value)
+
+    return response
+
 # Static files
 
 
@@ -178,6 +305,82 @@ async def root():
 async def static_files(filename):
     return await send_from_directory(app.static_folder, filename)
 
+
+# ======================================
+# ||             Plugins              ||
+# ======================================
+@app.route('/api/plugins', methods=['GET'])
+@manage_session
+async def plugins_get():
+    plugins_from_db = db.get_plugins()
+    return jsonify([plugin_to_public(plugin) for plugin in plugins_from_db])
+
+
+@app.route('/api/plugins/<plugin_id>', methods=['GET'])
+@manage_session
+async def plugin_get(plugin_id: str):
+    plugin = db.get_plugin(plugin_id)
+    if not plugin:
+        return 'Plugin not found', 404
+    return jsonify(plugin_to_public(plugin))
+
+
+@app.route('/api/plugins/<plugin_id>/start', methods=['POST'])
+@manage_session
+async def plugin_start(plugin_id: str):
+    plugin = db.get_plugin(plugin_id)
+    if not plugin:
+        return 'Plugin not found', 404
+    if not plugin['valid']:
+        return jsonify({'errors': plugin['validation_errors']}), 400
+
+    try:
+        eprint(f"Let's start a plugin with id: '{plugin_id}'")
+        docker.stop_compose(plugin['dir'])
+        docker.start_compose(plugin['dir'])
+    except Exception as exc:
+        eprint(f"error starting a plugin ({plugin_id}): {exc}")
+        return f"error starting a plugin ({plugin_id}): {exc}", 500
+
+    return 'Plugin started! 🎉'
+
+
+@app.route('/api/plugins/<plugin_id>/stop', methods=['POST'])
+@manage_session
+async def plugin_stop(plugin_id: str):
+    plugin = db.get_plugin(plugin_id)
+    if not plugin:
+        return 'Plugin not found', 404
+    if not plugin['valid']:
+        return jsonify({'errors': plugin['validation_errors']}), 400
+
+    try:
+        eprint(f"Let's stop a plugin with id: '{plugin_id}'")
+        docker.stop_compose(plugin['dir'])
+    except Exception as exc:
+        eprint(f"error stopping a plugin ({plugin_id}): {exc}")
+        return f"error stopping a plugin ({plugin_id}): {exc}", 500
+
+    return 'Plugin stopped'
+
+
+async def plugins_stop_all():
+    discovered_plugins = db.get_plugins()
+
+    eprint("Stopping all plugins")
+    for plugin in discovered_plugins:
+        if not plugin['valid']:
+            continue
+
+        plugin_id = plugin['id']
+        try:
+            eprint(f"Let's stop a plugin with id: '{plugin_id}'")
+            docker.stop_compose(plugin['dir'])
+        except Exception as exc:
+            eprint(f"error stopping a plugin ({plugin_id}): {exc}")
+            return f"error stopping a plugin ({plugin_id}): {exc}", 500
+
+    return 'All plugins stopped! 🎉'
 
 # ======================================
 # ||             Classes              ||

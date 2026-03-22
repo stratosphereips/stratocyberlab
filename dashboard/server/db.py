@@ -73,6 +73,17 @@ def init_db_tables():
             UNIQUE(session, task_id, challenge_id)
         );
         """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS plugins (
+            plugin_id TEXT NOT NULL PRIMARY KEY,
+            plugin_name TEXT NOT NULL,
+            plugin_description TEXT NOT NULL,
+            plugin_version TEXT NOT NULL,
+            plugin_dir TEXT NOT NULL,
+            ui_url TEXT NOT NULL,
+            valid BOOLEAN NOT NULL,
+            validation_errors TEXT NOT NULL
+        );
+        """)
     conn.commit()
     conn.close()
 
@@ -82,6 +93,15 @@ def insert_class_data(id: str, name: str, desc: str, cl_dir: str, doc_url: str, 
     cursor = conn.cursor()
     q = 'INSERT INTO classes (id, name, description, dir, google_doc_url, yt_recording_url, starting_time) VALUES (?, ?, ?, ?, ?, ?, ?)'
     cursor.execute(q, (id, name, desc, cl_dir, doc_url, yt_url, starting_time))
+    conn.commit()
+
+
+def insert_plugin_data(id: str, name: str, desc: str, version: str, plugin_dir: str, ui_url: str, valid: bool, validation_errors: List[str]):
+    conn = get_db()
+    cursor = conn.cursor()
+    q = 'INSERT INTO plugins (plugin_id, plugin_name, plugin_description, plugin_version, plugin_dir, ui_url, valid, validation_errors) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    p = (id, name, desc, version, plugin_dir, ui_url, valid, json.dumps(validation_errors))
+    cursor.execute(q, p)
     conn.commit()
 
 
@@ -105,6 +125,66 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
     res = [dict(zip(columns, row)) for row in rows]
 
     return res
+
+
+def _parse_plugins(rows, description) -> List[Dict]:
+    columns = [column[0] for column in description]
+    plugins = [dict(zip(columns, row)) for row in rows]
+
+    for plugin in plugins:
+        plugin['validation_errors'] = json.loads(plugin.get('validation_errors', '[]') or '[]')
+        plugin['valid'] = bool(plugin.get('valid'))
+
+    return plugins
+
+
+def get_plugins() -> List[Dict]:
+    conn = get_db()
+    cursor = conn.cursor()
+    q = """
+    SELECT
+        plugin_id as id,
+        plugin_name as name,
+        plugin_description as description,
+        plugin_version as version,
+        plugin_dir as dir,
+        ui_url,
+        valid,
+        validation_errors
+    FROM plugins
+    ORDER BY plugin_id
+    """
+    cursor.execute(q)
+    rows = cursor.fetchall()
+    conn.close()
+
+    return _parse_plugins(rows, cursor.description)
+
+
+def get_plugin(plugin_id: str) -> Dict | None:
+    conn = get_db()
+    cursor = conn.cursor()
+    q = """
+    SELECT
+        plugin_id as id,
+        plugin_name as name,
+        plugin_description as description,
+        plugin_version as version,
+        plugin_dir as dir,
+        ui_url,
+        valid,
+        validation_errors
+    FROM plugins
+    WHERE plugin_id = ?
+    """
+    cursor.execute(q, (plugin_id, ))
+    rows = cursor.fetchall()
+    conn.close()
+
+    plugins = _parse_plugins(rows, cursor.description)
+    if plugins:
+        return plugins[0]
+    return None
 
 
 def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str, tags: List[str], campaign_id: str | None = None):

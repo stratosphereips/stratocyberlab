@@ -1,0 +1,16 @@
+services:
+  control-plane:
+    build: .
+    container_name: scl-plugin-observability-control-plane
+    ports:
+      - "127.0.0.1:9001:9001"
+    stop_signal: SIGINT
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - playground-net
+
+networks:
+  playground-net:
+    external: true
+    name: playground-net

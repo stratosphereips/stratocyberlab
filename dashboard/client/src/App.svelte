@@ -6,9 +6,9 @@
   import { onMount } from 'svelte';
   import ClassDoc from './ClassDoc.svelte';
   import Snowfall from './Snowfall.svelte';
-  import { challenges, classes, campaigns } from './stores';
+  import { challenges, classes, campaigns, plugins } from './stores';
   import { chosenClass } from './routing';
-  import { fetchChallenges, fetchClasses, fetchCampaigns } from './fetch';
+  import { fetchChallenges, fetchClasses, fetchCampaigns, fetchPlugins } from './fetch';
   import TopNavBar from './TopNavBar.svelte';
 
   let showSSH = false;
@@ -27,6 +27,7 @@
     fetchChallenges().then((loadedChallenges) => ($challenges = loadedChallenges));
     fetchClasses().then((loadedClasses) => ($classes = loadedClasses));
     fetchCampaigns().then((loadedCampaigns) => ($campaigns = loadedCampaigns));
+    fetchPlugins().then((loadedPlugins) => ($plugins = loadedPlugins));
   });
 
   let resizeTerminalContentFunc;

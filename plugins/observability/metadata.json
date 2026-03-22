@@ -1,0 +1,7 @@
+{
+  "id": "observability",
+  "name": "Observability",
+  "description": "Reference plugin that lists running StratoCyberLab containers through the Docker socket.",
+  "version": "1.0.0",
+  "ui_url": "http://scl-plugin-observability-control-plane:9001/"
+}

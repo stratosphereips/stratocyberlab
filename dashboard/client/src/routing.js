@@ -1,5 +1,5 @@
 import { derived, readable } from 'svelte/store';
-import { campaigns, challenges, classes, loadSingleCampaign } from './stores';
+import { campaigns, challenges, classes, loadSingleCampaign, plugins } from './stores';
 
 export const navigate = (path) => {
   location.hash = path;
@@ -8,6 +8,8 @@ export const navigate = (path) => {
 export const chooseChallenge = (id) => navigate(`challenge/${id}`);
 
 export const chooseClass = (id) => navigate(`class/${id}`);
+
+export const choosePlugin = (id) => navigate(`plugin/${id}`);
 
 export const chooseCampaignStep = (campaignId, stepId) => navigate(`campaign/${campaignId}/${stepId}`);
 
@@ -31,6 +33,13 @@ export const chosenClass = derived([classes, path], ([classes, path]) => {
   if (!match) return null;
 
   return classes?.find((cls) => cls.id === match[1]) ?? null;
+});
+
+export const chosenPlugin = derived([plugins, path], ([plugins, path]) => {
+  const match = path.match(/^#plugin\/(.+)$/);
+  if (!match) return null;
+
+  return plugins?.find((plugin) => plugin.id === match[1]) ?? null;
 });
 
 export const chosenTipsAndTricks = derived([path], ([path]) => {

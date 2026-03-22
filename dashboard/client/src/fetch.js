@@ -74,6 +74,23 @@ export async function fetchCampaigns() {
   }
 }
 
+export async function fetchPlugins() {
+  try {
+    const res = await fetch(`/api/plugins`);
+    const plugins = await res.json();
+
+    if (res.status !== 200) {
+      throw new Error(`Error: request failed with HTTP status ${res.status}: ${await res.text()}`);
+    }
+
+    plugins.sort((a, b) => a.name.localeCompare(b.name));
+    return plugins;
+  } catch (err) {
+    console.error(err);
+    alert(err instanceof Error ? err.message : err);
+  }
+}
+
 export async function fetchSingleCampaign(campaignId) {
   try {
     const res = await fetch(`/api/campaigns/${campaignId}`);

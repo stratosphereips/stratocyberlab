@@ -1,14 +1,23 @@
 <script>
   // removed slide import to kill animations
   import CollapsibleSection from './components/CollapsibleSection.svelte';
-  import { challenges, classes, campaigns } from './stores';
-  import { chooseChallenge, chooseClass, chosenClass, chosenChallenge, chooseCampaignDetail } from './routing';
+  import { challenges, classes, campaigns, plugins } from './stores';
+  import {
+    chooseChallenge,
+    chooseClass,
+    choosePlugin,
+    chosenClass,
+    chosenChallenge,
+    chosenPlugin,
+    chooseCampaignDetail,
+  } from './routing';
   import CampaignStepList from './campaigns/CampaignStepList.svelte';
 
   // Heroicons (outline)
   import {
     AcademicCap, // Classes
     PuzzlePiece, // Challenges
+    Wrench,
     Flag, // Campaigns
     ChevronLeft, // Collapse
     ChevronRight, // Expand
@@ -80,7 +89,7 @@
           <ChevronLeft width="18" height="18" />
         </button>
 
-        {#if !($challenges && $classes)}
+        {#if !($challenges && $classes && $plugins)}
           <div class="d-flex align-items-center justify-content-center py-5">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
@@ -132,6 +141,27 @@
                     <span class="badge {difficulty_background(ch.difficulty)} rounded-pill text-capitalize">
                       {ch.difficulty}
                     </span>
+                  </button>
+                </li>
+              {/each}
+            </CollapsibleSection>
+
+            <!-- Plugins -->
+              <CollapsibleSection title="Click to expand plugins list" id="pluginList" label="Plugins" icon={Wrench}>
+              {#each $plugins as plugin}
+                <li class="mb-1">
+                  <button
+                    on:click={() => choosePlugin(plugin.id)}
+                    type="button"
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 rounded-2 {$chosenPlugin ===
+                    plugin
+                      ? 'fw-bold'
+                      : ''}"
+                  >
+                    <span class="text-truncate">{plugin.name}</span>
+                    {#if !plugin.valid}
+                      <span class="badge text-bg-danger rounded-pill">Invalid</span>
+                    {/if}
                   </button>
                 </li>
               {/each}

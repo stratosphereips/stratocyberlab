@@ -26,6 +26,7 @@ StratoCyberLab (SCL) is a local cyber range to test and practice your offensive 
 * 🌐 A web interface to manage challenges and play.
 * 💻 Solve all challenges from the web interface using the built-in WebSSH terminal.
 * 🤖 AI-assisted: the web interface includes a local LLM chat (using _Ollama_) to assist your hacking. You can choose any Ollama model.
+* 🧑‍🔧 Support for flexible third-party plugins to add any custom behavior into the SCL.
 
 ## Requirements
 
@@ -72,6 +73,17 @@ git config --global core.autocrlf false
 git config --global core.eol lf
 ```
 
+## Plugins
+
+Plugins are third party projects adding custom features to SCL. 
+
+To start using plugins, clone any plugin into the ./plugins directory and restart SCL.
+
+To see a more detailed documentation regarding plugins, see [./docs/plugins.md](./docs/plugins.md).
+
+*Important Note: most plugins will have access to docker socket meaning plugins have theoretical access as root to your host machine. Be completely sure you fully trust all plugins you intend to use!*
+
+
 ## Development
 
 We appreciate all **PRs** with **new challenges** or bug fixes.
@@ -81,5 +93,3 @@ Please refer to a separate Development documentation at [./docs/development.md](
 ## Architecture Diagram
 
 ![StratoCyberLab (SCL) - Architecture](https://github.com/user-attachments/assets/182aebd9-0488-45bb-80db-32e97decc7a7)
-
-

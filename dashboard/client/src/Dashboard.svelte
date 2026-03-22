@@ -2,12 +2,14 @@
   import ChallengeDetail from './ChallengeDetail.svelte';
   import ClassDetail from './ClassDetail.svelte';
   import Introduction from './Introduction.svelte';
+  import PluginDetail from './PluginDetail.svelte';
   import SideNavBar from './SideNavBar.svelte';
   import {
     chosenChallenge,
     chosenClass,
     chosenCampaignDetail,
     chosenCampaignStep,
+    chosenPlugin,
     chosenTipsAndTricks,
   } from './routing';
   import CampaignStep from './campaigns/CampaignStep.svelte';
@@ -25,6 +27,8 @@
       <ChallengeDetail challenge={$chosenChallenge} />
     {:else if $chosenClass}
       <ClassDetail curClass={$chosenClass} />
+    {:else if $chosenPlugin}
+      <PluginDetail plugin={$chosenPlugin} />
     {:else if $chosenCampaignDetail}
       <CampaignDetail campaign={$chosenCampaignDetail} />
     {:else if $chosenCampaignStep}

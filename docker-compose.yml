@@ -32,6 +32,7 @@ services:
       - ./classes:/classes
       - ./challenges:/challenges
       - ./campaigns:/campaigns
+      - ./plugins:/plugins
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost:80/\"); assert response.status_code == 200'"]
