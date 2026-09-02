@@ -111,6 +111,9 @@ To run all tests, use script `run_tests.sh`. The script starts the base lab, the
 campaign challenge in turn. It runs an existing `auto-solve.sh` from within the hackerlab container and stops the
 challenge before proceeding. Challenges without an auto-solver are still started and stopped to verify their setup.
 
+Use `--only-challenges` or `--only-campaigns` to limit the category under test. To test one directory, pass its
+repository-relative path with `--challenger-dir <dir>`. Run `./run_tests.sh --help` for complete CLI usage.
+
 ## Code quality
 
 We use linters and auto formatters to maintain code quality in this repository.

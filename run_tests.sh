@@ -9,6 +9,85 @@ LABPORT=2222
 CHALLENGES_DIR='challenges'
 CAMPAIGNS_DIR='campaigns'
 
+show_help () {
+    echo "Usage: $0 [OPTION]"
+    echo ""
+    echo "Run StratoCyberLab challenges and their auto-solvers one at a time."
+    echo "With no option, both standalone challenges and campaign steps are tested."
+    echo ""
+    echo "Options:"
+    echo "  --only-challenges       Test only standalone challenges"
+    echo "  --only-campaigns        Test only campaign steps"
+    echo "  --challenge-dir <dir>  Test only the specified challenge directory"
+    echo "  --help                  Show this help message"
+    echo ""
+    echo "Only one selection option may be used at a time."
+}
+
+only_challenges=false
+only_campaigns=false
+challenge_dir_option=''
+selection_count=0
+
+while (( $# > 0 )); do
+    case "$1" in
+        --help)
+            show_help
+            exit 0
+            ;;
+        --only-challenges)
+            only_challenges=true
+            ((selection_count += 1))
+            shift
+            ;;
+        --only-campaigns)
+            only_campaigns=true
+            ((selection_count += 1))
+            shift
+            ;;
+        --challenge-dir)
+            if (( $# < 2 )); then
+                echo "Error: --challenge-dir requires a directory." >&2
+                show_help
+                exit 1
+            fi
+            challenge_dir_option=${2%/}
+            ((selection_count += 1))
+            shift 2
+            ;;
+        *)
+            echo "Error: unknown option '$1'." >&2
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+if (( selection_count > 1 )); then
+    echo "Error: only one selection option may be used at a time." >&2
+    show_help
+    exit 1
+fi
+
+if [ -n "$challenge_dir_option" ]; then
+    case "$challenge_dir_option" in
+        "$CHALLENGES_DIR"/*|"$CAMPAIGNS_DIR"/*/*)
+            ;;
+        *)
+            echo "Error: --challenge-dir must point to a challenge or campaign-step directory." >&2
+            show_help
+            exit 1
+            ;;
+    esac
+
+    if [ ! -f "$challenge_dir_option/meta.json" ] || \
+       [ ! -f "$challenge_dir_option/docker-compose.yml" ]; then
+        echo "Error: '$challenge_dir_option' is not a valid challenge directory." >&2
+        show_help
+        exit 1
+    fi
+fi
+
 for command in docker curl sshpass; do
     if ! command -v "$command" &> /dev/null; then
         echo "Error: $command is not installed. Please install it and try again." >&2
@@ -229,31 +308,42 @@ if ! wait_for_dashboard; then
 fi
 echo "Project started"
 
-for challenge_dir in "$CHALLENGES_DIR"/*/; do
-    if [ "${challenge_dir%/}" = "$CHALLENGES_DIR/template" ]; then
-        continue
-    fi
-
-    if ! check_challenge "$challenge_dir"; then
+if [ -n "$challenge_dir_option" ]; then
+    if ! check_challenge "$challenge_dir_option"; then
         exit 3
     fi
-done
+else
+    if [ "$only_campaigns" != true ]; then
+        for challenge_dir in "$CHALLENGES_DIR"/*/; do
+            if [ "${challenge_dir%/}" = "$CHALLENGES_DIR/template" ]; then
+                continue
+            fi
 
-for campaign_dir in "$CAMPAIGNS_DIR"/*/; do
-    if [ "${campaign_dir%/}" = "$CAMPAIGNS_DIR/example" ]; then
-        continue
+            if ! check_challenge "$challenge_dir"; then
+                exit 3
+            fi
+        done
     fi
 
-    for challenge_dir in "$campaign_dir"*/; do
-        if [ ! -f "$challenge_dir/meta.json" ] || [ ! -f "$challenge_dir/docker-compose.yml" ]; then
-            continue
-        fi
+    if [ "$only_challenges" != true ]; then
+        for campaign_dir in "$CAMPAIGNS_DIR"/*/; do
+            if [ "${campaign_dir%/}" = "$CAMPAIGNS_DIR/example" ]; then
+                continue
+            fi
 
-        if ! check_challenge "$challenge_dir"; then
-            exit 3
-        fi
-    done
-done
+            for challenge_dir in "$campaign_dir"*/; do
+                if [ ! -f "$challenge_dir/meta.json" ] || \
+                   [ ! -f "$challenge_dir/docker-compose.yml" ]; then
+                    continue
+                fi
+
+                if ! check_challenge "$challenge_dir"; then
+                    exit 3
+                fi
+            done
+        done
+    fi
+fi
 
 cleanup
 trap - EXIT
