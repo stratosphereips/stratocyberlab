@@ -3,7 +3,7 @@ COPY . /tmp/
 WORKDIR /tmp
 RUN mvn clean package
 
-FROM openjdk:8-alpine
+FROM amazoncorretto:8-alpine
 RUN <<EOD
 apk add bash nmap nmap-scripts openssh-client sshpass curl sudo
 mkdir /app
