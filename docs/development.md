@@ -107,8 +107,9 @@
 
 ## Testing
 
-To run all tests, use script `run_tests.sh`. The script starts the lab, fires up all challenges and runs all existing
-`auto-solve.sh` scripts from within the hackerlab container.
+To run all tests, use script `run_tests.sh`. The script starts the base lab, then starts each standalone challenge and
+campaign challenge in turn. It runs an existing `auto-solve.sh` from within the hackerlab container and stops the
+challenge before proceeding. Challenges without an auto-solver are still started and stopped to verify their setup.
 
 ## Code quality
 
