@@ -12,10 +12,67 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
+project_started=false
+cleanup_done=false
+cleanup_failed=false
+
+show_dashboard_logs () {
+    echo ""
+    echo "Last 20 lines from scl-dashboard:"
+    docker logs --tail 20 scl-dashboard 2>&1 || \
+        echo "WARNING - could not read scl-dashboard logs" >&2
+}
+
+cleanup () {
+    if [ "$cleanup_done" = true ] || [ "$project_started" != true ]; then
+        return
+    fi
+    cleanup_done=true
+
+    echo ""
+    echo "Stopping all challenges"
+    local response
+    response=$(curl -sS --max-time 120 -X POST http://127.0.0.1/api/challenges/stop/all 2>&1)
+    if [ "$response" != "All stopped! 🎉" ]; then
+        echo "WARNING - error stopping all challenges, got response: $response" >&2
+        cleanup_failed=true
+    else
+        echo "All challenges stopped"
+    fi
+
+    echo ""
+    echo "Stopping the project"
+    if ! docker compose down; then
+        echo "WARNING - error stopping the project" >&2
+        cleanup_failed=true
+    else
+        echo "Project stopped"
+    fi
+}
+
+on_exit () {
+    local status=$?
+    trap - EXIT
+    cleanup
+    if [ "$status" -eq 0 ] && [ "$cleanup_failed" = true ]; then
+        status=3
+    fi
+    exit "$status"
+}
+
+trap on_exit EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
 # Fire up all the containers
 echo ""
 echo "Starting the project"
-docker compose up -d --build --force-recreate
+project_started=true
+if ! docker compose up -d --build --force-recreate; then
+    echo "Error starting the project" >&2
+    show_dashboard_logs
+    exit 3
+fi
 echo "Project started"
 
 # Wait for the dashboard to initialize
@@ -34,6 +91,7 @@ echo "Starting all challenges"
 response=$(curl -s -X POST http://127.0.0.1/api/challenges/start/all)
 if [ "$response" != "All started! 🎉" ]; then
     echo "Error starting all the challenges, got response: $response"
+    show_dashboard_logs
     exit 3
 fi
 echo "All challenges started"
@@ -117,19 +175,12 @@ for campaign_dir in "$CAMPAIGNS_DIR"/*/; do
     done
 done
 
-echo ""
-echo "Stopping all challenges"
-response=$(curl -s -X POST http://127.0.0.1/api/challenges/stop/all)
-if [ "$response" != "All stopped! 🎉" ]; then
-    echo "Error stopping all the challenges, got response: $response"
+cleanup
+trap - EXIT
+
+if [ "$cleanup_failed" = true ]; then
     exit 3
 fi
-echo "All challenges stopped"
-
-echo ""
-echo "Stopping the project"
-docker compose down
-echo "Project stopped"
 
 echo ""
 if (( ${#failed[@]} != 0 )); then
