@@ -17,7 +17,9 @@ RUN headref=$(awk '{ print $2 }' .git/HEAD) \
 # Stage 2: Download Python dependencies
 FROM python:3.12-slim AS download-python
 
-COPY --from=ghcr.io/astral-sh/uv:0.12.9@sha256:8b940d3a9d65bed080436972241af2e21c84b5e8c9193f7014ed71479ee795ff /uv /bin/uv
+# Install the pinned uv release from PyPI. Building from the GHCR image fails
+# in environments where ghcr.io's token service is unavailable.
+RUN pip install --no-cache-dir uv==0.12.9
 
 COPY dashboard/server/requirements.txt .
 ENV UV_COMPILE_BYTECODE=1 \
