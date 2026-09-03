@@ -29,8 +29,9 @@ async def list_local_models() -> List[Dict[str, Any]]:
     models = data.get("models") or []
     out = []
     for m in models:
-      # 'size' is present in recent ollama; default to 0 if missing
-      out.append({"name": m.get("name"), "size": int(m.get("size") or 0)})
+        # 'size' is present in recent ollama; default to 0 if missing
+        name = m.get("model") or m.get("name")
+        out.append({"name": name, "size": int(m.get("size") or 0)})
     # dedupe by name keeping largest size (rare registry dupes)
     seen = {}
     for m in out:

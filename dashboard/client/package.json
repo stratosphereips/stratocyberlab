@@ -8,20 +8,20 @@
     "start": "./serve.js public /api http://localhost:31415 --single"
   },
   "devDependencies": {
-    "@eslint/js": "^9.14.0",
-    "@rollup/plugin-commonjs": "^25.0.0",
-    "@rollup/plugin-eslint": "^9.0.5",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-terser": "^0.4.0",
-    "eslint": "^9.14.0",
-    "eslint-plugin-svelte": "^2.46.0",
-    "globals": "^15.12.0",
-    "http-proxy-middleware": "^2.0.0",
+    "@eslint/js": "^9.39.5",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-eslint": "^9.2.0",
+    "@rollup/plugin-node-resolve": "^15.3.1",
+    "@rollup/plugin-terser": "^1.0.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-svelte": "^3.23.0",
+    "globals": "^15.15.0",
+    "http-proxy-middleware": "^2.0.10",
     "polka": "^0.5.2",
-    "prettier": "3.3.3",
-    "prettier-plugin-svelte": "3.2.7",
-    "rollup": "^3.25.0",
-    "rollup-plugin-css-only": "^4.3.0",
+    "prettier": "3.9.6",
+    "prettier-plugin-svelte": "3.5.2",
+    "rollup": "^3.30.0",
+    "rollup-plugin-css-only": "^4.5.5",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.2.3",
     "svelte": "^4.2.20"
@@ -29,17 +29,16 @@
   "dependencies": {
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
-    "bootstrap": "^5.3.2",
-    "marked": "^14.1.2",
+    "bootstrap": "^5.3.8",
+    "marked": "^14.1.4",
     "sirv-cli": "^2.0.0",
-    "socket.io-client": "^4.7.5",
+    "socket.io-client": "^4.8.3",
     "svelte-heros": "^6.0.3",
-    "xterm": "^5.3.0",
-    "yaml": "^2.3.0"
+    "yaml": "^2.9.0"
   },
   "overrides": {
     "@rollup/plugin-eslint": {
-      "eslint": "^9.14.0"
+      "eslint": "^9.39.5"
     }
   }
 }

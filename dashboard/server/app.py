@@ -29,6 +29,8 @@ def get_dirs(parent: str) -> List[str]:
 # load challenges from files and bootstrap DB
 
 
+# The bootstrap routine intentionally handles all four dashboard content types.
+# pylint: disable-next=too-many-branches,too-many-statements
 def init(
         parent_ch_dir=getenv('CHALLENGE_DIR') or '/challenges',
         parent_cl_dir=getenv('CLASS_DIR') or '/classes',
@@ -64,7 +66,7 @@ def init(
             db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag, order=i)
 
     for camp_name in get_dirs(parent_campaign_dir):
-        if camp_name == '_template' or camp_name == 'example':
+        if camp_name in ('_template', 'example'):
             continue
 
         camp_dir = f'{parent_campaign_dir}/{camp_name}'
@@ -789,16 +791,16 @@ async def llm_delete_model(name):
 async def llm_current_model():
     if request.method == 'GET':
         return jsonify({"current_model": llm.get_current_model()})
-    else:
-        data = await request.get_json()
-        name = (data or {}).get('name', '').strip()
-        if not name:
-            return "Missing 'name' in body", 400
-        try:
-            await llm.set_current_model(name)
-            return "OK", 200
-        except Exception as e:
-            return str(e), 400
+
+    data = await request.get_json()
+    name = (data or {}).get('name', '').strip()
+    if not name:
+        return "Missing 'name' in body", 400
+    try:
+        await llm.set_current_model(name)
+        return "OK", 200
+    except Exception as e:
+        return str(e), 400
 
 
 @app.route('/api/llm/chat', methods=['POST'])
