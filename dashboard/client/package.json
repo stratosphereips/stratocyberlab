@@ -24,7 +24,7 @@
     "rollup-plugin-css-only": "^4.5.5",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.2.3",
-    "svelte": "^4.2.20"
+    "svelte": "^5.57.0"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.10.0",
