@@ -3,9 +3,10 @@
 # try to get the payload with all required data
 nc -lnvp 1337 > received.data 2> /dev/null
 
-# search for the 1st flag
-MATCH=`strings received.data | head -n1 | base64 -d 2> /dev/null | \
-       grep -o "BSY{a!sk&fjlhý76S5F9OUILFNRQKJLRHIUFKHAS}"`
+# The Base64 message ends at "=". Remove any printable bytes that strings(1)
+# joins from the following binary field before decoding it.
+MATCH=$(strings received.data | head -n1 | sed 's/=.*/=/' | base64 -d 2> /dev/null | \
+        grep -o "BSY{a!sk&fjlhý76S5F9OUILFNRQKJLRHIUFKHAS}")
 if [[ "$MATCH" == "" ]]
 then
     echo "Error - did not find a 1st base64 encoded flag in the received data"
@@ -52,5 +53,3 @@ fi
 
 echo "OK - tests passed"
 exit 0
-
-

@@ -37,10 +37,12 @@ Ncat: Connection from 172.20.0.67.
 Ncat: Connection from 172.20.0.67:49948.
 ```
 
-  2. decode the base64 encoded message to find 1st flag
+  2. Decode the Base64 encoded message to find the first flag. `sed` removes
+  anything after the Base64 message's ending `=` in case `strings` joins it
+  with printable bytes from the next field.
 ```bash
-root@hackerlab:~# strings received.data | head -n1 | base64 -d
-Oh finally you hear me!!! This is your flag BSY{a!sk&fjlhý76S5F9OUILFNRQKJLRHIUFKHAS}. Now, you might be interested in the rest of the messagebase64: invalid input```
+root@hackerlab:~# strings received.data | head -n1 | sed 's/=.*/=/' | base64 -d
+Oh finally you hear me!!! This is your flag BSY{a!sk&fjlhý76S5F9OUILFNRQKJLRHIUFKHAS}. Now, you might be interested in the rest of the message
 ```
 
   3. install binwalk, use it to extract the gzip and find the binary. Then use your favorite disassembler (gdb, ida, ghidra, ...) to find the implementation of the check and figure out a correct input (the 2nd flag)
