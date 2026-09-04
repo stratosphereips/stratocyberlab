@@ -5,6 +5,18 @@ import sys
 def start_compose(dir: str):
     file = f"{dir}/docker-compose.yml"
 
+    # Starting an already-built plugin must work offline. In particular, avoid
+    # asking registries for base-image metadata on every stop/start cycle.
+    result = subprocess.run(
+        ['docker-compose', '-f', file, 'up', '-d', '--no-build'],
+        stdout=sys.stdout,
+        stderr=sys.stderr
+    )
+    if result.returncode == 0:
+        return
+
+    # A newly installed plugin might not have a local image yet. Build only as
+    # a fallback, after the cache-only start proves insufficient.
     result = subprocess.run(
         ['docker-compose', '-f', file, 'up', '-d', '--build'],
         stdout=sys.stdout,
