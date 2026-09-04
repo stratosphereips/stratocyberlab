@@ -2,13 +2,21 @@ import subprocess
 import sys
 
 
-def start_compose(dir: str):
+def _compose_command(file: str, project_name: str = None) -> list[str]:
+    command = ['docker-compose', '-f', file]
+    if project_name:
+        command.extend(['--project-name', project_name])
+    return command
+
+
+def start_compose(dir: str, project_name: str = None):
     file = f"{dir}/docker-compose.yml"
+    command = _compose_command(file, project_name)
 
     # Starting an already-built plugin must work offline. In particular, avoid
     # asking registries for base-image metadata on every stop/start cycle.
     result = subprocess.run(
-        ['docker-compose', '-f', file, 'up', '-d', '--no-build'],
+        [*command, 'up', '-d', '--no-build'],
         stdout=sys.stdout,
         stderr=sys.stderr
     )
@@ -18,7 +26,7 @@ def start_compose(dir: str):
     # A newly installed plugin might not have a local image yet. Build only as
     # a fallback, after the cache-only start proves insufficient.
     result = subprocess.run(
-        ['docker-compose', '-f', file, 'up', '-d', '--build'],
+        [*command, 'up', '-d', '--build'],
         stdout=sys.stdout,
         stderr=sys.stderr
     )
@@ -26,11 +34,11 @@ def start_compose(dir: str):
         raise Exception("Error doing docker-compose up")
 
 
-def stop_compose(dir: str):
+def stop_compose(dir: str, project_name: str = None):
     file = f"{dir}/docker-compose.yml"
 
     result = subprocess.run(
-        ['docker-compose', '-f', file, 'down'],
+        [*_compose_command(file, project_name), 'down'],
         stdout=sys.stdout,
         stderr=sys.stderr
     )
@@ -38,12 +46,13 @@ def stop_compose(dir: str):
         raise Exception("Error doing docker-compose down")
 
 
-def is_up(dir: str) -> bool:
+def is_up(dir: str, project_name: str = None) -> bool:
     file = f"{dir}/docker-compose.yml"
+    command = _compose_command(file, project_name)
 
     result = subprocess.run(
-        f"docker-compose -f {file} ps --services --filter 'status=running'",
-        shell=True, capture_output=True, text=True
+        [*command, 'ps', '--services', '--filter', 'status=running'],
+        capture_output=True, text=True
     )
     if result.returncode != 0:
         raise Exception("Error reading all services")
@@ -54,7 +63,7 @@ def is_up(dir: str) -> bool:
         return False
 
     result = subprocess.run(
-        ['docker-compose', '-f', file, 'ps', "--services"],
+        [*command, 'ps', '--services'],
         capture_output=True, text=True
     )
     if result.returncode != 0:
