@@ -2,11 +2,28 @@ import subprocess
 import sys
 
 
+def _compose_command(file: str) -> list[str]:
+    return ['docker-compose', '-f', file]
+
+
 def start_compose(dir: str):
     file = f"{dir}/docker-compose.yml"
+    command = _compose_command(file)
 
+    # Starting an already-built plugin must work offline. In particular, avoid
+    # asking registries for base-image metadata on every stop/start cycle.
     result = subprocess.run(
-        ['docker-compose', '-f', file, 'up', '-d', '--build'],
+        [*command, 'up', '-d', '--no-build'],
+        stdout=sys.stdout,
+        stderr=sys.stderr
+    )
+    if result.returncode == 0:
+        return
+
+    # A newly installed plugin might not have a local image yet. Build only as
+    # a fallback, after the cache-only start proves insufficient.
+    result = subprocess.run(
+        [*command, 'up', '-d', '--build'],
         stdout=sys.stdout,
         stderr=sys.stderr
     )
@@ -18,7 +35,7 @@ def stop_compose(dir: str):
     file = f"{dir}/docker-compose.yml"
 
     result = subprocess.run(
-        ['docker-compose', '-f', file, 'down'],
+        [*_compose_command(file), 'down'],
         stdout=sys.stdout,
         stderr=sys.stderr
     )
@@ -28,10 +45,11 @@ def stop_compose(dir: str):
 
 def is_up(dir: str) -> bool:
     file = f"{dir}/docker-compose.yml"
+    command = _compose_command(file)
 
     result = subprocess.run(
-        f"docker-compose -f {file} ps --services --filter 'status=running'",
-        shell=True, capture_output=True, text=True
+        [*command, 'ps', '--services', '--filter', 'status=running'],
+        capture_output=True, text=True
     )
     if result.returncode != 0:
         raise Exception("Error reading all services")
@@ -42,7 +60,7 @@ def is_up(dir: str) -> bool:
         return False
 
     result = subprocess.run(
-        ['docker-compose', '-f', file, 'ps', "--services"],
+        [*command, 'ps', '--services'],
         capture_output=True, text=True
     )
     if result.returncode != 0:

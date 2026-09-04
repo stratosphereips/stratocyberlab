@@ -338,7 +338,6 @@ async def plugin_start(plugin_id: str):
 
     try:
         eprint(f"Let's start a plugin with id: '{plugin_id}'")
-        docker.stop_compose(plugin['dir'])
         docker.start_compose(plugin['dir'])
     except Exception as exc:
         eprint(f"error starting a plugin ({plugin_id}): {exc}")
