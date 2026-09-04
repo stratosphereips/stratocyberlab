@@ -72,7 +72,6 @@ Plugin authors are fully responsible for their own `docker-compose.yml`, includi
 - Plugin services should perform graceful shutdown by handling cleanly `SIGINT` signal (received when plugin stops) such as stopping dynamically started containers etc.
 - All containers defined in the plugin compose file, and any containers the plugin starts later, must use the `scl-plugin-<id>-<name>` prefix for observability and debugging reasons.
 - Starting a plugin reuses its locally built images so routine stop/start cycles work without registry access. If an image is not available locally, the dashboard retries the start with a build.
-- The dashboard uses the plugin metadata `id` as the Docker Compose project name, so image and container ownership stays consistent regardless of the plugin directory name or launch context.
 
 ## Reference Plugin
 

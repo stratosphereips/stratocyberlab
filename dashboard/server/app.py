@@ -241,9 +241,7 @@ def plugin_to_public(plugin: dict) -> dict:
 
     if public_plugin['valid']:
         try:
-            public_plugin['running'] = docker.is_up(
-                public_plugin['dir'], public_plugin['id']
-            )
+            public_plugin['running'] = docker.is_up(public_plugin['dir'])
         except Exception as exc:
             public_plugin['runtime_error'] = str(exc)
 
@@ -340,7 +338,7 @@ async def plugin_start(plugin_id: str):
 
     try:
         eprint(f"Let's start a plugin with id: '{plugin_id}'")
-        docker.start_compose(plugin['dir'], plugin_id)
+        docker.start_compose(plugin['dir'])
     except Exception as exc:
         eprint(f"error starting a plugin ({plugin_id}): {exc}")
         return f"error starting a plugin ({plugin_id}): {exc}", 500
@@ -359,7 +357,7 @@ async def plugin_stop(plugin_id: str):
 
     try:
         eprint(f"Let's stop a plugin with id: '{plugin_id}'")
-        docker.stop_compose(plugin['dir'], plugin_id)
+        docker.stop_compose(plugin['dir'])
     except Exception as exc:
         eprint(f"error stopping a plugin ({plugin_id}): {exc}")
         return f"error stopping a plugin ({plugin_id}): {exc}", 500
@@ -378,7 +376,7 @@ async def plugins_stop_all():
         plugin_id = plugin['id']
         try:
             eprint(f"Let's stop a plugin with id: '{plugin_id}'")
-            docker.stop_compose(plugin['dir'], plugin_id)
+            docker.stop_compose(plugin['dir'])
         except Exception as exc:
             eprint(f"error stopping a plugin ({plugin_id}): {exc}")
             return f"error stopping a plugin ({plugin_id}): {exc}", 500
