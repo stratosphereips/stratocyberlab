@@ -38,6 +38,10 @@ We estimate the minimum requirements to be **3 GB of disk** space and **2 GB of 
 ### Software
 The only requirement to run SCL is to have `docker (v>20.10)` installed.
 
+> **Security note for paranoid users:** For maximum isolation, run SCL inside a virtual machine. The dashboard requires access
+> to the Docker socket, which effectively gives it control of the host, and optional third-party plugins often request
+> the same access.
+
 ## How to start
 
 1. To start the lab, run:
