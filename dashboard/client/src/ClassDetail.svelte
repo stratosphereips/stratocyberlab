@@ -190,7 +190,7 @@
   <div class="alert alert-warning text-muted me-2" role="alert">
     <div class="fw-semibold mb-1">Before the class starts:</div>
     <ul class="mb-0">
-      <li>Update SCL to have the latest version including built-in study materials.</li>
+      <li>Update SCL to have the latest version of built-in study materials and optional educational environment.</li>
       {#if curClass.dir}
       <li>Start the class environment. Starting for the first time may take some time.</li>
       {/if}
