@@ -1,13 +1,57 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
   import { writable, get } from 'svelte/store';
   import { marked } from 'marked';
   import ExternalModels from './ExternalModels.svelte';
+  import TerminalContext from './TerminalContext.svelte';
+
+  export let terminalOpen = false;
+  export let getTerminalContext = async () => null;
+
+  let includeTerminalContext = true;
+  let previewOpen = false;
+  let previewContext = null;
+  let previewLoading = false;
+  let previewError = '';
+
+  $: if (!terminalOpen || !includeTerminalContext) {
+    previewOpen = false;
+    previewContext = null;
+    previewError = '';
+  }
+
+  async function previewTerminal() {
+    if (previewOpen) {
+      previewOpen = false;
+      previewContext = null;
+      previewError = '';
+      return;
+    }
+    previewLoading = true;
+    previewError = '';
+    try {
+      const context = await getTerminalContext();
+      if (terminalOpen && includeTerminalContext) {
+        previewContext = context;
+        previewOpen = true;
+      }
+    } catch {
+      previewError = 'Could not read terminal context. Try Preview again.';
+    } finally {
+      previewLoading = false;
+    }
+  }
 
   // ---- chat state (preserved rendering) ----
   let chatHistory = writable([]);
   let newMessage = '';
   let waitingForReply = false;
+  let messageList;
+
+  async function scrollChatToBottom() {
+    await tick();
+    if (messageList) messageList.scrollTop = messageList.scrollHeight;
+  }
 
   // ---- model + server state ----
   let currentModel = '';
@@ -124,12 +168,20 @@
   async function sendMessage() {
     if (!newMessage.trim() || waitingForReply) return;
 
-    chatHistory.update((h) => [...h, { role: 'user', content: newMessage }]);
-    const body = get(chatHistory);
+    const message = { role: 'user', content: newMessage };
     newMessage = '';
     waitingForReply = true;
 
     try {
+      if (terminalOpen && includeTerminalContext) {
+        const context = await getTerminalContext();
+        if (context && terminalOpen && includeTerminalContext) message.terminal_context = context;
+      }
+      chatHistory.update((h) => [...h, message]);
+      const body = get(chatHistory);
+      previewOpen = false;
+      previewContext = null;
+      await scrollChatToBottom();
       const response = await fetch('/api/llm/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -141,7 +193,9 @@
         throw new Error(t || `Chat failed (${response.status})`);
       }
       chatHistory.set(await response.json());
+      await scrollChatToBottom();
     } catch (err) {
+      if (!get(chatHistory).includes(message)) newMessage = message.content;
       alert(err);
     } finally {
       waitingForReply = false;
@@ -288,6 +342,12 @@
 
   .message-bubble {
     max-width: 92%;
+    min-width: 0;
+  }
+
+  .chat-composer {
+    max-height: 65%;
+    overflow-y: auto;
   }
 </style>
 
@@ -313,7 +373,7 @@
               refreshState();
             }}
           >
-            Manage models
+            Models
           </button>
           <button class="btn btn-outline-danger btn-sm" disabled={waitingForReply} on:click={clearChat}>
             Reset chat
@@ -347,17 +407,18 @@
       </div>
     {/if}
 
-    <div class="card-body d-flex flex-column p-0 overflow-y-auto">
+    <div class="card-body d-flex flex-column p-0 overflow-hidden" style="min-height: 0">
       {#if checking}
         <div class="d-flex align-items-center justify-content-center py-4">Loading…</div>
       {:else}
-        <div class="d-flex flex-column" style="flex: 1">
-          <div class="flex-grow-1 overflow-auto p-3">
-            {#each $chatHistory as { role, content }, index}
+        <div class="d-flex flex-column" style="flex: 1; min-height: 0">
+          <div class="flex-grow-1 overflow-auto p-3" style="min-height: 0" bind:this={messageList}>
+            {#each $chatHistory as { role, content, terminal_context }, index}
               {#if role === 'user'}
                 <div class="mb-2 d-flex justify-content-end">
                   <div class="message-bubble p-2 rounded-2 bg-danger-subtle text-body text-start">
                     {content}
+                    {#if terminal_context}<TerminalContext context={terminal_context} />{/if}
                   </div>
                 </div>
               {:else}
@@ -392,7 +453,53 @@
             {/if}
           </div>
 
-          <div class="input-group p-2 border-top bg-white">
+          <div class="chat-composer flex-shrink-0 p-2 border-top bg-white">
+            {#if terminalOpen}
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-1">
+                <div class="d-flex align-items-center gap-1">
+                  <label class="small d-flex align-items-center gap-2">
+                    <input
+                      type="checkbox"
+                      class="form-check-input m-0"
+                      bind:checked={includeTerminalContext}
+                      disabled={waitingForReply}
+                    />
+                    Include terminal context
+                  </label>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-link text-muted p-0"
+                    aria-label="Terminal context limits"
+                    title="Includes the latest 100 lines or 10,000 UTF-8 bytes, whichever limit is reached first. Captured when you send."
+                    >?</button
+                  >
+                </div>
+                {#if includeTerminalContext}
+                  <button
+                    class="btn btn-sm btn-link p-0"
+                    disabled={previewLoading || waitingForReply}
+                    aria-expanded={previewOpen}
+                    aria-controls="terminal-context-preview"
+                    on:click={previewTerminal}
+                  >
+                    {previewLoading ? 'Reading…' : 'Preview'}
+                  </button>
+                {/if}
+              </div>
+              {#if includeTerminalContext}
+                {#if previewError}<div class="small text-danger" role="alert">{previewError}</div>{/if}
+                {#if previewOpen}
+                  <div id="terminal-context-preview" class="mb-2">
+                    {#if previewContext}
+                      <TerminalContext context={previewContext} expanded={true} />
+                      <div class="small text-muted">Preview only; sending captures the latest output.</div>
+                    {:else}
+                      <div class="small text-muted">No terminal output available yet.</div>
+                    {/if}
+                  </div>
+                {/if}
+              {/if}
+            {/if}
             <textarea
               class="form-control bg-light"
               bind:value={newMessage}

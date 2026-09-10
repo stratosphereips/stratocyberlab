@@ -109,9 +109,9 @@
     <section class="mb-5">
       <h4>Keep SCL up-to-date</h4>
       <p class="mb-0">
-        The lab is constantly being improved with new features and bug fixes. The status in the top-right corner compares
-        your version with the latest available version on the GitHub. If the update is available, click
-        the status to see details and update instructions.
+        The lab is constantly being improved with new features and bug fixes. The status in the top-right corner
+        compares your version with the latest available version on the GitHub. If the update is available, click the
+        status to see details and update instructions.
       </p>
     </section>
 

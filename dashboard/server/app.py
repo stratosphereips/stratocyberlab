@@ -840,11 +840,6 @@ async def llm_current_model():
 async def llm_chat():
     try:
         body = await request.get_json()
-        if not isinstance(body, list) or any(
-                not isinstance(message, dict)
-                or message.get('role') not in ('user', 'assistant')
-                or not isinstance(message.get('content'), str) for message in body):
-            return 'Expected a list of text chat messages.', 400
         return await llm.chat_with_llm(body)
     except ValueError as exc:
         return str(exc), 400

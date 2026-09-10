@@ -6,6 +6,7 @@
   import { FitAddon } from '@xterm/addon-fit';
   import '@xterm/xterm/css/xterm.css';
   import { io } from 'socket.io-client';
+  import { captureTerminalContext } from './terminalContext.js';
 
   const dispatch = createEventDispatcher();
 
@@ -17,6 +18,7 @@
   let gearButtonRef;
 
   export let resize;
+  export let captureContext = async () => null;
 
   const DEFAULT_THEME_KEY = 'default';
   const THEME_STORAGE_KEY = 'ssh-terminal-theme';
@@ -230,6 +232,13 @@
     terminal.open(terminalContainer);
     fitAddon.fit();
 
+    captureContext = async () => {
+      const activeTerminal = terminal;
+      // Flush writes already queued by ssh_output before reading rendered cells.
+      await new Promise((resolve) => activeTerminal.write('', resolve));
+      return terminal === activeTerminal ? captureTerminalContext(activeTerminal) : null;
+    };
+
     function emitTerminalSize() {
       socket.emit('ssh_resize', {
         cols: terminal.cols,
@@ -275,7 +284,9 @@
   onDestroy(() => {
     if (terminal) {
       terminal.dispose();
+      terminal = null;
     }
+    captureContext = async () => null;
     if (ws) {
       ws.close();
     }

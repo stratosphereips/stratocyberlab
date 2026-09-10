@@ -130,6 +130,54 @@ class AssistantTests(unittest.IsolatedAsyncioTestCase):
         response = await self.client.post('/api/llm/chat', json={'messages': []})
         self.assertEqual(response.status_code, 400)
 
+    async def test_terminal_context_keeps_history_and_formats_both_providers(self):
+        snapshot = {'text': '  curl: connection refused\n<script>example</script>',
+                    'captured_at': '2026-09-10T12:00:00.000Z', 'truncated': True}
+        question = {'role': 'user', 'content': 'Why?', 'terminal_context': snapshot}
+        messages = [question]
+        await self.client.put('/api/llm/model', json={'name': 'local:test'})
+        with patch.object(llm.client, 'chat', AsyncMock(
+                return_value={'message': {'content': 'Local reply'}})) as local_chat:
+            response = await self.client.post('/api/llm/chat', json=messages)
+        self.assertEqual(response.status_code, 200)
+        history = await response.get_json()
+        self.assertEqual(history[0], question)
+        local_input = local_chat.call_args.kwargs['messages'][-1]
+        self.assertEqual(set(local_input), {'role', 'content'})
+        self.assertEqual(local_input['role'], 'user')
+        self.assertIn('User question:\nWhy?', local_input['content'])
+        self.assertIn('connection refused', local_input['content'])
+        self.assertNotIn(snapshot['text'], llm.INIT_MESSAGES[0]['content'])
+
+        model_id = await self.create_model()
+        llm_store.select_model(external_id=model_id)
+        # A subsequent question without a new attachment retains the old snapshot.
+        history.append({'role': 'user', 'content': 'Explain that previous error again.'})
+        upstream = io.BytesIO(json.dumps({'choices': [{'message': {'content': 'External reply'}}]}).encode())
+        with patch.object(llm.urllib_request, 'urlopen', return_value=upstream) as outgoing:
+            response = await self.client.post('/api/llm/chat', json=history)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual((await response.get_json())[:-1], history)
+        payload = json.loads(outgoing.call_args.args[0].data)
+        self.assertEqual(payload['messages'][1], local_input)
+        self.assertEqual(payload['messages'][-1], history[-1])
+        self.assertEqual(messages, [question])
+
+    async def test_invalid_terminal_attachments_are_rejected_before_provider_calls(self):
+        snapshot = {'text': 'valid', 'captured_at': '2026-09-10T12:00:00Z', 'truncated': False}
+        invalid_contexts = [None, 'text', snapshot | {'text': 'a\n' * 100},
+                            snapshot | {'text': '😀' * 2501}, snapshot | {'truncated': 'false'},
+                            snapshot | {'captured_at': 'invalid'}, snapshot | {'text': 123}]
+        with patch.object(llm.client, 'chat', AsyncMock()) as local_chat:
+            for context in invalid_contexts:
+                response = await self.client.post('/api/llm/chat', json=[
+                    {'role': 'user', 'content': 'Why?', 'terminal_context': context}])
+                self.assertEqual(response.status_code, 400)
+            response = await self.client.post('/api/llm/chat', json=[
+                {'role': 'assistant', 'content': 'Reply', 'terminal_context': snapshot}])
+            self.assertEqual(response.status_code, 400)
+            local_chat.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()

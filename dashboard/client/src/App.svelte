@@ -44,6 +44,13 @@
   });
 
   let resizeTerminalContentFunc;
+  let captureTerminalContext;
+
+  async function getTerminalContext() {
+    if (!showSSH || !captureTerminalContext) return null;
+    const context = await captureTerminalContext();
+    return showSSH ? context : null;
+  }
 
   const snowFlakesEasterEggFeatureFlag = false;
 
@@ -263,7 +270,7 @@
         </button>
         <div class="split-right overflow-hidden">
           <div class="assistant-panel-content overflow-y-auto">
-            <AssistantLLM />
+            <AssistantLLM terminalOpen={showSSH} {getTerminalContext} />
           </div>
         </div>
       {/if}
@@ -311,7 +318,11 @@
     ></div>
 
     <div class="mx-1 col px-0" style="height: calc(100% - 5px)">
-      <SSH bind:resize={resizeTerminalContentFunc} on:hide={toggleShowSSH} />
+      <SSH
+        bind:resize={resizeTerminalContentFunc}
+        bind:captureContext={captureTerminalContext}
+        on:hide={toggleShowSSH}
+      />
     </div>
   </div>
 {/if}
