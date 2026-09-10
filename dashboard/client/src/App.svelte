@@ -20,7 +20,7 @@
   $: dashboardHeight = showSSH ? 100 - sshHeight : 100;
 
   // splitRatio variable in [0.3, 0.9] range
-  let splitRatio = 0.6; // 66% left panel by default
+  let splitRatio = 0.7; // 70% left panel by default
   let isVerticalResizing = false;
   let splitWrap; // container ref to compute local positions
   const ASSISTANT_HIDDEN_STORAGE_KEY = 'ai-assistant.hidden';
