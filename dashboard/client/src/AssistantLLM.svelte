@@ -1,7 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { writable, get } from 'svelte/store';
   import { marked } from 'marked';
+  import ExternalModels from './ExternalModels.svelte';
 
   // ---- chat state (preserved rendering) ----
   let chatHistory = writable([]);
@@ -10,12 +11,17 @@
 
   // ---- model + server state ----
   let currentModel = '';
+  let currentExternalId = null;
+  let externalModels = [];
+  let localError = '';
+  let stateError = '';
   let localModels = []; // [{ name, size }]
   let pulls = {}; // { [model]: { status, total, completed, percent } }
   let checking = true;
 
   // ---- UI state ----
   let manageModelsOpen = false;
+  let downloadExpanded = false;
   let modelToDownload = '';
   let fetchingInfo = false;
   let expandedThoughts = {};
@@ -27,25 +33,12 @@
   let isPolling = false;
   let forcePollCycles = 0; // small grace period right after starting a pull
 
-  const LS_KEY_MODEL = 'ai-assistant.currentModel';
-
   onMount(async () => {
-    // Read the browser selection before touching network state
-    let preferred = '';
-    try {
-      preferred = localStorage.getItem(LS_KEY_MODEL) || '';
-    } catch {
-      // intentionally ignored
-    }
-
     await refreshState();
     // Start polling only if initial state shows active pulls
     if (Object.keys(pulls || {}).length > 0) startPolling();
-
-    if (preferred) {
-      await setModel(preferred);
-    }
   });
+  onDestroy(stopPolling);
 
   function schedulePoll() {
     pollTimer = setTimeout(pollTick, POLL_MS);
@@ -82,6 +75,7 @@
         forcePollCycles -= 1;
         schedulePoll();
       } else {
+        await refreshModelsOnly();
         stopPolling();
       }
     } catch {
@@ -108,12 +102,19 @@
 
   async function refreshState() {
     checking = true;
+    stateError = '';
     try {
       const r = await fetch('/api/llm/state');
+      if (!r.ok) throw new Error('Could not load model configuration.');
       const data = await r.json();
       currentModel = data.current_model || '';
+      currentExternalId = data.current_external_id ?? null;
+      externalModels = data.external_models || [];
+      localError = data.local_error || '';
       localModels = data.models || [];
       pulls = data.pulls || {};
+    } catch (err) {
+      stateError = err.message;
     } finally {
       checking = false;
     }
@@ -172,28 +173,24 @@
     return `${v.toFixed(1)} ${units[i]}`;
   }
 
-  async function setModel(name) {
-    if (!name || name === currentModel) return;
+  async function setModel(name, externalId = null) {
+    if (!name || waitingForReply || (name === currentModel && externalId === currentExternalId)) return;
     try {
       const r = await fetch('/api/llm/model', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, external_id: externalId }),
       });
       if (!r.ok) throw new Error(await r.text());
       currentModel = name;
-      try {
-        localStorage.setItem(LS_KEY_MODEL, name);
-      } catch {
-        // intentionally ignored
-      }
+      currentExternalId = externalId;
     } catch (e) {
       alert(e);
     }
   }
 
   async function deleteLocal(name) {
-    const isCurrent = name === currentModel;
+    const isCurrent = currentExternalId === null && name === currentModel;
     const msg = isCurrent
       ? `Remove local model "${name}"?\n\nThis is currently selected; the selection will be cleared.`
       : `Remove local model "${name}"?`;
@@ -303,18 +300,29 @@
           <div class="h5 mb-0">AI Assistant</div>
           <small class="text-muted">
             Model:&nbsp;{#if checking}loading…{:else}{currentModel || '—'}{/if}
+            {#if !checking && currentExternalId !== null}
+              (external){/if}
           </small>
         </div>
 
         <div class="d-flex gap-2 ms-2">
-          <button class="btn btn-outline-secondary btn-sm" on:click={() => (manageModelsOpen = true)}>
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            on:click={() => {
+              manageModelsOpen = true;
+              refreshState();
+            }}
+          >
             Manage models
           </button>
-          <button class="btn btn-outline-danger btn-sm" on:click={clearChat}> Reset chat </button>
+          <button class="btn btn-outline-danger btn-sm" disabled={waitingForReply} on:click={clearChat}>
+            Reset chat
+          </button>
         </div>
       </div>
     </div>
 
+    {#if stateError}<div class="alert alert-danger m-2" role="alert">{stateError}</div>{/if}
     {#if pullingList.length}
       <div class="px-3 pt-2">
         {#each pullingList as p}
@@ -388,6 +396,7 @@
             <textarea
               class="form-control bg-light"
               bind:value={newMessage}
+              disabled={!currentModel}
               placeholder="Type a message and hit enter"
               on:keypress={handleKeyPress}
             ></textarea>
@@ -401,35 +410,22 @@
   {#if manageModelsOpen}
     <div class="modal-backdrop show"></div>
     <div class="modal d-block" tabindex="-1">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Manage models</h5>
-            <button type="button" class="btn-close" on:click={() => (manageModelsOpen = false)}></button>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close manage models"
+              on:click={() => (manageModelsOpen = false)}
+            ></button>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <span class="form-label">Download a new model:</span>
-              <div class="input-group">
-                <input class="form-control" placeholder="model[:tag]" bind:value={modelToDownload} />
-                <button class="btn btn-primary" on:click={confirmAndDownload} disabled={fetchingInfo}>
-                  {#if fetchingInfo}
-                    <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                  {/if}
-                  Download
-                </button>
-              </div>
-              <div class="form-text">
-                Browse models on <a href="https://ollama.com/search" target="_blank" rel="noopener">ollama.com/search</a
-                >. Before downloading, check the model's size. The model will be downloaded locally to your machine. For
-                a start, we recommend <code>qwen3:1.7b</code> with a size 1.3GB.
-              </div>
-            </div>
-
-            <hr />
-
-            <div class="mb-2 fw-semibold">Local models</div>
-            {#if localModels.length === 0}
+            <h5>Local models</h5>
+            {#if localError}
+              <div class="text-muted">{localError}</div>
+            {:else if localModels.length === 0}
               <div class="text-muted">No local models yet.</div>
             {:else}
               <div class="list-group">
@@ -440,14 +436,22 @@
                       <small class="text-muted">{fmtBytes(m.size)}</small>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                      {#if currentModel === m.name}
+                      {#if currentExternalId === null && currentModel === m.name}
                         <button class="btn btn-sm btn-outline-success" disabled> Selected </button>
                       {:else}
-                        <button class="btn btn-sm btn-outline-secondary" on:click={() => setModel(m.name)}>
+                        <button
+                          class="btn btn-sm btn-outline-secondary"
+                          disabled={waitingForReply}
+                          on:click={() => setModel(m.name)}
+                        >
                           Use this
                         </button>
                       {/if}
-                      <button class="btn btn-sm btn-outline-danger" on:click={() => deleteLocal(m.name)}>
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        disabled={waitingForReply}
+                        on:click={() => deleteLocal(m.name)}
+                      >
                         Remove
                       </button>
                     </div>
@@ -455,6 +459,52 @@
                 {/each}
               </div>
             {/if}
+            <button
+              class="btn btn-sm btn-outline-primary mt-3"
+              aria-expanded={downloadExpanded}
+              aria-controls="local-download-form"
+              on:click={() => (downloadExpanded = !downloadExpanded)}
+            >
+              <span aria-hidden="true">{downloadExpanded ? '−' : '+'}</span>
+              {downloadExpanded ? 'Close download' : 'Download local model'}
+            </button>
+            {#if downloadExpanded}
+              <div id="local-download-form" class="border rounded bg-light p-3 mt-3">
+                <label for="local-model-name" class="form-label">Download a new model</label>
+                <div class="input-group">
+                  <input
+                    id="local-model-name"
+                    class="form-control"
+                    placeholder="model[:tag]"
+                    bind:value={modelToDownload}
+                  />
+                  <button
+                    class="btn btn-primary"
+                    on:click={confirmAndDownload}
+                    disabled={fetchingInfo || !modelToDownload.trim()}
+                  >
+                    {#if fetchingInfo}
+                      <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                    {/if}
+                    Download
+                  </button>
+                </div>
+                <div class="form-text">
+                  Browse models on <a href="https://ollama.com/search" target="_blank" rel="noopener"
+                    >ollama.com/search</a
+                  >. Before downloading, check the model's size. The model will be downloaded locally to your machine.
+                  For a start, we recommend <code>qwen3:1.7b</code> with a size 1.3GB.
+                </div>
+              </div>
+            {/if}
+            <hr class="my-4" />
+            <ExternalModels
+              models={externalModels}
+              {currentExternalId}
+              {waitingForReply}
+              onSelect={setModel}
+              onChange={refreshState}
+            />
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" on:click={() => (manageModelsOpen = false)}>Close</button>

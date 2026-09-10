@@ -25,7 +25,7 @@ StratoCyberLab (SCL) is a local cyber range to test and practice your offensive 
 * 🛠️ A container is created for you as your attacking machine. Install any tools you want without modifying your host computer.
 * 🌐 A web interface to manage challenges and play.
 * 💻 Solve all challenges from the web interface using the built-in WebSSH terminal.
-* 🤖 AI-assisted: the web interface includes a local LLM chat (using _Ollama_) to assist your hacking. You can choose any Ollama model.
+* 🤖 AI-assisted: chat with a lab context to learn faster (supporting local _Ollama_ models or OpenAI-compatible provider with your own key).
 * 🧑‍🔧 Support for flexible third-party plugins to add any custom behavior into the SCL.
 
 ## Requirements

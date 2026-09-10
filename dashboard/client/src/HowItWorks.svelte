@@ -56,7 +56,10 @@
         </dd>
 
         <dt class="col-md-3">AI Assistant</dt>
-        <dd class="col-md-9 mb-0">The optional local service using local Ollama container - the data stays yours.</dd>
+        <dd class="col-md-9 mb-0">
+          Optional chat with a local Ollama model or an external OpenAI-compatible provider. Open Manage models to
+          download a local model or configure an external one.
+        </dd>
       </dl>
     </section>
 

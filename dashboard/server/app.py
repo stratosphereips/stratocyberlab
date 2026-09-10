@@ -15,6 +15,7 @@ from quart import Quart, Response, jsonify, request, send_from_directory, sessio
 import db
 import docker
 import llm
+import llm_store
 import plugins
 from config import getenv
 
@@ -37,6 +38,7 @@ def init(
         parent_campaign_dir=getenv('CAMPAIGN_DIR') or '/campaigns',
         parent_plugin_dir=getenv('PLUGIN_DIR') or '/plugins',
 ):
+    llm_store.init_tables()
     # this file works as a check to know if DB was already bootstrapped or not
     # because otherwise this code could run multiple times if the container was restarted
     file = Path(".was_db_inited")
@@ -740,11 +742,35 @@ async def all_challenges_up():
 # ======================================
 @app.route('/api/llm/state', methods=['GET'])
 async def llm_state():
+    try:
+        models = await asyncio.wait_for(llm.list_local_models(), timeout=3)
+        local_error = ''
+    except Exception:
+        models = []
+        local_error = 'Local Ollama is unavailable.'
     return jsonify({
-        "current_model": llm.get_current_model(),
-        "models": await llm.list_local_models(),
+        **llm_store.get_selection(),
+        "models": models,
+        "local_error": local_error,
+        "external_models": llm_store.list_models(),
         "pulls": llm.get_pulls_snapshot(),
     })
+
+
+@app.route('/api/llm/external-models', methods=['POST'])
+@app.route('/api/llm/external-models/<int:model_id>', methods=['PUT', 'DELETE'])
+async def llm_external_model(model_id=None):
+    try:
+        if request.method == 'DELETE':
+            llm_store.delete_model(model_id)
+            return '', 204
+        model_id = llm_store.save_model(await request.get_json(), model_id)
+        return jsonify({'id': model_id}), 201 if request.method == 'POST' else 200
+    except ValueError as exc:
+        return str(exc), 400
+    except Exception:
+        # Do not echo request bodies, database errors or credentials.
+        return 'Could not save the external model configuration.', 400
 
 @app.route('/api/llm/models', methods=['GET'])
 async def llm_list_models():
@@ -790,14 +816,21 @@ async def llm_delete_model(name):
 @app.route('/api/llm/model', methods=['GET', 'PUT'])
 async def llm_current_model():
     if request.method == 'GET':
-        return jsonify({"current_model": llm.get_current_model()})
+        return jsonify(llm_store.get_selection())
 
     data = await request.get_json()
-    name = (data or {}).get('name', '').strip()
-    if not name:
+    if not isinstance(data, dict):
+        return 'Expected a model selection.', 400
+    name = data.get('name', '')
+    external_id = data.get('external_id')
+    if not isinstance(name, str) or (external_id is not None and (
+            not isinstance(external_id, int) or isinstance(external_id, bool))):
+        return 'Invalid model selection.', 400
+    name = name.strip()
+    if not name and external_id is None:
         return "Missing 'name' in body", 400
     try:
-        await llm.set_current_model(name)
+        await llm.set_current_model(name, external_id)
         return "OK", 200
     except Exception as e:
         return str(e), 400
@@ -807,9 +840,16 @@ async def llm_current_model():
 async def llm_chat():
     try:
         body = await request.get_json()
+        if not isinstance(body, list) or any(
+                not isinstance(message, dict)
+                or message.get('role') not in ('user', 'assistant')
+                or not isinstance(message.get('content'), str) for message in body):
+            return 'Expected a list of text chat messages.', 400
         return await llm.chat_with_llm(body)
-    except Exception as e:
-        return str(e), 400
+    except ValueError as exc:
+        return str(exc), 400
+    except Exception:
+        return 'Chat request failed. Check the selected model and try again.', 400
 
 
 if __name__ == '__main__':
