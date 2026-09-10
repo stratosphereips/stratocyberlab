@@ -7,38 +7,8 @@
     max-width: 860px;
   }
 
-  .flow {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .flow-step {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 105px;
-  }
-
-  .flow-arrow {
-    align-self: center;
-    color: var(--bs-secondary-color);
-    font-size: 1.5rem;
-  }
-
   summary {
     cursor: pointer;
-  }
-
-  @media (max-width: 767.98px) {
-    .flow {
-      grid-template-columns: 1fr;
-    }
-
-    .flow-arrow {
-      transform: rotate(90deg);
-    }
   }
 </style>
 
@@ -54,8 +24,8 @@
     <section class="mb-5">
       <h4>First, what is a cyber range?</h4>
       <p>
-        A cyber range is a practice environment for cybersecurity. StratoCyberLab runs locally on your
-        computer. It's a system where you can inspect, attack, defend and learn.
+        A cyber range is a practice environment for cybersecurity. StratoCyberLab runs locally on your computer. It's a
+        system where you can inspect, attack, defend and learn.
       </p>
       <p class="mb-0">
         Most parts run in <strong>Docker containers</strong>. A container is a small, separated environment with its own
@@ -69,12 +39,14 @@
       <dl class="row mb-0">
         <dt class="col-md-3">Dashboard</dt>
         <dd class="col-md-9">
-          The web page you are using now. It shows the learning content, allows starting services and has a built-in shell to Hackerlab.
+          The web page you are using now. It shows the learning content, allows starting services and has a built-in
+          shell to Hackerlab.
         </dd>
 
         <dt class="col-md-3">HackerLab</dt>
         <dd class="col-md-9">
-          Your lab workstation. The terminal at the bottom connects to this container. Use Hackerlab to learn and solve challenges.
+          Your lab workstation. The terminal at the bottom connects to this container. Use Hackerlab to learn and solve
+          challenges.
         </dd>
 
         <dt class="col-md-3">Exercise services</dt>
@@ -84,9 +56,7 @@
         </dd>
 
         <dt class="col-md-3">AI Assistant</dt>
-        <dd class="col-md-9 mb-0">
-          The optional local service using local Ollama container - the data stays yours.
-        </dd>
+        <dd class="col-md-9 mb-0">The optional local service using local Ollama container - the data stays yours.</dd>
       </dl>
     </section>
 
@@ -115,15 +85,31 @@
         <dd class="col-md-9">A set of challenges with a story. You advance in a story by solving the challenges.</dd>
 
         <dt class="col-md-3">Classes</dt>
-        <dd class="col-md-9">Educational materials for <a href="https://cybersecurity.bsy.fel.cvut.cz/" target="_blank">Introduction to security</a> course with its optional environment to play with.</dd>
+        <dd class="col-md-9">
+          Educational materials for <a href="https://cybersecurity.bsy.fel.cvut.cz/" target="_blank"
+            >Introduction to security</a
+          > course with its optional environment to play with.
+        </dd>
 
         <dt class="col-md-3">Plugins</dt>
-        <dd class="col-md-9 mb-0">Optional third-party applications that add features to StratoCyberLab. Use only plugins from sources you fully trust.</dd>
+        <dd class="col-md-9 mb-0">
+          Optional third-party applications that add features to StratoCyberLab. Use only plugins from sources you fully
+          trust.
+        </dd>
       </dl>
       <div class="alert alert-warning mb-0 mt-3" role="note">
         <strong>Keep the SCL private.</strong> Do not expose it to the internet. Exercise services can be unsafe on purpose.
         Only install plugins that you trust, because a plugin may have powerful access to Docker and your host computer.
       </div>
+    </section>
+
+    <section class="mb-5">
+      <h4>Keep SCL up-to-date</h4>
+      <p class="mb-0">
+        The lab is constantly being improved with new features and bug fixes. The status in the top-right corner compares
+        your version with the latest available version on the GitHub. If the update is available, click
+        the status to see details and update instructions.
+      </p>
     </section>
 
     <section class="mb-4">
@@ -141,8 +127,8 @@
           <summary class="fw-semibold">IP address and port</summary>
           <p class="mt-3 mb-0">
             An <strong>IP address</strong> identifies a device or container on a network. A <strong>port</strong>
-            identifies a service on it, such as a website or SSH server. Sometimes, exercise instructions tell you which address and
-            port to use.
+            identifies a service on it, such as a website or SSH server. Sometimes, exercise instructions tell you which address
+            and port to use.
           </p>
         </details>
 
