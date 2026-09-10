@@ -45,7 +45,7 @@
   }
 </style>
 
-<li class="mb-2">
+<li class="nav-section-level-{level} mb-2">
   <div
     id="{id}-header"
     role="button"

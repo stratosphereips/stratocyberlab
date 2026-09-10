@@ -71,6 +71,11 @@
     border-top-right-radius: 999px;
     border-bottom-right-radius: 999px;
   }
+
+  :global(.top-level-sections > .nav-section-level-1 + .nav-section-level-1) {
+    border-top: 1px solid var(--bs-border-color);
+    padding-top: 0.5rem;
+  }
 </style>
 
 <!-- keep first in layout so there’s no gap on the left; no transition => instant toggle -->
@@ -96,7 +101,7 @@
             </div>
           </div>
         {:else}
-          <ul class="list-unstyled m-0">
+          <ul class="top-level-sections list-unstyled m-0">
             <!-- Classes -->
             <CollapsibleSection
               title="Click to expand classes list"
@@ -147,7 +152,7 @@
             </CollapsibleSection>
 
             <!-- Plugins -->
-              <CollapsibleSection title="Click to expand plugins list" id="pluginList" label="Plugins" icon={Wrench}>
+            <CollapsibleSection title="Click to expand plugins list" id="pluginList" label="Plugins" icon={Wrench}>
               {#each $plugins as plugin}
                 <li class="mb-1">
                   <button
