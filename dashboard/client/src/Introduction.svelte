@@ -1,52 +1,37 @@
-<script>
-</script>
-
 <div class="d-flex justify-content-center pt-5">
-  <div class="shadow p-3 mb-5 bg-body rounded text-center" style="max-width: 700px;">
-    <h4 class="mb-3">Welcome to the StratoCyberLab!</h4>
+  <div class="shadow p-4 mb-5 bg-body rounded" style="max-width: 760px;">
+    <div class="text-center">
+      <h3 class="mb-2">Welcome to StratoCyberLab!</h3>
+      <p class="lead text-secondary mb-4">A local place to learn cybersecurity by doing.</p>
+    </div>
 
-    <p class="text-secondary mb-4">The project to practice your cyber-security skills</p>
+    <p>
+      Here you can explore real tools, networks, and intentionally vulnerable services in a lab on your own computer. It
+      is fine if you are new to cybersecurity. Start with a small challenge and learn one step at a time.
+    </p>
 
-    <p class="text-start mb-3">You are currently looking at a Dashboard. The dashboard offers:</p>
+    <p>
+      You are looking at the <strong>Dashboard</strong>. Use the menu on the left to choose learning content. Use the
+      terminal at the bottom as your lab workstation.
+    </p>
 
-    <ul class="d-flex flex-column gap-1 text-start mb-4" style="list-style-type: decimal; padding-left: 20px;">
-      <li>
-        A built-in terminal to your <b>hackerlab</b> machine:
-        <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
-          <li>Click the button at the bottom of the page to open the terminal.</li>
-          <li>Hackerlab is running locally in your machine as a docker container.</li>
-          <li>Use hackerlab to solve all StratoCyberLab tasks.</li>
-        </ul>
-      </li>
+    <div class="bg-light border rounded p-3 my-4">
+      <h5 class="mb-3">A good first task</h5>
+      <ol class="mb-0 ps-4 d-flex flex-column gap-2">
+        <li>Open <strong>Challenges</strong> in the left menu and choose <strong>Hello World</strong>.</li>
+        <li>Start the challenge and read its task.</li>
+        <li>Open the lab terminal with the button at the bottom of this page.</li>
+        <li>Follow the instructions, find a flag such as <code>BSY&#123;...&#125;</code>, and submit it.</li>
+      </ol>
+    </div>
 
-      <li>
-        Class environments for students of <a target="_blank" href="https://cybersecurity.bsy.fel.cvut.cz/"
-          >Introduction to Security</a
-        >
-        course:
-        <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
-          <li>Each class contains materials in a form of shared Google Document and Youtube recording/livestream.</li>
-          <li>Classes have often special environments to practice the techniques from the given class.</li>
-          <li>Start the class environment before each class to have a proper hands-on experience.</li>
-        </ul>
-      </li>
+    <p class="mb-4">
+      You can also follow a class environment or play a campaign, which connects several challenges into one story.
+    </p>
 
-      <li>
-        Standalone hacking challenges in a <b>Capture the Flag</b> form
-        <ul class="text-start mb-4" style="list-style-type: disc; padding-left: 20px;">
-          <li>Choose a challenge in the left menu, start it, and solve the tasks!</li>
-          <li>All challenge flags are in a format <code>BSY&#123;...&#125;</code> unless stated otherwise.</li>
-          <li>
-            If you want a bigger challenge, try to solve a campaign which is a set of challenges connected with a story.
-          </li>
-        </ul>
-      </li>
-
-      <li>Optionally ask for help a local AI assistant️ (ollama).</li>
-
-      <li>Navigate to <a href="#tips-and-tricks">/#tips-and-tricks</a> to see more useful tips!</li>
-    </ul>
-
-    <p class="fw-bold">Happy hacking!</p>
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      <a class="btn btn-primary" href="#how-it-works">Learn how the lab works</a>
+      <a class="btn btn-outline-secondary" href="#tips-and-tricks">Read Tips &amp; Tricks</a>
+    </div>
   </div>
 </div>

@@ -46,6 +46,10 @@ export const chosenTipsAndTricks = derived([path], ([path]) => {
   return path.startsWith('#tips-and-tricks');
 });
 
+export const chosenHowItWorks = derived([path], ([path]) => {
+  return path.startsWith('#how-it-works');
+});
+
 export const chosenCampaignStep = derived([campaigns, path], ([campaigns, path]) => {
   const match = path.match(/^#campaign\/(.+)\/(.+)$/);
   if (!match) return null;

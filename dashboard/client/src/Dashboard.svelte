@@ -10,11 +10,13 @@
     chosenCampaignDetail,
     chosenCampaignStep,
     chosenPlugin,
+    chosenHowItWorks,
     chosenTipsAndTricks,
   } from './routing';
   import CampaignStep from './campaigns/CampaignStep.svelte';
   import CampaignDetail from './campaigns/CampaignDetail.svelte';
   import TipsAndTricks from './TipsAndTricks.svelte';
+  import HowItWorks from './HowItWorks.svelte';
 </script>
 
 <style>
@@ -33,6 +35,8 @@
       <CampaignDetail campaign={$chosenCampaignDetail} />
     {:else if $chosenCampaignStep}
       <CampaignStep step={$chosenCampaignStep} />
+    {:else if $chosenHowItWorks}
+      <HowItWorks />
     {:else if $chosenTipsAndTricks}
       <TipsAndTricks />
     {:else}
