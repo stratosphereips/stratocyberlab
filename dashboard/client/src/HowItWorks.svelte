@@ -57,8 +57,9 @@
 
         <dt class="col-md-3">AI Assistant</dt>
         <dd class="col-md-9 mb-0">
-          Optional chat with a local Ollama model or an external OpenAI-compatible provider. Open Manage models to
-          download a local model or configure an external one.
+          Chat with a local Ollama model or an external OpenAI-compatible provider. The assistant has optional context
+          of the built-in terminal. It's intentionally a simple chat interface without abilities to execute any tools.
+          The goal is to learn by "doing". Ask AI to explain and debug, read the output, think and try it yourself!
         </dd>
       </dl>
     </section>
