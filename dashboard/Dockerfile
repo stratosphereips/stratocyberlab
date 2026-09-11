@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Stage 1: Build Svelte Application
-FROM node:22-alpine AS build-svelte
+FROM node:24-alpine3.24 AS build-svelte
 WORKDIR /app
 
 COPY dashboard/client/ ./
