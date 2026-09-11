@@ -1,8 +1,12 @@
 <script>
   import { marked } from 'marked';
   import { isLoading, loadSingleCampaign, setChallengeRunning } from './stores';
+  import CelebrationModal from './components/CelebrationModal.svelte';
 
   export let challenge;
+
+  let celebrationOpen = false;
+  let celebrationMessage = '';
 
   async function flagSubmit(task) {
     console.log(task);
@@ -30,8 +34,11 @@
       if (data.includes('Congratulations')) {
         task.solved = true;
         challenge.tasks = challenge.tasks; // Reassign to trigger reactivity
+        celebrationMessage = data;
+        celebrationOpen = true;
+      } else {
+        alert(data);
       }
-      alert(data);
       if (task.solved && challenge.campaignId) {
         loadSingleCampaign(challenge.campaignId).then();
       }
@@ -139,3 +146,5 @@
     </div>
   </div>
 {/each}
+
+<CelebrationModal open={celebrationOpen} message={celebrationMessage} on:close={() => (celebrationOpen = false)} />
