@@ -9,7 +9,7 @@
   const choices = [
     { id: 'progress', title: 'Learning progress', detail: 'Clear all solved tasks and campaign progress.' },
     { id: 'ai', title: 'AI settings', detail: 'Remove external model configurations.' },
-    { id: 'everything', title: 'Everything', detail: 'Clear both learning progress and AI settings.' },
+    { id: 'all', title: 'Everything', detail: 'Clear both learning progress and AI settings.' },
   ];
 
   async function reset() {
