@@ -49,7 +49,7 @@
   let waitingForReply = false;
   let messageList;
   const TERMINAL_EXPLANATION_PROMPT =
-    'Explain what is wrong in the terminal output and help me understand how to fix it.';
+    'Explain what is happening in the terminal output and help me understand it and/or fix potential errors.';
 
   async function scrollChatToBottom() {
     await tick();
