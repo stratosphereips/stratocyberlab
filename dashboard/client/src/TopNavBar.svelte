@@ -1,5 +1,6 @@
 <script>
   import VersionStatus from './components/VersionStatus.svelte';
+  import ResetState from './components/ResetState.svelte';
   import { navigate } from './routing';
   import { BookOpen, Sparkles } from 'svelte-heros';
 
@@ -21,7 +22,7 @@
         <span class="fw-semibold">StratoCyberLab</span>
       </a>
 
-      <!-- Right: help pages + divider + version -->
+      <!-- Right: help pages + reset action + divider + version -->
       <div class="d-inline-flex flex-wrap align-items-center justify-content-end gap-2">
         <a class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 px-3 py-1" href="#how-it-works">
           <BookOpen width="18" height="18" aria-hidden="true" />
@@ -32,6 +33,8 @@
           <Sparkles width="18" height="18" aria-hidden="true" />
           <span>Tips &amp; Tricks</span>
         </a>
+
+        <ResetState />
 
         <!-- slim divider -->
         <div class="vr opacity-50"></div>

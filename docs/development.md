@@ -116,6 +116,8 @@ repository-relative path with `--challenger-dir <dir>`. Run `./run_tests.sh --he
 
 ## Code quality
 
+For database schema changes, follow the [persistent state and migration guide](./persistent-state.md).
+
 We use linters and auto formatters to maintain code quality in this repository.
 Currently, this is only the case for the dashboard (client and server).
 Please refer to the READMEs in the respective directories for instructions.

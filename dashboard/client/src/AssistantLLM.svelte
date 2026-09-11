@@ -4,6 +4,7 @@
   import { marked } from 'marked';
   import ExternalModels from './ExternalModels.svelte';
   import TerminalContext from './TerminalContext.svelte';
+  import { dashboardReset } from './stores';
 
   export let terminalOpen = false;
   export let getTerminalContext = async () => null;
@@ -47,6 +48,8 @@
   let newMessage = '';
   let waitingForReply = false;
   let messageList;
+  const TERMINAL_EXPLANATION_PROMPT =
+    'Explain what is wrong in the terminal output and help me understand how to fix it.';
 
   async function scrollChatToBottom() {
     await tick();
@@ -62,6 +65,7 @@
   let localModels = []; // [{ name, size }]
   let pulls = {}; // { [model]: { status, total, completed, percent } }
   let checking = true;
+  let stateRequest = 0;
 
   // ---- UI state ----
   let manageModelsOpen = false;
@@ -83,6 +87,16 @@
     if (Object.keys(pulls || {}).length > 0) startPolling();
   });
   onDestroy(stopPolling);
+
+  onMount(() => dashboardReset.subscribe((event) => {
+    if (event && event.scope !== 'progress') {
+      manageModelsOpen = false;
+      currentModel = '';
+      currentExternalId = null;
+      externalModels = [];
+      refreshState();
+    }
+  }));
 
   function schedulePoll() {
     pollTimer = setTimeout(pollTick, POLL_MS);
@@ -145,12 +159,14 @@
   }
 
   async function refreshState() {
+    const requestId = ++stateRequest;
     checking = true;
     stateError = '';
     try {
       const r = await fetch('/api/llm/state');
       if (!r.ok) throw new Error('Could not load model configuration.');
       const data = await r.json();
+      if (requestId !== stateRequest) return;
       currentModel = data.current_model || '';
       currentExternalId = data.current_external_id ?? null;
       externalModels = data.external_models || [];
@@ -158,18 +174,20 @@
       localModels = data.models || [];
       pulls = data.pulls || {};
     } catch (err) {
-      stateError = err.message;
+      if (requestId === stateRequest) stateError = err.message;
     } finally {
-      checking = false;
+      if (requestId === stateRequest) checking = false;
     }
   }
 
   // ---- chat actions ----
-  async function sendMessage() {
-    if (!newMessage.trim() || waitingForReply) return;
+  async function sendMessage(content = null) {
+    const fromComposer = content === null;
+    const messageContent = fromComposer ? newMessage : content;
+    if (!messageContent.trim() || waitingForReply) return;
 
-    const message = { role: 'user', content: newMessage };
-    newMessage = '';
+    const message = { role: 'user', content: messageContent };
+    if (fromComposer) newMessage = '';
     waitingForReply = true;
 
     try {
@@ -195,7 +213,7 @@
       chatHistory.set(await response.json());
       await scrollChatToBottom();
     } catch (err) {
-      if (!get(chatHistory).includes(message)) newMessage = message.content;
+      if (fromComposer && !get(chatHistory).includes(message)) newMessage = message.content;
       alert(err);
     } finally {
       waitingForReply = false;
@@ -349,6 +367,25 @@
     max-height: 65%;
     overflow-y: auto;
   }
+
+  .terminal-explanation {
+    color: var(--bs-secondary-color);
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+  }
+
+  .terminal-explanation:hover,
+  .terminal-explanation:focus-visible {
+    color: var(--bs-body-color);
+    text-decoration: underline;
+  }
+
+  .terminal-explanation:disabled {
+    cursor: default;
+    opacity: 0.65;
+    text-decoration: none;
+  }
 </style>
 
 <div class="h-100">
@@ -487,6 +524,15 @@
                 {/if}
               </div>
               {#if includeTerminalContext}
+                <button
+                  type="button"
+                  class="terminal-explanation d-block small bg-transparent border-0 p-0 mb-1"
+                  disabled={!currentModel || waitingForReply}
+                  title="Send the latest terminal output to the AI for troubleshooting."
+                  on:click={() => sendMessage(TERMINAL_EXPLANATION_PROMPT)}
+                >
+                  Explain me the output…
+                </button>
                 {#if previewError}<div class="small text-danger" role="alert">{previewError}</div>{/if}
                 {#if previewOpen}
                   <div id="terminal-context-preview" class="mb-2">

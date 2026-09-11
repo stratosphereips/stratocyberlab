@@ -1,16 +1,19 @@
+from contextlib import closing, contextmanager
+from pathlib import Path
+import os
 import sqlite3
 import json
 from typing import List, Dict
 
-DATABASE = 'db.sqlite3'
+DATABASE = str(Path(os.environ.get('SCL_DATA_DIR', Path(__file__).parent / 'data')) / 'db.sqlite3')
 
 
 def get_db():
     return sqlite3.connect(DATABASE)
 
 
-def init_db_tables():
-    conn = get_db()
+def init_db_tables(connection=None):
+    conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
     cursor.execute("""
             CREATE TABLE IF NOT EXISTS classes (
@@ -84,25 +87,30 @@ def init_db_tables():
             validation_errors TEXT NOT NULL
         );
         """)
-    conn.commit()
-    conn.close()
+    if connection is None:
+        conn.commit()
+        conn.close()
 
 
-def insert_class_data(id: str, name: str, desc: str, cl_dir: str, doc_url: str, yt_url: str, starting_time: str):
-    conn = get_db()
+def insert_class_data(id: str, name: str, desc: str, cl_dir: str, doc_url: str, yt_url: str, starting_time: str, connection=None):
+    conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
     q = 'INSERT INTO classes (id, name, description, dir, google_doc_url, yt_recording_url, starting_time) VALUES (?, ?, ?, ?, ?, ?, ?)'
     cursor.execute(q, (id, name, desc, cl_dir, doc_url, yt_url, starting_time))
-    conn.commit()
+    if connection is None:
+        conn.commit()
+        conn.close()
 
 
-def insert_plugin_data(id: str, name: str, desc: str, version: str, plugin_dir: str, ui_url: str, valid: bool, validation_errors: List[str]):
-    conn = get_db()
+def insert_plugin_data(id: str, name: str, desc: str, version: str, plugin_dir: str, ui_url: str, valid: bool, validation_errors: List[str], connection=None):
+    conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
     q = 'INSERT INTO plugins (plugin_id, plugin_name, plugin_description, plugin_version, plugin_dir, ui_url, valid, validation_errors) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
     p = (id, name, desc, version, plugin_dir, ui_url, valid, json.dumps(validation_errors))
     cursor.execute(q, p)
-    conn.commit()
+    if connection is None:
+        conn.commit()
+        conn.close()
 
 
 def get_classes(only_with_compose: bool = False) -> List[Dict]:
@@ -187,11 +195,11 @@ def get_plugin(plugin_id: str) -> Dict | None:
     return None
 
 
-def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str, tags: List[str], campaign_id: str | None = None):
+def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str, tags: List[str], campaign_id: str | None = None, connection=None):
     if not isinstance(tags, list):
         raise Exception(f"Challenge tags must be array and not {type(tags)}")
 
-    conn = get_db()
+    conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
     if campaign_id is None:
         q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir, tags) VALUES (?, ?, ?, ?, ?, ?)'
@@ -200,40 +208,48 @@ def insert_challenge_data(id: str, name: str, desc: str, diff: str, ch_dir: str,
         q = 'INSERT INTO challenges (challenge_id, challenge_name, challenge_description, difficulty, challenge_dir, campaign_id, tags) VALUES (?, ?, ?, ?, ?, ?, ?)'
         p = (id, name, desc, diff, ch_dir, campaign_id, json.dumps(tags))
     cursor.execute(q, p)
-    conn.commit()
+    if connection is None:
+        conn.commit()
+        conn.close()
 
 
-def insert_task_data(chal_id: str, id: str, name: str, desc: str, flag: str, order: int):
-    conn = get_db()
+def insert_task_data(chal_id: str, id: str, name: str, desc: str, flag: str, order: int, connection=None):
+    conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
     q = 'INSERT INTO tasks (challenge_id, task_id, task_name, task_description, flag, task_order) VALUES (?, ?, ?, ?, ?, ?)'
     cursor.execute(q, (chal_id, id, name, desc, flag, order))
-    conn.commit()
+    if connection is None:
+        conn.commit()
+        conn.close()
 
 
-def insert_campaign_data(id: str, name: str, description: str, enforce_order: bool, show_locked: bool):
-    conn = get_db()
+def insert_campaign_data(id: str, name: str, description: str, enforce_order: bool, show_locked: bool, connection=None):
+    conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
     q = 'INSERT INTO campaigns (campaign_id, name, description, enforce_order, show_locked) VALUES (?, ?, ?, ?, ?)'
     p = (id, name, description, enforce_order, show_locked)
     cursor.execute(q, p)
-    conn.commit()
+    if connection is None:
+        conn.commit()
+        conn.close()
 
 
-def insert_page(page_id: str, page_name: str, page_content: str):
-    conn = get_db()
+def insert_page(page_id: str, page_name: str, page_content: str, connection=None):
+    conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
     q = 'INSERT INTO pages (page_id, page_name, page_content) VALUES (?, ?, ?)'
     p = (page_id, page_name, page_content)
     cursor.execute(q, p)
-    conn.commit()
+    if connection is None:
+        conn.commit()
+        conn.close()
 
 
 def insert_campaign_step(campaign_id: str, order: int, challenge_id: str | None = None, page_id:
-                         str | None = None):
+                         str | None = None, connection=None):
     if challenge_id is None and page_id is None:
         raise Exception("Either challenge_id or page_id must be filled!")
-    conn = get_db()
+    conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
     if page_id is not None:
         q = 'INSERT INTO campaign_steps (campaign_id, "order", page_id) VALUES (?, ?, ?)'
@@ -242,7 +258,9 @@ def insert_campaign_step(campaign_id: str, order: int, challenge_id: str | None 
         q = 'INSERT INTO campaign_steps (campaign_id, "order", challenge_id) VALUES (?, ?, ?)'
         p = (campaign_id, order, challenge_id)
     cursor.execute(q, p)
-    conn.commit()
+    if connection is None:
+        conn.commit()
+        conn.close()
 
 
 def get_tasks(sess: str) -> List[Dict]:
@@ -445,3 +463,30 @@ def write_new_solve(sess: str, challenge_id: str, task_id: str):
     finally:
         cursor.close()
         conn.close()
+
+
+CONTENT_TABLES = ('campaign_steps', 'tasks', 'challenges', 'pages', 'campaigns', 'classes', 'plugins')
+
+
+@contextmanager
+def refresh_content():
+    """Replace repository metadata atomically, preserving learner state."""
+    with closing(get_db()) as conn:
+        with conn:
+            conn.execute('BEGIN IMMEDIATE')
+            for table in CONTENT_TABLES:
+                conn.execute(f'DELETE FROM {table}')
+            yield conn
+
+
+def reset_state(scope):
+    """Clear only the selected user state, never repository content or model files."""
+    if scope not in ('progress', 'ai', 'all'):
+        raise ValueError('Choose progress, ai or all.')
+    with closing(get_db()) as conn:
+        with conn:
+            if scope in ('progress', 'all'):
+                conn.execute('DELETE FROM task_solves')
+            if scope in ('ai', 'all'):
+                conn.execute("UPDATE llm_selection SET local_model = '', external_id = NULL WHERE id = 1")
+                conn.execute('DELETE FROM llm_external_models')

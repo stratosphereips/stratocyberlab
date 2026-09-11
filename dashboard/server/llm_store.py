@@ -1,6 +1,6 @@
 """SQLite configuration for the AI assistant. Public reads never include API keys."""
 
-from contextlib import closing, contextmanager
+from contextlib import closing, contextmanager, nullcontext
 import sqlite3
 from urllib.parse import urlsplit
 
@@ -14,9 +14,9 @@ def _transaction():
             yield conn
 
 
-def init_tables():
+def init_tables(connection=None):
     """Create assistant tables even when content has already been bootstrapped."""
-    with _transaction() as conn:
+    with (nullcontext(connection) if connection is not None else _transaction()) as conn:
         conn.execute("""CREATE TABLE IF NOT EXISTS llm_external_models (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             provider TEXT NOT NULL,

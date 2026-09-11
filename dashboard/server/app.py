@@ -5,7 +5,6 @@ import os.path
 import sys
 import uuid
 from functools import wraps
-from pathlib import Path
 from typing import List
 from urllib import error as urllib_error
 from urllib import request as urllib_request
@@ -16,6 +15,7 @@ import db
 import docker
 import llm
 import llm_store
+import migrations
 import plugins
 from config import getenv
 
@@ -38,105 +38,125 @@ def init(
         parent_campaign_dir=getenv('CAMPAIGN_DIR') or '/campaigns',
         parent_plugin_dir=getenv('PLUGIN_DIR') or '/plugins',
 ):
-    llm_store.init_tables()
-    # this file works as a check to know if DB was already bootstrapped or not
-    # because otherwise this code could run multiple times if the container was restarted
-    file = Path(".was_db_inited")
-    if file.exists():
-        return
+    migrations.migrate()
+    with db.refresh_content() as conn:
+        for name in get_dirs(parent_ch_dir):
+            if name == "template":
+                continue
 
-    db.init_db_tables()
+            ch_dir = f"{parent_ch_dir}/{name}"
+            if not os.path.isfile(f"{ch_dir}/docker-compose.yml"):
+                raise ValueError(f"Challenge {name} is missing docker-compose.yml")
 
-    for name in get_dirs(parent_ch_dir):
-        if name == "template":
-            continue
+            with open(f"{ch_dir}/meta.json", 'r', encoding='utf8') as f:
+                ch = json.load(f)
 
-        ch_dir = f"{parent_ch_dir}/{name}"
-        if not os.path.isfile(f"{ch_dir}/docker-compose.yml"):
-            eprint(f"challenge {name} is missing docker-compose.yml file")
-            return
+            ch_id, ch_name, ch_diff, ch_desc = ch["id"], ch["name"], ch["difficulty"], ch["description"]
+            ch_tags = ch.get("tags", [])
+            db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff, ch_dir, ch_tags, connection=conn)
 
-        with open(f"{ch_dir}/meta.json", 'r', encoding='utf8') as f:
-            ch = json.load(f)
+            for i, task in enumerate(ch["tasks"]):
+                t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
+                db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag, order=i, connection=conn)
 
-        ch_id, ch_name, ch_diff, ch_desc = ch["id"], ch["name"], ch["difficulty"], ch["description"]
-        ch_tags = ch.get("tags", [])
-        db.insert_challenge_data(ch_id, ch_name, ch_desc, ch_diff, ch_dir, ch_tags)
+        for camp_name in get_dirs(parent_campaign_dir):
+            if camp_name in ('_template', 'example'):
+                continue
 
-        for i, task in enumerate(ch["tasks"]):
-            t_id, t_name, t_desc, t_flag = task["id"], task["name"], task["description"], task["flag"]
-            db.insert_task_data(ch_id, t_id, t_name, t_desc, t_flag, order=i)
+            camp_dir = f'{parent_campaign_dir}/{camp_name}'
+            with open(f"{camp_dir}/meta.json", 'r', encoding='utf8') as f:
+                camp = json.load(f)
 
-    for camp_name in get_dirs(parent_campaign_dir):
-        if camp_name in ('_template', 'example'):
-            continue
+            db.insert_campaign_data(camp['id'], camp['name'], camp['description'], camp['enforceOrder'], camp['showLocked'], connection=conn)
 
-        camp_dir = f'{parent_campaign_dir}/{camp_name}'
-        with open(f"{camp_dir}/meta.json", 'r', encoding='utf8') as f:
-            camp = json.load(f)
+            for i, step in enumerate(camp['timeline']):
+                if step['type'] == 'challenge':
+                    chall_id = step['id']
+                    chall_dir = f'{camp_dir}/{chall_id}'
+                    with open(f"{chall_dir}/meta.json", 'r', encoding='utf8') as f:
+                        chall = json.load(f)
+                    ch_tags = chall.get("tags", [])
 
-        db.insert_campaign_data(camp['id'], camp['name'], camp['description'], camp['enforceOrder'], camp['showLocked'])
+                    db.insert_challenge_data(chall['id'], chall['name'], chall['description'],
+                                             chall['difficulty'], chall_dir, ch_tags, camp['id'], connection=conn)
 
-        for i, step in enumerate(camp['timeline']):
-            if step['type'] == 'challenge':
-                chall_id = step['id']
-                chall_dir = f'{camp_dir}/{chall_id}'
-                with open(f"{chall_dir}/meta.json", 'r', encoding='utf8') as f:
-                    chall = json.load(f)
-                ch_tags = chall.get("tags", [])
+                    db.insert_campaign_step(camp['id'], challenge_id=chall['id'], order=i, connection=conn)
 
-                db.insert_challenge_data(chall['id'], chall['name'], chall['description'],
-                                         chall['difficulty'], chall_dir, ch_tags, camp['id'])
+                    for j, task in enumerate(chall["tasks"]):
+                        db.insert_task_data(chall_id, task["id"], task["name"], task["description"], task["flag"], order=j, connection=conn)
 
-                db.insert_campaign_step(camp['id'], challenge_id=chall['id'], order=i)
+                if step['type'] == 'page':
+                    page_id = step['id']
+                    with open(f'{camp_dir}/pages/{page_id}.md', 'r', encoding='utf8') as f:
+                        content = f.read()
+                    db.insert_page(page_id, step['name'], content, connection=conn)
+                    db.insert_campaign_step(camp['id'], page_id=page_id, order=i, connection=conn)
 
-                for j, task in enumerate(chall["tasks"]):
-                    db.insert_task_data(chall_id, task["id"], task["name"], task["description"], task["flag"], order=j)
+        for name in get_dirs(parent_cl_dir):
+            if name.startswith("ignore-"):
+                continue
 
-            if step['type'] == 'page':
-                page_id = step['id']
-                with open(f'{camp_dir}/pages/{page_id}.md', 'r', encoding='utf8') as f:
-                    content = f.read()
-                db.insert_page(page_id, step['name'], content)
-                db.insert_campaign_step(camp['id'], page_id=page_id, order=i)
+            cl_dir = f"{parent_cl_dir}/{name}"
 
-    for name in get_dirs(parent_cl_dir):
-        if name.startswith("ignore-"):
-            continue
+            with open(f"{cl_dir}/meta.json", 'r', encoding='utf8') as f:
+                class_data = json.load(f)
 
-        cl_dir = f"{parent_cl_dir}/{name}"
+            dir = ""
+            if os.path.isfile(f"{cl_dir}/docker-compose.yml"):
+                # set dir only if there is a docker-compose file
+                dir = cl_dir
 
-        with open(f"{cl_dir}/meta.json", 'r', encoding='utf8') as f:
-            class_data = json.load(f)
+            id, name, desc, starting_time = class_data["id"], class_data["name"], class_data["description"], class_data["starting_time"]
+            doc_url, yt_url = class_data.get(
+                "google_doc_url", ""), class_data.get("yt_recording_url", "")
+            db.insert_class_data(id, name, desc, dir, doc_url, yt_url, starting_time, connection=conn)
 
-        dir = ""
-        if os.path.isfile(f"{cl_dir}/docker-compose.yml"):
-            # set dir only if there is a docker-compose file
-            dir = cl_dir
+        for plugin in plugins.discover_plugins(parent_plugin_dir):
+            db.insert_plugin_data(
+                plugin['id'],
+                plugin['name'],
+                plugin['description'],
+                plugin['version'],
+                plugin['dir'],
+                plugin['ui_url'],
+                plugin['valid'],
+                plugin['validation_errors'],
+                connection=conn,
+            )
 
-        id, name, desc, starting_time = class_data["id"], class_data["name"], class_data["description"], class_data["starting_time"]
-        doc_url, yt_url = class_data.get(
-            "google_doc_url", ""), class_data.get("yt_recording_url", "")
-        db.insert_class_data(id, name, desc, dir, doc_url, yt_url, starting_time)
-
-    for plugin in plugins.discover_plugins(parent_plugin_dir):
-        db.insert_plugin_data(
-            plugin['id'],
-            plugin['name'],
-            plugin['description'],
-            plugin['version'],
-            plugin['dir'],
-            plugin['ui_url'],
-            plugin['valid'],
-            plugin['validation_errors'],
-        )
-
-    file.touch()
-    eprint("DB successfully initialised.")
+    eprint("DB migrated and repository content refreshed.")
 
 
 app = Quart(__name__, static_folder='public', static_url_path='')
 app.secret_key = 'does not matter since this is all local'
+
+
+active_state_requests = set()
+
+
+def using_state(func):
+    """Track requests that must finish before a user can reset dashboard state."""
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        token = object()
+        active_state_requests.add(token)
+        try:
+            return await func(*args, **kwargs)
+        finally:
+            active_state_requests.discard(token)
+    return wrapper
+
+
+@app.route('/api/state/reset', methods=['POST'])
+async def reset_dashboard_state():
+    data = await request.get_json()
+    if not isinstance(data, dict) or data.get('scope') not in ('progress', 'ai', 'all'):
+        return jsonify({'error': 'Choose progress, ai or all.'}), 400
+    if active_state_requests:
+        return jsonify({'error': 'Wait for the current chat, model change or flag submission to finish, then try again.'}), 409
+    # No awaits between this check and commit: another request cannot race the reset.
+    db.reset_state(data['scope'])
+    return jsonify({'scope': data['scope']})
 
 
 @app.before_serving
@@ -169,7 +189,8 @@ def manage_session(func):
 
 
 def get_session_id():
-    return session['id']
+    # Keep the legacy database/API shape, but use one persistent local learner.
+    return 'local'
 
 # live check
 
@@ -567,6 +588,7 @@ async def campaign_get(campaign_id: str):
 
 @app.route('/api/challenges/submit', methods=['POST'])
 @manage_session
+@using_state
 async def challenges_submit():
     if request.is_json:
         data = await request.get_json()
@@ -759,6 +781,7 @@ async def llm_state():
 
 @app.route('/api/llm/external-models', methods=['POST'])
 @app.route('/api/llm/external-models/<int:model_id>', methods=['PUT', 'DELETE'])
+@using_state
 async def llm_external_model(model_id=None):
     try:
         if request.method == 'DELETE':
@@ -805,6 +828,7 @@ async def llm_pulls():
 
 
 @app.route('/api/llm/models/<path:name>', methods=['DELETE'])
+@using_state
 async def llm_delete_model(name):
     try:
         await llm.delete_local_model(name)
@@ -814,6 +838,7 @@ async def llm_delete_model(name):
 
 
 @app.route('/api/llm/model', methods=['GET', 'PUT'])
+@using_state
 async def llm_current_model():
     if request.method == 'GET':
         return jsonify(llm_store.get_selection())
@@ -837,6 +862,7 @@ async def llm_current_model():
 
 
 @app.route('/api/llm/chat', methods=['POST'])
+@using_state
 async def llm_chat():
     try:
         body = await request.get_json()
