@@ -13,7 +13,7 @@ StratoCyberLab (SCL) is a local cyber range to test and practice your offensive 
 <br>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d0164304-c7b2-4f3a-8ac9-2bfcbc52e573" alt="Screenshot" width="800"/>
+  <img width="800" alt="Screenshot of SCL" src="https://github.com/user-attachments/assets/f9db82e2-c47a-4f45-8275-c06d63e2bed7" />
 </p>
 
 ## Features
