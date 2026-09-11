@@ -63,35 +63,23 @@ class PersistenceTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.query("SELECT COUNT(*) FROM challenges WHERE challenge_name = 'stale metadata'"), [(0,)])
         self.assertEqual(self.query('SELECT COUNT(*) FROM task_solves'), [(1,)])
         self.assertEqual(llm_store.get_selection()['current_external_id'], model_id)
+        self.assertEqual(self.query('PRAGMA user_version'), [(1,)])
         self.assertFalse((self.path.parent / 'backups').exists())
 
-    def test_legacy_upgrade_merges_sessions_and_backs_up(self):
-        db.init_db_tables()
-        llm_store.init_tables()
-        db.write_new_solve('browser-a', 'test', 'task')
-        db.write_new_solve('browser-b', 'test', 'task')
-        db.write_new_solve('browser-b', 'test', 'task-2')
-        model_id = llm_store.save_model(self.config)
-        llm_store.select_model(external_id=model_id)
+    def test_unversioned_database_is_backed_up(self):
+        with closing(db.get_db()) as conn, conn:
+            conn.execute('CREATE TABLE existing_state (value TEXT)')
+            conn.execute("INSERT INTO existing_state VALUES ('preserved')")
         migrations.migrate()
-        self.assertEqual(self.query('SELECT session, COUNT(*) FROM task_solves GROUP BY session'), [('local', 2)])
-        self.assertEqual(llm_store.get_model(model_id)['api_key'], self.config['api_key'])
+        self.assertEqual(self.query('PRAGMA user_version'), [(1,)])
+        self.assertEqual(self.query('SELECT value FROM existing_state'), [('preserved',)])
         backups = list((self.path.parent / 'backups').glob('*.sqlite3'))
         self.assertEqual(len(backups), 1)
         with closing(sqlite3.connect(backups[0])) as backup:
             self.assertEqual(backup.execute('PRAGMA user_version').fetchone()[0], 0)
-            self.assertEqual(backup.execute('SELECT COUNT(*) FROM task_solves').fetchone()[0], 3)
+            self.assertEqual(backup.execute('SELECT value FROM existing_state').fetchall(), [('preserved',)])
         migrations.migrate()
         self.assertEqual(len(list((self.path.parent / 'backups').glob('*.sqlite3'))), 1)
-
-    def test_upgrade_from_version_one(self):
-        with closing(db.get_db()) as conn, conn:
-            migrations.initial_schema(conn)
-            conn.execute('PRAGMA user_version = 1')
-        db.write_new_solve('old-browser', 'test', 'task')
-        migrations.migrate()
-        self.assertEqual(self.query('PRAGMA user_version'), [(len(migrations.MIGRATIONS),)])
-        self.assertEqual(self.query('SELECT session FROM task_solves'), [('local',)])
 
     def test_failed_migration_rolls_back_schema_data_and_version(self):
         self.seed()

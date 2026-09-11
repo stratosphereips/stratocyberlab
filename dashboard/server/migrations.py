@@ -16,15 +16,7 @@ def initial_schema(conn):
     llm_store.init_tables(conn)
 
 
-def single_learner(conn):
-    """Merge existing browser sessions into one local learner's progress."""
-    conn.execute('CREATE TEMP TABLE merged_solves AS SELECT DISTINCT task_id, challenge_id FROM task_solves')
-    conn.execute('DELETE FROM task_solves')
-    conn.execute("INSERT INTO task_solves SELECT 'local', task_id, challenge_id FROM merged_solves")
-    conn.execute('DROP TABLE merged_solves')
-
-
-MIGRATIONS = (initial_schema, single_learner)
+MIGRATIONS = (initial_schema,)
 
 
 def migrate():
