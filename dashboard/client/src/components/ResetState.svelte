@@ -35,8 +35,8 @@
   }
 </script>
 
-<button class="btn btn-outline-secondary btn-sm rounded-pill" on:click={() => { error = ''; notice = ''; dialog.showModal(); }}>
-  Reset state
+<button title="Opens a modal with confirmation" class="btn btn-outline-secondary btn-sm rounded-pill" on:click={() => { error = ''; notice = ''; dialog.showModal(); }}>
+  Reset SCL
 </button>
 {#if notice}<span class="small text-success" role="status">{notice}</span>{/if}
 
