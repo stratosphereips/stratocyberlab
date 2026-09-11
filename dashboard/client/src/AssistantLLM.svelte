@@ -2,6 +2,7 @@
   import { onMount, onDestroy, tick } from 'svelte';
   import { writable, get } from 'svelte/store';
   import { marked } from 'marked';
+  import { CommandLine, PaperAirplane, QuestionMarkCircle, Sparkles } from 'svelte-heros';
   import ExternalModels from './ExternalModels.svelte';
   import TerminalContext from './TerminalContext.svelte';
   import { dashboardReset } from './stores';
@@ -10,50 +11,32 @@
   export let getTerminalContext = async () => null;
 
   let includeTerminalContext = true;
-  let previewOpen = false;
-  let previewContext = null;
-  let previewLoading = false;
-  let previewError = '';
-
-  $: if (!terminalOpen || !includeTerminalContext) {
-    previewOpen = false;
-    previewContext = null;
-    previewError = '';
-  }
-
-  async function previewTerminal() {
-    if (previewOpen) {
-      previewOpen = false;
-      previewContext = null;
-      previewError = '';
-      return;
-    }
-    previewLoading = true;
-    previewError = '';
-    try {
-      const context = await getTerminalContext();
-      if (terminalOpen && includeTerminalContext) {
-        previewContext = context;
-        previewOpen = true;
-      }
-    } catch {
-      previewError = 'Could not read terminal context. Try Preview again.';
-    } finally {
-      previewLoading = false;
-    }
-  }
 
   // ---- chat state (preserved rendering) ----
   let chatHistory = writable([]);
   let newMessage = '';
   let waitingForReply = false;
   let messageList;
+  let composerInput;
+  const COMPOSER_MAX_HEIGHT = 160;
   const TERMINAL_EXPLANATION_PROMPT =
     'Explain what is happening in the terminal output and help me understand it and/or fix potential errors.';
 
   async function scrollChatToBottom() {
     await tick();
     if (messageList) messageList.scrollTop = messageList.scrollHeight;
+  }
+
+  // Keep the composer as tall as its content, up to a fixed ceiling.
+  function autoResizeComposer() {
+    if (!composerInput) return;
+    composerInput.style.height = 'auto';
+    composerInput.style.height = `${Math.min(composerInput.scrollHeight, COMPOSER_MAX_HEIGHT)}px`;
+  }
+
+  async function resetComposerHeight() {
+    await tick();
+    autoResizeComposer();
   }
 
   // ---- model + server state ----
@@ -187,7 +170,10 @@
     if (!messageContent.trim() || waitingForReply) return;
 
     const message = { role: 'user', content: messageContent };
-    if (fromComposer) newMessage = '';
+    if (fromComposer) {
+      newMessage = '';
+      resetComposerHeight();
+    }
     waitingForReply = true;
 
     try {
@@ -197,8 +183,6 @@
       }
       chatHistory.update((h) => [...h, message]);
       const body = get(chatHistory);
-      previewOpen = false;
-      previewContext = null;
       await scrollChatToBottom();
       const response = await fetch('/api/llm/chat', {
         method: 'POST',
@@ -213,7 +197,10 @@
       chatHistory.set(await response.json());
       await scrollChatToBottom();
     } catch (err) {
-      if (fromComposer && !get(chatHistory).includes(message)) newMessage = message.content;
+      if (fromComposer && !get(chatHistory).includes(message)) {
+        newMessage = message.content;
+        resetComposerHeight();
+      }
       alert(err);
     } finally {
       waitingForReply = false;
@@ -366,25 +353,142 @@
   .chat-composer {
     max-height: 65%;
     overflow-y: auto;
+    background: var(--bs-body-bg);
   }
 
-  .terminal-explanation {
+  /* ---- context / suggestion chips ---- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 999px;
+    background: transparent;
     color: var(--bs-secondary-color);
     cursor: pointer;
-    text-decoration: none;
-    transition: color 0.15s ease-in-out;
+    transition:
+      background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out,
+      color 0.15s ease-in-out;
   }
 
-  .terminal-explanation:hover,
-  .terminal-explanation:focus-visible {
+  .chip:hover:not(:disabled),
+  .chip:focus-visible {
+    border-color: var(--bs-secondary-color);
     color: var(--bs-body-color);
-    text-decoration: underline;
   }
 
-  .terminal-explanation:disabled {
+  .chip:disabled {
     cursor: default;
-    opacity: 0.65;
-    text-decoration: none;
+    opacity: 0.55;
+  }
+
+  .context-chip input {
+    cursor: inherit;
+  }
+
+  .context-chip:has(input:disabled) {
+    cursor: default;
+    opacity: 0.55;
+  }
+
+  .context-chip.is-on {
+    background: var(--bs-secondary-bg);
+    border-color: transparent;
+    color: var(--bs-body-color);
+  }
+
+  .info-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--bs-secondary-color);
+    cursor: help;
+  }
+
+  .info-chip:hover {
+    color: var(--bs-body-color);
+  }
+
+  /* ---- input box ---- */
+  .composer-box {
+    border: 1px solid var(--bs-border-color);
+    border-radius: 1.25rem;
+    background: var(--bs-body-bg);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition:
+      border-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
+  }
+
+  .composer-box:focus-within {
+    border-color: var(--bs-secondary-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+  }
+
+  .composer-box.is-disabled {
+    background: var(--bs-tertiary-bg);
+  }
+
+  .composer-input {
+    display: block;
+    width: 100%;
+    resize: none;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--bs-body-color);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    padding: 0.75rem 0.9rem 0.25rem;
+    max-height: 160px;
+    overflow-y: auto;
+  }
+
+  .composer-input::placeholder {
+    color: var(--bs-secondary-color);
+  }
+
+  .composer-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem 0.5rem 0.9rem;
+  }
+
+  .composer-hint {
+    font-size: 0.75rem;
+    color: var(--bs-secondary-color);
+  }
+
+  .composer-send {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--bs-body-color);
+    color: var(--bs-body-bg);
+    transition:
+      opacity 0.15s ease-in-out,
+      transform 0.15s ease-in-out;
+  }
+
+  .composer-send:disabled {
+    opacity: 0.3;
+  }
+
+  .composer-send:not(:disabled):hover {
+    transform: translateY(-1px);
   }
 </style>
 
@@ -490,69 +594,67 @@
             {/if}
           </div>
 
-          <div class="chat-composer flex-shrink-0 p-2 border-top bg-white">
+          <div class="chat-composer flex-shrink-0 p-3 border-top">
             {#if terminalOpen}
-              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-1">
-                <div class="d-flex align-items-center gap-1">
-                  <label class="small d-flex align-items-center gap-2">
-                    <input
-                      type="checkbox"
-                      class="form-check-input m-0"
-                      bind:checked={includeTerminalContext}
-                      disabled={waitingForReply}
-                    />
-                    Include terminal context
-                  </label>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-link text-muted p-0"
-                    aria-label="Terminal context limits"
-                    title="Includes the latest 100 lines or 10,000 UTF-8 bytes, whichever limit is reached first. Captured when you send."
-                    >?</button
-                  >
-                </div>
+              <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                <label class="chip context-chip" class:is-on={includeTerminalContext}>
+                  <input
+                    type="checkbox"
+                    class="form-check-input m-0"
+                    bind:checked={includeTerminalContext}
+                    disabled={waitingForReply}
+                  />
+                  <CommandLine width="15" height="15" aria-hidden="true" />
+                  <span>Terminal context</span>
+                </label>
+                <button
+                  type="button"
+                  class="info-chip"
+                  aria-label="Terminal context limits"
+                  title="Includes the latest 100 lines or 10,000 UTF-8 bytes, whichever limit is reached first. Captured when you send."
+                >
+                  <QuestionMarkCircle width="16" height="16" aria-hidden="true" />
+                </button>
                 {#if includeTerminalContext}
                   <button
-                    class="btn btn-sm btn-link p-0"
-                    disabled={previewLoading || waitingForReply}
-                    aria-expanded={previewOpen}
-                    aria-controls="terminal-context-preview"
-                    on:click={previewTerminal}
+                    type="button"
+                    class="chip ms-auto"
+                    disabled={!currentModel || waitingForReply}
+                    title="Send the latest terminal output to the AI for troubleshooting."
+                    on:click={() => sendMessage(TERMINAL_EXPLANATION_PROMPT)}
                   >
-                    {previewLoading ? 'Reading…' : 'Preview'}
+                    <Sparkles width="15" height="15" aria-hidden="true" />
+                    <span>Explain the output</span>
                   </button>
                 {/if}
               </div>
-              {#if includeTerminalContext}
+            {/if}
+
+            <div class="composer-box" class:is-disabled={!currentModel}>
+              <textarea
+                class="composer-input"
+                rows="1"
+                bind:this={composerInput}
+                bind:value={newMessage}
+                disabled={!currentModel}
+                placeholder={currentModel ? 'Ask the assistant anything…' : 'Select a model to start chatting'}
+                on:keypress={handleKeyPress}
+                on:input={autoResizeComposer}
+              ></textarea>
+              <div class="composer-footer">
+                <span class="composer-hint">Enter to send · Shift + Enter for a new line</span>
                 <button
                   type="button"
-                  class="terminal-explanation d-block small bg-transparent border-0 p-0 mb-1"
-                  disabled={!currentModel || waitingForReply}
-                  title="Send the latest terminal output to the AI for troubleshooting."
-                  on:click={() => sendMessage(TERMINAL_EXPLANATION_PROMPT)}
+                  class="composer-send"
+                  aria-label="Send message"
+                  title="Send message"
+                  disabled={!currentModel || waitingForReply || !newMessage.trim()}
+                  on:click={() => sendMessage()}
                 >
-                  Explain me the output…
+                  <PaperAirplane width="16" height="16" aria-hidden="true" />
                 </button>
-                {#if previewError}<div class="small text-danger" role="alert">{previewError}</div>{/if}
-                {#if previewOpen}
-                  <div id="terminal-context-preview" class="mb-2">
-                    {#if previewContext}
-                      <TerminalContext context={previewContext} expanded={true} />
-                      <div class="small text-muted">Preview only; sending captures the latest output.</div>
-                    {:else}
-                      <div class="small text-muted">No terminal output available yet.</div>
-                    {/if}
-                  </div>
-                {/if}
-              {/if}
-            {/if}
-            <textarea
-              class="form-control bg-light"
-              bind:value={newMessage}
-              disabled={!currentModel}
-              placeholder="Type a message and hit enter"
-              on:keypress={handleKeyPress}
-            ></textarea>
+              </div>
+            </div>
           </div>
         </div>
       {/if}
