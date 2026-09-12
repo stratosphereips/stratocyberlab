@@ -96,4 +96,4 @@ Please refer to a separate Development documentation at [./docs/development.md](
 
 ## Architecture Diagram
 
-![StratoCyberLab (SCL) - Architecture](https://github.com/user-attachments/assets/182aebd9-0488-45bb-80db-32e97decc7a7)
+![StratoCyberLab (SCL) - Architecture](https://github.com/user-attachments/assets/0949a5e9-ef89-4e26-9527-8305ad001f31)
