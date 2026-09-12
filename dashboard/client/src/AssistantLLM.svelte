@@ -44,6 +44,10 @@
   let currentExternalId = null;
   let externalModels = [];
   let localError = '';
+  let ollama = { status: 'unknown', running: false, busy: false, error: '' };
+  let ollamaRequest = false;
+  let ollamaError = '';
+  $: canChat = !!currentModel && (currentExternalId !== null || (ollama.running && !localError));
   let stateError = '';
   let localModels = []; // [{ name, size }]
   let pulls = {}; // { [model]: { status, total, completed, percent } }
@@ -59,30 +63,36 @@
 
   const POLL_MS = 1200;
 
-  // Controlled polling (only when downloads are active or just started)
+  // Refresh while managing models, downloading, or changing the local service.
   let pollTimer = null;
   let isPolling = false;
   let forcePollCycles = 0; // small grace period right after starting a pull
+  let destroyed = false;
 
   onMount(async () => {
     await refreshState();
     // Start polling only if initial state shows active pulls
     if (Object.keys(pulls || {}).length > 0) startPolling();
   });
-  onDestroy(stopPolling);
+  onDestroy(() => {
+    destroyed = true;
+    stopPolling();
+  });
 
-  onMount(() => dashboardReset.subscribe((event) => {
-    if (event && event.scope !== 'progress') {
-      manageModelsOpen = false;
-      currentModel = '';
-      currentExternalId = null;
-      externalModels = [];
-      refreshState();
-    }
-  }));
+  onMount(() =>
+    dashboardReset.subscribe((event) => {
+      if (event && event.scope !== 'progress') {
+        manageModelsOpen = false;
+        currentModel = '';
+        currentExternalId = null;
+        externalModels = [];
+        refreshState();
+      }
+    }),
+  );
 
   function schedulePoll() {
-    pollTimer = setTimeout(pollTick, POLL_MS);
+    if (!destroyed && isPolling) pollTimer = setTimeout(pollTick, POLL_MS);
   }
 
   function stopPolling() {
@@ -95,28 +105,24 @@
   }
 
   function startPolling(graceCycles = 0) {
-    if (isPolling) return;
+    forcePollCycles = Math.max(forcePollCycles, graceCycles);
+    if (isPolling || destroyed) return;
     isPolling = true;
-    forcePollCycles = graceCycles;
-    pollTick(); // immediate tick
+    schedulePoll();
   }
 
   async function pollTick() {
     try {
-      const r = await fetch('/api/llm/pulls');
-      const data = await r.json();
-      pulls = data.pulls || {};
+      await refreshState(false);
       const pullingAny = Object.keys(pulls).length > 0;
 
-      if (pullingAny) {
-        await refreshModelsOnly(); // sizes/locals might change mid-pull
+      if (pullingAny || manageModelsOpen || ollama.busy) {
         schedulePoll();
       } else if (forcePollCycles > 0) {
         // right after starting a pull, server may need a moment to surface it
         forcePollCycles -= 1;
         schedulePoll();
       } else {
-        await refreshModelsOnly();
         stopPolling();
       }
     } catch {
@@ -131,19 +137,9 @@
     }
   }
 
-  async function refreshModelsOnly() {
-    try {
-      const res = await fetch('/api/llm/models');
-      const data = await res.json();
-      localModels = data.models || [];
-    } catch {
-      // intentionally ignored
-    }
-  }
-
-  async function refreshState() {
+  async function refreshState(showChecking = true) {
     const requestId = ++stateRequest;
-    checking = true;
+    if (showChecking) checking = true;
     stateError = '';
     try {
       const r = await fetch('/api/llm/state');
@@ -154,8 +150,10 @@
       currentExternalId = data.current_external_id ?? null;
       externalModels = data.external_models || [];
       localError = data.local_error || '';
+      ollama = data.ollama;
       localModels = data.models || [];
       pulls = data.pulls || {};
+      if (manageModelsOpen || ollama.busy || Object.keys(pulls).length) startPolling();
     } catch (err) {
       if (requestId === stateRequest) stateError = err.message;
     } finally {
@@ -163,11 +161,32 @@
     }
   }
 
+  async function toggleOllama() {
+    ollamaRequest = true;
+    ollamaError = '';
+    try {
+      const action = ollama.running ? 'stop' : 'start';
+      const response = await fetch(`/api/llm/ollama/${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      if (!response.ok) throw new Error(await response.text());
+      ollama = await response.json();
+      downloadExpanded = false;
+      startPolling(2);
+    } catch (err) {
+      ollamaError = err.message;
+    } finally {
+      ollamaRequest = false;
+    }
+  }
+
   // ---- chat actions ----
   async function sendMessage(content = null) {
     const fromComposer = content === null;
     const messageContent = fromComposer ? newMessage : content;
-    if (!messageContent.trim() || waitingForReply) return;
+    if (!messageContent.trim() || waitingForReply || !canChat) return;
 
     const message = { role: 'user', content: messageContent };
     if (fromComposer) {
@@ -619,7 +638,7 @@
                   <button
                     type="button"
                     class="chip ms-auto"
-                    disabled={!currentModel || waitingForReply}
+                    disabled={!canChat || waitingForReply}
                     title="Send the latest terminal output to the AI for troubleshooting."
                     on:click={() => sendMessage(TERMINAL_EXPLANATION_PROMPT)}
                   >
@@ -630,14 +649,18 @@
               </div>
             {/if}
 
-            <div class="composer-box" class:is-disabled={!currentModel}>
+            <div class="composer-box" class:is-disabled={!canChat}>
               <textarea
                 class="composer-input"
                 rows="1"
                 bind:this={composerInput}
                 bind:value={newMessage}
-                disabled={!currentModel}
-                placeholder={currentModel ? 'Ask the assistant anything…' : 'Select a model to start chatting'}
+                disabled={!canChat}
+                placeholder={canChat
+                  ? 'Ask the assistant anything…'
+                  : currentModel
+                    ? 'Start Ollama or select an external model in Models'
+                    : 'Select a model to start chatting'}
                 on:keypress={handleKeyPress}
                 on:input={autoResizeComposer}
               ></textarea>
@@ -648,7 +671,7 @@
                   class="composer-send"
                   aria-label="Send message"
                   title="Send message"
-                  disabled={!currentModel || waitingForReply || !newMessage.trim()}
+                  disabled={!canChat || waitingForReply || !newMessage.trim()}
                   on:click={() => sendMessage()}
                 >
                   <PaperAirplane width="16" height="16" aria-hidden="true" />
@@ -677,80 +700,118 @@
             ></button>
           </div>
           <div class="modal-body">
-            <h5>Local models</h5>
-            {#if localError}
-              <div class="text-muted">{localError}</div>
-            {:else if localModels.length === 0}
-              <div class="text-muted">No local models yet.</div>
-            {:else}
-              <div class="list-group">
-                {#each localModels as m}
-                  <div class="list-group-item d-flex align-items-center justify-content-between">
-                    <div>
-                      <div class="fw-semibold">{m.name}</div>
-                      <small class="text-muted">{fmtBytes(m.size)}</small>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                      {#if currentExternalId === null && currentModel === m.name}
-                        <button class="btn btn-sm btn-outline-success" disabled> Selected </button>
-                      {:else}
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h5 class="mb-0">Local models</h5>
+              <button
+                class="btn btn-sm btn-outline-primary"
+                disabled={ollama.busy || ollamaRequest || checking || !!stateError || waitingForReply}
+                on:click={toggleOllama}
+              >
+                {#if ollama.busy || ollamaRequest}
+                  <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+                {/if}
+                {ollama.status === 'pulling'
+                  ? 'Downloading Ollama…'
+                  : ollama.busy
+                    ? `${ollama.status === 'stopping' ? 'Stopping' : 'Starting'} Ollama…`
+                    : ollama.running
+                      ? 'Stop Ollama'
+                      : 'Start Ollama'}
+              </button>
+            </div>
+            <p class="text-muted small">
+              To use built-in Ollama support for local models, Ollama docker image must be downloaded (>5GB) which can take several minutes.
+              After that, models require additional downloads. External providers below work without Ollama.
+            </p>
+            <div aria-live="polite">
+              {#if ollamaError || ollama.error}
+                <div class="alert alert-danger">{ollamaError || ollama.error}</div>
+              {/if}
+              {#if !ollama.running}
+                <div class="text-muted">
+                  {ollama.busy
+                    ? 'Please wait. You can close this modal; the operation will continue.'
+                    : 'Local Ollama is stopped or unavailable. Start it to manage local models.'}
+                </div>
+              {/if}
+            </div>
+            {#if ollama.running}
+              {#if localError}
+                <div class="text-muted">{localError}</div>
+              {:else if localModels.length === 0}
+                <div class="text-muted">No local models yet.</div>
+              {:else}
+                <div class="list-group">
+                  {#each localModels as m}
+                    <div class="list-group-item d-flex align-items-center justify-content-between">
+                      <div>
+                        <div class="fw-semibold">{m.name}</div>
+                        <small class="text-muted">{fmtBytes(m.size)}</small>
+                      </div>
+                      <div class="d-flex align-items-center gap-2">
+                        {#if currentExternalId === null && currentModel === m.name}
+                          <button class="btn btn-sm btn-outline-success" disabled> Selected </button>
+                        {:else}
+                          <button
+                            class="btn btn-sm btn-outline-secondary"
+                            disabled={waitingForReply}
+                            on:click={() => setModel(m.name)}
+                          >
+                            Use this
+                          </button>
+                        {/if}
                         <button
-                          class="btn btn-sm btn-outline-secondary"
+                          class="btn btn-sm btn-outline-danger"
                           disabled={waitingForReply}
-                          on:click={() => setModel(m.name)}
+                          on:click={() => deleteLocal(m.name)}
                         >
-                          Use this
+                          Remove
                         </button>
-                      {/if}
+                      </div>
+                    </div>
+                  {/each}
+                </div>
+              {/if}
+              {#if !localError}
+                <button
+                  class="btn btn-sm btn-outline-primary mt-3"
+                  aria-expanded={downloadExpanded}
+                  aria-controls="local-download-form"
+                  on:click={() => (downloadExpanded = !downloadExpanded)}
+                >
+                  <span aria-hidden="true">{downloadExpanded ? '−' : '+'}</span>
+                  {downloadExpanded ? 'Close download' : 'Download local model'}
+                </button>
+                {#if downloadExpanded}
+                  <div id="local-download-form" class="border rounded bg-light p-3 mt-3">
+                    <label for="local-model-name" class="form-label">Download a new model</label>
+                    <div class="input-group">
+                      <input
+                        id="local-model-name"
+                        class="form-control"
+                        placeholder="model[:tag]"
+                        bind:value={modelToDownload}
+                      />
                       <button
-                        class="btn btn-sm btn-outline-danger"
-                        disabled={waitingForReply}
-                        on:click={() => deleteLocal(m.name)}
+                        class="btn btn-primary"
+                        on:click={confirmAndDownload}
+                        disabled={fetchingInfo || !modelToDownload.trim()}
                       >
-                        Remove
+                        {#if fetchingInfo}
+                          <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                        {/if}
+                        Download
                       </button>
                     </div>
+                    <div class="form-text">
+                      Browse models on <a href="https://ollama.com/search" target="_blank" rel="noopener"
+                        >ollama.com/search</a
+                      >. Before downloading, check the model's size. The model will be downloaded locally to your
+                      machine. For a start, we recommend <code>qwen3:1.7b</code> with a size 1.3GB.
+                    </div>
                   </div>
-                {/each}
-              </div>
-            {/if}
-            <button
-              class="btn btn-sm btn-outline-primary mt-3"
-              aria-expanded={downloadExpanded}
-              aria-controls="local-download-form"
-              on:click={() => (downloadExpanded = !downloadExpanded)}
-            >
-              <span aria-hidden="true">{downloadExpanded ? '−' : '+'}</span>
-              {downloadExpanded ? 'Close download' : 'Download local model'}
-            </button>
-            {#if downloadExpanded}
-              <div id="local-download-form" class="border rounded bg-light p-3 mt-3">
-                <label for="local-model-name" class="form-label">Download a new model</label>
-                <div class="input-group">
-                  <input
-                    id="local-model-name"
-                    class="form-control"
-                    placeholder="model[:tag]"
-                    bind:value={modelToDownload}
-                  />
-                  <button
-                    class="btn btn-primary"
-                    on:click={confirmAndDownload}
-                    disabled={fetchingInfo || !modelToDownload.trim()}
-                  >
-                    {#if fetchingInfo}
-                      <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                    {/if}
-                    Download
-                  </button>
-                </div>
-                <div class="form-text">
-                  Browse models on <a href="https://ollama.com/search" target="_blank" rel="noopener"
-                    >ollama.com/search</a
-                  >. Before downloading, check the model's size. The model will be downloaded locally to your machine.
-                  For a start, we recommend <code>qwen3:1.7b</code> with a size 1.3GB.
-                </div>
-              </div>
+                {/if}
+              {/if}
             {/if}
             <hr class="my-4" />
             <ExternalModels

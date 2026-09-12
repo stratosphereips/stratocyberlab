@@ -9,12 +9,17 @@ StratoCyberLab is a free, local cyber range for practicing offensive and defensi
 - The root `docker-compose.yml` creates the `playground-net` bridge and starts:
   - `hackerlab`: the user's root-capable attack workstation, exposed to localhost over SSH and WebSSH.
   - `dashboard`: a Svelte client plus Python HTTP/WebSocket servers. It discovers content (challenges, campaigns, classes, plugins, ...), tracks state in SQLite, and starts or stops Docker Compose projects.
-  - `ollama`: the optional local LLM service, reachable only inside the Docker network.
 - `challenges/` contains standalone CTF exercises.
 - `classes/` contains weekly teaching environments.
 - `campaigns/` combines challenges and instructional pages into ordered stories consisting of small challenges.
 - `plugins/` contains optional third-party Compose applications. The dashboard may proxy their UI.
 - The dashboard bind-mounts the content directories and `/var/run/docker.sock`; Docker socket access is effectively root access to the host.
+
+### AI assistant
+
+Dashboard contains AI assistant allowing students to chat about their tasks. The chat has access to the dashboard's builtin terminal context.
+
+The AI assistant is either a 3rd party openAI compatible provider or local ollama container with locally downloaded models. The ollama container can be optionally started by user in dashboard. It's optional because not everyone uses it and the ollama docker image has ~5GB. 
 
 ## Threat Model and Security Boundaries
 
@@ -70,4 +75,3 @@ Do not weaken containment merely to make a test pass.
 - Read existing documentation and follow the style and verbosity
 - Use easy to understand technical English.
 - Read the respective documentation file before working on the given feature
-

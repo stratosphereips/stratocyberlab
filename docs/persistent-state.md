@@ -9,8 +9,10 @@ mounted database file, so SQLite can create its journal files alongside it.
 Progress belongs to one local user, not a browser cookie. Another browser on the
 same SCL installation sees the same solves.
 
-Ollama model files live separately in `./ollama/`. Chat history, browser
-preferences, and changes inside Hackerlab are outside this persistence feature.
+Ollama model files live separately in `./ollama/`, even when the optional container
+is stopped. See [AI assistant](./ai-assistant.md) for startup and removal instructions.
+Chat history, browser preferences, and changes inside Hackerlab are outside this
+persistence feature.
 
 ## Resetting state
 

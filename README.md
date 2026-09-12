@@ -51,10 +51,10 @@ cd stratocyberlab
 docker compose up
 ```
 
-This uses the already prepared [docker-compose.yml](./docker-compose.yml) file to start three services:
+This uses the already prepared [docker-compose.yml](./docker-compose.yml) file to start two services:
+
 * `hackerlab` — a container with SSH and core utilities for hacking
-* `dashboard` — a web interface to start/stop challenges, submit flags, control Ollama, etc.
-* `ollama` — a container that optionally handles the local LLM models
+* `dashboard` — a web interface to start/stop challenges, submit flags, chat with AI assistant, etc.
 
 2. After the lab bootstraps, navigate in your browser to [http://127.0.0.1/](http://127.0.0.1/) to access the lab dashboard. 
 

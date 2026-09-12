@@ -29,6 +29,8 @@ class AssistantTests(unittest.IsolatedAsyncioTestCase):
         self.enterContext(patch.object(db, 'DATABASE', str(Path(self.temp.name) / 'test.sqlite3')))
         llm_store.init_tables()
         self.client = dashboard.app.test_client()
+        self.enterContext(patch.object(dashboard.ollama_runtime, 'status', AsyncMock(return_value={
+            'status': 'running', 'busy': False, 'running': True, 'error': ''})))
         self.local_list = self.enterContext(patch.object(
             llm, 'list_local_models', AsyncMock(return_value=[{'name': 'local:test', 'size': 42}])))
         self.config = {'provider': 'openai', 'base_url': 'https://api.example.test/v1/',

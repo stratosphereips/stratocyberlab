@@ -16,6 +16,7 @@ import docker
 import llm
 import llm_store
 import migrations
+from ollama_runtime import runtime as ollama_runtime
 import plugins
 from config import getenv
 
@@ -204,7 +205,12 @@ async def live():
 
 @app.after_serving
 async def shutdown():
-    eprint("Initiating graceful shutdown - stopping all plugins, challenges and classes...")
+    eprint("Initiating graceful shutdown - stopping Ollama, plugins, challenges and classes...")
+    # Quart finishes or cancels background tasks before after_serving hooks,
+    # so an in-progress Ollama startup cannot race this cleanup.
+    await ollama_runtime.run('stop')
+    if ollama_runtime.error:
+        eprint(f"Error stopping Ollama during shutdown: {ollama_runtime.error}")
     await plugins_stop_all()
     await classes_stop_all()
     await challenges_stop_all()
@@ -764,19 +770,32 @@ async def all_challenges_up():
 # ======================================
 @app.route('/api/llm/state', methods=['GET'])
 async def llm_state():
-    try:
-        models = await asyncio.wait_for(llm.list_local_models(), timeout=3)
-        local_error = ''
-    except Exception:
-        models = []
-        local_error = 'Local Ollama is unavailable.'
+    ollama_state = await ollama_runtime.status()
+    models = []
+    local_error = ''
+    if ollama_state['running']:
+        try:
+            models = await asyncio.wait_for(llm.list_local_models(), timeout=3)
+        except Exception:
+            local_error = 'Local Ollama is not responding. Check its container logs or stop and retry.'
     return jsonify({
         **llm_store.get_selection(),
         "models": models,
         "local_error": local_error,
+        "ollama": ollama_state,
         "external_models": llm_store.list_models(),
         "pulls": llm.get_pulls_snapshot(),
     })
+
+
+@app.route('/api/llm/ollama/<any(start,stop):action>', methods=['POST'])
+async def llm_ollama_action(action):
+    if not request.is_json:
+        return 'Expected application/json.', 415
+    if not ollama_runtime.reserve(action):
+        return 'An Ollama operation is already in progress.', 409
+    app.add_background_task(ollama_runtime.run, action)
+    return jsonify(await ollama_runtime.status()), 202
 
 
 @app.route('/api/llm/external-models', methods=['POST'])

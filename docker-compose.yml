@@ -22,6 +22,8 @@ services:
     container_name: scl-dashboard
     hostname: dashboard
     restart: on-failure
+    # Allow background task cancellation and managed-container cleanup.
+    stop_grace_period: 2m
     ports:
       - "127.0.0.1:80:80"
       - "127.0.0.1:8080:8080"
@@ -34,25 +36,11 @@ services:
       - ./campaigns:/campaigns
       - ./plugins:/plugins
       - ./data/dashboard:/var/opt/app/data
+      # Inspect this mount to reuse Docker's host path when starting on-demand Ollama container.
+      - ./ollama:/ollama:ro
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test: ["CMD", "python", "-c", "'import requests; response = requests.get(\"http://localhost:80/\"); assert response.status_code == 200'"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-  ollama:
-    image: ollama/ollama:0.34.0
-    container_name: scl-ollama
-    volumes:
-      - ./ollama:/root/.ollama
-    restart: on-failure
-    networks:
-      playground-net:
-        ipv4_address: 172.20.0.100
-    healthcheck:
-      test: ollama --version || exit 1
       interval: 30s
       timeout: 10s
       retries: 3
