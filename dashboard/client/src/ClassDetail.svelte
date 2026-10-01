@@ -187,7 +187,7 @@
 {/if}
 
 {#if classNotEnded}
-  <div class="alert alert-warning text-muted me-2" role="alert">
+  <div class="alert alert-warning text-muted me-2 mt-2" role="alert">
     <div class="fw-semibold mb-1">Before the class starts:</div>
     <ul class="mb-0">
       <li>Update SCL to have the latest version of built-in study materials and optional educational environment.</li>
