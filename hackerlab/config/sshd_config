@@ -6,3 +6,8 @@ PrintMotd no
 AcceptEnv LANG LC_*
 Banner /etc/banner
 Subsystem sftp /usr/lib/openssh/sftp-server
+
+# Disable ratelimitting to allow bruteforcing (only from
+# hackerlab itself) so that we can practice bruteforcing more easily
+PerSourceMaxStartups none
+PerSourcePenaltyExemptList 172.20.0.2
