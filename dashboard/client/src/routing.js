@@ -9,6 +9,8 @@ export const chooseChallenge = (id) => navigate(`challenge/${id}`);
 
 export const chooseClass = (id) => navigate(`class/${id}`);
 
+export const chooseClassesOverview = () => navigate('classes');
+
 export const choosePlugin = (id) => navigate(`plugin/${id}`);
 
 export const chooseCampaignStep = (campaignId, stepId) => navigate(`campaign/${campaignId}/${stepId}`);
@@ -32,7 +34,12 @@ export const chosenClass = derived([classes, path], ([classes, path]) => {
   const match = path.match(/^#class\/(.+)$/);
   if (!match) return null;
 
-  return classes?.find((cls) => cls.id === match[1]) ?? null;
+  // Locked classes have only a card on the overview, never a detail page.
+  return classes?.find((cls) => cls.id === match[1] && !cls.locked) ?? null;
+});
+
+export const chosenClassesOverview = derived([path], ([path]) => {
+  return /^#classes\/?$/.test(path);
 });
 
 export const chosenPlugin = derived([plugins, path], ([plugins, path]) => {

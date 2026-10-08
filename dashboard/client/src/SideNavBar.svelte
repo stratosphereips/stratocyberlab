@@ -5,8 +5,10 @@
   import {
     chooseChallenge,
     chooseClass,
+    chooseClassesOverview,
     choosePlugin,
     chosenClass,
+    chosenClassesOverview,
     chosenChallenge,
     chosenPlugin,
     chooseCampaignDetail,
@@ -22,6 +24,7 @@
     ChevronLeft, // Collapse
     ChevronRight, // Expand
     InformationCircle, // "Details" badge
+    Map, // Class journey overview
   } from 'svelte-heros';
 
   let visible = true;
@@ -104,12 +107,26 @@
           <ul class="top-level-sections list-unstyled m-0">
             <!-- Classes -->
             <CollapsibleSection
-              title="Click to expand classes list"
+              title="Open the class journey and expand the classes list"
               id="classesList"
               label="Classes"
               icon={AcademicCap}
+              onSelect={chooseClassesOverview}
             >
-              {#each $classes as c}
+              <li class="mb-1">
+                <button
+                  on:click={chooseClassesOverview}
+                  type="button"
+                  class="list-group-item list-group-item-action d-flex align-items-center gap-2 border-0 rounded-2 {$chosenClassesOverview
+                    ? 'fw-bold'
+                    : ''}"
+                >
+                  <Map width="16" height="16" aria-hidden="true" />
+                  <span class="text-truncate">Journey overview</span>
+                </button>
+              </li>
+              <!-- Locked classes appear only as cards on the journey overview. -->
+              {#each $classes.filter((c) => !c.locked) as c}
                 <li class="mb-1">
                   <button
                     on:click={() => chooseClass(c.id)}
