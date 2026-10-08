@@ -39,6 +39,11 @@
     return text.replace(/\s+/g, ' ').trim();
   }
 
+  // Descriptions often continue with lab setup steps; the first sentence is the summary.
+  function firstSentence(text) {
+    return text.match(/^.+?[.!?](?=\s|$)/)?.[0] ?? text;
+  }
+
   const startOf = (cls) => Date.parse(cls.starting_time);
   const formatDate = (cls, options) =>
     Number.isFinite(startOf(cls)) ? new Date(startOf(cls)).toLocaleDateString(undefined, options) : 'TBA';
@@ -54,7 +59,7 @@
   $: sorted = ($classes ?? [])
     .slice()
     .sort((a, b) => (startOf(a) || Infinity) - (startOf(b) || Infinity))
-    .map((cls) => ({ ...cls, ...splitName(cls.name), preview: plainText(cls.description) }));
+    .map((cls) => ({ ...cls, ...splitName(cls.name), preview: firstSentence(plainText(cls.description)) }));
   $: states = Object.fromEntries(sorted.map((cls) => [cls.id, stateOf(cls, now)]));
   $: total = sorted.length;
   $: currentIndex = (() => {
@@ -190,8 +195,8 @@
   .description {
     display: -webkit-box;
     overflow: hidden;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
     -webkit-box-orient: vertical;
   }
 </style>
