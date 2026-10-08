@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 RUN pipx ensurepath && \
-    pipx install bsy-clippy==0.3.2
+    pipx install bsy-clippy==0.3.4
 
 ENV TERM=xterm-256color
 RUN echo "PS1='\[\e[92m\]\u\[\e[0m\]@\[\e[94m\]\h\[\e[0m\]:\[\e[35m\]\w\[\e[0m\]# '" >> /root/.bashrc && \
