@@ -92,11 +92,14 @@ def init_db_tables(connection=None):
         conn.close()
 
 
-def insert_class_data(id: str, name: str, desc: str, cl_dir: str, doc_url: str, yt_url: str, starting_time: str, connection=None):
+def insert_class_data(id: str, name: str, desc: str, cl_dir: str, doc_url: str, yt_url: str, starting_time: str,
+                      locked: bool = False, folder: str = '', connection=None):
     conn = connection if connection is not None else get_db()
     cursor = conn.cursor()
-    q = 'INSERT INTO classes (id, name, description, dir, google_doc_url, yt_recording_url, starting_time) VALUES (?, ?, ?, ?, ?, ?, ?)'
-    cursor.execute(q, (id, name, desc, cl_dir, doc_url, yt_url, starting_time))
+    q = """INSERT INTO classes
+           (id, name, description, dir, google_doc_url, yt_recording_url, starting_time, locked, folder)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+    cursor.execute(q, (id, name, desc, cl_dir, doc_url, yt_url, starting_time, locked, folder))
     if connection is None:
         conn.commit()
         conn.close()
@@ -117,7 +120,7 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
     conn = get_db()
     cursor = conn.cursor()
     q = """
-    SELECT id, name, description, dir, google_doc_url, yt_recording_url, starting_time
+    SELECT id, name, description, dir, google_doc_url, yt_recording_url, starting_time, locked, folder
     FROM classes
     """
     if only_with_compose:
@@ -131,6 +134,8 @@ def get_classes(only_with_compose: bool = False) -> List[Dict]:
     columns = [column[0] for column in cursor.description]
 
     res = [dict(zip(columns, row)) for row in rows]
+    for c in res:
+        c['locked'] = bool(c['locked'])
 
     return res
 
@@ -429,6 +434,13 @@ def get_class_dir(c_id: str) -> str:
     if rows:
         return rows[0][0]
     return ""
+
+
+def get_class_folder(c_id: str) -> str:
+    """Return the class folder, including locked classes, for reading fixed files such as the cover."""
+    with closing(get_db()) as conn:
+        row = conn.execute('SELECT folder FROM classes WHERE id = ?', (c_id, )).fetchone()
+    return row[0] if row else ""
 
 
 def get_challenges(include_campaigns=False) -> List[Dict]:
