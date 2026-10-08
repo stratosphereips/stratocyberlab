@@ -94,23 +94,31 @@ def init(
                     db.insert_campaign_step(camp['id'], page_id=page_id, order=i, connection=conn)
 
         for name in get_dirs(parent_cl_dir):
-            if name.startswith("ignore-"):
-                continue
-
+            # Unreleased classes are shown as locked cards: no environment, documents or recordings.
+            locked = name.startswith("ignore-")
             cl_dir = f"{parent_cl_dir}/{name}"
 
-            with open(f"{cl_dir}/meta.json", 'r', encoding='utf8') as f:
-                class_data = json.load(f)
+            try:
+                with open(f"{cl_dir}/meta.json", 'r', encoding='utf8') as f:
+                    class_data = json.load(f)
+                id, name, desc, starting_time = (class_data["id"], class_data["name"],
+                                                 class_data["description"], class_data["starting_time"])
+            except (OSError, ValueError, KeyError, TypeError):
+                if not locked:
+                    raise
+                # Unreleased classes may still be drafts; they must not stop the dashboard.
+                eprint(f"Skipping unreleased class '{name}' with incomplete meta.json")
+                continue
 
             dir = ""
-            if os.path.isfile(f"{cl_dir}/docker-compose.yml"):
+            if not locked and os.path.isfile(f"{cl_dir}/docker-compose.yml"):
                 # set dir only if there is a docker-compose file
                 dir = cl_dir
 
-            id, name, desc, starting_time = class_data["id"], class_data["name"], class_data["description"], class_data["starting_time"]
-            doc_url, yt_url = class_data.get(
-                "google_doc_url", ""), class_data.get("yt_recording_url", "")
-            db.insert_class_data(id, name, desc, dir, doc_url, yt_url, starting_time, connection=conn)
+            doc_url, yt_url = ("", "") if locked else (
+                class_data.get("google_doc_url", ""), class_data.get("yt_recording_url", ""))
+            db.insert_class_data(id, name, desc, dir, doc_url, yt_url, starting_time,
+                                 locked=locked, folder=cl_dir, connection=conn)
 
         for plugin in plugins.discover_plugins(parent_plugin_dir):
             db.insert_plugin_data(
@@ -416,10 +424,29 @@ async def plugins_stop_all():
 # ======================================
 # ||             Classes              ||
 # ======================================
+CLASS_COVER_FILE = 'cover.jpg'
+
+
+def class_to_public(cls: dict) -> dict:
+    public_class = dict(cls)
+    folder = public_class.pop('folder')
+    public_class['has_cover'] = bool(folder) and os.path.isfile(os.path.join(folder, CLASS_COVER_FILE))
+    return public_class
+
+
 @app.route('/api/classes', methods=['GET'])
 @manage_session
 async def classes_get():
-    return jsonify(db.get_classes())
+    return jsonify([class_to_public(c) for c in db.get_classes()])
+
+
+@app.route('/api/classes/<class_id>/cover', methods=['GET'])
+async def class_cover(class_id: str):
+    # The folder comes from repository discovery and the file name is fixed, so no request data reaches the path.
+    folder = db.get_class_folder(class_id)
+    if not folder or not os.path.isfile(os.path.join(folder, CLASS_COVER_FILE)):
+        return 'This class has no cover image', 404
+    return await send_from_directory(folder, CLASS_COVER_FILE)
 
 
 @app.route('/api/classes/up', methods=['GET'])

@@ -63,7 +63,7 @@ class PersistenceTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.query("SELECT COUNT(*) FROM challenges WHERE challenge_name = 'stale metadata'"), [(0,)])
         self.assertEqual(self.query('SELECT COUNT(*) FROM task_solves'), [(1,)])
         self.assertEqual(llm_store.get_selection()['current_external_id'], model_id)
-        self.assertEqual(self.query('PRAGMA user_version'), [(1,)])
+        self.assertEqual(self.query('PRAGMA user_version'), [(len(migrations.MIGRATIONS),)])
         self.assertFalse((self.path.parent / 'backups').exists())
 
     def test_unversioned_database_is_backed_up(self):
@@ -71,7 +71,7 @@ class PersistenceTests(unittest.IsolatedAsyncioTestCase):
             conn.execute('CREATE TABLE existing_state (value TEXT)')
             conn.execute("INSERT INTO existing_state VALUES ('preserved')")
         migrations.migrate()
-        self.assertEqual(self.query('PRAGMA user_version'), [(1,)])
+        self.assertEqual(self.query('PRAGMA user_version'), [(len(migrations.MIGRATIONS),)])
         self.assertEqual(self.query('SELECT value FROM existing_state'), [('preserved',)])
         backups = list((self.path.parent / 'backups').glob('*.sqlite3'))
         self.assertEqual(len(backups), 1)

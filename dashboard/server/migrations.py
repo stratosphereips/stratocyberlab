@@ -16,7 +16,14 @@ def initial_schema(conn):
     llm_store.init_tables(conn)
 
 
-MIGRATIONS = (initial_schema,)
+def class_journey(conn):
+    """Show unreleased classes as locked cards on the class journey."""
+    conn.execute('ALTER TABLE classes ADD COLUMN locked INTEGER NOT NULL DEFAULT 0')
+    # Class folder, kept separately from `dir`, which is set only for startable environments.
+    conn.execute("ALTER TABLE classes ADD COLUMN folder TEXT NOT NULL DEFAULT ''")
+
+
+MIGRATIONS = (initial_schema, class_journey)
 
 
 def migrate():
