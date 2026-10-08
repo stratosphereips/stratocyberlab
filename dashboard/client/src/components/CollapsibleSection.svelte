@@ -6,6 +6,7 @@
   export let level = 1;
   export let icon = null; // a Heroicons Svelte component (e.g., AcademicCap)
   export let title = 'Click to expand/collapse';
+  export let onSelect = null; // optional: the header also opens a page
 
   let buttonClass = { 1: 'btn-lg', 2: '', 3: 'btn-sm' }[level ?? 1];
 
@@ -16,6 +17,7 @@
   // Toggle only if the click didn't come from labelExtra
   function onHeaderClick(e) {
     if (e.target.closest('[data-label-extra]')) return;
+    onSelect?.();
     $collapseStore = expanded ? 'false' : 'true';
   }
 
