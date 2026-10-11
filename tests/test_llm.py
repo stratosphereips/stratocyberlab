@@ -180,6 +180,97 @@ class AssistantTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.status_code, 400)
             local_chat.assert_not_called()
 
+    async def test_challenge_context_formats_both_providers_without_returning_files(self):
+        root = Path(self.temp.name) / 'exercise'
+        root.mkdir()
+        files = {'meta.json': '{"tasks": [{"flag": "BSY{private}"}]}',
+                 'README.md': 'Instructor solution', 'auto-solve.sh': '#!/bin/sh\nexit 1'}
+        for name, content in files.items():
+            (root / name).write_text(content, encoding='utf-8')
+        snapshot = {'text': 'Connection refused', 'captured_at': '2026-09-10T12:00:00Z',
+                    'truncated': False}
+        question = {'role': 'user', 'content': 'Give me a hint', 'terminal_context': snapshot,
+                    'include_challenge_context': True, 'challenge_id': 'exercise'}
+        llm_store.select_model(name='local:test')
+        with patch.object(db, 'get_challenge_dir', return_value=str(root)) as lookup, \
+                patch.object(llm.client, 'chat', AsyncMock(
+                    return_value={'message': {'content': 'Try checking the service.'}})) as local_chat:
+            response = await self.client.post('/api/llm/chat', json=[question])
+            self.assertEqual(response.status_code, 200)
+            lookup.assert_called_once_with('exercise')
+        history = await response.get_json()
+        self.assertEqual(history[0], question)
+        self.assertNotIn('BSY{private}', json.dumps(history))
+        local_input = local_chat.call_args.kwargs['messages'][-1]
+        context = json.loads(local_input['content'].split('\n')[1])
+        self.assertEqual(context, {'challenge_id': 'exercise', 'files': files})
+        self.assertIn('Connection refused', local_input['content'])
+        self.assertIn('User question:\nGive me a hint', local_input['content'])
+        self.assertNotIn('BSY{private}', llm.PROMPT)
+        self.assertIn('Never reveal flags', llm.PROMPT)
+
+        model_id = await self.create_model()
+        llm_store.select_model(external_id=model_id)
+        history.append({'role': 'user', 'content': 'What next?'})
+        with patch.object(db, 'get_challenge_dir', return_value=str(root)), \
+                patch.object(llm, '_external_chat', return_value='Another small hint') as external_chat:
+            response = await self.client.post('/api/llm/chat', json=history)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(external_chat.call_args.args[1][1], local_input)
+        self.assertEqual(external_chat.call_args.args[1][-1], history[-1])
+        self.assertEqual((await response.get_json())[:-1], history)
+
+    async def test_challenge_context_skips_missing_files_and_accepts_lowercase_readme(self):
+        root = Path(self.temp.name) / 'exercise'
+        root.mkdir()
+        llm_store.select_model(name='local:test')
+        question = {'role': 'user', 'content': 'Hint?',
+                    'include_challenge_context': True, 'challenge_id': 'campaign-exercise'}
+        with patch.object(db, 'get_challenge_dir', return_value=str(root)), \
+                patch.object(llm.client, 'chat', AsyncMock(
+                    return_value={'message': {'content': 'Hint'}})) as local_chat:
+            for files in ({}, {'readme.md': 'Reference'}):
+                for name, content in files.items():
+                    (root / name).write_text(content, encoding='utf-8')
+                response = await self.client.post('/api/llm/chat', json=[question])
+                self.assertEqual(response.status_code, 200)
+                content = local_chat.call_args.kwargs['messages'][-1]['content']
+                self.assertEqual(json.loads(content.split('\n')[1])['files'], files)
+
+    async def test_invalid_challenge_context_is_rejected_before_provider_calls(self):
+        llm_store.select_model(name='local:test')
+        question = {'role': 'user', 'content': 'Hint?', 'include_challenge_context': True,
+                    'challenge_id': 'exercise'}
+        with patch.object(db, 'get_challenge_dir', return_value='') as lookup, \
+                patch.object(llm.client, 'chat', AsyncMock(
+                    return_value={'message': {'content': 'Hint'}})) as local_chat:
+            for invalid in (question | {'include_challenge_context': 'true'},
+                            question | {'challenge_id': None}, question | {'challenge_id': 123},
+                            question | {'role': 'assistant'}, question):
+                response = await self.client.post('/api/llm/chat', json=[invalid])
+                self.assertEqual(response.status_code, 400)
+            lookup.assert_called_once_with('exercise')
+            local_chat.assert_not_called()
+            response = await self.client.post('/api/llm/chat', json=[
+                question | {'include_challenge_context': False}])
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(lookup.call_count, 1)
+
+    async def test_challenge_context_rejects_files_outside_registered_directory(self):
+        root = Path(self.temp.name) / 'exercise'
+        root.mkdir()
+        outside = Path(self.temp.name) / 'private.txt'
+        outside.write_text('Host secret', encoding='utf-8')
+        (root / 'meta.json').symlink_to(outside)
+        llm_store.select_model(name='local:test')
+        with patch.object(db, 'get_challenge_dir', return_value=str(root)), \
+                patch.object(llm.client, 'chat', AsyncMock()) as local_chat:
+            response = await self.client.post('/api/llm/chat', json=[
+                {'role': 'user', 'content': 'Hint?', 'include_challenge_context': True,
+                 'challenge_id': 'exercise'}])
+            self.assertEqual(response.status_code, 400)
+            local_chat.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()

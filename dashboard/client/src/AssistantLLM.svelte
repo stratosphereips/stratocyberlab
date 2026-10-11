@@ -9,8 +9,10 @@
 
   export let terminalOpen = false;
   export let getTerminalContext = async () => null;
+  export let challengeId = null;
 
   let includeTerminalContext = true;
+  let includeChallengeContext = false;
 
   // ---- chat state (preserved rendering) ----
   let chatHistory = writable([]);
@@ -189,6 +191,10 @@
     if (!messageContent.trim() || waitingForReply || !canChat) return;
 
     const message = { role: 'user', content: messageContent };
+    if (challengeId && includeChallengeContext) {
+      message.include_challenge_context = true;
+      message.challenge_id = challengeId;
+    }
     if (fromComposer) {
       newMessage = '';
       resetComposerHeight();
@@ -614,27 +620,43 @@
           </div>
 
           <div class="chat-composer flex-shrink-0 p-3 border-top">
-            {#if terminalOpen}
+            {#if terminalOpen || challengeId}
               <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                <label class="chip context-chip" class:is-on={includeTerminalContext}>
-                  <input
-                    type="checkbox"
-                    class="form-check-input m-0"
-                    bind:checked={includeTerminalContext}
-                    disabled={waitingForReply}
-                  />
-                  <CommandLine width="15" height="15" aria-hidden="true" />
-                  <span>Terminal context</span>
-                </label>
-                <button
-                  type="button"
-                  class="info-chip"
-                  aria-label="Terminal context limits"
-                  title="Includes the latest 100 lines or 10,000 UTF-8 bytes, whichever limit is reached first. Captured when you send."
-                >
-                  <QuestionMarkCircle width="16" height="16" aria-hidden="true" />
-                </button>
-                {#if includeTerminalContext}
+                {#if terminalOpen}
+                  <label class="chip context-chip" class:is-on={includeTerminalContext}>
+                    <input
+                      type="checkbox"
+                      class="form-check-input m-0"
+                      bind:checked={includeTerminalContext}
+                      disabled={waitingForReply}
+                    />
+                    <CommandLine width="15" height="15" aria-hidden="true" />
+                    <span>Terminal context</span>
+                  </label>
+                  <button
+                    type="button"
+                    class="info-chip"
+                    aria-label="Terminal context limits"
+                    title="Includes the latest 100 lines or 10,000 UTF-8 bytes, whichever limit is reached first. Captured when you send."
+                  >
+                    <QuestionMarkCircle width="16" height="16" aria-hidden="true" />
+                  </button>
+                {/if}
+                {#if challengeId}
+                  <label class="chip context-chip" class:is-on={includeChallengeContext}>
+                    <input
+                      type="checkbox"
+                      class="form-check-input m-0"
+                      bind:checked={includeChallengeContext}
+                      disabled={waitingForReply}
+                    />
+                    <span title="When checked, assistant has access to details of the currently opened challenge. Use this option and ask for small hints when stuck.">
+                      <QuestionMarkCircle width="15" height="15" aria-hidden="true" />
+                    </span>
+                    <span>Challenge context</span>
+                  </label>
+                {/if}
+                {#if terminalOpen && includeTerminalContext}
                   <button
                     type="button"
                     class="chip ms-auto"

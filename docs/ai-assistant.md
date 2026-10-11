@@ -50,7 +50,31 @@ while its image downloads. Requests are sent to the configured provider.
 Saved keys and model selection use the dashboard's
 [persistent state](./persistent-state.md).
 
+## Chat context
+
+When the built-in terminal is open, **Terminal context** includes its latest
+100 lines or 10,000 UTF-8 bytes, whichever limit is reached first, when you send
+a message. **Explain the output** sends this snapshot with a troubleshooting question.
+
+When a challenge detail is open, including a campaign challenge, **Challenge
+context** appears beside the terminal option. It is off by default. Enable it to
+let the assistant use that challenge's `meta.json`, `README.md` (or `readme.md`)
+and `auto-solve.sh` as instructor reference material.
+
+The assistant is instructed to teach through hints and one small step at a time,
+without revealing flags, hidden mechanisms or complete solutions. These are model
+instructions, so adherence depends on the selected model. Context stays associated
+with its original chat turn; unchecking an option stops attaching it to new messages.
+
 ## Server API
+
+`POST /api/llm/chat` accepts the existing list of user and assistant messages.
+A user message can include `include_challenge_context: true` and `challenge_id`.
+The server resolves the ID through its challenge registry and reads only the
+fixed reference files within that directory (up to 10 KB per file). The returned
+history retains the boolean and ID, without returning reference file contents.
+Reference data is JSON-encoded in the provider's user messages and treated as
+untrusted data by the system prompt.
 
 `GET /api/llm/state` includes an `ollama` object with `status`, `busy`, `running`
 and `error`, alongside the model lists and selection. Local model discovery is

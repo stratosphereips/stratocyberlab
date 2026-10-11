@@ -8,7 +8,7 @@
   import Snowfall from './Snowfall.svelte';
   import { ChevronLeft, ChevronRight } from 'svelte-heros';
   import { challenges, classes, campaigns, plugins } from './stores';
-  import { chosenClass } from './routing';
+  import { chosenClass, chosenChallenge, chosenCampaignStep } from './routing';
   import { fetchChallenges, fetchClasses, fetchCampaigns, fetchPlugins } from './fetch';
   import TopNavBar from './TopNavBar.svelte';
 
@@ -31,6 +31,7 @@
   }
 
   $: showClassDoc = Boolean($chosenClass && $chosenClass.google_doc_url);
+  $: currentChallenge = $chosenChallenge || ($chosenCampaignStep?.type === 'challenge' ? $chosenCampaignStep : null);
   $: showAssistant = !showClassDoc && !assistantHidden;
   $: showAssistantPeek = !showClassDoc && assistantHidden;
   $: showRightPane = showClassDoc || showAssistant;
@@ -270,7 +271,7 @@
         </button>
         <div class="split-right overflow-hidden">
           <div class="assistant-panel-content overflow-y-auto">
-            <AssistantLLM terminalOpen={showSSH} {getTerminalContext} />
+            <AssistantLLM terminalOpen={showSSH} {getTerminalContext} challengeId={currentChallenge?.id ?? null} />
           </div>
         </div>
       {/if}
