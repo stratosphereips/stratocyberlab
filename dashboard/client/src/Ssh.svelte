@@ -257,7 +257,7 @@
       resize();
     });
 
-    const socket = io(`ws://${window.location.host}:8080/`, {
+    const socket = io(`ws://${window.location.hostname}:8080/`, {
       path: '/socket.io',
       transports: ['websocket'],
     });
