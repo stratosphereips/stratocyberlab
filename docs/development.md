@@ -37,7 +37,10 @@
         * Assign a static IP address to every service. Look below to a table of IP allocations, choose free IP and add a
           record to the table.
         * Ideally set `stop_grace_period: 0s` for all services to speed-up stopping of containers
+    * optional `cover.jpg` (16:9, about 800 pixels wide) shown on the class card
     * optional other source code, data or docker files needed for the class
+* Prefix the directory name with `ignore-` to keep the class unreleased. It is shown as a locked card in the
+  [class journey](./class-journey.md); rename the directory to release it
 
 ## Networking
 

@@ -1,12 +1,14 @@
 <script>
   import ChallengeDetail from './ChallengeDetail.svelte';
   import ClassDetail from './ClassDetail.svelte';
+  import ClassJourney from './ClassJourney.svelte';
   import Introduction from './Introduction.svelte';
   import PluginDetail from './PluginDetail.svelte';
   import SideNavBar from './SideNavBar.svelte';
   import {
     chosenChallenge,
     chosenClass,
+    chosenClassesOverview,
     chosenCampaignDetail,
     chosenCampaignStep,
     chosenPlugin,
@@ -27,6 +29,8 @@
   <div class="ps-5 pt-4 flex-grow-1" style="min-width:0; flex-basis:0;">
     {#if $chosenChallenge}
       <ChallengeDetail challenge={$chosenChallenge} />
+    {:else if $chosenClassesOverview}
+      <ClassJourney />
     {:else if $chosenClass}
       <ClassDetail curClass={$chosenClass} />
     {:else if $chosenPlugin}
