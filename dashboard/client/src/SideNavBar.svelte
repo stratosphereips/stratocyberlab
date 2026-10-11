@@ -107,11 +107,10 @@
           <ul class="top-level-sections list-unstyled m-0">
             <!-- Classes -->
             <CollapsibleSection
-              title="Open the class journey and expand the classes list"
+              title="Click to expand classes list"
               id="classesList"
               label="Classes"
               icon={AcademicCap}
-              onSelect={chooseClassesOverview}
             >
               <li class="mb-1">
                 <button

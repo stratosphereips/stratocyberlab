@@ -1,12 +1,12 @@
 # Class journey
 
-Clicking **Classes** in the left menu opens the class journey: an overview of the whole
+First item in expanded Classes navbar section is an overview of the whole
 course. It shows a roadmap of all classes and a card for every class.
 
 ## What students see
 
 - **Journey roadmap:** the current class ("Class 3 of 14"), a progress bar of held
-  classes, and one chip per class. The roadmap scrolls so the current class is visible.
+  classes, and one chip per class.
 - **Class cards:** a cover image, date, title, short description and status. Released
   classes open their class page. Unreleased classes are blurred and locked.
 
