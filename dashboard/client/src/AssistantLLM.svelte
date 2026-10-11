@@ -2,7 +2,7 @@
   import { onMount, onDestroy, tick } from 'svelte';
   import { writable, get } from 'svelte/store';
   import { renderAssistantMarkdown } from './assistantMarkdown';
-  import { CommandLine, PaperAirplane, QuestionMarkCircle, Sparkles } from 'svelte-heros';
+  import { PaperAirplane, QuestionMarkCircle, Sparkles } from 'svelte-heros';
   import ExternalModels from './ExternalModels.svelte';
   import TerminalContext from './TerminalContext.svelte';
   import { dashboardReset } from './stores';
@@ -426,20 +426,6 @@
     color: var(--bs-body-color);
   }
 
-  .info-chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--bs-secondary-color);
-    cursor: help;
-  }
-
-  .info-chip:hover {
-    color: var(--bs-body-color);
-  }
-
   /* ---- input box ---- */
   .composer-box {
     border: 1px solid var(--bs-border-color);
@@ -630,17 +616,11 @@
                       bind:checked={includeTerminalContext}
                       disabled={waitingForReply}
                     />
-                    <CommandLine width="15" height="15" aria-hidden="true" />
                     <span>Terminal context</span>
+                    <span title="Includes the latest 100 lines or 10,000 UTF-8 bytes, whichever limit is reached first. Captured when you send.">
+                      <QuestionMarkCircle width="15" height="15" aria-hidden="true" />
+                    </span>
                   </label>
-                  <button
-                    type="button"
-                    class="info-chip"
-                    aria-label="Terminal context limits"
-                    title="Includes the latest 100 lines or 10,000 UTF-8 bytes, whichever limit is reached first. Captured when you send."
-                  >
-                    <QuestionMarkCircle width="16" height="16" aria-hidden="true" />
-                  </button>
                 {/if}
                 {#if challengeId}
                   <label class="chip context-chip" class:is-on={includeChallengeContext}>
@@ -650,10 +630,10 @@
                       bind:checked={includeChallengeContext}
                       disabled={waitingForReply}
                     />
+                    <span>Challenge context</span>
                     <span title="When checked, assistant has access to details of the currently opened challenge. Use this option and ask for small hints when stuck.">
                       <QuestionMarkCircle width="15" height="15" aria-hidden="true" />
                     </span>
-                    <span>Challenge context</span>
                   </label>
                 {/if}
                 {#if terminalOpen && includeTerminalContext}
