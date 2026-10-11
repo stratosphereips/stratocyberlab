@@ -50,6 +50,12 @@ while its image downloads. Requests are sent to the configured provider.
 Saved keys and model selection use the dashboard's
 [persistent state](./persistent-state.md).
 
+## Output
+
+Assistant replies support Markdown. Before displaying them, the dashboard
+sanitizes the generated HTML with DOMPurify, allowing formatting while removing
+scripts, event handlers, unsafe link URLs, forms and inline styles.
+
 ## Chat context
 
 When the built-in terminal is open, **Terminal context** includes its latest

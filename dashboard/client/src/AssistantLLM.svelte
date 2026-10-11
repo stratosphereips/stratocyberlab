@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy, tick } from 'svelte';
   import { writable, get } from 'svelte/store';
-  import { marked } from 'marked';
+  import { renderAssistantMarkdown } from './assistantMarkdown';
   import { CommandLine, PaperAirplane, QuestionMarkCircle, Sparkles } from 'svelte-heros';
   import ExternalModels from './ExternalModels.svelte';
   import TerminalContext from './TerminalContext.svelte';
@@ -607,7 +607,7 @@
                     {/if}
                     {#if parsed.content}
                       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                      {@html marked.parse(parsed.content)}
+                      {@html renderAssistantMarkdown(parsed.content)}
                     {/if}
                   </div>
                 </div>

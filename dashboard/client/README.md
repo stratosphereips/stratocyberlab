@@ -23,3 +23,15 @@ the command `npx eslint src` (in this directory) to run code analysis.
 We recommend enabling automatic formatting on save using your IDE.
 You can also run the command `npx prettier -w src` (in this directory) to 
 reformat all code.
+
+### Assistant rendering checks
+
+After `npm ci`, run from the repository root:
+
+```bash
+node --test tests/test_assistant_markdown.mjs
+```
+
+These checks verify that assistant Markdown keeps ordinary formatting and removes
+active HTML and unsafe URLs before rendering. They use jsdom without executing
+scripts or loading external resources.
