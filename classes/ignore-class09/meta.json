@@ -1,7 +1,7 @@
 {
-    "name": "0x09 - Reverse Engineering",
+    "name": "0x09 - Binary exploitation",
     "id": "class-09",
-    "description": "The ninth class focuses on reverse engineering.",
+    "description": "The ninth class focuses on binary exploitation and fuzzing.",
     "google_doc_url": "",
     "yt_recording_url": "",
     "starting_time": "2026-11-19T14:30:00+01:00"
