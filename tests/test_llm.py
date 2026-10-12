@@ -165,10 +165,25 @@ class AssistantTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(payload['messages'][-1], history[-1])
         self.assertEqual(messages, [question])
 
+    async def test_terminal_byte_ceiling_has_no_line_limit(self):
+        await self.client.put('/api/llm/model', json={'name': 'local:test'})
+        state = await (await self.client.get('/api/llm/state')).get_json()
+        self.assertEqual(state['terminal_context_limits'], {
+            'default_lines': 100, 'default_bytes': 10000, 'max_bytes': 10_000_000})
+        with patch.object(llm.client, 'chat', AsyncMock(
+                return_value={'message': {'content': 'Reply'}})) as local_chat:
+            for text in ('a\n' * 200, '😀' * 2501, 'x' * 10_000_000):
+                question = {'role': 'user', 'content': 'Explain', 'terminal_context': {
+                    'text': text, 'captured_at': '2026-09-10T12:00:00Z', 'truncated': False}}
+                response = await self.client.post('/api/llm/chat', json=[question])
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual((await response.get_json())[0], question)
+            self.assertEqual(local_chat.call_count, 3)
+
     async def test_invalid_terminal_attachments_are_rejected_before_provider_calls(self):
         snapshot = {'text': 'valid', 'captured_at': '2026-09-10T12:00:00Z', 'truncated': False}
-        invalid_contexts = [None, 'text', snapshot | {'text': 'a\n' * 100},
-                            snapshot | {'text': '😀' * 2501}, snapshot | {'truncated': 'false'},
+        invalid_contexts = [None, 'text',
+                            snapshot | {'text': 'x' * 10_000_001}, snapshot | {'truncated': 'false'},
                             snapshot | {'captured_at': 'invalid'}, snapshot | {'text': 123}]
         with patch.object(llm.client, 'chat', AsyncMock()) as local_chat:
             for context in invalid_contexts:

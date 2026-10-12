@@ -12,7 +12,10 @@ export function contextStats(context) {
 
 // Read rendered cells, not raw SSH traffic. Ignore viewportY: scrolling back
 // should not change which output accompanies a new question.
-export function captureTerminalContext(terminal) {
+export function captureTerminalContext(
+  terminal,
+  { lines: maxLines = TERMINAL_CONTEXT_LINES, bytes: maxBytes = TERMINAL_CONTEXT_BYTES } = {},
+) {
   if (!terminal) return null;
   const buffer = terminal.buffer.active;
   let text = '';
@@ -27,15 +30,15 @@ export function captureTerminalContext(terminal) {
     // The unused bottom of the screen is not terminal output.
     if (lines === 0 && !row) continue;
     const newLine = lines > 0 && !nextIsWrapped;
-    if (newLine && lines === TERMINAL_CONTEXT_LINES) {
+    if (newLine && lines === maxLines) {
       truncated = true;
       break;
     }
     text = row + (newLine ? '\n' : '') + text;
     if (lines === 0 || newLine) lines++;
     const bytes = encoder.encode(text);
-    if (bytes.length > TERMINAL_CONTEXT_BYTES) {
-      let start = bytes.length - TERMINAL_CONTEXT_BYTES;
+    if (bytes.length > maxBytes) {
+      let start = bytes.length - maxBytes;
       // Move past any continuation bytes to keep the suffix valid UTF-8.
       while ((bytes[start] & 0xc0) === 0x80) start++;
       text = new TextDecoder().decode(bytes.subarray(start));

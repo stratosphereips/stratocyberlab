@@ -59,8 +59,9 @@ scripts, event handlers, unsafe link URLs, forms and inline styles.
 ## Chat context
 
 When the built-in terminal is open, **Terminal context** includes its latest
-100 lines or 10,000 UTF-8 bytes, whichever limit is reached first, when you send
-a message. **Explain the output** sends this snapshot with a troubleshooting question.
+100 lines or 10,000 UTF-8 bytes by default, whichever limit is reached first,
+when you send a message. Click the small settings icon beside the **Terminal context** 
+help icon to adjust the limits. **Explain the output** sends this snapshot with a troubleshooting question.
 
 When a challenge detail is open, including a campaign challenge, **Challenge
 context** appears beside the terminal option. It is off by default. Enable it to
@@ -75,6 +76,7 @@ with its original chat turn; unchecking an option stops attaching it to new mess
 ## Server API
 
 `POST /api/llm/chat` accepts the existing list of user and assistant messages.
+Terminal snapshots are validated against a fixed 10 MB (10,000,000 UTF-8 byte) ceiling.
 A user message can include `include_challenge_context: true` and `challenge_id`.
 The server resolves the ID through its challenge registry and reads only the
 fixed reference files within that directory (up to 10 KB per file). The returned

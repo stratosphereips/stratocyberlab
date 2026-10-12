@@ -232,11 +232,11 @@
     terminal.open(terminalContainer);
     fitAddon.fit();
 
-    captureContext = async () => {
+    captureContext = async (limits) => {
       const activeTerminal = terminal;
       // Flush writes already queued by ssh_output before reading rendered cells.
       await new Promise((resolve) => activeTerminal.write('', resolve));
-      return terminal === activeTerminal ? captureTerminalContext(activeTerminal) : null;
+      return terminal === activeTerminal ? captureTerminalContext(activeTerminal, limits) : null;
     };
 
     function emitTerminalSize() {

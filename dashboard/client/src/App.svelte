@@ -47,9 +47,9 @@
   let resizeTerminalContentFunc;
   let captureTerminalContext;
 
-  async function getTerminalContext() {
+  async function getTerminalContext(limits) {
     if (!showSSH || !captureTerminalContext) return null;
-    const context = await captureTerminalContext();
+    const context = await captureTerminalContext(limits);
     return showSSH ? context : null;
   }
 

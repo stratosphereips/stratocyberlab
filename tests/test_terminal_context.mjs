@@ -66,6 +66,21 @@ test('empty or uninitialized terminal has no attachment', () => {
   assert.equal(captureTerminalContext(terminal(['', '   '])), null);
 });
 
+test('configured lines can increase or decrease while size independently limits capture', () => {
+  const rows = Array.from({ length: 250 }, (_, i) => `output ${i}`);
+  assert.equal(contextStats(captureTerminalContext(terminal(rows), { lines: 200, bytes: 10000 })).lines, 200);
+  assert.equal(captureTerminalContext(terminal(rows), { lines: 5, bytes: 10000 }).text, rows.slice(-5).join('\n'));
+  const snapshot = captureTerminalContext(terminal(['😀'.repeat(400)]), { lines: 200, bytes: 1001 });
+  assert.equal(snapshot.text, '😀'.repeat(250));
+  assert.equal(snapshot.truncated, true);
+});
+
+test('a buffer smaller than configured limits is captured in full', () => {
+  const snapshot = captureTerminalContext(terminal(['first', 'last']), { lines: 5000, bytes: 10000 });
+  assert.equal(snapshot.text, 'first\nlast');
+  assert.equal(snapshot.truncated, false);
+});
+
 test('active alternate screen and snapshots do not retain later changes', () => {
   const rows = ['top - process list', '  process 42'];
   const term = terminal(rows);

@@ -5,6 +5,7 @@
   import { PaperAirplane, QuestionMarkCircle, Sparkles } from 'svelte-heros';
   import ExternalModels from './ExternalModels.svelte';
   import TerminalContext from './TerminalContext.svelte';
+  import TerminalContextSettings from './TerminalContextSettings.svelte';
   import { dashboardReset } from './stores';
 
   export let terminalOpen = false;
@@ -12,6 +13,8 @@
   export let challengeId = null;
 
   let includeTerminalContext = true;
+  let terminalContextLimits;
+  let terminalContextOptions;
   let includeChallengeContext = false;
 
   // ---- chat state (preserved rendering) ----
@@ -153,6 +156,7 @@
       externalModels = data.external_models || [];
       localError = data.local_error || '';
       ollama = data.ollama;
+      terminalContextLimits = data.terminal_context_limits;
       localModels = data.models || [];
       pulls = data.pulls || {};
       if (manageModelsOpen || ollama.busy || Object.keys(pulls).length) startPolling();
@@ -203,7 +207,7 @@
 
     try {
       if (terminalOpen && includeTerminalContext) {
-        const context = await getTerminalContext();
+        const context = await getTerminalContext(terminalContextOptions);
         if (context && terminalOpen && includeTerminalContext) message.terminal_context = context;
       }
       chatHistory.update((h) => [...h, message]);
@@ -411,6 +415,13 @@
     opacity: 0.55;
   }
 
+  .context-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: inherit;
+  }
+
   .context-chip input {
     cursor: inherit;
   }
@@ -609,18 +620,21 @@
             {#if terminalOpen || challengeId}
               <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                 {#if terminalOpen}
-                  <label class="chip context-chip" class:is-on={includeTerminalContext}>
-                    <input
-                      type="checkbox"
-                      class="form-check-input m-0"
-                      bind:checked={includeTerminalContext}
-                      disabled={waitingForReply}
-                    />
-                    <span>Terminal context</span>
-                    <span title="Includes the latest 100 lines or 10,000 UTF-8 bytes, whichever limit is reached first. Captured when you send.">
-                      <QuestionMarkCircle width="15" height="15" aria-hidden="true" />
-                    </span>
-                  </label>
+                  <div class="chip context-chip" class:is-on={includeTerminalContext}>
+                    <label class="context-toggle">
+                      <input
+                        type="checkbox"
+                        class="form-check-input m-0"
+                        bind:checked={includeTerminalContext}
+                        disabled={waitingForReply}
+                      />
+                      <span>Terminal context</span>
+                      <span title="Includes the newest terminal output, captured when you send. Adjust the limits using the settings icon.">
+                        <QuestionMarkCircle width="15" height="15" aria-hidden="true" />
+                      </span>
+                    </label>
+                    <TerminalContextSettings limits={terminalContextLimits} bind:options={terminalContextOptions} disabled={waitingForReply} />
+                  </div>
                 {/if}
                 {#if challengeId}
                   <label class="chip context-chip" class:is-on={includeChallengeContext}>
@@ -645,7 +659,7 @@
                     on:click={() => sendMessage(TERMINAL_EXPLANATION_PROMPT)}
                   >
                     <Sparkles width="15" height="15" aria-hidden="true" />
-                    <span>Explain the output</span>
+                    <span>Explain</span>
                   </button>
                 {/if}
               </div>

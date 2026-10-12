@@ -6,8 +6,9 @@ from pathlib import Path
 
 import db
 
-MAX_TERMINAL_LINES = 100
-MAX_TERMINAL_BYTES = 10000
+DEFAULT_TERMINAL_LINES = 100
+DEFAULT_TERMINAL_BYTES = 10_000
+MAX_TERMINAL_BYTES = 10_000_000
 MAX_CHALLENGE_FILE_BYTES = 10_000
 
 
@@ -59,8 +60,8 @@ def _terminal_context(context):
     truncated = context.get('truncated')
     if not isinstance(text, str) or not text or not isinstance(truncated, bool):
         raise ValueError('Invalid terminal snapshot text or truncation flag.')
-    if len(text.split('\n')) > MAX_TERMINAL_LINES or len(text.encode('utf-8')) > MAX_TERMINAL_BYTES:
-        raise ValueError('Terminal snapshots must fit within 100 lines and 10,000 UTF-8 bytes.')
+    if len(text.encode('utf-8')) > MAX_TERMINAL_BYTES:
+        raise ValueError('Terminal snapshots must fit within 10 MB (10,000,000 UTF-8 bytes).')
     if not isinstance(captured_at, str) or len(captured_at) > 64:
         raise ValueError('Invalid terminal snapshot timestamp.')
     try:

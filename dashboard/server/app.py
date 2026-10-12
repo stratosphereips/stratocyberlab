@@ -11,6 +11,7 @@ from urllib import request as urllib_request
 
 from quart import Quart, Response, jsonify, request, send_from_directory, session
 
+import chat_context
 import db
 import docker
 import llm
@@ -812,6 +813,11 @@ async def llm_state():
         "ollama": ollama_state,
         "external_models": llm_store.list_models(),
         "pulls": llm.get_pulls_snapshot(),
+        "terminal_context_limits": {
+            "default_lines": chat_context.DEFAULT_TERMINAL_LINES,
+            "default_bytes": chat_context.DEFAULT_TERMINAL_BYTES,
+            "max_bytes": chat_context.MAX_TERMINAL_BYTES,
+        },
     })
 
 
