@@ -1,0 +1,5 @@
+# Persistent dashboard state contains provider credentials, including in backups.
+data/dashboard/
+dashboard/server/data/
+db.sqlite3*
+dashboard/server/db.sqlite3*
