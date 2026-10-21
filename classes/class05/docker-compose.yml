@@ -1,0 +1,12 @@
+services:
+  class-05-nmap-scanner:
+    build: .
+    container_name: scl-class-05-nmap-scanner
+    stop_grace_period: 0s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.91
+
+networks:
+  playground-net:
+    external: true
