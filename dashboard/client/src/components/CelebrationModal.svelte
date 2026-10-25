@@ -4,6 +4,11 @@
 
   export let open = false;
   export let message = '';
+  export let challengeName = '';
+  export let challengeSolved = false;
+
+  $: feedbackUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfwx--_1kyd-LGI_p7CwlhQDqtwVqbskfV-CEg-Kbz9EEhBNw/viewform?' +
+    new URLSearchParams({ usp: 'pp_url', 'entry.1171329630': challengeName }).toString();
 
   const dispatch = createEventDispatcher();
 
@@ -196,10 +201,22 @@
     {#if message}
       <p class="mb-1">{message}</p>
     {/if}
-    <p class="text-muted mb-0">Task solved. Keep going!</p>
+    {#if challengeSolved}
+      <div class="mt-4 p-3 rounded-3 border border-success-subtle bg-success-subtle">
+        <h4 class="h5">All tasks solved!</h4>
+        <p>You solved all tasks in {challengeName}. Please share your feedback to help us improve SCL.</p>
+        <a class="btn btn-success rounded-pill px-4" href={feedbackUrl} target="_blank" rel="noopener noreferrer">
+          Share feedback <span aria-hidden="true">↗</span>
+          <span class="visually-hidden">(opens Google Forms in a new tab)</span>
+        </a>
+        <p class="small text-muted mt-2 mb-0">Feedback is optional.</p>
+      </div>
+    {:else}
+      <p class="text-muted mb-0">Task solved. Keep going!</p>
+    {/if}
   </div>
   <svelte:fragment slot="footer">
-    <button type="button" class="btn btn-success w-auto" on:click={() => dispatch('close')}>Awesome!</button>
+    <button type="button" class="btn btn-success w-auto" on:click={() => dispatch('close')}>Continue!</button>
   </svelte:fragment>
 </Modal>
 

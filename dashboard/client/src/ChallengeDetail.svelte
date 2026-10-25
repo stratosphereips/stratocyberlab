@@ -147,4 +147,10 @@
   </div>
 {/each}
 
-<CelebrationModal open={celebrationOpen} message={celebrationMessage} on:close={() => (celebrationOpen = false)} />
+<CelebrationModal
+  open={celebrationOpen}
+  message={celebrationMessage}
+  challengeName={challenge.name}
+  challengeSolved={challenge.tasks.length > 0 && challenge.tasks.every((task) => task.solved)}
+  on:close={() => (celebrationOpen = false)}
+/>
