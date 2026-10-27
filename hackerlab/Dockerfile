@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     dnsutils less tcpdump tmux wget iproute2 python3-pip git rsyslog plocate \
     attr acl btop sshpass python3-venv proxychains binwalk ncat file binutils \
     psmisc lsof pipx e2fsprogs logrotate cron libpam-pwquality systemd vim telnet \
-    bsdextrautils \
+    bsdextrautils sudo \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
