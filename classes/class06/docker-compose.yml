@@ -7,6 +7,7 @@ services:
     container_name: scl-class-06-victim
     stop_grace_period: 0s
     hostname: class6-victim
+    platform: linux/amd64
     networks:
       playground-net:
         ipv4_address: 172.20.0.98
@@ -17,6 +18,7 @@ services:
     container_name: scl-class-06-proxy-hop
     stop_grace_period: 0s
     hostname: class6-hop
+    platform: linux/amd64
     networks:
       playground-net:
         ipv4_address: 172.20.0.99
