@@ -13,6 +13,9 @@ RUN mkdir -p /root/.ssh
 COPY key.pub /root/.ssh/authorized_keys
 COPY key /root/.ssh/key
 
+# Windows build contexts may supply group/world-writable file modes which break the challenge
+RUN chmod 700 /root/.ssh && chmod 600 /root/.ssh/authorized_keys /root/.ssh/key
+
 RUN mkdir -p /var/www/payloads
 COPY payload.sh /var/www/payloads/
 COPY start.sh attacker.py ${APP_HOME}/
