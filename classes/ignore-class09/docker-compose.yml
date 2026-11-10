@@ -14,7 +14,7 @@ services:
 
     networks:
       playground-net:
-        ipv4_address: 172.20.0.115
+        ipv4_address: 172.20.0.145
 
   class-09-exercise:
     build: exercise/
@@ -27,7 +27,7 @@ services:
 
     networks:
       playground-net:
-        ipv4_address: 172.20.0.116
+        ipv4_address: 172.20.0.146
 
 
 networks:
