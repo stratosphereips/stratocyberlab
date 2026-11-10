@@ -1,0 +1,11 @@
+{
+  "tokenizer_class": "WoprWordTokenizer",
+  "vocab_file": "vocab.json",
+  "do_lower_case": true,
+  "word_pattern": "[a-z']+",
+  "model_max_length": 10,
+  "truncation_side": "right",
+  "padding_side": "right",
+  "pad_token": "<pad>",
+  "unk_token": "<unk>"
+}

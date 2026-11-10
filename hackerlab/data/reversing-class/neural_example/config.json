@@ -1,0 +1,12 @@
+{
+  "architectures": ["WoprBagOfWordsClassifier"],
+  "vocab_size": 94,
+  "embedding_size": 16,
+  "pad_token_id": 0,
+  "pooling": "mean",
+  "hidden_size": 8,
+  "hidden_act": "relu",
+  "num_labels": 2,
+  "id2label": {"0": "IDENTIFICATION NOT RECOGNIZED BY SYSTEM",
+               "1": "LOGON ACCEPTED"}
+}
