@@ -3,7 +3,7 @@ FROM debian:bookworm
 RUN apt update && apt install -y openssh-server gdb vim nano tmux curl python3 tshark gcc file pipx less
 
 RUN pipx ensurepath && \
-    pipx install bsy-clippy==0.3.2
+    pipx install bsy-clippy==0.3.5
 
 # install gef
 RUN curl -fsSL https://gef.blah.cat/sh | bash
