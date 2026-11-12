@@ -1,6 +1,8 @@
 services:
   hackerlab:
-    build: ./hackerlab
+    build:
+      context: ./hackerlab
+      network: host   # kilimanjaro: no bridge egress during builds
     image: scl-hackerlab  # name of the built image
     container_name: scl-hackerlab
     hostname: hackerlab
@@ -18,9 +20,12 @@ services:
     build:
       context: .   # ugly hack - context is "parent" directory for access to .git to read current commit hash
       dockerfile: ./dashboard/Dockerfile
+      network: host   # kilimanjaro: build containers have no bridge egress (FORWARD drop) - build via host stack
     image: scl-dashboard  # name of the built image
     container_name: scl-dashboard
     hostname: dashboard
+    environment:
+      - DOCKER_BUILDKIT=0  # kilimanjaro: use cached bases when auth.docker.io is unreachable
     restart: on-failure
     ports:
       - "127.0.0.1:80:80"
