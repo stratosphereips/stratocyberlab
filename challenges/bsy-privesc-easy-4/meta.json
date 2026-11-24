@@ -21,5 +21,9 @@
         "Check whether the filesystem search utility has an elevated identity; use its ability to launch a command, then inspect the root-only artifacts."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

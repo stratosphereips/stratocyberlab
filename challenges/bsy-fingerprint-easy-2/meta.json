@@ -15,5 +15,9 @@
         "Check the service's name-only directory listing, then retrieve the archive record it reveals."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

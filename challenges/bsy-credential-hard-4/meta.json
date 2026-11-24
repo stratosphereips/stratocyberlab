@@ -15,5 +15,9 @@
         "Authenticate to PostgreSQL with the recovered account and inspect the protected airlock record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

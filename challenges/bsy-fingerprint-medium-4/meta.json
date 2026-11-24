@@ -15,5 +15,9 @@
         "Select the rover telemetry group, then request its first article and inspect the body."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

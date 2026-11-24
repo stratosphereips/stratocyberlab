@@ -21,5 +21,9 @@
         "Check whether a user-controlled search path can put a shell-compatible executable first, then use it to enter a root context."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

@@ -15,5 +15,9 @@
         "Connect with the discovered account and password, then retrieve the protected record from its account area."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

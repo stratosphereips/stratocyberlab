@@ -15,5 +15,9 @@
         "Use the recovered account on the protected web service and read its response."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

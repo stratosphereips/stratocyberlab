@@ -15,5 +15,9 @@
         "Use the accepted read credential to inspect the device's management data for the maintenance record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

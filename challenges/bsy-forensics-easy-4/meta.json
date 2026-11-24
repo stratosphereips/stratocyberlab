@@ -21,5 +21,9 @@
         "Inspect the unusual account's comment field and recognize that its contents are encoded text."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

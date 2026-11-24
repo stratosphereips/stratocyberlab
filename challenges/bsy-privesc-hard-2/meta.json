@@ -21,5 +21,9 @@
         "A privileged file-search utility can invoke another program. Preserve its effective identity when starting a shell, then read both root-only files."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

@@ -15,5 +15,9 @@
         "After logging in to the remote terminal, look in the account's home directory for the crew record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

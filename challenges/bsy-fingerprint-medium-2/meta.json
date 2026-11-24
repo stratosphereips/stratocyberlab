@@ -15,5 +15,9 @@
         "Log in to the archive mailbox, inspect its message list, then retrieve the stored message."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

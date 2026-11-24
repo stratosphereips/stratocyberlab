@@ -15,5 +15,9 @@
         "After logging in to the Redis service, read the final arena record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

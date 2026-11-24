@@ -15,5 +15,9 @@
         "Use the credential for the corroborated operator to access the vault record; the other entries lead to monitored decoys."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

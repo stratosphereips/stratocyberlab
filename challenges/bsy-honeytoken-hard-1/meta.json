@@ -15,5 +15,9 @@
         "Use the credential from the sole record whose generation matches the live identity store to access the protected crew record."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

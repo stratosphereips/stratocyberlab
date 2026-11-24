@@ -15,5 +15,9 @@
         "Ask the service to verify the radio identity, then inspect the full reply for the record."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

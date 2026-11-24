@@ -21,5 +21,9 @@
         "Update that writable helper to print both root-only files, then run the vendor utility and capture its output."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

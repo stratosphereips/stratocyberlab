@@ -21,5 +21,9 @@
         "Use that interpreter to set the process UID to 0, then start a shell that preserves its elevated privileges and inspect both root-only records."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

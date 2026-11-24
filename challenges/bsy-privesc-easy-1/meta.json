@@ -21,5 +21,9 @@
         "One familiar utility runs with elevated effective privileges. See whether its documented escape can start a shell that preserves those privileges, then inspect the protected root-only records."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

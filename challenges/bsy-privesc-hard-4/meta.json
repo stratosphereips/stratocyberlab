@@ -21,5 +21,9 @@
         "Use the permitted Python interpreter to run a process as UID 0, then inspect both protected records."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

@@ -15,5 +15,9 @@
         "Use the credentials announced in that service's greeting, then inspect the stored message containing the score record."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

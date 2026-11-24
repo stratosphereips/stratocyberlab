@@ -15,5 +15,9 @@
         "Establish an MQTT 3.1.1 session, subscribe broadly, and inspect the telemetry record delivered by the broker."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

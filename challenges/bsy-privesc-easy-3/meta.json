@@ -21,5 +21,9 @@
         "Investigate the permitted find utility's documented shell escape; confirm you have root identity before reading the protected files."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

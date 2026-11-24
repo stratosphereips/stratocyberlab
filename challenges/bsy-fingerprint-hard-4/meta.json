@@ -15,5 +15,9 @@
         "Request a full transfer for the arcade's local zone, then inspect its TXT records for the integrity token."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

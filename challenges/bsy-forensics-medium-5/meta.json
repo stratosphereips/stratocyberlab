@@ -21,5 +21,9 @@
         "The public key associated with that login has a trailing note. Decode the note to recover the flag."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

@@ -21,5 +21,9 @@
         "Put your own executable with the expected helper name in a directory you control, place that directory first in PATH, then rerun the privileged program. Have your helper establish root access."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

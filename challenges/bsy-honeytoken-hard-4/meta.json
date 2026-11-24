@@ -15,5 +15,9 @@
         "Use the credential belonging to the account present in that inventory to access the protected dispatch."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

@@ -21,5 +21,9 @@
         "Decode the long encoded value in the anomalous system-wide scheduled entry with base64; submit the recovered flag."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

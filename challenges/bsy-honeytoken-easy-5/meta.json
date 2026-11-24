@@ -15,5 +15,9 @@
         "Submit the key card belonging to the shared account and inspect the successful session response for the audit record."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

@@ -15,5 +15,9 @@
         "Use the pair that completes authentication, then inspect the files available in that account."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

@@ -15,5 +15,9 @@
         "The genuine credential predates the inventory snapshot. Use that record to request the vault entry."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

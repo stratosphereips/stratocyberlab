@@ -15,5 +15,9 @@
         "The identifier tied to the completed settlement is the one to use when requesting its claim record."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

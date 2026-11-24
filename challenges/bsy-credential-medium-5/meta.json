@@ -15,5 +15,9 @@
         "Use the discovered operator credentials to reconnect, then read the protected dispatch record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

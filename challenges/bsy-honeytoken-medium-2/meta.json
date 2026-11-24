@@ -15,5 +15,9 @@
         "Use the matching candidate with the account identified by the notes, then retrieve the protected dispatch record."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

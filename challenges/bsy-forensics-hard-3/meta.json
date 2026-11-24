@@ -21,5 +21,9 @@
         "Review the SSH trust material for the retro account and decode the comment on the anomalous key entry."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

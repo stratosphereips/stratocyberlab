@@ -15,5 +15,9 @@
         "After logging in, read the airlock:manifest record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

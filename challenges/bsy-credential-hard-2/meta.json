@@ -15,5 +15,9 @@
         "Use the recovered operator account to enter the console and inspect its protected record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

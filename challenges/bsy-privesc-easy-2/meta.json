@@ -21,5 +21,9 @@
         "The Python interpreter has cap_setuid. Use it to set the process UID to 0, start a root shell, then inspect both root-only proof files."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

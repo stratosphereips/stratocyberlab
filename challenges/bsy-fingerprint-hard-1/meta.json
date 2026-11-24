@@ -15,5 +15,9 @@
         "After recognizing Redis, inspect the BBS transmission record stored under its night-shift key."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

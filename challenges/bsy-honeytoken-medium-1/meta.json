@@ -15,5 +15,9 @@
         "Use the credential whose identifier is marked active to access the admin console and read its record."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

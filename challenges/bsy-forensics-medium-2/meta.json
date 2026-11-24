@@ -21,5 +21,9 @@
         "Inspect that account's scheduled entries and examine the unfamiliar command's argument; decode the value you find there."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

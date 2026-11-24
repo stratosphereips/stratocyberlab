@@ -15,5 +15,9 @@
         "One service speaks Redis. Use a Redis read command to retrieve the archive record."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

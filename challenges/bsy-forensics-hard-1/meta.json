@@ -21,5 +21,9 @@
         "Inspect the contents of the ordinary-looking system maintenance schedule and decode its recorded batch value."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

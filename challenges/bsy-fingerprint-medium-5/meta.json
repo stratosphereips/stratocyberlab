@@ -15,5 +15,9 @@
         "An empty query can list available users. Inspect the profile for the archive account."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

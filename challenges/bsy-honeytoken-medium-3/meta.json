@@ -15,5 +15,9 @@
         "Use the password paired with the principal confirmed by both sources to sign in to the board."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

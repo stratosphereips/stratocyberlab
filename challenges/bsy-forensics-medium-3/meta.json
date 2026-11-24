@@ -21,5 +21,9 @@
         "Inspect the comment on the added key entry. Decode its encoded text to recover the submission value."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

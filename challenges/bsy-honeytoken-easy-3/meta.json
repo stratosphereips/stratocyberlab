@@ -15,5 +15,9 @@
         "Use the matching account and password from the candidate records to authenticate, then request the protected vault record."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

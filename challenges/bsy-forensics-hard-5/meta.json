@@ -21,5 +21,9 @@
         "Run stat on builder's SSH authorized_keys file, inspect its key comment, and decode the token there from Base64."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

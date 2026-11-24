@@ -15,5 +15,9 @@
         "After a successful login, inspect the mailbox listing and retrieve its only message."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

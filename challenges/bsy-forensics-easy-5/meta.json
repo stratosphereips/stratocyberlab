@@ -21,5 +21,9 @@
         "One root scheduled command has an encoded argument. Decode that value to recover the evidence."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

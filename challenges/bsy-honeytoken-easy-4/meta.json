@@ -15,5 +15,9 @@
         "Verify the listed accounts against the server's own mailbox database, then authenticate with the matching pair and request the archive."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

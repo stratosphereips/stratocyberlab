@@ -15,5 +15,9 @@
         "Use the handoff account to authenticate to the archive, then read its protected record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

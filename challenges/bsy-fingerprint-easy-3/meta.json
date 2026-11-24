@@ -15,5 +15,9 @@
         "Subscribe to the rover's telemetry archive and inspect the retained record delivered by the broker."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

@@ -21,5 +21,9 @@
         "Inspect root's authorized key comments. One is encoded text; decode it to recover the proof string."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

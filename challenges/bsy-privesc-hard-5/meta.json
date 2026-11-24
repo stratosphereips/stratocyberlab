@@ -21,5 +21,9 @@
         "Check whether the file-search utility runs with elevated effective privileges, then use its process-launch option to access both protected proof files."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

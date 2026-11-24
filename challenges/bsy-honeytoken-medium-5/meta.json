@@ -15,5 +15,9 @@
         "Try the credential corroborated by the maintenance record against the archive, then inspect the response for the flag."
       ]
     }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
   ]
 }

@@ -21,5 +21,9 @@
         "Inspect hidden data in temporary storage with stat, then decode the contents of the file whose timestamps do not agree."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

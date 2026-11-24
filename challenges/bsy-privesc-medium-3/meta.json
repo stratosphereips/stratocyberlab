@@ -21,5 +21,9 @@
         "Use its command-execution option to start a privilege-preserving shell, then inspect the protected files from that shell."
       ]
     }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
   ]
 }

@@ -15,5 +15,9 @@
         "Try verifying the archivist mailbox identity; the accepted mailbox response contains the record to recover."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

@@ -21,5 +21,9 @@
         "Check which key entry appeared at the time of that session, then decode its comment."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

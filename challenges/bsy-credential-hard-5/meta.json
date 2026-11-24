@@ -15,5 +15,9 @@
         "Use the recovered account to sign in to the other service, then read the crew mailbox record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }

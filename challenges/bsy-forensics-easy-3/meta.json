@@ -21,5 +21,9 @@
         "Inspect the unusual hidden file in root-owned temporary storage, then base64-decode its contents."
       ]
     }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
   ]
 }

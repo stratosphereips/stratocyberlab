@@ -15,5 +15,9 @@
         "Use the service's read commands to inspect available keys, then retrieve the broadcast record's value."
       ]
     }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
   ]
 }

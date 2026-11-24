@@ -15,5 +15,9 @@
         "Authenticate to the Redis service with the discovered password, then read the actuator record."
       ]
     }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
   ]
 }
