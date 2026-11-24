@@ -1,0 +1,19 @@
+{
+  "name": "Ghostlight Vault",
+  "id": "scl-challenge-frame-837923",
+  "difficulty": "medium",
+  "description": "A megacorp credential vault has gone dark after an overnight incident. Identify the genuine asset among the recovered access records and recover the protected vault record. This challenge runs on the lab network: scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the vault record",
+      "description": "Find the genuine vault asset among the recovered records and retrieve its protected contents. The challenge runs on the lab network; scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{5ag46W8JrSjoUmFqMXMbsjoTQoeDGKUf}",
+      "hints": [
+        "The service has more than one kind of record. Compare the recovered access entries with the other evidence it provides.",
+        "Check which operator identity is corroborated by the archived system record before deciding which access entry to trust.",
+        "Use the credential for the corroborated operator to access the vault record; the other entries lead to monitored decoys."
+      ]
+    }
+  ]
+}

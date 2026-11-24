@@ -1,0 +1,20 @@
+services:
+  gateway:
+    build: .
+    image: scl-challenge-frame-9f467c:latest
+    container_name: scl-challenge-frame-9f467c
+    hostname: frame-gateway
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.168
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "22"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+
+networks:
+  playground-net:
+    external: true

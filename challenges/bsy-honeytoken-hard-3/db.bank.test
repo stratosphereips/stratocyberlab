@@ -1,0 +1,17 @@
+$TTL 60
+@       IN SOA  ns.bank.test. hostmaster.bank.test. (
+                2026112301 3600 900 604800 60 )
+        IN NS   ns.bank.test.
+ns      IN A    172.20.0.141
+
+; Public inventory of issued access assets.
+catalog       IN TXT "issued=AX-17,AX-29,AX-41,AX-58"
+
+; Independent settlement evidence; the completed batch references one asset.
+settlement    IN TXT "batch=Q4-NEBULA status=posted asset=AX-41"
+
+; Claim records for the listed access assets. Decoys are revoked honeytokens.
+claim-AX-17   IN TXT "status=revoked; audit=canary-triggered"
+claim-AX-29   IN TXT "status=revoked; audit=canary-triggered"
+claim-AX-41   IN TXT "status=posted; receipt=BSY{VNRctTJEMNiM4Cb8OhzJjoTEL5KGRSoU}"
+claim-AX-58   IN TXT "status=revoked; audit=canary-triggered"

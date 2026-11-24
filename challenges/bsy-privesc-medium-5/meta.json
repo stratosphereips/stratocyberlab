@@ -1,0 +1,25 @@
+{
+  "kind": "privilege-escalation",
+  "name": "Neon Grid: Operator Override",
+  "id": "scl-challenge-frame-a3450d",
+  "difficulty": "medium",
+  "description": "A smart-city control host has drifted out of its maintenance window, and the night operator account is all you have. The box runs on the lab network: scan 172.20.0.0/24, with challenge hosts in 172.20.0.141-199. Find a way to recover the protected challenge flag from the host.\n\n---\n\n**Access** \u2014 SSH `gridops@172.20.0.147`, password `orbit-7circuit`",
+  "access": {
+    "host": "172.20.0.147",
+    "user": "gridops",
+    "password": "orbit-7circuit"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Take the Control Room",
+      "description": "The smart-city night operator left a live account on a control host in the lab network. Scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199), inspect the host, and recover its protected challenge flag.",
+      "flag": "BSY{SYBbRNrdVbsHbhE9nQYAzoAyagItPULS}",
+      "hints": [
+        "Inventory the host's privileged execution paths and compare what each one actually does.",
+        "Trace any elevated launcher to the program or script it hands control to, then check who can change that target.",
+        "The reconciliation launcher runs a Python script in the operator-owned city-control directory. Update that script to access both protected root artifacts, then invoke the launcher."
+      ]
+    }
+  ]
+}

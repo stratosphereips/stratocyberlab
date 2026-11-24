@@ -1,0 +1,18 @@
+services:
+  runner:
+    build: .
+    image: scl-challenge-frame-a1bf10
+    container_name: scl-challenge-frame-a1bf10
+    hostname: neon-runner
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+    healthcheck:
+      test: ["CMD-SHELL", "/bin/bash -c '</dev/tcp/127.0.0.1/22'"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+networks:
+  playground-net:
+    external: true

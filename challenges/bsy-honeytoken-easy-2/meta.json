@@ -1,0 +1,19 @@
+{
+  "name": "Honeytoken Deception",
+  "id": "scl-challenge-frame-663bf3",
+  "difficulty": "easy",
+  "description": "A bank-of-the-future API has surfaced on the lab network after a suspicious access event. Recover the flag from the service by examining its exposed assets. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Separate Signal from Noise",
+      "description": "Recover the flag from the bank API on the lab network. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{WPdTOcitWiOfdBYl5OgytuSg7pTUegLu}",
+      "hints": [
+        "The API exposes more than one kind of asset. Take a careful inventory before trying anything.",
+        "Compare the identities attached to the candidate keys with the accounts the service actually lists.",
+        "Use the key whose account appears in the live account roster to access the vault."
+      ]
+    }
+  ]
+}

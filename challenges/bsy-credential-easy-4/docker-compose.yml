@@ -1,0 +1,21 @@
+services:
+  actuator-console:
+    build: .
+    image: scl-challenge-frame-68cc49:latest
+    container_name: scl-challenge-frame-68cc49
+    hostname: actuator-console
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "python3", "/srv/snmp_healthcheck.py"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    command: ["python3", "/srv/snmp_service.py"]
+    working_dir: /srv
+
+networks:
+  playground-net:
+    external: true

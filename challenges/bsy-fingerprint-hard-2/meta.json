@@ -1,0 +1,19 @@
+{
+  "name": "Dead Letter from the Mainframe",
+  "id": "scl-challenge-frame-80014a",
+  "difficulty": "hard",
+  "description": "A vintage mainframe terminal has resurfaced on the lab network, surrounded by noisy legacy systems. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the archived audit token from the service that holds it.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the audit token",
+      "description": "The mainframe's old terminal array is answering on the lab network among several decoys. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the audit token held by the genuine service.",
+      "flag": "BSY{QcpZYCPRfO1UrcSeCDvV9xCeNoMq8wVP}",
+      "hints": [
+        "Some listeners may look familiar from their ports, but compare how each one actually responds.",
+        "One listener speaks a standard mail-transfer protocol. Explore its supported dialogue and verification behavior.",
+        "Try verifying the archivist mailbox identity; the accepted mailbox response contains the record to recover."
+      ]
+    }
+  ]
+}

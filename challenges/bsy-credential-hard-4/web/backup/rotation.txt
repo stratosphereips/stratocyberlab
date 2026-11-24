@@ -1,0 +1,5 @@
+AIRLOCK SERVICE ACCOUNT ROTATION
+Station: Kestrel-9
+The emergency console account remains enabled for the airlock database.
+username=airlock_ops
+password=Vacuum!1977

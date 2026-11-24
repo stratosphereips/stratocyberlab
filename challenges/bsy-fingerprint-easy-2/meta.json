@@ -1,0 +1,19 @@
+{
+  "name": "The Last BBS Session",
+  "id": "scl-challenge-frame-df8dda",
+  "difficulty": "easy",
+  "description": "A retro BBS gateway has gone quiet, and its access token is missing. Recover the token from a service on the lab network. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the gateway token",
+      "description": "The archived BBS gateway needs its missing access token. Find and recover it from a service on the lab network. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{GgoZ3ek5slPNxl4KsKZ91yxwVLcjSPuq}",
+      "hints": [
+        "Compare what the unusual ports say when you connect; a port number does not guarantee a protocol.",
+        "Look for a familiar file-transfer greeting and try its standard control commands.",
+        "Check the service's name-only directory listing, then retrieve the archive record it reveals."
+      ]
+    }
+  ]
+}

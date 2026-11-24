@@ -1,0 +1,19 @@
+{
+  "name": "Ghost Keys of Kepler Station",
+  "id": "scl-challenge-frame-8d9391",
+  "difficulty": "medium",
+  "description": "An abandoned station\u2019s admin systems are still visible on the lab network. Search the challenge hosts in 172.20.0.141-199 within 172.20.0.0/24 and recover the record the station\u2019s legitimate operator left behind.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Kepler\u2019s Last Record",
+      "description": "The station\u2019s admin systems remain reachable on the lab network. Search 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199) and recover the record accessible to a legitimate station credential.",
+      "flag": "BSY{8SGtKkSESEX6xcBSCQOAvWxuEMnUpYjq}",
+      "hints": [
+        "The public station records include several credentials and another source of operational information.",
+        "Compare the credential identifiers with the station\u2019s maintenance record to find which one is current.",
+        "Use the credential whose identifier is marked active to access the admin console and read its record."
+      ]
+    }
+  ]
+}

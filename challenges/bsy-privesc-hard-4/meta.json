@@ -1,0 +1,25 @@
+{
+  "name": "Frame: Night Shift",
+  "id": "scl-challenge-frame-f78e9a",
+  "kind": "privilege-escalation",
+  "difficulty": "hard",
+  "description": "A megacorp build node has drifted out of its operators' control. Connect from the lab network, scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199), investigate the host you can access, and recover the sealed release token while verifying elevated access.\n\n---\n\n**Access** \u2014 SSH `forge@172.20.0.141`, password `NeonFoundry-6!Relay`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "forge",
+    "password": "NeonFoundry-6!Relay"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the release token",
+      "description": "A megacorp build node has drifted out of its operators' control. On the lab network, scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199), investigate the host you can access, and recover its sealed release token while verifying elevated access.",
+      "flag": "BSY{TqMJmgFo2YUan1n4dg73hNJheSxLniEH}",
+      "hints": [
+        "The machine exposes more than one kind of privilege clue. Compare the results of your local account and policy checks.",
+        "Review the account's sudo permissions and consider what a permitted interpreter can do when run with elevated privileges.",
+        "Use the permitted Python interpreter to run a process as UID 0, then inspect both protected records."
+      ]
+    }
+  ]
+}

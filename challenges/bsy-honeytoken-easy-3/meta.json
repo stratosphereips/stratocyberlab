@@ -1,0 +1,19 @@
+{
+  "name": "Honeytoken Deception",
+  "id": "scl-challenge-frame-cd1d95",
+  "difficulty": "easy",
+  "description": "A megacorp credential vault has been recovered from a drifting relay. On the lab network, scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the vault's protected proof while distinguishing genuine assets from planted decoys.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Separate Signal from Noise",
+      "description": "A megacorp credential vault is exposed on the lab network. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the protected proof, using the service's evidence to distinguish genuine assets from decoys.",
+      "flag": "BSY{vrL4ySqDtVGlGNijy3ahYEd0y7nvL0VC}",
+      "hints": [
+        "Compare the vault's candidate records with what the service reports about its active accounts.",
+        "The genuine account is represented in the service's own access control list; the planted candidates are not.",
+        "Use the matching account and password from the candidate records to authenticate, then request the protected vault record."
+      ]
+    }
+  ]
+}

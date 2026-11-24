@@ -1,0 +1,19 @@
+{
+  "name": "Ghost Signals of the Orbital Relay",
+  "id": "scl-challenge-frame-310837",
+  "difficulty": "medium",
+  "description": "A derelict orbital relay has gone quiet, but several hosts still answer on the lab network. Scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199), inspect the services\u2019 responses, and recover the relay\u2019s archived record.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the Relay Record",
+      "description": "On the lab network, investigate the derelict relay hosts in 172.20.0.141-199. Identify the service that holds the station\u2019s archived record and recover its contents.",
+      "flag": "BSY{5Xgw6105aMvCuHGCgrRfP9C5a02pVW6n}",
+      "hints": [
+        "A port number is only a label. Compare how the open services respond when you connect.",
+        "One service speaks Finger. Consider how its query format differs from the usual web or mail dialogue.",
+        "An empty query can list available users. Inspect the profile for the archive account."
+      ]
+    }
+  ]
+}

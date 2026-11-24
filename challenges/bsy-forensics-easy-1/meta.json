@@ -1,0 +1,25 @@
+{
+  "name": "Neon Runner: Quiet Shift",
+  "id": "scl-challenge-frame-885f11",
+  "kind": "host-forensics",
+  "difficulty": "easy",
+  "description": "A backdoored CI runner sits in a neon corporate datacenter. Reconstruct what happened on the already-compromised host and recover the evidence it left behind. The box runs on the lab network; scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `root@172.20.0.141`, password `NeonRunner!47`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "root",
+    "password": "NeonRunner!47"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the runner's evidence",
+      "description": "Investigate the already-compromised CI runner and recover the evidence left by its intruder. It runs on the lab network; scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{b3sVpbZ2J36saQ5Q2VzfppfMwQK0H7t6}",
+      "hints": [
+        "Compare the host's ordinary activity across its accounts, login records, scheduled work, and shell histories.",
+        "Scheduled work can persist across reboots. Look closely at entries that do not fit the runner's routine maintenance and inspect any opaque values they contain.",
+        "Decode the long encoded value in the anomalous system-wide scheduled entry with base64; submit the recovered flag."
+      ]
+    }
+  ]
+}

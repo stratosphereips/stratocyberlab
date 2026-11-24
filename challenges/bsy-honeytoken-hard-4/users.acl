@@ -1,0 +1,2 @@
+user default on nopass ~dump:* +get +set +scan +type +ping +acl|users +acl|log
+user courier on >ion-lantern-72 ~vault:* +get +set +ping

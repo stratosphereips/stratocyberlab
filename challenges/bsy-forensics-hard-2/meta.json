@@ -1,0 +1,25 @@
+{
+  "name": "Ghost Shift at Kestrel Station",
+  "id": "scl-challenge-frame-1ed8a2",
+  "kind": "host-forensics",
+  "difficulty": "hard",
+  "description": "Kestrel's abandoned orbital relay is still routing traffic, and its jump host may have been used during the station's last unauthorized visit. Reconstruct what happened and recover the evidence left by the intruder. This challenge runs on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199. Inspect access records, system activity, accounts, scheduled work, user command records, and files across the host.\n\n---\n\n**Access** \u2014 SSH `analyst@172.20.0.141`, password `Orbit-Deck-47`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "analyst",
+    "password": "Orbit-Deck-47"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Find the planted evidence",
+      "description": "Investigate Kestrel Station's already breached jump host and recover the evidence left by the intruder. This challenge runs on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199. Review host records and files to reconstruct the activity.",
+      "flag": "BSY{XCwhK32g5qi1f6H7FNMJhg4I74lD1M8G}",
+      "hints": [
+        "Build a timeline from the host's records and compare it with the files and accounts you find.",
+        "For files that look routine, compare their modification and inode-change times with the host activity timeline.",
+        "Inspect hidden data in temporary storage with stat, then decode the contents of the file whose timestamps do not agree."
+      ]
+    }
+  ]
+}

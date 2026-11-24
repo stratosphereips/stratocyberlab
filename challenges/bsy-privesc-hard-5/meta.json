@@ -1,0 +1,25 @@
+{
+  "name": "Frame-5B: Night Shift on the Cracked Gateway",
+  "id": "scl-challenge-frame-5b0109",
+  "kind": "privilege-escalation",
+  "difficulty": "hard",
+  "access": {
+    "host": "172.20.0.147",
+    "user": "retro",
+    "password": "orbit-terminal-6"
+  },
+  "description": "A retro time-sharing gateway has resurfaced on the StratoCyberLab network. Use the supplied account to inspect the host and recover the challenge flag and escalation proof. The box runs on the lab network at 172.20.0.147; scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199).\n\n---\n\n**Access** \u2014 SSH `retro@172.20.0.147`, password `orbit-terminal-6`",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the root proof",
+      "description": "Inspect the gateway at 172.20.0.147 on the lab network. Scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199), then use the supplied account to recover the challenge flag and escalation proof.",
+      "flag": "BSY{Mm3VTmVkd5nszF18oU2dPPscEnl8U20e}",
+      "hints": [
+        "Look closely at executable permissions while inventorying the host; a few entries deserve a second look.",
+        "Compare the unusual permission bits on executables with their normal behavior and consider which utilities can start another process.",
+        "Check whether the file-search utility runs with elevated effective privileges, then use its process-launch option to access both protected proof files."
+      ]
+    }
+  ]
+}

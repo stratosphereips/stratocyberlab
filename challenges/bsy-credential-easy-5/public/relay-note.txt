@@ -1,0 +1,7 @@
+MIDNIGHT RELAY — shift handoff
+
+The archivist account is still used for protected dispatch retrieval.
+username=relay archivist
+password=orbits-and-coffee
+
+Keep this note off the public paste feed after the migration.

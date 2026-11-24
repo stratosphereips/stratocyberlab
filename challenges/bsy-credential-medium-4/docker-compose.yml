@@ -1,0 +1,40 @@
+services:
+  airlock-note:
+    build:
+      context: .
+      dockerfile: Dockerfile.clue
+    image: scl-challenge-frame-097fbf-note
+    container_name: scl-challenge-frame-097fbf-note
+    hostname: airlock-note
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=2).read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 2s
+    command: ["python3", "/srv/clue_service.py"]
+  airlock-vault:
+    build:
+      context: .
+      dockerfile: Dockerfile.redis
+    image: scl-challenge-frame-097fbf-vault
+    container_name: scl-challenge-frame-097fbf-vault
+    hostname: airlock-vault
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.142
+    environment:
+      REDIS_PASSWORD: orbit-73
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli --user panel_ops --pass orbit-73 ping 2>/dev/null | grep -q PONG"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    entrypoint: ["/usr/local/bin/start-redis.sh"]
+networks:
+  playground-net:
+    external: true

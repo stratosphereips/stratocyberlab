@@ -1,0 +1,19 @@
+services:
+  jump-host:
+    build: .
+    image: scl-challenge-frame-97ae11:latest
+    container_name: scl-challenge-frame-97ae11
+    hostname: station-jump
+    stop_grace_period: 10s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "22"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+networks:
+  playground-net:
+    external: true

@@ -1,0 +1,21 @@
+services:
+  radio-rig:
+    build: .
+    image: scl-challenge-frame-806238:latest
+    container_name: scl-challenge-frame-806238
+    hostname: dead-air-rig
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.create_connection(('127.0.0.1',25252),2); assert s.recv(128).startswith(b'220 '); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 2s
+    command: ["python3", "/app/radio.py"]
+
+networks:
+  playground-net:
+    external: true

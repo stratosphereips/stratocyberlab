@@ -1,0 +1,19 @@
+{
+  "name": "Ghost Cache",
+  "id": "scl-challenge-frame-003f19",
+  "difficulty": "easy",
+  "description": "A hacker collective's file share has surfaced on the lab network, mixed with convincing decoys. Scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199) and recover the collective's authentic relay fragment.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the relay fragment",
+      "description": "On the lab network, scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199). Find the collective's file share and recover its authentic relay fragment from among the decoys.",
+      "flag": "BSY{ED4HuMPQTp0uvnuOUbRyJ0ClbkmIKaE2}",
+      "hints": [
+        "The share's public inventory contains several candidate accounts. Compare their details with what the service reveals.",
+        "Try the candidate credentials and pay attention to how the service responds; decoys do not grant access.",
+        "Use the pair that completes authentication, then inspect the files available in that account."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Last Call at the High-Score Cabinet",
+  "id": "scl-challenge-frame-2f7df9",
+  "difficulty": "easy",
+  "description": "An arcade cabinet has vanished from the neon district, taking its legendary high score with it. Search the lab network and recover the cabinet's archived score record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the Record",
+      "description": "The cabinet's archived high score is somewhere on the lab network. Find the cabinet and recover its record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{RpQnwzRuOMBonlC8rqlbu2aSYEDL0D6p}",
+      "hints": [
+        "Pay attention to the first response you receive from each open port; the port number alone may not tell the whole story.",
+        "One listener behaves like a mailbox service. Compare its greeting with familiar application protocols.",
+        "Use the credentials announced in that service's greeting, then inspect the stored message containing the score record."
+      ]
+    }
+  ]
+}

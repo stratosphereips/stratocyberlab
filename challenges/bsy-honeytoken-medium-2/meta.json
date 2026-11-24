@@ -1,0 +1,19 @@
+{
+  "name": "Honeytoken Deception",
+  "id": "scl-challenge-frame-d8db51",
+  "difficulty": "medium",
+  "description": "A hacker collective's file node has gone quiet after a suspicious access report. On the lab network, inspect the challenge hosts in 172.20.0.141-199 (scan 172.20.0.0/24) and recover the genuine dispatch record without trusting every asset you find.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Find the genuine dispatch",
+      "description": "The collective's file node may hold a dispatch record worth recovering. This challenge runs on the lab network: scan 172.20.0.0/24, focusing on challenge hosts in 172.20.0.141-199, and recover the genuine record.",
+      "flag": "BSY{Y7HHYvdzrVRgevNbxvzXVDLC8449Ucau}",
+      "hints": [
+        "The public material contains several equally plausible access candidates and another source of operational evidence.",
+        "Compare the candidates against the fingerprint recorded in the recovery notes; SHA-256 is the relevant digest format.",
+        "Use the matching candidate with the account identified by the notes, then retrieve the protected dispatch record."
+      ]
+    }
+  ]
+}

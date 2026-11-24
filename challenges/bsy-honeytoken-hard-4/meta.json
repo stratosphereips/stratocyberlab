@@ -1,0 +1,19 @@
+{
+  "name": "Honeytoken Deception",
+  "id": "scl-challenge-frame-6e4473",
+  "difficulty": "hard",
+  "description": "A leaked password dump surfaced during an investigation into a compromised relay. On the lab network, inspect the exposed services and cross-reference the records with live service evidence to recover the genuine credential and protected dispatch. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Find the authentic dispatch",
+      "description": "A leaked password dump surfaced during an investigation into a compromised relay. On the lab network, inspect the exposed services and cross-reference the records with live service evidence to recover the genuine credential and protected dispatch. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{14RjLHjB70QIivWTMdfVKsTiCiHF2DJp}",
+      "hints": [
+        "The dump mixes ordinary-looking records with planted ones. Pay attention to evidence the service itself exposes.",
+        "Compare the candidate account names with the service's live account inventory.",
+        "Use the credential belonging to the account present in that inventory to access the protected dispatch."
+      ]
+    }
+  ]
+}

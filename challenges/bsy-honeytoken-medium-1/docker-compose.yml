@@ -1,0 +1,18 @@
+services:
+  kepler-admin:
+    build: .
+    image: scl-challenge-kepler-admin
+    container_name: scl-challenge-kepler-admin
+    hostname: kepler-admin
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+networks:
+  playground-net:
+    external: true

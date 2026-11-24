@@ -1,0 +1,19 @@
+{
+  "name": "Ghostline Paste Relay",
+  "id": "scl-challenge-frame-02899e",
+  "difficulty": "medium",
+  "description": "The Ghostline hacker collective's paste server has gone quiet, and a courier's last transmission hints that its crew record is still reachable. On the lab network, scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199), investigate the reachable services, and recover the protected record.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the crew record",
+      "description": "A courier's last transmission points to the Ghostline collective's paste infrastructure. This challenge runs on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199. Investigate the reachable services and recover the protected crew record.",
+      "flag": "BSY{8mbim0xgvduhOni9x052Uz6GTPe85VWa}",
+      "hints": [
+        "Compare the reachable services and look for information the collective left publicly readable.",
+        "The paste server has a public note with account details. See whether those details work at another reachable service.",
+        "After logging in to the remote terminal, look in the account's home directory for the crew record."
+      ]
+    }
+  ]
+}

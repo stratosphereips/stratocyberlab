@@ -1,0 +1,19 @@
+{
+  "name": "Vintage Mainframe",
+  "id": "scl-challenge-frame-e3dd49",
+  "difficulty": "easy",
+  "description": "A vintage mainframe terminal has gone quiet, and its archive record is missing. Search the lab network at 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the record from the machine you find.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the archive record",
+      "description": "The mainframe's archive record is missing. Search the lab network at 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199, and recover the record.",
+      "flag": "BSY{uyi22lkadRO8pOrPVOMmE0MmCdqzHGjU}",
+      "hints": [
+        "Look closely at the responses from the open ports; the machines may have more to say than their numbers suggest.",
+        "Compare what each service says with the protocol normally associated with its port. Identify the protocol from its response.",
+        "One service speaks Redis. Use a Redis read command to retrieve the archive record."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "Station Ghost in the Logs",
+  "id": "scl-challenge-frame-97ae11",
+  "kind": "host-forensics",
+  "difficulty": "easy",
+  "description": "An abandoned space station's jump host is still online after an old breach. Reconstruct what happened and recover the intruder's proof string from the host's ordinary forensic surfaces. This challenge runs on the lab network: scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Log in with the supplied lab access and examine system records, accounts, scheduled work, timestamps, and command history.\n\n---\n\n**Access** \u2014 SSH `root@172.20.0.141`, password `orbit-Console-7`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "root",
+    "password": "orbit-Console-7"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Find the station ghost",
+      "description": "Reconstruct an earlier breach of the abandoned station's jump host and recover the intruder's proof string. This challenge runs on the lab network: scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Log in with the supplied lab access and examine system records, accounts, scheduled work, timestamps, and command history.",
+      "flag": "BSY{lrniy2Br61pODRdf9rkuFsSZzTkW1JZS}",
+      "hints": [
+        "Compare the host's authentication material with the access history you find in its ordinary records.",
+        "An intruder can leave a way back in without adding a user. Look through the home directories for public-key authentication material.",
+        "Inspect root's authorized key comments. One is encoded text; decode it to recover the proof string."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+services:
+  console:
+    build: .
+    image: scl-challenge-frame-170be9:latest
+    container_name: scl-challenge-frame-170be9
+    hostname: night-shift-console
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.147
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c 'import socket; s=socket.create_connection((\"127.0.0.1\",22),2); s.close()'"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+
+networks:
+  playground-net:
+    external: true

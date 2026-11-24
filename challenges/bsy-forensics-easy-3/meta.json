@@ -1,0 +1,25 @@
+{
+  "name": "Neon Runner: Quiet After Midnight",
+  "id": "scl-challenge-frame-a1bf10",
+  "kind": "host-forensics",
+  "difficulty": "easy",
+  "description": "A CI runner in a neon corporate datacenter may have been compromised. You already have authorized access to the host; reconstruct what happened and recover the flag from the genuine planted artifact. The challenge runs on the lab network. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Review accounts, authentication and system logs, scheduled jobs, timestamps, sudo activity, and shell histories to distinguish ordinary runner activity from the intrusion.\n\n---\n\n**Access** \u2014 SSH `root@172.20.0.141`, password `NeonRunner-7F`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "root",
+    "password": "NeonRunner-7F"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the runner's secret",
+      "description": "A CI runner in a neon corporate datacenter may have been compromised. Reconstruct what happened and recover the flag from the genuine planted artifact. The host is on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199. Review accounts, logs, scheduled jobs, timestamps, sudo activity, and shell histories.",
+      "flag": "BSY{rPJdnrNwJ5Bun6agpdWpkVGO3Scvlizj}",
+      "hints": [
+        "Compare the host's ordinary activity with files whose timestamps or placement seem out of place.",
+        "Intruders sometimes stage data for removal in temporary storage; staged contents may be encoded.",
+        "Inspect the unusual hidden file in root-owned temporary storage, then base64-decode its contents."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+The maintenance console is provided by the OpenSSH server installed in the image. The local plant step creates the crew account and root-only records.

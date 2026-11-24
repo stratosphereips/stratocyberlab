@@ -1,0 +1,25 @@
+{
+  "name": "The Night Shift Maintenance Console",
+  "id": "scl-challenge-frame-170be9",
+  "kind": "privilege-escalation",
+  "difficulty": "medium",
+  "description": "A starship maintenance console is already within reach on the lab network. Recover the protected proof of a successful root-level maintenance operation. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. SSH access details are provided below.\n\n---\n\n**Access** \u2014 SSH `tech@172.20.0.147`, password `OrbitWrench!6`",
+  "access": {
+    "host": "172.20.0.147",
+    "user": "tech",
+    "password": "OrbitWrench!6"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Claim the Captain's Log",
+      "description": "On the lab network, recover the protected root-level proof from the starship maintenance console. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{iJfRy37WPxQulo9xheZRi4FkvRytQmSl}",
+      "hints": [
+        "Start with the ordinary account's view of the host and inventory what can run with elevated privileges.",
+        "One vendor utility's execution flow depends on a maintenance component that the logged-in user can change.",
+        "Update that writable helper to print both root-only files, then run the vendor utility and capture its output."
+      ]
+    }
+  ]
+}

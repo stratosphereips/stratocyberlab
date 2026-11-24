@@ -1,0 +1,19 @@
+{
+  "name": "Last Airlock: Ghost Credentials",
+  "id": "scl-challenge-frame-b4ad14",
+  "difficulty": "hard",
+  "description": "An abandoned station is still answering on the lab network. Recover the protected airlock record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the airlock record",
+      "description": "A dead station is still whispering across the lab network. Recover the protected airlock record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{HQeP3q7zHnpfZLLijdkOtBwfiDPNPFDL}",
+      "hints": [
+        "Map the station's reachable services, then inspect what responds without credentials.",
+        "A maintenance snapshot contains access details; check whether they work with the station's database service.",
+        "Authenticate to PostgreSQL with the recovered account and inspect the protected airlock record."
+      ]
+    }
+  ]
+}

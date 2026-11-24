@@ -1,0 +1,25 @@
+{
+  "name": "Frame 79d7a1: Collective Shell Server",
+  "id": "scl-challenge-frame-79d7a1",
+  "kind": "privilege-escalation",
+  "difficulty": "medium",
+  "description": "A hacker collective has given you a shell account on its lab-network server. Investigate the host and recover the sealed challenge token while proving you reached the system's highest privilege. The range is on 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `rookie@172.20.0.147`, password `orbit-arcade-74`",
+  "access": {
+    "host": "172.20.0.147",
+    "user": "rookie",
+    "password": "orbit-arcade-74"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Reach the root console",
+      "description": "A hacker collective has handed you a shell account on its lab-network server. Investigate the host, recover the sealed challenge token, and prove you reached the system's highest privilege. The range is on 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{Wvenc47CptfKZAgtspPpNFLJuznQ2Glu}",
+      "hints": [
+        "Compare ownership and mode bits on unusual executables; one is meant to run with more authority than your account.",
+        "Look for an executable that can launch another program while retaining an elevated effective identity. Check its documented options and how it handles child processes.",
+        "Use its command-execution option to start a privilege-preserving shell, then inspect the protected files from that shell."
+      ]
+    }
+  ]
+}

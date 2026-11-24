@@ -1,0 +1,25 @@
+{
+  "name": "Frame 0xD0B1B1: Root Time",
+  "id": "scl-challenge-frame-d0b1b1",
+  "kind": "privilege-escalation",
+  "difficulty": "easy",
+  "description": "A cracked retro mainframe gateway still grants a time-sharing account. The sealed transmission marker and its audit proof are somewhere on the lab network. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover both by gaining access to the protected root context.\n\n---\n\n**Access** \u2014 SSH `frame@172.20.0.141`, password `orbit-7delta`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "frame",
+    "password": "orbit-7delta"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the root transmission",
+      "description": "A cracked retro mainframe gateway is leaking a sealed transmission marker and audit proof. Scan the lab network at 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Use the provided time-sharing account, then recover both artifacts from the protected root context.",
+      "flag": "BSY{ktZanwKktn8tlJcljL8c7kVjTzzvaPt6}",
+      "hints": [
+        "Start by comparing your account's privileges with the system's executable inventory.",
+        "Look for a familiar utility with elevated execution permissions and consider its documented command execution behavior.",
+        "Check whether the filesystem search utility has an elevated identity; use its ability to launch a command, then inspect the root-only artifacts."
+      ]
+    }
+  ]
+}

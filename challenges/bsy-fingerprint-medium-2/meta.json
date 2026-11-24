@@ -1,0 +1,19 @@
+{
+  "name": "The Midnight Mainframe",
+  "id": "scl-challenge-frame-6b533f",
+  "difficulty": "medium",
+  "description": "A vintage mainframe has gone quiet, but several terminals still answer on the lab network. Identify which host holds the archived record and recover its contents. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the archived record",
+      "description": "A vintage mainframe has gone quiet, but several terminals still answer on the lab network. Identify which host holds the archived record and recover its contents. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{eSolE70vh3Z2xwuSYpyeaulI4McvrfZI}",
+      "hints": [
+        "Some services answer in ways that do not match what their port number suggests. Pay attention to the first response you receive.",
+        "The mailbox-style greeting and status replies are clues. Try interacting with the service using POP3 commands.",
+        "Log in to the archive mailbox, inspect its message list, then retrieve the stored message."
+      ]
+    }
+  ]
+}

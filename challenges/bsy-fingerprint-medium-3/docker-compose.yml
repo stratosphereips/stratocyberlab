@@ -1,0 +1,22 @@
+services:
+  relay:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scl-challenge-frame-6b06f6-relay
+    container_name: scl-challenge-frame-6b06f6-relay
+    hostname: red-dust-relay
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.147
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.create_connection(('127.0.0.1',80),2); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    command: ["python3", "/srv/relay.py"]
+
+networks:
+  playground-net:
+    external: true

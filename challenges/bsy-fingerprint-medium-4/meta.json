@@ -1,0 +1,19 @@
+{
+  "name": "Ghost Signal on Ares",
+  "id": "scl-challenge-frame-49c00c",
+  "difficulty": "medium",
+  "description": "A Mars rover's final telemetry burst was routed through an unfamiliar relay. Recover the proof token from the relay on the lab network. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the rover's last signal",
+      "description": "Find the relay holding the rover's archived proof token. This challenge runs on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199, and recover the token from the relay.",
+      "flag": "BSY{xIJlVM0vr4pJFDJlfww9BWsVnTRVR5WO}",
+      "hints": [
+        "Compare the responses from open ports; one of them may not match the service you first expect.",
+        "The relay speaks Network News Transfer Protocol. Look at its capabilities and the available groups.",
+        "Select the rover telemetry group, then request its first article and inspect the body."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+services:
+  vault:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        FLAG: BSY{vrL4ySqDtVGlGNijy3ahYEd0y7nvL0VC}
+    image: scl-challenge-frame-cd1d95:latest
+    container_name: scl-challenge-frame-cd1d95
+    hostname: vault
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "127.0.0.1", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    command: ["python3", "/opt/challenge/service.py"]
+
+networks:
+  playground-net:
+    external: true

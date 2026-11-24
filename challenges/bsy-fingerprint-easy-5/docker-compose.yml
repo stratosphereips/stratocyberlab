@@ -1,0 +1,22 @@
+services:
+  cabinet:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scl-challenge-frame-2f7df9
+    container_name: scl-challenge-frame-2f7df9-cabinet
+    hostname: cabinet
+    stop_grace_period: 5s
+    command: ["python3", "/app/service.py"]
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.create_connection(('127.0.0.1', 21110), 2); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+
+networks:
+  playground-net:
+    external: true

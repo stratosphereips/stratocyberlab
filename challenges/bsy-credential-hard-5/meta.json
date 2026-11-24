@@ -1,0 +1,19 @@
+{
+  "name": "Dead Letter from the Roster Deck",
+  "id": "scl-challenge-frame-dcaf9d",
+  "difficulty": "hard",
+  "description": "A starship's crew-roster terminal has gone quiet, but local services remain online. Recover the protected crew record from the lab network. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the crew record",
+      "description": "Find the exposed crew-operations services on the lab network and recover the protected record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{yz1WIy7h1Mt6T2QNnQ9ZdD7PZktgaKaK}",
+      "hints": [
+        "Compare the reachable services and look for crew-operations material available without signing in.",
+        "An operational backup can retain account details intended for another service. Inspect what the exposed service offers.",
+        "Use the recovered account to sign in to the other service, then read the crew mailbox record."
+      ]
+    }
+  ]
+}

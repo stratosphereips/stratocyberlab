@@ -1,0 +1,5 @@
+*
+!Dockerfile
+!build-check.c
+!queue-status.c
+!plant.sh

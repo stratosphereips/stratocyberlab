@@ -1,0 +1,20 @@
+services:
+  file-node:
+    build: .
+    image: scl-challenge-honeytoken-deception
+    container_name: scl-challenge-honeytoken-deception
+    hostname: relay-archive
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.create_connection(('127.0.0.1',21),3); s.recv(128); s.close()"]
+      interval: 10s
+      timeout: 4s
+      retries: 3
+    command: ["python3", "/app/server.py"]
+
+networks:
+  playground-net:
+    external: true

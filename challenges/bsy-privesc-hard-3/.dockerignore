@@ -1,0 +1,5 @@
+meta.json
+README.md
+auto-solve.sh
+docker-compose.yml
+.dockerignore

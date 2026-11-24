@@ -1,0 +1,19 @@
+{
+  "name": "Dead Air on the Ghost Frequency",
+  "id": "scl-challenge-frame-4b6f26",
+  "difficulty": "medium",
+  "description": "A pirate-radio rig has gone quiet, and its last broadcast may still be recoverable. The rig runs on the lab network; scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199, and recover the broadcast record.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the transmission",
+      "description": "A pirate-radio rig has gone quiet, and its last broadcast may still be recoverable. Find it on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199, and recover the broadcast record.",
+      "flag": "BSY{gtMWV8wpROEb00tjUhKOkO9C0EAi1Enm}",
+      "hints": [
+        "A port number is only a place to knock. Pay attention to the responses you get back.",
+        "One service speaks a familiar key-value protocol despite its unexpected port.",
+        "Use the service's read commands to inspect available keys, then retrieve the broadcast record's value."
+      ]
+    }
+  ]
+}

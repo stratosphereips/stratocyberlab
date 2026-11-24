@@ -1,0 +1,19 @@
+{
+  "name": "Ghostline BBS",
+  "id": "scl-challenge-frame-f376a7",
+  "difficulty": "hard",
+  "description": "A retro BBS gateway has resurfaced on the university range, surrounded by old consoles and misleading service banners. Recover an archival message needed by the night crew. Scan the lab network at 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. The challenge runs entirely on the lab network.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the archive message",
+      "description": "The night crew needs an archival message from a retro BBS gateway. Scan the lab network at 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the message contents from the gateway, which is only reachable on the lab network.",
+      "flag": "BSY{zvJLVmioqJNVU8nr6mFE0LzCcplYI7Wa}",
+      "hints": [
+        "Compare what open ports suggest with what you observe when you connect to them.",
+        "Identify the mailbox protocol from its replies, then try its normal login and message-reading flow.",
+        "After a successful login, inspect the mailbox listing and retrieve its only message."
+      ]
+    }
+  ]
+}

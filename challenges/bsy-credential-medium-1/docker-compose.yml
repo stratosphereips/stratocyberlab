@@ -1,0 +1,19 @@
+services:
+  paste-relay:
+    build: .
+    image: scl-challenge-frame-d5c5d1:latest
+    container_name: scl-challenge-frame-d5c5d1
+    hostname: ghost-relay
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/', timeout=2).read()"]
+      interval: 5s
+      timeout: 5s
+      retries: 6
+    command: ["python3", "/app/server.py"]
+networks:
+  playground-net:
+    external: true

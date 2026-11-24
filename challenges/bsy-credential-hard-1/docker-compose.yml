@@ -1,0 +1,35 @@
+services:
+  relay-files:
+    build: ./ftp
+    image: scl-challenge-frame-a7c033-ftp
+    container_name: scl-challenge-frame-a7c033-ftp
+    hostname: relay-files
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.147
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('127.0.0.1',21),2).close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  archive-web:
+    build: ./web
+    image: scl-challenge-frame-a7c033-web
+    container_name: scl-challenge-frame-a7c033-web
+    hostname: archive-web
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.148
+    environment:
+      ACCESS_USER: archivist
+      ACCESS_PASSWORD: NeonArchive!72
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('127.0.0.1',8080),2).close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+networks:
+  playground-net:
+    external: true

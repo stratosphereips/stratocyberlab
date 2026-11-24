@@ -1,0 +1,24 @@
+services:
+  mainframe:
+    build: .
+    image: scl-challenge-frame-6b533f
+    container_name: scl-challenge-frame-6b533f
+    hostname: midnight-mainframe
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.147
+    environment:
+      FLAG: BSY{eSolE70vh3Z2xwuSYpyeaulI4McvrfZI}
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.create_connection(('127.0.0.1',21110),2); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    command: ["python3", "/app/service.py"]
+    working_dir: /app
+    user: "10001:10001"
+
+networks:
+  playground-net:
+    external: true

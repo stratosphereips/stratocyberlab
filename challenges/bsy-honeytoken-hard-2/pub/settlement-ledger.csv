@@ -1,0 +1,5 @@
+card_serial,principal,last_verified,event
+VL-8841,lunar_cashier-shadow,2026-11-22T21:14:08Z,replica replay
+VL-7716,ledger_owl,2026-11-22T21:14:12Z,night settlement
+VL-9923,mint_fox-shadow,2026-11-22T21:14:10Z,replica replay
+VL-6158,archived_vault_drift,2026-11-22T21:14:11Z,replica replay

@@ -1,0 +1,25 @@
+{
+  "name": "Ghost in the Mainframe",
+  "id": "scl-challenge-frame-1da7fb",
+  "kind": "host-forensics",
+  "difficulty": "hard",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "analyst",
+    "password": "neon-archive-74"
+  },
+  "description": "A cracked retro mainframe gateway has returned to the lab with an uncertain past. Log into the host, reconstruct what happened, and recover the intruder's proof. It runs on the lab network: scan 172.20.0.0/24, with challenge hosts in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `analyst@172.20.0.141`, password `neon-archive-74`",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Trace the Ghost",
+      "description": "Investigate the cracked gateway's host records and recover the intruder's proof. The box runs on the lab network; scan 172.20.0.0/24, with challenge hosts in 172.20.0.141-199.",
+      "flag": "BSY{SV1m2Y8x2QEdSMmCVu3HUF7lYgosvmlX}",
+      "hints": [
+        "Compare the routine activity with the host's account and access records; the loudest clue may be noise.",
+        "Inspect file metadata carefully. A backdated modification time can disagree with the change time.",
+        "Review the SSH trust material for the retro account and decode the comment on the anomalous key entry."
+      ]
+    }
+  ]
+}

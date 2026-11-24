@@ -1,0 +1,20 @@
+services:
+  build-server:
+    build: .
+    image: scl-challenge-frame-f90170
+    container_name: scl-challenge-frame-f90170
+    hostname: forge-07
+    stop_grace_period: 10s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "22"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    command: ["/usr/local/sbin/start-sshd"]
+
+networks:
+  playground-net:
+    external: true

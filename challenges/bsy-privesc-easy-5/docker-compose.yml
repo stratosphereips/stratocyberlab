@@ -1,0 +1,21 @@
+services:
+  lunar-relay:
+    build: .
+    image: scl-challenge-frame-2ca7b2
+    container_name: scl-challenge-frame-2ca7b2
+    hostname: lunar-relay
+    stop_grace_period: 10s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+    healthcheck:
+      test: ["CMD-SHELL", "/usr/bin/timeout 2 /bin/bash -c '</dev/tcp/127.0.0.1/22'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+networks:
+  playground-net:
+    external: true

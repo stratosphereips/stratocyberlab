@@ -1,0 +1,25 @@
+{
+  "name": "Frame Control: Root Access",
+  "id": "scl-challenge-frame-5b2560",
+  "kind": "privilege-escalation",
+  "difficulty": "easy",
+  "description": "A smart-city control node has slipped out of its expected operating posture. Log in over SSH on the lab network, inspect the host, and recover its protected flag. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `cityops@172.20.0.141`, password `NeonTransit-47`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "cityops",
+    "password": "NeonTransit-47"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Restore the Control Frame",
+      "description": "A smart-city control node has slipped out of its expected operating posture. Log in over SSH on the lab network and recover its protected flag. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{6K4zII2T8x94QLs96aUSKRkQH4Pyt1MV}",
+      "hints": [
+        "Start with the account's identity and permissions, then inventory the host for anything unusual.",
+        "Review the account's permitted elevated commands and consider whether one can launch another program.",
+        "Investigate the permitted find utility's documented shell escape; confirm you have root identity before reading the protected files."
+      ]
+    }
+  ]
+}

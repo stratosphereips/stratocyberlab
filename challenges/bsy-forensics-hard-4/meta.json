@@ -1,0 +1,25 @@
+{
+  "name": "Night Shift at the Neon Foundry",
+  "id": "scl-challenge-frame-d1b4b8",
+  "kind": "host-forensics",
+  "difficulty": "hard",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "root",
+    "password": "neonforge-44"
+  },
+  "description": "A build server at cyberpunk megacorp Neon Foundry may have been compromised during a late shift. Reconstruct what happened and recover the intruder's evidence. This host runs on the lab network; scan 172.20.0.0/24, where challenge hosts use 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `root@172.20.0.141`, password `neonforge-44`",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Reconstruct the Night Shift",
+      "description": "Investigate the compromised Neon Foundry build server and recover the evidence left by its intruder. The host runs on the lab network; scan 172.20.0.0/24, where challenge hosts use 172.20.0.141-199.",
+      "flag": "BSY{LhleneVPl2ZrUjB38er6XEQbyA81iCLu}",
+      "hints": [
+        "Build servers leave routine traces across accounts, scheduled work, logs, and file metadata. Compare those traces instead of trusting the loudest clue.",
+        "Package integrity records can help you check whether an installed system utility still matches its packaged version.",
+        "Follow up on any utility reported as changed: inspect its embedded text and consider whether its timestamps tell the whole story."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+services:
+  mainframe:
+    build: .
+    image: scl-challenge-frame-e3dd49:latest
+    container_name: scl-challenge-frame-e3dd49
+    hostname: vintage-mainframe
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "2323", "PING"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+networks:
+  playground-net:
+    external: true

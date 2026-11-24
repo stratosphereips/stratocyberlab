@@ -1,0 +1,25 @@
+{
+  "name": "Orbit Foundry: Night Shift",
+  "id": "scl-challenge-frame-9c6c3b",
+  "kind": "privilege-escalation",
+  "difficulty": "medium",
+  "description": "A megacorp build server kept answering after the night shift. Connect with the supplied account, inspect the assigned host, and recover its challenge flag while demonstrating root access. The challenge runs on the lab network; scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `buildbot@172.20.0.141`, password `OrbitRelay-7q!`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "buildbot",
+    "password": "OrbitRelay-7q!"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Claim the build node",
+      "description": "The megacorp's build server is running on the lab network. Connect using the supplied account, inspect the assigned host, and recover the challenge flag while demonstrating root access. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{Tb7mx20N4fyHrVXTA28jxXJafAhdSri1}",
+      "hints": [
+        "Compare the privileged executables you find with the ordinary utilities around them; one has an unexpected relationship to the build workflow.",
+        "Pay attention to how a privileged program locates the helper command it launches, and consider what influences command lookup.",
+        "Put your own executable with the expected helper name in a directory you control, place that directory first in PATH, then rerun the privileged program. Have your helper establish root access."
+      ]
+    }
+  ]
+}

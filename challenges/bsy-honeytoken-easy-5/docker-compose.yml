@@ -1,0 +1,20 @@
+services:
+  api:
+    build: .
+    image: scl-challenge-frame-2a070f:latest
+    container_name: scl-challenge-frame-2a070f-api
+    hostname: orbit-ledger
+    working_dir: /app
+    command: ["python3", "/app/service.py"]
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 2s
+networks:
+  playground-net:
+    external: true

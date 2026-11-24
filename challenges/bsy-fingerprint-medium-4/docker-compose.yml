@@ -1,0 +1,18 @@
+services:
+  relay:
+    build: .
+    image: scl-challenge-frame-49c00c:latest
+    container_name: scl-challenge-frame-49c00c
+    hostname: ares-relay
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.149
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.create_connection(('127.0.0.1',8022),2); assert s.recv(128).startswith(b'200 '); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+networks:
+  playground-net:
+    external: true

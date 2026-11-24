@@ -1,0 +1,19 @@
+{
+  "name": "Honeytoken Deception: The Ghost Ledger",
+  "id": "scl-challenge-frame-a3face",
+  "difficulty": "hard",
+  "description": "A bank-of-the-future enclave has been seeded with decoy access assets. Recover the valid asset needed to reach the bank's protected record. The challenge runs on the lab network; scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the settlement record",
+      "description": "Recover the protected settlement record using the genuine access asset. The challenge runs on the lab network; scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{VNRctTJEMNiM4Cb8OhzJjoTEL5KGRSoU}",
+      "hints": [
+        "Map the bank enclave's services and compare the assets it publishes with its operational records.",
+        "DNS can carry more than address lookups; inspect the zone's records and cross-reference the asset list with the settlement evidence.",
+        "The identifier tied to the completed settlement is the one to use when requesting its claim record."
+      ]
+    }
+  ]
+}
