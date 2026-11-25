@@ -32,6 +32,44 @@
   function difficulty_background(d) {
     return d === 'easy' ? 'bg-success' : d === 'medium' ? 'bg-warning' : 'bg-danger';
   }
+
+  // Split AI-generated challenges into their own sidebar section, sub-grouped by type tag.
+  const AI_TAG = 'AI-generated';
+  // Preferred order for the type sub-sections; unknown types fall to the end, alphabetically.
+  const AI_TYPE_ORDER = [
+    'Service Fingerprinting',
+    'Credential Access',
+    'Honeytoken Deception',
+    'Host Forensics',
+    'Privilege Escalation',
+  ];
+  const DIFF_RANK = { easy: 0, medium: 1, hard: 2 };
+
+  $: regularChallenges = ($challenges ?? []).filter((ch) => !ch.tags?.includes(AI_TAG));
+  $: aiChallenges = ($challenges ?? []).filter((ch) => ch.tags?.includes(AI_TAG));
+
+  // [ [typeLabel, challenges[] ], ... ] ordered by AI_TYPE_ORDER then alphabetically,
+  // challenges within a group ordered easy -> medium -> hard.
+  $: aiGroups = (() => {
+    const groups = {};
+    for (const ch of aiChallenges) {
+      const type = (ch.tags ?? []).find((t) => t !== AI_TAG) ?? 'Other';
+      (groups[type] ??= []).push(ch);
+    }
+    const rank = (t) => {
+      const i = AI_TYPE_ORDER.indexOf(t);
+      return i === -1 ? AI_TYPE_ORDER.length : i;
+    };
+    return Object.entries(groups)
+      .sort(([a], [b]) => rank(a) - rank(b) || a.localeCompare(b))
+      .map(([type, items]) => [
+        type,
+        items.slice().sort((x, y) => (DIFF_RANK[x.difficulty] ?? 9) - (DIFF_RANK[y.difficulty] ?? 9)),
+      ]);
+  })();
+
+  // Slugify a type label into a DOM-/storage-safe id.
+  const aiTypeId = (type) => 'aiType-' + type.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 </script>
 
 <style>
@@ -148,7 +186,7 @@
               label="Challenges"
               icon={PuzzlePiece}
             >
-              {#each $challenges as ch}
+              {#each regularChallenges as ch}
                 <li class="mb-1">
                   <button
                     on:click={() => chooseChallenge(ch.id)}
@@ -166,6 +204,38 @@
                 </li>
               {/each}
             </CollapsibleSection>
+
+            <!-- AI-Generated Challenges (hidden when none are present) -->
+            {#if aiChallenges.length}
+              <CollapsibleSection
+                title="Click to expand AI-generated challenges list"
+                id="aiChallengeList"
+                label="AI-Generated Challenges"
+                icon={PuzzlePiece}
+              >
+                {#each aiGroups as [type, items] (type)}
+                  <CollapsibleSection level={2} id={aiTypeId(type)} label={type} title="Click to expand {type}">
+                    {#each items as ch (ch.id)}
+                      <li class="mb-1">
+                        <button
+                          on:click={() => chooseChallenge(ch.id)}
+                          type="button"
+                          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 rounded-2 {$chosenChallenge ===
+                          ch
+                            ? 'fw-bold'
+                            : ''}"
+                        >
+                          <span class="text-truncate">{ch.name}</span>
+                          <span class="badge {difficulty_background(ch.difficulty)} rounded-pill text-capitalize">
+                            {ch.difficulty}
+                          </span>
+                        </button>
+                      </li>
+                    {/each}
+                  </CollapsibleSection>
+                {/each}
+              </CollapsibleSection>
+            {/if}
 
             <!-- Plugins -->
             <CollapsibleSection title="Click to expand plugins list" id="pluginList" label="Plugins" icon={Wrench}>
