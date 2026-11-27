@@ -1,5 +1,0 @@
-FROM redis:7-alpine
-COPY start-redis.sh /usr/local/bin/start-redis.sh
-COPY flag.txt /srv/flag.txt
-RUN chmod 755 /usr/local/bin/start-redis.sh
-ENTRYPOINT ["/usr/local/bin/start-redis.sh"]

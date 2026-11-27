@@ -1,4 +1,0 @@
-ROBOTICS LAB — NIGHT SHIFT HANDOFF
-Console access for the actuator-store service:
-redis_password=midnight-shift-27
-Operator note: the record is stored under the actuator namespace.
