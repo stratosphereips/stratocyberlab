@@ -1,0 +1,20 @@
+services:
+  build-node:
+    build: .
+    image: scl-challenge-frame-9c6c3b:latest
+    container_name: scl-challenge-frame-9c6c3b
+    hostname: orbit-foundry
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "bash", "-c", "timeout 1 bash -c '</dev/tcp/127.0.0.1/22'"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+
+networks:
+  playground-net:
+    external: true

@@ -1,0 +1,20 @@
+services:
+  bbs-gateway:
+    build: .
+    image: scl-challenge-frame-df8dda:latest
+    container_name: scl-challenge-frame-df8dda
+    hostname: last-bbs
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    working_dir: /app
+    command: ["python3", "/app/service.py"]
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.create_connection(('127.0.0.1',21210),2); r=s.recv(128); s.close(); raise SystemExit(0 if r.startswith(b'220 ') else 1)"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+networks:
+  playground-net:
+    external: true

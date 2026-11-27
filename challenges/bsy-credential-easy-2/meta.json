@@ -1,0 +1,23 @@
+{
+  "name": "Ghost Paste",
+  "id": "scl-challenge-frame-10bebb",
+  "difficulty": "easy",
+  "description": "A hacker collective's paste relay has resurfaced on the lab network. Find the service and recover the protected record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the relay record",
+      "description": "The collective left a protected record on its paste relay. Find the service on the lab network and recover the record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{AW8uBKUXelKsKp8nXdwIevFFSNuyynAF}",
+      "hints": [
+        "Look over the relay's public surface for operational material the collective left behind.",
+        "Check whether an exposed backup contains account details, then identify how the relay asks clients to authenticate.",
+        "Use the account details from the backup to enter the control area, then read the protected record linked there."
+      ]
+    }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
+  ]
+}

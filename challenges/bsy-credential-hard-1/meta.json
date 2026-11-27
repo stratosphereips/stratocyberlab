@@ -1,0 +1,23 @@
+{
+  "name": "Ghost Credentials in the Neon Grid",
+  "id": "scl-challenge-frame-a7c033",
+  "difficulty": "hard",
+  "description": "A megacorp relay has gone quiet, and its internal archive holds the data your crew needs. On the lab network, scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the protected archive record.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the relay record",
+      "description": "A megacorp relay has gone quiet, and its internal archive holds the data your crew needs. On the lab network, scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the protected archive record.",
+      "flag": "BSY{n8t5xwFe6N6CEsvklBxAdkNzZ3WMdzN4}",
+      "hints": [
+        "Map the reachable services and pay attention to which ones allow an initial connection without an account.",
+        "Try anonymous access to the file-transfer service, then inspect the material it exposes for account details.",
+        "Use the recovered account on the protected web service and read its response."
+      ]
+    }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
+  ]
+}

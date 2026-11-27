@@ -1,0 +1,23 @@
+{
+  "name": "Actuator After Hours",
+  "id": "scl-challenge-frame-500f63",
+  "difficulty": "easy",
+  "description": "A robotics lab's actuator console has gone quiet during a late-night systems check. Search the lab network, locate the console, and recover its protected maintenance record. This challenge runs on the lab network: scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the actuator record",
+      "description": "Find the robotics-lab console on the lab network and recover the protected maintenance record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{qbyKNkRWvQZ4FWY0uBBgV8eVpvPCs77n}",
+      "hints": [
+        "Pay attention to the information the reachable service offers before you have an account.",
+        "The service's initial greeting may include useful access details.",
+        "Use the account details you find to sign in and retrieve the maintenance record."
+      ]
+    }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
+  ]
+}

@@ -1,0 +1,21 @@
+services:
+  mainframe:
+    build: .
+    image: scl-challenge-frame-69e1cc:latest
+    container_name: scl-challenge-frame-69e1cc
+    hostname: frame-gateway
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.147
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/22'"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+
+networks:
+  playground-net:
+    external: true

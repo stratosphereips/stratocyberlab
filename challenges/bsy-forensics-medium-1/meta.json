@@ -1,0 +1,29 @@
+{
+  "name": "Ghost in the Build Server",
+  "id": "scl-challenge-frame-f90170",
+  "kind": "host-forensics",
+  "difficulty": "medium",
+  "description": "A cyberpunk megacorp's build server may have been touched by an intruder. Investigate the host on the lab network and recover the concealed flag. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `root@172.20.0.141`, password `scl-root-ember-42`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "root",
+    "password": "scl-root-ember-42"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the build server's secret",
+      "description": "Investigate the megacorp's compromised build server and recover the concealed flag. It runs on the lab network; scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{9fJp5hHXb1FOFAu3CrLwphh9PjJuHrza}",
+      "hints": [
+        "Compare account activity in the authentication records with routine maintenance noise.",
+        "An after-hours successful public-key session stands out. Compare that account's access records with its normal activity.",
+        "Check which key entry appeared at the time of that session, then decode its comment."
+      ]
+    }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Ghost Crew",
+  "id": "scl-challenge-frame-21976e",
+  "difficulty": "hard",
+  "description": "A starship roster terminal has surfaced on the local lab network, where a crew transfer is overdue and the manifest is suspect. Recover the protected crew record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Find the Real Crew",
+      "description": "A starship roster terminal has surfaced on the local lab network, where a crew transfer is overdue and the manifest is suspect. Recover the protected crew record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{8DoYXaBgkpgXZpCjs9Eho9fx9bP9KARL}",
+      "hints": [
+        "Compare the roster entries with the terminal's operational metadata; some records do not fit the live system.",
+        "Cross-reference each credential record's generation value with the generation reported by the identity store.",
+        "Use the credential from the sole record whose generation matches the live identity store to access the protected crew record."
+      ]
+    }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
+  ]
+}

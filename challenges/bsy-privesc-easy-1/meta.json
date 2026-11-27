@@ -1,0 +1,29 @@
+{
+  "name": "Mainframe After Hours",
+  "id": "scl-challenge-frame-c8cacf",
+  "kind": "privilege-escalation",
+  "difficulty": "easy",
+  "description": "A cracked gateway still serves a retro time-sharing system on the lab network. Connect to the host, inspect the box, and recover the protected record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `operator@172.20.0.141`, password `orbit-amber-7`",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "operator",
+    "password": "orbit-amber-7"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Root on the Mainframe",
+      "description": "A cracked gateway still serves a retro time-sharing system on the lab network. Inspect the host at 172.20.0.141 and recover the protected record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{tmi7Sg2lcLH2ja01hfBZl529MhGXXcvs}",
+      "hints": [
+        "The account can inspect the host, but some system records are out of reach. Look for differences in how ordinary programs are installed and permitted to run.",
+        "Check the system's special permission bits and compare the results with familiar command-line utilities that have documented shell escapes.",
+        "One familiar utility runs with elevated effective privileges. See whether its documented escape can start a shell that preserves those privileges, then inspect the protected root-only records."
+      ]
+    }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
+  ]
+}

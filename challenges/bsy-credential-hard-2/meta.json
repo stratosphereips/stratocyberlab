@@ -1,0 +1,23 @@
+{
+  "name": "Actuator Afterdark",
+  "id": "scl-challenge-frame-a0a604",
+  "difficulty": "hard",
+  "description": "A robotics lab's actuator console has gone quiet during a late shift. On the lab network, investigate the reachable hosts in 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199) and recover the protected actuator record.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the actuator record",
+      "description": "The robotics lab's actuator console stopped reporting after a shift change. This challenge runs on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199, and recover the protected actuator record.",
+      "flag": "BSY{41whmdnBsZMOrjd2B6HluFf4CzL2DYcB}",
+      "hints": [
+        "One of the reachable services may expose material left behind for the maintenance crew.",
+        "Compare what you find in the maintenance material with the access prompts on other services.",
+        "Use the recovered operator account to enter the console and inspect its protected record."
+      ]
+    }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
+  ]
+}

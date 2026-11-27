@@ -1,0 +1,23 @@
+{
+  "name": "Ghost Paste Relay",
+  "id": "scl-challenge-frame-d5c5d1",
+  "difficulty": "medium",
+  "description": "A hacker collective's paste relay has resurfaced on the lab network after a midnight migration. Scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199. Investigate the reachable service and recover the protected archive record.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the relay archive",
+      "description": "The collective's paste server is running on the lab network. Scan 172.20.0.0/24 (challenge hosts are in 172.20.0.141-199), investigate the service you find, and recover the protected flag.",
+      "flag": "BSY{tgzNjm9md6bavr6ZoXmrvTQn046Je3is}",
+      "hints": [
+        "Look over the information the relay makes available before you have an account.",
+        "A public handoff record contains account details that may be useful elsewhere in the service.",
+        "Use the handoff account to authenticate to the archive, then read its protected record."
+      ]
+    }
+  ],
+  "tags": [
+    "Credential Access",
+    "AI-generated"
+  ]
+}

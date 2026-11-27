@@ -1,0 +1,19 @@
+services:
+  velvet-ledger:
+    build: .
+    image: scl-challenge-frame-fd1315
+    container_name: scl-challenge-frame-fd1315
+    hostname: velvet-ledger
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.create_connection(('127.0.0.1',21),2); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    command: ["python3", "/opt/challenge/server.py"]
+networks:
+  playground-net:
+    external: true

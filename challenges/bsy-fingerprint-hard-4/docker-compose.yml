@@ -1,0 +1,60 @@
+services:
+  arcade-index:
+    build: ./arcade-index
+    image: scl-challenge-frame-1332ed-index
+    container_name: scl-challenge-frame-1332ed-index
+    hostname: arcade-index
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.145
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 40443), 2).close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  cabinet-screen-a:
+    build: ./screen-a
+    image: scl-challenge-frame-1332ed-screen-a
+    container_name: scl-challenge-frame-1332ed-screen-a
+    hostname: cabinet-screen-a
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.146
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 80), 2).close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  cabinet-screen-b:
+    build: ./screen-b
+    image: scl-challenge-frame-1332ed-screen-b
+    container_name: scl-challenge-frame-1332ed-screen-b
+    hostname: cabinet-screen-b
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.147
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 80), 2).close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  cabinet-screen-c:
+    build: ./screen-c
+    image: scl-challenge-frame-1332ed-screen-c
+    container_name: scl-challenge-frame-1332ed-screen-c
+    hostname: cabinet-screen-c
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.148
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 80), 2).close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+networks:
+  playground-net:
+    external: true

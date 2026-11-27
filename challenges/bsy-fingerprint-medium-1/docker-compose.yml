@@ -1,0 +1,22 @@
+services:
+  ghost-frequency:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scl-challenge-frame-4b6f26-radio
+    container_name: scl-challenge-frame-4b6f26-radio
+    hostname: ghost-frequency
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.141
+    environment:
+      FLAG: "BSY{gtMWV8wpROEb00tjUhKOkO9C0EAi1Enm}"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "127.0.0.1", "-p", "2525", "PING"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    command: ["all"]
+networks:
+  playground-net:
+    external: true

@@ -1,0 +1,29 @@
+{
+  "kind": "host-forensics",
+  "name": "Signal in the Rain",
+  "id": "scl-challenge-frame-4086a9",
+  "difficulty": "hard",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "root",
+    "password": "NeonHarbor!4086"
+  },
+  "description": "A smart-city control room has lost trust in its IoT hub. The hub is already compromised, and your analyst account can inspect it. Reconstruct what happened and recover the flag carried by the intruder\u2019s trace. The hub runs on the lab network: scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `root@172.20.0.141`, password `NeonHarbor!4086`",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the signal",
+      "description": "Investigate the compromised IoT hub on the lab network and recover the flag from the intruder\u2019s trace. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{MewNaRuJ7ghPPieBhLFrZGn4ZNIfjL5K}",
+      "hints": [
+        "Reconstruct the hub\u2019s routine and recent activity from its account, log, and scheduled-task records.",
+        "Compare timestamps on scheduled-task records; the displayed modification time may not tell the whole story.",
+        "Inspect the contents of the ordinary-looking system maintenance schedule and decode its recorded batch value."
+      ]
+    }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
+  ]
+}

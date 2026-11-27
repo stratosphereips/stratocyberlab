@@ -1,0 +1,29 @@
+{
+  "name": "Ghost in the Maintenance Deck",
+  "id": "scl-challenge-frame-0cd6a3",
+  "kind": "privilege-escalation",
+  "difficulty": "hard",
+  "description": "A starship maintenance console is still answering on the lab network after its vendor crew vanished. Log in with the supplied crew credentials, inspect the box, and recover the sealed maintenance record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `deckhand@172.20.0.147`, password `orbital-wrench-61`",
+  "access": {
+    "host": "172.20.0.147",
+    "user": "deckhand",
+    "password": "orbital-wrench-61"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Claim the captain's console",
+      "description": "The starship's maintenance console is on the lab network. Connect with the supplied crew login, inspect the host, and recover the sealed record. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{ZQQumd8dhyD4yhNcsF45bDStB6dFquOe}",
+      "hints": [
+        "Compare what the ordinary account can do with root-owned programs; pay attention to unusual permission bits.",
+        "One familiar command-line search utility has an unusual permission bit. Consider what it can do beyond locating files.",
+        "Look at the utility's ability to run another program. Start a shell that keeps its effective privileges, verify your identity, then inspect both root-only records."
+      ]
+    }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
+  ]
+}

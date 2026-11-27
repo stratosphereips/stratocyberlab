@@ -1,0 +1,29 @@
+{
+  "name": "Frame 69: The Night Shift",
+  "id": "scl-challenge-frame-69e1cc",
+  "kind": "privilege-escalation",
+  "difficulty": "hard",
+  "description": "A cracked gateway still hosts a retro mainframe time-sharing account. Connect over SSH and inspect the host's privilege boundary to recover its root-only flag and escalation proof. This challenge runs on the lab network; scan 172.20.0.0/24, with challenge hosts in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `deckhand@172.20.0.147`, password `frame69-orbit`",
+  "access": {
+    "host": "172.20.0.147",
+    "user": "deckhand",
+    "password": "frame69-orbit"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the root transmission",
+      "description": "A cracked gateway still hosts a retro mainframe time-sharing account. Connect over SSH and inspect the host's privilege boundary to recover its root-only flag and escalation proof. This challenge runs on the lab network; scan 172.20.0.0/24, with challenge hosts in 172.20.0.141-199.",
+      "flag": "BSY{CJYktSjibpCPK7NzA85qmKiF4xourlat}",
+      "hints": [
+        "Start by mapping the account's identity and the local programs or permissions that differ from an ordinary host.",
+        "Compare the behavior of the privileged dispatcher with the way it locates the program it launches.",
+        "Check whether a user-controlled search path can put a shell-compatible executable first, then use it to enter a root context."
+      ]
+    }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
+  ]
+}

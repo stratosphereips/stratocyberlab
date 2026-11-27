@@ -1,0 +1,29 @@
+{
+  "name": "Frame Gateway: Night Shift",
+  "id": "scl-challenge-frame-c20132",
+  "kind": "privilege-escalation",
+  "difficulty": "easy",
+  "description": "A cracked retro mainframe gateway still hands out time-sharing accounts, and its old night-shift operator left a protected course flag behind. Recover the flag and prove you reached the privileged context that guards it. This challenge runs on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-172.20.0.199.\n\n---\n\n**Access** \u2014 SSH `archivist@172.20.0.182`, password `orbit7-time`",
+  "access": {
+    "host": "172.20.0.182",
+    "user": "archivist",
+    "password": "orbit7-time"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the night-shift flag",
+      "description": "Investigate the time-sharing gateway on the lab network and recover its protected course flag. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-172.20.0.199. The goal is to reach the privileged context that guards the flag.",
+      "flag": "BSY{tnuopbo8WsxjjNIOvMZuEzTjahfyktjt}",
+      "hints": [
+        "Compare what the account can do with the metadata on system executables; the host's access controls may reveal more than its file listings.",
+        "Linux file capabilities can grant a process a specific power without a SUID bit. Look for an interpreter whose capability can change process identity.",
+        "The Python interpreter has cap_setuid. Use it to set the process UID to 0, start a root shell, then inspect both root-only proof files."
+      ]
+    }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
+  ]
+}

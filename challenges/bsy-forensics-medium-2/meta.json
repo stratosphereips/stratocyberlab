@@ -1,0 +1,29 @@
+{
+  "name": "Ghost Shift at Kestrel Station",
+  "id": "scl-challenge-frame-f86b8d",
+  "kind": "host-forensics",
+  "difficulty": "medium",
+  "access": {
+    "host": "172.20.0.141",
+    "user": "root",
+    "password": "orbital-archive-47"
+  },
+  "description": "Kestrel Station's jump host was breached during a quiet watch. As the incident response crew, recover the flag embedded in the intruder's planted evidence. This host runs on the lab network: scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199, then investigate the host's records and activity.\n\n---\n\n**Access** \u2014 SSH `root@172.20.0.141`, password `orbital-archive-47`",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Reconstruct the Ghost Shift",
+      "description": "A breached jump host on an abandoned station needs a forensic review. Recover the flag from the intruder's planted evidence by examining the host's records and activity. The host is on the lab network; scan 172.20.0.0/24, with challenge hosts in 172.20.0.141-199.",
+      "flag": "BSY{YqdYzRbx0qcGd6e6Uy7q1QJeXTlqsKEV}",
+      "hints": [
+        "Build a timeline from the login records and compare it with activity from the station's ordinary accounts.",
+        "Check whether the account tied to the unusual login also made a recent change to scheduled work.",
+        "Inspect that account's scheduled entries and examine the unfamiliar command's argument; decode the value you find there."
+      ]
+    }
+  ],
+  "tags": [
+    "Host Forensics",
+    "AI-generated"
+  ]
+}

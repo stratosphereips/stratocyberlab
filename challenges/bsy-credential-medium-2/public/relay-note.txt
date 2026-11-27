@@ -1,0 +1,4 @@
+GHOSTLINE // relay access note
+user=relay
+password=orbit-1977
+Keep the channel quiet. Rotate these after the next rendezvous.

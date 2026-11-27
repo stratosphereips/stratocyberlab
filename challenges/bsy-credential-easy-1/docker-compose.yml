@@ -1,0 +1,22 @@
+services:
+  actuator-console:
+    build: .
+    image: scl-challenge-frame-500f63
+    container_name: scl-challenge-frame-500f63
+    hostname: actuator-console
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.147
+    environment:
+      PYTHONUNBUFFERED: "1"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.create_connection(('127.0.0.1',21),2); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    command: ["python", "/app/server.py"]
+
+networks:
+  playground-net:
+    external: true

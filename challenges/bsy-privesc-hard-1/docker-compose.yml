@@ -1,0 +1,20 @@
+services:
+  maintenance-console:
+    build: .
+    image: scl-challenge-frame-0cd6a3:latest
+    container_name: scl-challenge-frame-0cd6a3
+    hostname: maintenance-console
+    stop_grace_period: 5s
+    networks:
+      playground-net:
+        ipv4_address: 172.20.0.147
+    healthcheck:
+      test: ["CMD", "bash", "-c", "/usr/sbin/sshd -t && exec 3<>/dev/tcp/127.0.0.1/22"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+
+networks:
+  playground-net:
+    external: true

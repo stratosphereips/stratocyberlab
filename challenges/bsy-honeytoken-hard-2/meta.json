@@ -1,0 +1,23 @@
+{
+  "name": "The Velvet Ledger",
+  "id": "scl-challenge-frame-fd1315",
+  "difficulty": "hard",
+  "description": "A bank-of-the-future has scattered access records across its lab network, mixing genuine and misleading assets. Find the real credential and recover the settlement proof. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the settlement proof",
+      "description": "A bank-of-the-future has scattered access records across its lab network, mixing genuine and misleading assets. Find the real credential and recover the settlement proof. Scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{Cwlhftd4vntI2P27NBckf5VKkblra1nD}",
+      "hints": [
+        "Look across the files offered by the service; several records describe candidate access cards.",
+        "Cross-reference each card with the independent settlement ledger. Compare the principal recorded there with the card holder's login.",
+        "Use the one card whose serial and principal agree across both sources to access the private settlement record."
+      ]
+    }
+  ],
+  "tags": [
+    "Honeytoken Deception",
+    "AI-generated"
+  ]
+}

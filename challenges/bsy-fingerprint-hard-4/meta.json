@@ -1,0 +1,23 @@
+{
+  "name": "Last Call at the Neon Cabinet",
+  "id": "scl-challenge-frame-1332ed",
+  "difficulty": "hard",
+  "description": "A high-score arcade cabinet on the lab network has gone quiet, and its latest integrity token is missing from the public board. Scan 172.20.0.0/24, where challenge hosts are in 172.20.0.141-199, and recover the token from the cabinet.",
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the integrity token",
+      "description": "The arcade cabinet's latest integrity token has vanished from the public board. On the lab network, scan 172.20.0.0/24; challenge hosts are in 172.20.0.141-199. Recover the token from the cabinet.",
+      "flag": "BSY{lKxOywtwJ2GlK9jm69Ivap7kdCRdi5Yr}",
+      "hints": [
+        "The cabinet may answer on an unexpected port. Compare how open services respond instead of trusting their port numbers.",
+        "One candidate speaks a familiar naming service protocol. Look at what a zone-wide record transfer can reveal.",
+        "Request a full transfer for the arcade's local zone, then inspect its TXT records for the integrity token."
+      ]
+    }
+  ],
+  "tags": [
+    "Service Fingerprinting",
+    "AI-generated"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Cracked Gateway: Root Time",
+  "id": "scl-challenge-frame-9f467c",
+  "kind": "privilege-escalation",
+  "difficulty": "medium",
+  "description": "A cracked retro time-sharing gateway is back on the lab network, and its root-only recovery records are missing. Log in with the supplied access details, investigate the gateway, and recover the flag and proof token. The lab network is 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.\n\n---\n\n**Access** \u2014 SSH `orbit@172.20.0.168`, password `vector-amber-42`",
+  "access": {
+    "host": "172.20.0.168",
+    "user": "orbit",
+    "password": "vector-amber-42"
+  },
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "Recover the root records",
+      "description": "The gateway's root-only recovery records are still on the host. Investigate the box you can access on the lab network and recover its flag. The lab network is 172.20.0.0/24; challenge hosts are in 172.20.0.141-199.",
+      "flag": "BSY{cKiythtrsTH3uswExCVJBN1oN9qBSpQb}",
+      "hints": [
+        "Compare the ownership and permission details of unusual executables with the other local footholds you can inspect.",
+        "Look for file capabilities across the filesystem; one interpreter has a capability that can change process credentials.",
+        "Use that interpreter to set the process UID to 0, then start a shell that preserves its elevated privileges and inspect both root-only records."
+      ]
+    }
+  ],
+  "tags": [
+    "Privilege Escalation",
+    "AI-generated"
+  ]
+}
