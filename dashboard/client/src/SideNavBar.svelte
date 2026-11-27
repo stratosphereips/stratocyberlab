@@ -210,7 +210,7 @@
               <CollapsibleSection
                 title="Click to expand AI-generated challenges list"
                 id="aiChallengeList"
-                label="AI-Generated Challenges"
+                label="AI-Created challenges"
                 icon={PuzzlePiece}
               >
                 {#each aiGroups as [type, items] (type)}
